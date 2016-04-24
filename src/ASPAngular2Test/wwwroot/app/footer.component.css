@@ -1,0 +1,9 @@
+﻿.navbar-text {
+    font-size: 25px;
+    margin-top: 8px !important;
+    margin-bottom: 5px !important;
+	margin-right: 15px !important;
+}
+.navbar-link {
+    text-decoration: none !important;    
+}

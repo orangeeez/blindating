@@ -1,0 +1,50 @@
+{
+  "version": "1.0.0-*",
+  "compilationOptions": {
+    "emitEntryPoint": true
+  },
+
+  "dependencies": {
+    "EntityFramework.Commands": "7.0.0-rc1-final",
+    "EntityFramework.MicrosoftSqlServer": "7.0.0-rc1-final",
+    "EntityFramework.Core": "7.0.0-rc1-final",
+    "Microsoft.ApplicationInsights.AspNet": "1.0.0-rc1",
+    "Microsoft.AspNet.IISPlatformHandler": "1.0.0-rc1-final",
+    "Microsoft.AspNet.Mvc.Abstractions": "6.0.0-rc1-final",
+    "Microsoft.AspNet.Mvc.Core": "6.0.0-rc1-final",
+    "Microsoft.AspNet.Mvc.ViewFeatures": "6.0.0-rc1-final",
+    "Microsoft.AspNet.Mvc.WebApiCompatShim": "6.0.0-rc1-final",
+    "Microsoft.AspNet.Server.Kestrel": "1.0.0-rc1-final",
+    "Microsoft.AspNet.StaticFiles": "1.0.0-rc1-final",
+    "Microsoft.Extensions.Configuration.FileProviderExtensions": "1.0.0-rc1-final",
+    "Microsoft.Extensions.Logging.Console": "1.0.0-rc1-final",
+    "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final",
+    "Microsoft.AspNet.Identity.EntityFramework": "3.0.0-rc1-final",
+    "Microsoft.Framework.ConfigurationModel": "1.0.0-beta1",
+    "Microsoft.Extensions.Configuration.Json": "1.0.0-rc1-final"
+  },
+
+  "commands": {
+    "web": "Microsoft.AspNet.Server.Kestrel",
+    "ef": "EntityFramework.Commands"
+  },
+
+  "frameworks": {
+    "dnx451": {
+      "dependencies": {
+        "Newtonsoft.Json": "8.0.2",
+        "jose-jwt": "1.9.1",
+        "Microsoft.Net.Http": "2.2.22"
+      }
+    }
+  },
+
+  "exclude": [
+    "wwwroot",
+    "node_modules"
+  ],
+  "publishExclude": [
+    "**.user",
+    "**.vspscc"
+  ]
+}

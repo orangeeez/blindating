@@ -1,0 +1,33 @@
+.profile {
+    color: #0c092f;       
+    margin-top: -10px;
+    padding-top: 6px;
+}
+.profile .navigation {
+    position: relative;
+	border-right: 1px solid #e7e7e7;
+    padding-left: 0;
+    width: 14%;
+}
+.profile .profile-content {
+    font-size: 20px;
+    overflow-y: scroll;
+    width: 86%;
+}
+.profile .navigation .nav > li > a {
+  position: relative;
+  color: #0c092f;
+  display: block;
+  padding: 5px 5px;
+}
+.form-control .usrname {
+  border-color: #ccc;
+  border: none;
+  border-bottom: solid 2px #c9c9c9;
+  transition: border 0.3s;
+}
+.form-control .usrname:focus {
+  border: none;
+  border-bottom: solid 2px #66afe9;
+  transition: border 0.3s;
+}

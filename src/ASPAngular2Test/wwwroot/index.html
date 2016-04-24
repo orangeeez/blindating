@@ -1,0 +1,44 @@
+﻿<html>
+  <head>
+    <base href=""/>
+    <title>Angular 2 QuickStart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <link href="css/croppie.css" rel="stylesheet" />
+    <link href="css/styles.css" rel="stylesheet" />
+
+    <script src="libs/system.src.js"></script>
+    <script src="libs/es6-shim.min.js"></script>
+    <script src="libs/angular2.dev.js"></script>
+    <script src="libs/system-polyfills.js"></script>
+    <script src="libs/angular2-polyfills.js"></script>
+    <script src="libs/Rx.js"></script>
+    <script src="libs/router.dev.js"></script>
+    <script src="libs/http.dev.js"></script>
+    <script src="libs/ng2-bootstrap.min.js"></script> 
+    <script src="libs/moment.js"></script>
+    <script src="libs/croppie.min.js"></script>
+
+    <script>
+      System.config({
+        packages: {        
+          app: {
+            format: 'register',
+            defaultExtension: 'js'
+          }
+        },
+          map: {
+            moment: 'libs/moment.js'
+          }
+      });
+      System.import('app/main')
+            .then(null, console.error.bind(console));
+    </script>
+
+  </head>
+
+  <body>
+    <my-app>Loading...</my-app>
+  </body>
+
+</html>

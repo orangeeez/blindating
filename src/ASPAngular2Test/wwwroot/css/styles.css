@@ -1,0 +1,37 @@
+/*Main elements*/
+@font-face {
+  src: local('Walsheim'), url('fonts/GT-Walsheim-Pro-Trial-Thin-Oblique.otf') format('truetype');
+  font-family: 'Walsheim';
+  font-style: normal;
+  font-weight: normal;
+}
+html, body {
+	height: 100%;
+    font-family: 'Walsheim';    
+}
+.ng-valid[required] {
+  border-left: 5px solid #42A948;
+}
+.ng-invalid {
+  border-left: 5px solid #a94442;
+}
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* Dashboard object */
+#dashboard .textbox {
+    border-radius: 20px;
+    background-color: aqua;
+}
+#dashboard .textbox .textarea {
+    max-height: 200px;
+    max-width: 200px;
+    background-color: aqua;
+    border-style: none;
+    margin: 5px;
+    resize: none;
+}
+#dashboard .textbox .textarea:focus {
+    outline: none;
+}

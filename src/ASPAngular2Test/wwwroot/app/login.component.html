@@ -1,0 +1,50 @@
+﻿
+<div>
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <tabset>
+            <tab 
+                 [heading]="tabs[0].title" 
+                 [active]="tabs[0].active" 
+                 [disabled]="tabs[0].disabled" 
+                 (select)="tabs[0].active = true"
+                 (deselect)="tabs[0].active = false">
+                <alert *ngIf="alert.show" [type]="alert.type" closable="true">{{alert.reason}}</alert>
+                <form #loginForm="ngForm" (submit)="login($event, emaillog.value, passwordlog.value)">
+                    <label for="email-log">Email</label>
+                    <input type="text" #emaillog="ngForm" class="form-control" id="email-log" placeholder="Email" ngControl="emaillog" required>
+                    <div [hidden]="emaillog.valid || emaillog.pristine" class="alert alert-danger">Email is required</div>
+                    <label for="password-log">Password</label>
+                    <input type="password" #passwordlog="ngForm" class="form-control" id="password-log" placeholder="Password" ngControl="passwordlog" required>
+                    <div [hidden]="passwordlog.valid || passwordlog.pristine" class="alert alert-danger">Password is required</div>
+                    <button [disabled]="!loginForm.form.valid" type="submit" class="btn btn-default" style="margin-top: 5px;">Login</button>
+                </form>
+            </tab>
+            <tab 
+                 [heading]="tabs[1].title"
+                 [active]="tabs[1].active" 
+                 [disabled]="tabs[1].disabled" 
+                 (select)="tabs[1].active = true"
+                 (deselect)="tabs[1].active = false">
+                <alert *ngIf="alert.show != null" [type]="alert.type" closable="true">{{alert.reason}}</alert>
+                <form #registerForm="ngForm" (submit)="register($event, firstname.value, lastname.value, emailreg.value, passwordreg.value)">
+                    <label for="firstname">First Name</label>
+                    <input type="text" #firstname="ngForm" class="form-control" id="firstname" placeholder="First name" ngControl="firstname" required>
+                    <div [hidden]="firstname.valid || firstname.pristine" class="alert alert-danger">First name is required</div>
+                    <label for="lastname">Last Name</label>
+                    <input type="text" #lastname="ngForm" class="form-control" id="lastname" placeholder="Last name" ngControl="lastname" required>
+                    <div [hidden]="lastname.valid || lastname.pristine" class="alert alert-danger">Last name is required</div>
+                    <label for="email-reg">Email</label>
+                    <input type="text" #emailreg="ngForm" class="form-control" id="email-reg" placeholder="Email" ngControl="emailreg" required>
+                    <div [hidden]="emailreg.valid || emailreg.pristine" class="alert alert-danger">Email is required</div>
+                    <label for="password-reg">Password</label>
+                    <input type="password" #passwordreg="ngForm" class="form-control" id="password-reg" placeholder="Password" ngControl="passwordreg" required>
+                    <div [hidden]="passwordreg.valid || passwordreg.pristine" class="alert alert-danger">Password is required</div>
+                    <button [disabled]="!registerForm.form.valid" type="submit" class="btn btn-default" style="margin-top: 5px;">Register</button>
+                </form>
+            </tab>
+
+        </tabset>
+    </div>
+    <div class="col-md-3"></div>
+</div>
