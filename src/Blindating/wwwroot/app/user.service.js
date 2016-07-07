@@ -29,6 +29,13 @@ System.register(['angular2/http', 'angular2/core', 'rxjs/Observable'], function(
                     this.http = http;
                     this.api = 'api/user';
                 }
+                //#region Common
+                UserService.prototype.SaveUserState = function (user) {
+                    this.user = user;
+                };
+                //#endregion
+                //#endregion
+                //#region UserRepository
                 UserService.prototype.Register = function (user) {
                     var body = JSON.stringify(user);
                     var headers = new http_1.Headers({
@@ -46,10 +53,24 @@ System.register(['angular2/http', 'angular2/core', 'rxjs/Observable'], function(
                     });
                     var options = new http_1.RequestOptions({ headers: headers });
                     return this.http.post(this.api + "/login", body, options)
-                        .map(function (jwt) { return jwt.text(); })
+                        .map(function (logged) { return logged.json(); })
                         .catch(this.handleError);
                 };
-                UserService.prototype.isExist = function (jwt) {
+                UserService.prototype.GetUser = function (field, value) {
+                    var queryObj = {
+                        Field: field,
+                        Value: value
+                    };
+                    var body = JSON.stringify(queryObj);
+                    var headers = new http_1.Headers({
+                        'Content-Type': 'application/json'
+                    });
+                    var options = new http_1.RequestOptions({ headers: headers });
+                    return this.http.post(this.api + "/getuser", body, options)
+                        .map(function (finded) { return finded.json(); })
+                        .catch(this.handleError);
+                };
+                UserService.prototype.IsExist = function (jwt) {
                     var body = jwt;
                     var headers = new http_1.Headers({
                         'Content-Type': 'application/json'
@@ -60,8 +81,28 @@ System.register(['angular2/http', 'angular2/core', 'rxjs/Observable'], function(
                         .catch(this.handleError);
                 };
                 UserService.prototype.handleError = function (error) {
-                    console.error(error);
                     return Observable_1.Observable.throw(error.json().error || 'Server error');
+                };
+                //#endregion
+                //#region OnlineUserRepository
+                UserService.prototype.DeleteOnlineUser = function (userID) {
+                    var body = userID;
+                    var headers = new http_1.Headers({
+                        'Content-Type': 'application/json'
+                    });
+                    var options = new http_1.RequestOptions({ headers: headers });
+                    return this.http.post(this.api + "/deleteonlineuser", body, options)
+                        .map(function (res) { return !!res.text(); })
+                        .catch(this.handleError);
+                };
+                UserService.prototype.GetOnlineUsers = function () {
+                    var headers = new http_1.Headers({
+                        'Content-Type': 'application/json'
+                    });
+                    var options = new http_1.RequestOptions({ headers: headers });
+                    return this.http.get(this.api + "/getonlineusers", options)
+                        .map(function (res) { return res.json(); })
+                        .catch(this.handleError);
                 };
                 UserService = __decorate([
                     core_1.Injectable(), 

@@ -12,9 +12,9 @@ import {dDashboard}        from './dashboard/dashboard'
 })
 
 export class DashboardComponent implements OnInit {  
-    public test: String;
-    public dashboard: dDashboard;
     public app: AppComponent;
+    public dashboard: dDashboard;
+    public test: String;
     public error: string;
     
     constructor(

@@ -53,13 +53,28 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
             }],
         execute: function() {
             AppComponent = (function () {
-                function AppComponent(_router) {
+                //@HostListener('window:onbeforeunload')
+                //deleteOnlineUser() {
+                //    this._userService.DeleteOnlineUser(this.user)
+                //        .subscribe(deleted => { });
+                //}
+                //@HostListener('window:onbeforeunload')
+                //doSomething() {
+                function AppComponent(_router, _userService) {
                     this._router = _router;
+                    this._userService = _userService;
+                    // Signaling configuration WebRTC
+                    this.server = "http://192.168.0.108:8095";
+                    this.stun = "stun:stun.l.google.com:19302";
                     this.appHeaderIsShow = false;
                     this.appFooterIsShow = false;
                     // Template Propertie for access to footer component
                     this.lol = "lol";
                     this._router.navigate(['Login']);
+                    window.onbeforeunload = function (e) {
+                        _userService.DeleteOnlineUser(_userService.user.ID.toString())
+                            .subscribe(function (deleted) { });
+                    };
                 }
                 // Template Event was fired from footer component
                 AppComponent.prototype.handleMyEvent = function (arg) {
@@ -75,7 +90,7 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                         templateUrl: 'app/app.component.html',
                         styleUrls: ['app/app.component.css', 'css/styles.css'],
                         directives: [router_1.ROUTER_DIRECTIVES, footer_component_1.FooterComponent, header_component_1.HeaderComponent, helper_component_1.HelperComponent, profilemenu_component_1.ProfileMenuComponent],
-                        providers: [http_1.HTTP_PROVIDERS, router_1.ROUTER_PROVIDERS, user_service_1.UserService],
+                        providers: [http_1.HTTP_PROVIDERS, router_1.ROUTER_PROVIDERS, user_service_1.UserService]
                     }),
                     router_1.RouteConfig([
                         { path: '/login', name: 'Login', component: login_component_1.LoginComponent },
@@ -83,7 +98,7 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                         { path: '/profile', name: 'Profile', component: profile_component_1.ProfileComponent },
                         { path: '/search', name: 'Search', component: search_component_1.SearchComponent }
                     ]), 
-                    __metadata('design:paramtypes', [router_2.Router])
+                    __metadata('design:paramtypes', [router_2.Router, user_service_1.UserService])
                 ], AppComponent);
                 return AppComponent;
             }());

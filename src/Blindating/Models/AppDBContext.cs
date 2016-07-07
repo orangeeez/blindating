@@ -15,10 +15,10 @@ namespace ASPAngular2Test.Models
             if (!_created)
             {
                 _created = true;
-                Database.EnsureCreated();
             }
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<OnlineUser> OnlineUsers { get; set; }
     }
 }

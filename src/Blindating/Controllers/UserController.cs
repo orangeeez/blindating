@@ -13,21 +13,22 @@ namespace ASPAngular2Test.Controllers
     {
         [FromServices]
         public IUserRepository Users { get; set; }
+        [FromServices]
+        public IOnelineUserRepository OnlineUsers { get; set; }
 
+        #region IUserRepository
         [HttpPost]
         [ActionName("login")]
-        public string Login([FromBody] User user)
+        public User Login([FromBody] User user)
         {
-            string JWT = Users.Login(user);
-            return JWT;
+            return Users.Login(user);
         }
 
         [HttpPost]
         [ActionName("register")]
         public string Register([FromBody] User user)
         {
-            string response = Users.Register(user);
-            return response;
+            return Users.Register(user);
         }
 
         [HttpPost]
@@ -36,5 +37,27 @@ namespace ASPAngular2Test.Controllers
         {
             return Users.IsExist(jwt);
         }
+        [HttpPost]
+        [ActionName("getuser")]
+        public User GetUser([FromBody]UserUtils.FindUser find)
+        {
+            return Users.GetUser(find);
+        }
+        #endregion
+
+        #region IOnlineUserRepository
+        [HttpPost]
+        [ActionName("deleteonlineuser")]
+        public bool DeleteOnlineUser([FromBody] int userID)
+        {
+            return OnlineUsers.DeleteOnlineUser(userID);
+        }
+        [HttpGet]
+        [ActionName("getonlineusers")]
+        public List<User> GetOnlineUsers()
+        {
+            return OnlineUsers.GetOnlineUsers();
+        }
+        #endregion
     }
 }

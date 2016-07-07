@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', './user.service', './user', 'ng2-bootstrap/ng2-bootstrap'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/router', './app.component', './user.service', './user', 'ng2-bootstrap/ng2-bootstrap'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,10 @@ System.register(['angular2/core', 'angular2/router', './user.service', './user',
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, user_service_1, user_1, ng2_bootstrap_1;
+    var __param = (this && this.__param) || function (paramIndex, decorator) {
+        return function (target, key) { decorator(target, key, paramIndex); }
+    };
+    var core_1, router_1, app_component_1, user_service_1, user_1, ng2_bootstrap_1;
     var LoginComponent;
     return {
         setters:[
@@ -19,6 +22,9 @@ System.register(['angular2/core', 'angular2/router', './user.service', './user',
             },
             function (router_1_1) {
                 router_1 = router_1_1;
+            },
+            function (app_component_1_1) {
+                app_component_1 = app_component_1_1;
             },
             function (user_service_1_1) {
                 user_service_1 = user_service_1_1;
@@ -31,7 +37,7 @@ System.register(['angular2/core', 'angular2/router', './user.service', './user',
             }],
         execute: function() {
             LoginComponent = (function () {
-                function LoginComponent(_router, _userService) {
+                function LoginComponent(app, _router, _userService) {
                     this._router = _router;
                     this._userService = _userService;
                     this.tabs = [
@@ -42,65 +48,39 @@ System.register(['angular2/core', 'angular2/router', './user.service', './user',
                     this.user = null;
                     this.jwt = null;
                     this.error = null;
+                    this.app = app;
                     this.jwt = this.getCookie("jwt");
                 }
                 LoginComponent.prototype.ngOnInit = function () {
+                    var _this = this;
                     if (this.isAuthorizedViaJWT()) {
-                        this._router.navigate(['Search']);
+                        this._userService.GetUser('JWT', this.jwt)
+                            .subscribe(function (finded) {
+                            _this._userService.Login(finded)
+                                .subscribe(function (logged) {
+                                _this.initializeUser(logged);
+                                _this.initializeWebRTC();
+                            });
+                        });
                     }
                 };
                 LoginComponent.prototype.login = function (event, email, password) {
                     var _this = this;
                     event.preventDefault();
-                    this.user = {
-                        ID: 0,
-                        firstname: null,
-                        lastname: null,
-                        email: email,
-                        password: password,
-                        JWT: null
-                    };
+                    this.user = this.createUser(undefined, undefined, undefined, email, password);
                     this._userService.Login(this.user)
-                        .subscribe(function (jwt) {
-                        if (jwt == user_1.User.AUTHORIZATION_FAILED) {
-                            _this.alert.reason = jwt;
-                            _this.alert.show = true;
-                            _this.alert.type = "danger";
-                        }
-                        else {
-                            document.cookie = "jwt=" + jwt;
-                            _this.user.JWT = jwt;
-                            _this._router.navigate(['Search']);
-                        }
-                    }, function (error) { return _this.error = error; });
+                        .subscribe(function (logged) {
+                        _this.loginViaForm(logged);
+                    });
                 };
                 LoginComponent.prototype.register = function (event, firstname, lastname, email, password) {
                     var _this = this;
                     event.preventDefault();
-                    var inputEmailReg = document.getElementById("email-reg");
-                    this.user = {
-                        ID: 0,
-                        firstname: firstname,
-                        lastname: lastname,
-                        email: email,
-                        password: password,
-                        JWT: null
-                    };
+                    this.user = this.createUser(undefined, firstname, lastname, email, password);
                     this._userService.Register(this.user)
                         .subscribe(function (response) {
-                        _this.alert.reason = response;
-                        if (response == user_1.User.REGISTERED_SUCCESSFULLY) {
-                            _this.alert.show = true;
-                            _this.tabs[1].active = false;
-                            _this.tabs[0].active = true;
-                            _this.tabs[1].disabled = true;
-                        }
-                        else if (response == user_1.User.EMAIL_ALREADY_EXIST) {
-                            _this.alert.show = false;
-                            inputEmailReg.className = inputEmailReg.className.replace(/(?:^|\s)ng-valid(?!\S)/g, '');
-                            inputEmailReg.className += " ng-invalid";
-                        }
-                    }, function (error) { return _this.error = error; });
+                        _this.registerViaForm(response);
+                    });
                 };
                 LoginComponent.prototype.getCookie = function (name) {
                     var value = "; " + document.cookie;
@@ -109,10 +89,70 @@ System.register(['angular2/core', 'angular2/router', './user.service', './user',
                         return parts.pop().split(";").shift();
                 };
                 LoginComponent.prototype.isAuthorizedViaJWT = function () {
-                    if (this.jwt && this._userService.isExist(this.jwt))
+                    if (this.jwt && this._userService.IsExist(this.jwt))
                         return true;
                     else
                         false;
+                };
+                LoginComponent.prototype.createUser = function (id, firstname, lastname, email, password, jwt, nickname, peer, reason, profileimage) {
+                    return {
+                        ID: id,
+                        Firstname: firstname,
+                        Lastname: lastname,
+                        Email: email,
+                        Password: password,
+                        JWT: jwt,
+                        Nickname: nickname,
+                        Peer: peer,
+                        Reason: reason,
+                        ProfileImage: profileimage
+                    };
+                };
+                LoginComponent.prototype.initializeUser = function (user) {
+                    this.user = user;
+                    this.app.user = this.user;
+                    this._userService.SaveUserState(this.app.user);
+                };
+                LoginComponent.prototype.initializeWebRTC = function () {
+                    this.user.Peer = new Woogeen.PeerClient({
+                        iceServers: [{
+                                urls: this.app.stun
+                            }]
+                    });
+                    this.user.Peer.connect({
+                        host: this.app.server, token: this.app.user.Firstname + this.app.user.Lastname
+                    });
+                    this.app.user = this.user;
+                    this._userService.SaveUserState(this.app.user);
+                    this.app.headerProfileImage = this.app.user.ProfileImage;
+                    this._router.navigate(['Search']);
+                };
+                LoginComponent.prototype.registerViaForm = function (response) {
+                    var inputEmailReg = document.getElementById("email-reg");
+                    this.alert.reason = response;
+                    if (response == user_1.User.REGISTERED_SUCCESSFULLY) {
+                        this.alert.show = true;
+                        this.tabs[1].active = false;
+                        this.tabs[0].active = true;
+                        this.tabs[1].disabled = true;
+                    }
+                    else if (response == user_1.User.EMAIL_ALREADY_EXIST) {
+                        this.alert.show = false;
+                        inputEmailReg.className = inputEmailReg.className.replace(/(?:^|\s)ng-valid(?!\S)/g, '');
+                        inputEmailReg.className += " ng-invalid";
+                    }
+                };
+                LoginComponent.prototype.loginViaForm = function (logged) {
+                    if (logged.Reason == user_1.User.AUTHORIZATION_FAILED) {
+                        this.alert.reason = logged.Reason;
+                        this.alert.show = true;
+                        this.alert.type = "danger";
+                    }
+                    else {
+                        document.cookie = "jwt=" + logged.JWT;
+                        this.initializeUser(logged);
+                        this.initializeWebRTC();
+                    }
                 };
                 LoginComponent = __decorate([
                     core_1.Component({
@@ -120,8 +160,10 @@ System.register(['angular2/core', 'angular2/router', './user.service', './user',
                         templateUrl: 'app/login.component.html',
                         styleUrls: ['app/login.component.css'],
                         directives: [ng2_bootstrap_1.TAB_DIRECTIVES, ng2_bootstrap_1.Alert]
-                    }), 
-                    __metadata('design:paramtypes', [router_1.Router, user_service_1.UserService])
+                    }),
+                    __param(0, core_1.Host()),
+                    __param(0, core_1.Inject(core_1.forwardRef(function () { return app_component_1.AppComponent; }))), 
+                    __metadata('design:paramtypes', [app_component_1.AppComponent, router_1.Router, user_service_1.UserService])
                 ], LoginComponent);
                 return LoginComponent;
             }());

@@ -1,17 +1,17 @@
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav id="navbar-top" class="navbar navbar-default navbar-fixed-top">
   <div *ngIf="appHeaderIsShow" class="container-fluid">   
   	<headnav [profileImage]="headerProfileImage"></headnav>
   </div>
 </nav>
 <div class="fill container-fluid">
     <div class="fill padding-nav row">
-      <div class="fill right-stripe col-md-1">
+      <div id="left-column" class="fill right-stripe col-md-1">
           <helper></helper>
       </div>
       <div class="fill content col-md-10">
           <router-outlet></router-outlet>
       </div>
-      <div class="fill left-stripe col-md-1">
+      <div id="right-column" class="fill left-stripe col-md-1">
           <profilemenu></profilemenu>
       </div>
     </div>

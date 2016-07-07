@@ -16,6 +16,20 @@ namespace ASPAngular2Test.Migrations
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("ASPAngular2Test.Models.OnlineUser", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Login");
+
+                    b.Property<DateTime>("Logout");
+
+                    b.Property<int>("UserID");
+
+                    b.HasKey("ID");
+                });
+
             modelBuilder.Entity("ASPAngular2Test.Models.User", b =>
                 {
                     b.Property<int>("ID")
@@ -29,9 +43,24 @@ namespace ASPAngular2Test.Migrations
 
                     b.Property<string>("Lastname");
 
+                    b.Property<string>("Nickname");
+
                     b.Property<string>("Password");
 
+                    b.Property<string>("Peer");
+
+                    b.Property<string>("ProfileImage");
+
+                    b.Property<string>("Reason");
+
                     b.HasKey("ID");
+                });
+
+            modelBuilder.Entity("ASPAngular2Test.Models.OnlineUser", b =>
+                {
+                    b.HasOne("ASPAngular2Test.Models.User")
+                        .WithMany()
+                        .HasForeignKey("UserID");
                 });
         }
     }

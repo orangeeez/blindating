@@ -16,7 +16,8 @@ var libsToMove = [
    paths.npmSrc + '/angular2/bundles/http.dev.js',
    paths.npmSrc + '/ng2-bootstrap/bundles/ng2-bootstrap.min.js',
    paths.npmSrc + '/moment/moment.js',
-   paths.npmSrc + '/croppie/croppie.min.js'
+   paths.npmSrc + '/croppie/croppie.min.js',
+   paths.npmSrc + '/jquery/dist/jquery.min.js'
 ];
 
 gulp.task('moveToLibs', function () {

@@ -1,14 +1,11 @@
 ﻿using Jose;
-using System;
-using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System;
 
 namespace ASPAngular2Test.Models
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : IUserRepository, IOnelineUserRepository
     {
         private readonly AppDBContext _appDB;
 
@@ -17,12 +14,17 @@ namespace ASPAngular2Test.Models
             this._appDB = _appDB;
         }
 
-        public string Login(User user)
+        public User Login(User user)
         {
             if (IsAuthorized(user))
-                return this.CreateJWT(user);
+            {
+                user = _appDB.Users.FirstOrDefault(u => u.Email == user.Email);
+                _appDB.OnlineUsers.Add(new OnlineUser(user.ID, DateTime.Now));
+                _appDB.SaveChanges();
+            }
             else
-                return User.AUTHORIZATION_FAILED;
+                user.Reason = User.AUTHORIZATION_FAILED;
+            return user;
         }
 
         public string Register(User user)
@@ -45,6 +47,18 @@ namespace ASPAngular2Test.Models
                 return true;
             else
                 return false;
+        }
+
+        public User GetUser(UserUtils.FindUser find)
+        {
+            User user = null;
+            switch (find.Field)
+            {
+                case "JWT":
+                    user = _appDB.Users.FirstOrDefault(u => u.JWT == find.Value);
+                    break;
+            }
+            return user;
         }
 
         private string CreateJWT(User user)
@@ -83,5 +97,32 @@ namespace ASPAngular2Test.Models
             else
                 return true;
         }
+
+        #region IOnlineUserRepository
+        public List<User> GetOnlineUsers()
+        {
+            List<User> onlineUsers = new List<User>();
+            var q = from r in _appDB.OnlineUsers
+                    select r.User;
+            onlineUsers.Add(q.FirstOrDefault());
+            return onlineUsers;
+        }
+        public bool DeleteOnlineUser(int userID)
+        {
+            OnlineUser deleting = _appDB.OnlineUsers.FirstOrDefault(u => u.UserID == userID);
+
+            try
+            {
+                _appDB.OnlineUsers.Remove(deleting);
+                _appDB.SaveChanges();
+                return true;
+            }
+            catch (ArgumentNullException e)
+            {
+                return false;
+            }
+            
+        }
+        #endregion
     }
 }

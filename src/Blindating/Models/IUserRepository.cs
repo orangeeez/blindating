@@ -7,8 +7,14 @@ namespace ASPAngular2Test.Models
 {
     public interface IUserRepository
     {
-        string Login(User user);
+        User Login(User user);
         string Register(User user);
         bool IsExist(string jwt);
+        User GetUser(UserUtils.FindUser find);
+    }
+    public interface IOnelineUserRepository
+    {
+        bool DeleteOnlineUser(int userID);
+        List<User> GetOnlineUsers();
     }
 }

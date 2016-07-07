@@ -3,6 +3,19 @@
   "version": 2,
   "targets": {
     "DNX,Version=v4.5.1": {
+      "EntityFramework/5.0.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.ComponentModel.DataAnnotations",
+          "System.Data.Entity"
+        ],
+        "compile": {
+          "lib/net45/EntityFramework.dll": {}
+        },
+        "runtime": {
+          "lib/net45/EntityFramework.dll": {}
+        }
+      },
       "EntityFramework.Commands/7.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -1777,6 +1790,18 @@
           "lib/dotnet/System.Collections.Immutable.dll": {}
         }
       },
+      "System.Data.Entity.Repository/2.0.0.1": {
+        "type": "package",
+        "dependencies": {
+          "EntityFramework": "5.0.0"
+        },
+        "compile": {
+          "lib/net45/System.Data.Entity.Repository.dll": {}
+        },
+        "runtime": {
+          "lib/net45/System.Data.Entity.Repository.dll": {}
+        }
+      },
       "System.Diagnostics.Debug/4.0.0": {
         "type": "package",
         "compile": {
@@ -1962,6 +1987,19 @@
       }
     },
     "DNX,Version=v4.5.1/win7-x86": {
+      "EntityFramework/5.0.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.ComponentModel.DataAnnotations",
+          "System.Data.Entity"
+        ],
+        "compile": {
+          "lib/net45/EntityFramework.dll": {}
+        },
+        "runtime": {
+          "lib/net45/EntityFramework.dll": {}
+        }
+      },
       "EntityFramework.Commands/7.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -3739,6 +3777,18 @@
           "lib/dotnet/System.Collections.Immutable.dll": {}
         }
       },
+      "System.Data.Entity.Repository/2.0.0.1": {
+        "type": "package",
+        "dependencies": {
+          "EntityFramework": "5.0.0"
+        },
+        "compile": {
+          "lib/net45/System.Data.Entity.Repository.dll": {}
+        },
+        "runtime": {
+          "lib/net45/System.Data.Entity.Repository.dll": {}
+        }
+      },
       "System.Diagnostics.Debug/4.0.0": {
         "type": "package",
         "compile": {
@@ -3924,6 +3974,19 @@
       }
     },
     "DNX,Version=v4.5.1/win7-x64": {
+      "EntityFramework/5.0.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.ComponentModel.DataAnnotations",
+          "System.Data.Entity"
+        ],
+        "compile": {
+          "lib/net45/EntityFramework.dll": {}
+        },
+        "runtime": {
+          "lib/net45/EntityFramework.dll": {}
+        }
+      },
       "EntityFramework.Commands/7.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -5701,6 +5764,18 @@
           "lib/dotnet/System.Collections.Immutable.dll": {}
         }
       },
+      "System.Data.Entity.Repository/2.0.0.1": {
+        "type": "package",
+        "dependencies": {
+          "EntityFramework": "5.0.0"
+        },
+        "compile": {
+          "lib/net45/System.Data.Entity.Repository.dll": {}
+        },
+        "runtime": {
+          "lib/net45/System.Data.Entity.Repository.dll": {}
+        }
+      },
       "System.Diagnostics.Debug/4.0.0": {
         "type": "package",
         "compile": {
@@ -5887,6 +5962,32 @@
     }
   },
   "libraries": {
+    "EntityFramework/5.0.0": {
+      "type": "package",
+      "sha512": "WYfgJWKg/RjwU8pzZkImD9DsV+J1nqDcIGp1S0/bdnElKBmAaUC2nmq/QQAcco32KyQQWnLgJNiDzIOz2xWFbQ==",
+      "files": [
+        "Content/App.config.transform",
+        "Content/Web.config.transform",
+        "EntityFramework.5.0.0.nupkg",
+        "EntityFramework.5.0.0.nupkg.sha512",
+        "EntityFramework.nuspec",
+        "lib/net40/EntityFramework.dll",
+        "lib/net40/EntityFramework.xml",
+        "lib/net45/EntityFramework.dll",
+        "lib/net45/EntityFramework.xml",
+        "tools/about_EntityFramework.help.txt",
+        "tools/EntityFramework.PowerShell.dll",
+        "tools/EntityFramework.PowerShell.Utility.dll",
+        "tools/EntityFramework.PS3.psd1",
+        "tools/EntityFramework.psd1",
+        "tools/EntityFramework.psm1",
+        "tools/init.ps1",
+        "tools/install.ps1",
+        "tools/migrate.exe",
+        "tools/Redirect.config",
+        "tools/Redirect.VS11.config"
+      ]
+    },
     "EntityFramework.Commands/7.0.0-rc1-final": {
       "type": "package",
       "serviceable": true,
@@ -7498,6 +7599,16 @@
         "System.Collections.Immutable.nuspec"
       ]
     },
+    "System.Data.Entity.Repository/2.0.0.1": {
+      "type": "package",
+      "sha512": "MnYUvHPcOAUGIyOzKR4A6Kd918VkCjKpfFCQoNdjY6LO4y1QwrwWZtdmOs2B3wozTYfJgPWKpIeW3ZHn+ylgrA==",
+      "files": [
+        "lib/net45/System.Data.Entity.Repository.dll",
+        "System.Data.Entity.Repository.2.0.0.1.nupkg",
+        "System.Data.Entity.Repository.2.0.0.1.nupkg.sha512",
+        "System.Data.Entity.Repository.nuspec"
+      ]
+    },
     "System.Diagnostics.Debug/4.0.0": {
       "type": "package",
       "sha512": "AYJsLLGDVTC/nyURjgAo7Lpye0+HuSkcQujUf+NgQVdC/C/ky5NyamQHCforHJzgqspitMMtBe8B4UBdGXy1zQ==",
@@ -8229,7 +8340,8 @@
       "Microsoft.Extensions.Logging.Debug >= 1.0.0-rc1-final",
       "Microsoft.AspNet.Identity.EntityFramework >= 3.0.0-rc1-final",
       "Microsoft.Framework.ConfigurationModel >= 1.0.0-beta1",
-      "Microsoft.Extensions.Configuration.Json >= 1.0.0-rc1-final"
+      "Microsoft.Extensions.Configuration.Json >= 1.0.0-rc1-final",
+      "System.Data.Entity.Repository >= 2.0.0.1"
     ],
     "DNX,Version=v4.5.1": [
       "Newtonsoft.Json >= 8.0.2",

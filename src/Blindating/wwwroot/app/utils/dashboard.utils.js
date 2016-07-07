@@ -11,6 +11,7 @@ System.register([], function(exports_1, context_1) {
                 DashboardUtils.RemovePx = function (value) {
                     return +value.slice(0, -2);
                 };
+                DashboardUtils.INITIAL_TEXTAREA_HEIGHT = 24;
                 DashboardUtils.SymbolLengthes = {
                     //#region SYMBOLS
                     'A': 1,

@@ -1,4 +1,5 @@
 ﻿export class DashboardUtils {
+    public static INITIAL_TEXTAREA_HEIGHT: number = 24;
     public static SymbolLengthes: { [symbol: string]: number } = {
         //#region SYMBOLS
         'A': 1,

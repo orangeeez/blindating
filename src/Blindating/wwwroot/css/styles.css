@@ -1,13 +1,13 @@
 /*Main elements*/
 @font-face {
-  src: local('Walsheim'), url('fonts/GT-Walsheim-Pro-Trial-Thin-Oblique.otf') format('truetype');
+  src: local('Walsheim'), url('../fonts//GT-Walsheim-Pro-Trial-Thin-Oblique.otf') format('truetype');
   font-family: 'Walsheim';
   font-style: normal;
   font-weight: normal;
 }
 html, body {
 	height: 100%;
-    font-family: 'Walsheim';    
+    font-family: Walsheim;    
 }
 .ng-valid[required] {
   border-left: 5px solid #42A948;
@@ -19,7 +19,7 @@ html, body {
     display: none;
 }
 
-/* Dashboard object */
+/* Dashboard elements */
 #dashboard .textbox {
     border-radius: 20px;
     background-color: aqua;
@@ -31,6 +31,7 @@ html, body {
     border-style: none;
     margin: 5px;
     resize: none;
+    overflow: hidden;
 }
 #dashboard .textbox .textarea:focus {
     outline: none;

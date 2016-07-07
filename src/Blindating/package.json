@@ -16,7 +16,8 @@
     "systemjs": "^0.19.26",
     "zone.js": "^0.6.12",
     "croppie": "^2.1.0",
-    "typings": "^0.8.1"
+    "typings": "^0.8.1",
+    "jquery": "^3.0.0"
   },
   "devDependencies": {
     "gulp": "^3.9.0",

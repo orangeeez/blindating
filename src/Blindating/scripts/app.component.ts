@@ -1,6 +1,6 @@
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router'
 import {HTTP_PROVIDERS}      from 'angular2/http'
-import {Component, ViewChild} from 'angular2/core'
+import {Component, ViewChild, HostListener} from 'angular2/core'
 import {Router}              from 'angular2/router'
 import {UserService}         from './user.service'
 import {DashboardComponent}  from './dashboard.component'
@@ -11,13 +11,14 @@ import {FooterComponent}     from './footer.component'
 import {HeaderComponent}     from './header.component'
 import {HelperComponent}     from './helper.component'
 import {ProfileMenuComponent} from './profilemenu.component'
+import {User}                from './user'
 
 @Component({
   selector: 'my-app',
   templateUrl: 'app/app.component.html',
   styleUrls: ['app/app.component.css', 'css/styles.css'],
   directives: [ROUTER_DIRECTIVES, FooterComponent, HeaderComponent, HelperComponent, ProfileMenuComponent],
-  providers: [HTTP_PROVIDERS, ROUTER_PROVIDERS, UserService],
+  providers: [HTTP_PROVIDERS, ROUTER_PROVIDERS, UserService]
 })
 @RouteConfig([
   { path: '/login',      name: 'Login',      component: LoginComponent },
@@ -26,6 +27,11 @@ import {ProfileMenuComponent} from './profilemenu.component'
   { path: '/search',     name: 'Search',     component: SearchComponent }
 ])
 export class AppComponent {
+    // Signaling configuration WebRTC
+    public server = "http://192.168.0.108:8095";
+    public stun = "stun:stun.l.google.com:19302";
+    public user: User;
+
     public appHeaderIsShow: boolean = false;
     public appFooterIsShow: boolean = false;
 
@@ -37,8 +43,23 @@ export class AppComponent {
     @ViewChild(DashboardComponent)
     private _dashboardComponent: DashboardComponent;
 
-    constructor(private _router: Router) {
+    //@HostListener('window:onbeforeunload')
+    //deleteOnlineUser() {
+    //    this._userService.DeleteOnlineUser(this.user)
+    //        .subscribe(deleted => { });
+    //}
+
+    //@HostListener('window:onbeforeunload')
+    //doSomething() {
+
+    constructor(private _router: Router,
+                private _userService: UserService) {
         this._router.navigate(['Login']);
+
+        window.onbeforeunload = function (e) {
+            _userService.DeleteOnlineUser(_userService.user.ID.toString())
+                .subscribe(deleted => { });
+        }
     }
 
     // Template Event was fired from footer component

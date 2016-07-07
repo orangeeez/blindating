@@ -15,7 +15,9 @@
 }
 .content {
 	overflow-y: auto;
-    padding-top: 10px !important; 
+    padding-top: 10px !important;
+    padding-left: 0;
+    padding-right: 0;
 }
 .left-stripe {
 	border-left: 1px solid #e7e7e7;
