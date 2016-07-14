@@ -43,6 +43,12 @@ namespace ASPAngular2Test.Controllers
         {
             return Users.GetUser(find);
         }
+        [HttpGet]
+        [ActionName("getusers")]
+        public List<User> GetUsers()
+        {
+            return Users.GetUsers();
+        }
         #endregion
 
         #region IOnlineUserRepository

@@ -53,37 +53,46 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
             }],
         execute: function() {
             AppComponent = (function () {
-                //@HostListener('window:onbeforeunload')
-                //deleteOnlineUser() {
-                //    this._userService.DeleteOnlineUser(this.user)
-                //        .subscribe(deleted => { });
-                //}
-                //@HostListener('window:onbeforeunload')
-                //doSomething() {
+                //#endregion
                 function AppComponent(_router, _userService) {
                     this._router = _router;
                     this._userService = _userService;
-                    // Signaling configuration WebRTC
-                    this.server = "http://192.168.0.108:8095";
+                    //#region Signaling configuration WebRTC's variables
+                    this.server = "http://192.168.0.112:8095";
                     this.stun = "stun:stun.l.google.com:19302";
-                    this.appHeaderIsShow = false;
-                    this.appFooterIsShow = false;
-                    // Template Propertie for access to footer component
-                    this.lol = "lol";
+                    //#endregion
+                    //#region HTML's construction variables
+                    /* Header */
+                    this.headerIsShow = false;
+                    /* Footer */
+                    this.footerIsShow = false;
+                    this.footerUpdateIconPath = "images/app/controls/update.png";
+                    this.footerSearchIconPath = "images/app/controls/search.png";
                     this._router.navigate(['Login']);
                     window.onbeforeunload = function (e) {
                         _userService.DeleteOnlineUser(_userService.user.ID.toString())
                             .subscribe(function (deleted) { });
                     };
                 }
-                // Template Event was fired from footer component
-                AppComponent.prototype.handleMyEvent = function (arg) {
-                    this._dashboardComponent.test = "footer event was fired";
+                AppComponent.prototype.footerUpdateUsers = function (arg) {
+                    var _this = this;
+                    this._userService.GetUsers()
+                        .subscribe(function (users) {
+                        _this.users = users;
+                    });
                 };
                 __decorate([
                     core_1.ViewChild(dashboard_component_1.DashboardComponent), 
                     __metadata('design:type', dashboard_component_1.DashboardComponent)
                 ], AppComponent.prototype, "_dashboardComponent", void 0);
+                __decorate([
+                    core_1.ViewChild(search_component_1.SearchComponent), 
+                    __metadata('design:type', search_component_1.SearchComponent)
+                ], AppComponent.prototype, "_searchComponent", void 0);
+                __decorate([
+                    core_1.ViewChild(profilemenu_component_1.ProfileMenuComponent), 
+                    __metadata('design:type', profilemenu_component_1.ProfileMenuComponent)
+                ], AppComponent.prototype, "_profileMenuComponent", void 0);
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'my-app',

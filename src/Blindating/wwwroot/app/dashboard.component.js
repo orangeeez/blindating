@@ -38,9 +38,6 @@ System.register(['angular2/core', 'angular2/router', './user.service', './app.co
                     this._userService = _userService;
                     this._router = _router;
                     this.app = app;
-                    // Template router inner component interact with outer components
-                    this.app.appHeaderIsShow = true;
-                    this.app.lol = "Dashboard component set a footer propertie";
                 }
                 DashboardComponent.prototype.ngOnInit = function () {
                     this.dashboard = new dashboard_1.dDashboard();

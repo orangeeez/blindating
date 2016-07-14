@@ -1,5 +1,5 @@
 <nav id="navbar-top" class="navbar navbar-default navbar-fixed-top">
-  <div *ngIf="appHeaderIsShow" class="container-fluid">   
+  <div *ngIf="headerIsShow" id="header" class="container-fluid">   
   	<headnav [profileImage]="headerProfileImage"></headnav>
   </div>
 </nav>
@@ -8,7 +8,7 @@
       <div id="left-column" class="fill right-stripe col-md-1">
           <helper></helper>
       </div>
-      <div class="fill content col-md-10">
+      <div id="central-column" class="fill content col-md-10">
           <router-outlet></router-outlet>
       </div>
       <div id="right-column" class="fill left-stripe col-md-1">
@@ -16,8 +16,10 @@
       </div>
     </div>
 </div>
-<nav class="navbar navbar-default navbar-fixed-bottom">
-  <div *ngIf="appFooterIsShow" class="container-fluid">
-      <foot [myname]="lol" (myevent)="handleMyEvent($event)"></foot>
+<nav id="navbar-bottom" class="navbar navbar-default navbar-fixed-bottom">
+  <div *ngIf="footerIsShow" id="footer" class="container-fluid">
+      <foot [updateIconPath]="footerUpdateIconPath" (updateUsers)="footerUpdateUsers($event)"
+            [searchIconPath]="footerSearchIconPath">
+      </foot>
   </div>
 </nav>

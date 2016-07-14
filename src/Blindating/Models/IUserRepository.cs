@@ -11,6 +11,7 @@ namespace ASPAngular2Test.Models
         string Register(User user);
         bool IsExist(string jwt);
         User GetUser(UserUtils.FindUser find);
+        List<User> GetUsers();
     }
     public interface IOnelineUserRepository
     {

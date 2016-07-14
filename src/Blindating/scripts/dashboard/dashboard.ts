@@ -24,6 +24,7 @@ export class dDashboard {
     private AddSentence = (event: MouseEvent): EventListener => {
         let actualSentenceWidth = event.x - this.LeftColumnPadding;
         let actualSentenceHeight = event.y - this.NavbarTopPadding;
+
         let target = event.srcElement.className;
 
         if (!this.IsMouseLocationAllowed(target))

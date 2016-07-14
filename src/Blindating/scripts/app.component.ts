@@ -1,6 +1,6 @@
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router'
 import {HTTP_PROVIDERS}      from 'angular2/http'
-import {Component, ViewChild, HostListener} from 'angular2/core'
+import {Component, ViewChild} from 'angular2/core'
 import {Router}              from 'angular2/router'
 import {UserService}         from './user.service'
 import {DashboardComponent}  from './dashboard.component'
@@ -27,30 +27,35 @@ import {User}                from './user'
   { path: '/search',     name: 'Search',     component: SearchComponent }
 ])
 export class AppComponent {
-    // Signaling configuration WebRTC
-    public server = "http://192.168.0.108:8095";
+    //#region Signaling configuration WebRTC's variables
+    public server = "http://192.168.0.112:8095";
     public stun = "stun:stun.l.google.com:19302";
-    public user: User;
+    //#endregion
 
-    public appHeaderIsShow: boolean = false;
-    public appFooterIsShow: boolean = false;
-
+    //#region HTML's construction variables
+    /* Header */
+    public headerIsShow: boolean = false;
     public headerProfileImage: String;
+    /* Footer */
+    public footerIsShow: boolean = false;
+    private footerUpdateIconPath: String = "images/app/controls/update.png";
+    private footerSearchIconPath: String = "images/app/controls/search.png";
+    /* Profile Menu */
+    //#endregion
 
-    // Template Propertie for access to footer component
-    public lol: String = "lol";
+    //#region Component's variables
+    public user: User;
+    public users: User[];
+    //#endregion
 
+    //#region Child Components
     @ViewChild(DashboardComponent)
-    private _dashboardComponent: DashboardComponent;
-
-    //@HostListener('window:onbeforeunload')
-    //deleteOnlineUser() {
-    //    this._userService.DeleteOnlineUser(this.user)
-    //        .subscribe(deleted => { });
-    //}
-
-    //@HostListener('window:onbeforeunload')
-    //doSomething() {
+    public _dashboardComponent: DashboardComponent;
+    @ViewChild(SearchComponent)
+    public _searchComponent: SearchComponent;
+    @ViewChild(ProfileMenuComponent)
+    public _profileMenuComponent: ProfileMenuComponent;
+    //#endregion
 
     constructor(private _router: Router,
                 private _userService: UserService) {
@@ -62,8 +67,10 @@ export class AppComponent {
         }
     }
 
-    // Template Event was fired from footer component
-    handleMyEvent(arg: any): void {
-        this._dashboardComponent.test = "footer event was fired";
+    footerUpdateUsers(arg: any): void {
+        this._userService.GetUsers()
+            .subscribe(users => {
+                this.users = users;
+            });
     }
 }

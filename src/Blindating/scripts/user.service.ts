@@ -14,7 +14,7 @@ export class UserService {
         this.user = user;
     }
     //#endregion
-    //#endregion
+
     //#region UserRepository
     Register(user: User): Observable<string> {
         let body = JSON.stringify(user);
@@ -56,6 +56,17 @@ export class UserService {
             .catch(this.handleError)
     }
 
+    GetUsers(): Observable<Array<User>> {
+        let headers = new Headers({
+            'Content-Type': 'application/json'
+        });
+        let options = new RequestOptions({ headers: headers });
+
+        return this.http.get(this.api + "/getusers", options)
+            .map(res => res.json())
+            .catch(this.handleError)
+    }
+
     IsExist(jwt: string): Observable<boolean> {
         let body = jwt;
         let headers = new Headers({
@@ -72,6 +83,7 @@ export class UserService {
         return Observable.throw(error.json().error || 'Server error');
     }
     //#endregion
+
     //#region OnlineUserRepository
     DeleteOnlineUser(userID: string): Observable<boolean> {
         let body = userID;

@@ -1,1 +1,25 @@
-﻿
+﻿<div class="container-fluid">
+    <div class="row">
+        <div *ngIf="isSearchNotFound" class="col-md-12 search-not-found-decoration">No Matches Found</div>
+        <div *ngIf="searchedUsers.length == 0 && !isSearchNotFound">
+            <div *ngFor="#user of app.users" class="col-md-1">
+                <div class="center-child-div">
+                    <img id="profile-image" class="navbar-brand img-circle without-padding center-image" src="{{user.ProfileImage}}" />
+                    <span class="profile-image-text"><span (click)="showProfileMenuHelper($event)">Profile</span></span>
+                </div>
+                <div class="center-child-div">{{user.Firstname}}</div>
+                <div class="center-child-div">{{user.Lastname}}</div>
+            </div>
+        </div>
+        <div *ngIf="searchedUsers.length > 0">
+            <div *ngFor="#user of searchedUsers" class="col-md-1">
+                <div class="center-child-div">
+                    <img id="profile-image" class="navbar-brand img-circle without-padding center-image" src="{{user.ProfileImage}}" />
+                    <span class="profile-image-text"><span (click)="showProfileMenuHelper($event)">Profile</span></span>
+                </div>
+                <div class="center-child-div">{{user.Firstname}}</div>
+                <div class="center-child-div">{{user.Lastname}}</div>
+            </div>
+        </div>
+    </div>
+</div>

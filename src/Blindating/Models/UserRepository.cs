@@ -61,6 +61,15 @@ namespace ASPAngular2Test.Models
             return user;
         }
 
+        public List<User> GetUsers()
+        {
+            List<User> users = new List<User>();
+            var query = from r in _appDB.Users
+                        select r;
+            users.AddRange(query);
+            return users;
+        }
+
         private string CreateJWT(User user)
         {
             var payload = new Dictionary<string, object>()
@@ -102,11 +111,12 @@ namespace ASPAngular2Test.Models
         public List<User> GetOnlineUsers()
         {
             List<User> onlineUsers = new List<User>();
-            var q = from r in _appDB.OnlineUsers
+            var query = from r in _appDB.OnlineUsers
                     select r.User;
-            onlineUsers.Add(q.FirstOrDefault());
+            onlineUsers.AddRange(query);
             return onlineUsers;
         }
+
         public bool DeleteOnlineUser(int userID)
         {
             OnlineUser deleting = _appDB.OnlineUsers.FirstOrDefault(u => u.UserID == userID);

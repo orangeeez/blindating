@@ -124,7 +124,6 @@ System.register(['angular2/core', 'angular2/router', './app.component', './user.
                     });
                     this.app.user = this.user;
                     this._userService.SaveUserState(this.app.user);
-                    this.app.headerProfileImage = this.app.user.ProfileImage;
                     this._router.navigate(['Search']);
                 };
                 LoginComponent.prototype.registerViaForm = function (response) {

@@ -117,7 +117,6 @@ export class LoginComponent implements OnInit {
         });
         this.app.user = this.user;
         this._userService.SaveUserState(this.app.user);
-        this.app.headerProfileImage = this.app.user.ProfileImage;
         this._router.navigate(['Search']);
     }
 

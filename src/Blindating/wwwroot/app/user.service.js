@@ -34,7 +34,6 @@ System.register(['angular2/http', 'angular2/core', 'rxjs/Observable'], function(
                     this.user = user;
                 };
                 //#endregion
-                //#endregion
                 //#region UserRepository
                 UserService.prototype.Register = function (user) {
                     var body = JSON.stringify(user);
@@ -68,6 +67,15 @@ System.register(['angular2/http', 'angular2/core', 'rxjs/Observable'], function(
                     var options = new http_1.RequestOptions({ headers: headers });
                     return this.http.post(this.api + "/getuser", body, options)
                         .map(function (finded) { return finded.json(); })
+                        .catch(this.handleError);
+                };
+                UserService.prototype.GetUsers = function () {
+                    var headers = new http_1.Headers({
+                        'Content-Type': 'application/json'
+                    });
+                    var options = new http_1.RequestOptions({ headers: headers });
+                    return this.http.get(this.api + "/getusers", options)
+                        .map(function (res) { return res.json(); })
                         .catch(this.handleError);
                 };
                 UserService.prototype.IsExist = function (jwt) {

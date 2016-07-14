@@ -12,6 +12,8 @@ import {AppComponent}      from './app.component'
 
 export class SearchComponent implements OnInit {
     public app: AppComponent;
+    public searchedUsers: User[] = new Array<User>();
+    public isSearchNotFound: boolean = false;
 
     constructor(
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
@@ -19,9 +21,32 @@ export class SearchComponent implements OnInit {
         private _router: Router) {
 
         this.app = app;
-        this.app.appHeaderIsShow = true;
-        this.app.appFooterIsShow = true;
+        this.app.headerIsShow = true;
+        this.app.headerProfileImage = this.app.user.ProfileImage;
+        this.app.footerIsShow = true;
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+        this._userService.GetUsers()
+            .subscribe(users => {
+                this.app.users = users;
+            });
+    }
+    showProfileMenuHelper(event) {
+        let centralColumn = document.getElementById('central-column');
+        let rightColumn = document.getElementById('right-column');
+        let centralColumnPosition = 83.3;
+        let rightColumnPosition = 8.3;
+        let pmAnimateInterval = setInterval(animate, 10);
+        function animate() {
+            if (centralColumnPosition == 63.3)
+                clearInterval(pmAnimateInterval);
+            else {
+                centralColumnPosition--;
+                rightColumnPosition++;
+                centralColumn.style.width = centralColumnPosition + '%';
+                rightColumn.style.width = rightColumnPosition + '%';
+            }
+        }
+    }
 }

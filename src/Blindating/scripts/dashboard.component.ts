@@ -22,10 +22,6 @@ export class DashboardComponent implements OnInit {
         private _userService: UserService,
         private _router: Router) {
         this.app = app;
-
-        // Template router inner component interact with outer components
-        this.app.appHeaderIsShow = true;
-        this.app.lol = "Dashboard component set a footer propertie";
     }
 
     ngOnInit() {

@@ -34,11 +34,37 @@ System.register(['angular2/core', 'angular2/router', './user.service', './app.co
                 function SearchComponent(app, _userService, _router) {
                     this._userService = _userService;
                     this._router = _router;
+                    this.searchedUsers = new Array();
+                    this.isSearchNotFound = false;
                     this.app = app;
-                    this.app.appHeaderIsShow = true;
-                    this.app.appFooterIsShow = true;
+                    this.app.headerIsShow = true;
+                    this.app.headerProfileImage = this.app.user.ProfileImage;
+                    this.app.footerIsShow = true;
                 }
-                SearchComponent.prototype.ngOnInit = function () { };
+                SearchComponent.prototype.ngOnInit = function () {
+                    var _this = this;
+                    this._userService.GetUsers()
+                        .subscribe(function (users) {
+                        _this.app.users = users;
+                    });
+                };
+                SearchComponent.prototype.showProfileMenuHelper = function (event) {
+                    var centralColumn = document.getElementById('central-column');
+                    var rightColumn = document.getElementById('right-column');
+                    var centralColumnPosition = 83.3;
+                    var rightColumnPosition = 8.3;
+                    var pmAnimateInterval = setInterval(animate, 10);
+                    function animate() {
+                        if (centralColumnPosition == 63.3)
+                            clearInterval(pmAnimateInterval);
+                        else {
+                            centralColumnPosition--;
+                            rightColumnPosition++;
+                            centralColumn.style.width = centralColumnPosition + '%';
+                            rightColumn.style.width = rightColumnPosition + '%';
+                        }
+                    }
+                };
                 SearchComponent = __decorate([
                     core_1.Component({
                         selector: 'search',
