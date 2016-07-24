@@ -1,8 +1,9 @@
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router'
-import {HTTP_PROVIDERS}      from 'angular2/http'
+import {HTTP_PROVIDERS, JSONP_PROVIDERS}      from 'angular2/http'
 import {Component, ViewChild} from 'angular2/core'
 import {Router}              from 'angular2/router'
 import {UserService}         from './user.service'
+import {SocialService}       from './services/social.service'
 import {DashboardComponent}  from './dashboard.component'
 import {ProfileComponent}    from './profile.component'
 import {LoginComponent}      from './login.component'
@@ -18,7 +19,7 @@ import {User}                from './user'
   templateUrl: 'app/app.component.html',
   styleUrls: ['app/app.component.css', 'css/styles.css'],
   directives: [ROUTER_DIRECTIVES, FooterComponent, HeaderComponent, HelperComponent, ProfileMenuComponent],
-  providers: [HTTP_PROVIDERS, ROUTER_PROVIDERS, UserService]
+  providers: [HTTP_PROVIDERS, ROUTER_PROVIDERS, JSONP_PROVIDERS, UserService, SocialService]
 })
 @RouteConfig([
   { path: '/login',      name: 'Login',      component: LoginComponent },
@@ -38,14 +39,17 @@ export class AppComponent {
     public headerProfileImage: String;
     /* Footer */
     public footerIsShow: boolean = false;
-    private footerUpdateIconPath: String = "images/app/controls/update.png";
-    private footerSearchIconPath: String = "images/app/controls/search.png";
-    /* Profile Menu */
+    public footerUpdateIconPath: String = "images/app/controls/update.png";
+    public footerSearchIconPath: String = "images/app/controls/search.png";
+    /* Helper */
+    public helperPhoneIconPath: String = "images/app/controls/phone-inactive.png";
+    public helperPhoneHangupIconPath: String = "images/app/controls/phone-hang-up-inactive.png";
     //#endregion
 
     //#region Component's variables
     public user: User;
     public users: User[];
+    public selectedUser: User;
     //#endregion
 
     //#region Child Components
@@ -55,6 +59,8 @@ export class AppComponent {
     public _searchComponent: SearchComponent;
     @ViewChild(ProfileMenuComponent)
     public _profileMenuComponent: ProfileMenuComponent;
+    @ViewChild(HelperComponent)
+    public _helperComponent: HelperComponent;
     //#endregion
 
     constructor(private _router: Router,
@@ -65,12 +71,5 @@ export class AppComponent {
             _userService.DeleteOnlineUser(_userService.user.ID.toString())
                 .subscribe(deleted => { });
         }
-    }
-
-    footerUpdateUsers(arg: any): void {
-        this._userService.GetUsers()
-            .subscribe(users => {
-                this.users = users;
-            });
     }
 }

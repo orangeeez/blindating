@@ -4,6 +4,7 @@
     margin: 0 auto;
     text-align: center;
     overflow-x: hidden;
+    cursor: pointer;
 }
 .center-child-div .profile-image-text {
     display: flex;
@@ -15,9 +16,13 @@
     position: absolute;
     top: 0;
     left: 0;
-    cursor: pointer;
     background: rgba(0,0,0,0.5);
     opacity: 0;
+}
+.center-child-div .online-img-decoration {
+    position:absolute;
+    top: 0;
+    left: 0;
 }
 .center-child-div .profile-image-text:hover {
     opacity: 1;
@@ -31,12 +36,18 @@
     float: none;
 }
 .without-padding {
+    width: 50px;
     padding: 0;
 }
 span.profile-image-text span {
-  text-align: center;
-  vertical-align: middle;
-  color: white;
+    text-align: center;
+    color: white;
+}
+span.profile-image-text .cross-decoration {
+    font-size: 24px;
+    color: white;
 }
 .search-not-found-decoration {
+    font-size: 18px;
+    text-align: center;
 }

@@ -1,4 +1,4 @@
-System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.service', './dashboard.component', './profile.component', './login.component', './search.component', './footer.component', './header.component', './helper.component', './profilemenu.component'], function(exports_1, context_1) {
+System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.service', './services/social.service', './dashboard.component', './profile.component', './login.component', './search.component', './footer.component', './header.component', './helper.component', './profilemenu.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var router_1, http_1, core_1, router_2, user_service_1, dashboard_component_1, profile_component_1, login_component_1, search_component_1, footer_component_1, header_component_1, helper_component_1, profilemenu_component_1;
+    var router_1, http_1, core_1, router_2, user_service_1, social_service_1, dashboard_component_1, profile_component_1, login_component_1, search_component_1, footer_component_1, header_component_1, helper_component_1, profilemenu_component_1;
     var AppComponent;
     return {
         setters:[
@@ -26,6 +26,9 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
             },
             function (user_service_1_1) {
                 user_service_1 = user_service_1_1;
+            },
+            function (social_service_1_1) {
+                social_service_1 = social_service_1_1;
             },
             function (dashboard_component_1_1) {
                 dashboard_component_1 = dashboard_component_1_1;
@@ -68,19 +71,15 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                     this.footerIsShow = false;
                     this.footerUpdateIconPath = "images/app/controls/update.png";
                     this.footerSearchIconPath = "images/app/controls/search.png";
+                    /* Helper */
+                    this.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
+                    this.helperPhoneHangupIconPath = "images/app/controls/phone-hang-up-inactive.png";
                     this._router.navigate(['Login']);
                     window.onbeforeunload = function (e) {
                         _userService.DeleteOnlineUser(_userService.user.ID.toString())
                             .subscribe(function (deleted) { });
                     };
                 }
-                AppComponent.prototype.footerUpdateUsers = function (arg) {
-                    var _this = this;
-                    this._userService.GetUsers()
-                        .subscribe(function (users) {
-                        _this.users = users;
-                    });
-                };
                 __decorate([
                     core_1.ViewChild(dashboard_component_1.DashboardComponent), 
                     __metadata('design:type', dashboard_component_1.DashboardComponent)
@@ -93,13 +92,17 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                     core_1.ViewChild(profilemenu_component_1.ProfileMenuComponent), 
                     __metadata('design:type', profilemenu_component_1.ProfileMenuComponent)
                 ], AppComponent.prototype, "_profileMenuComponent", void 0);
+                __decorate([
+                    core_1.ViewChild(helper_component_1.HelperComponent), 
+                    __metadata('design:type', helper_component_1.HelperComponent)
+                ], AppComponent.prototype, "_helperComponent", void 0);
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'my-app',
                         templateUrl: 'app/app.component.html',
                         styleUrls: ['app/app.component.css', 'css/styles.css'],
                         directives: [router_1.ROUTER_DIRECTIVES, footer_component_1.FooterComponent, header_component_1.HeaderComponent, helper_component_1.HelperComponent, profilemenu_component_1.ProfileMenuComponent],
-                        providers: [http_1.HTTP_PROVIDERS, router_1.ROUTER_PROVIDERS, user_service_1.UserService]
+                        providers: [http_1.HTTP_PROVIDERS, router_1.ROUTER_PROVIDERS, http_1.JSONP_PROVIDERS, user_service_1.UserService, social_service_1.SocialService]
                     }),
                     router_1.RouteConfig([
                         { path: '/login', name: 'Login', component: login_component_1.LoginComponent },

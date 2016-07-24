@@ -1,54 +1,88 @@
-﻿import {Component, OnInit, Host, Inject, forwardRef} from 'angular2/core'
-import {Router}       from 'angular2/router'
+﻿import {Component, OnInit, Host, Inject, forwardRef, ViewChild} from 'angular2/core'
+import {Router, ROUTER_DIRECTIVES} from 'angular2/router'
 import {AppComponent} from './app.component'
 import {UserService}  from './user.service'
+import {SocialService} from './services/social.service'
 import {User}         from './user'
 import {TAB_DIRECTIVES, Alert} from 'ng2-bootstrap/ng2-bootstrap'
 
-declare var Woogeen: any
+declare var Woogeen: any;
+declare var $: any;
 
 @Component({
     selector: 'login',
     templateUrl: 'app/login.component.html',
     styleUrls: ['app/login.component.css'],
-    directives: [TAB_DIRECTIVES, Alert]
+    directives: [TAB_DIRECTIVES, ROUTER_DIRECTIVES, Alert]
 })
 
 export class LoginComponent implements OnInit {
+    public windowVKAuth: Window;
+    public setCodeInterval: any;
 
     public app: AppComponent;
+    public alert: any = { show: null, type: 'success', reason: null };
     public tabs: Array<any> = [
         { title: 'Login', active: true },
         { title: 'Register' }
     ];
-    public alert: any = { show: null, type: 'success', reason: null };
-
     public user: User = null;
     public jwt: string = null;
     public error: string = null;
+    public isEnableRegisterButton: boolean = false;
+    public dfd = new $.Deferred();
 
     constructor(
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
         private _router: Router,
-        private _userService: UserService) {
+        private _userService: UserService,
+        private _socialService: SocialService) {
             this.app = app;
             this.jwt = this.getCookie("jwt");
         }
 
     ngOnInit() {
+        //#region FB SDK INIT
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '1557510837900819',
+                cookie: true,
+                xfbml: true,
+                version: 'v2.5'
+            });
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/all.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        } (document, 'script', 'facebook-jssdk'));
+        //#endregion
+
+        //#region VK SDK INIT
+        //VK.init({
+        //    apiId: 5549517
+        //});
+        //#endregion
+
         if (this.isAuthorizedViaJWT()) {
             this._userService.GetUser('JWT', this.jwt)
                 .subscribe(finded => {
                     this._userService.Login(finded)
                         .subscribe(logged => {
-                            this.initializeUser(logged);
-                            this.initializeWebRTC();
+                            if (logged) {
+                                this.initializeUser(logged);
+                                this.initializeWebRTC();
+                                this._router.navigate(['Search']);
+                            }
                         });
                 });
         }
     }
 
-    login(event, email, password) {
+    public login(event, email, password) {
         event.preventDefault();
 
         this.user = this.createUser(undefined, undefined, undefined, email, password);
@@ -59,7 +93,7 @@ export class LoginComponent implements OnInit {
             });
     }
 
-    register(event, firstname, lastname, email, password) {
+    public register(event, firstname, lastname, email, password) {
         event.preventDefault();
 
         this.user = this.createUser(undefined, firstname, lastname, email, password);
@@ -78,7 +112,7 @@ export class LoginComponent implements OnInit {
     }
 
     private isAuthorizedViaJWT(): boolean {
-        if (this.jwt && this._userService.IsExist(this.jwt))
+        if (this.jwt)
             return true;
         else false;
     }
@@ -96,7 +130,8 @@ export class LoginComponent implements OnInit {
             Nickname: nickname,
             Peer: peer,
             Reason: reason,
-            ProfileImage: profileimage
+            ProfileImage: profileimage,
+            Online: false
         }
     }
 
@@ -117,10 +152,9 @@ export class LoginComponent implements OnInit {
         });
         this.app.user = this.user;
         this._userService.SaveUserState(this.app.user);
-        this._router.navigate(['Search']);
     }
 
-    registerViaForm(response: string)
+    private registerViaForm(response: string)
     {
         var inputEmailReg: any = document.getElementById("email-reg");
 
@@ -148,6 +182,154 @@ export class LoginComponent implements OnInit {
             document.cookie = "jwt=" + logged.JWT;
             this.initializeUser(logged);
             this.initializeWebRTC();
+            this._router.navigate(['Search']);
         }
+    }
+
+    public signupViaSocial(event: MouseEvent) {
+        if (event.srcElement.className == 'fa fa-facebook')
+            this.getFacebookInfoAPI();
+        else
+            this.getVKInfoAPI();
+    }
+
+    private checkFBLoginInterval = () => {
+        if (this.app.user != undefined) {
+            this._router.navigate(['Search']);
+        }
+    }
+
+    private getFacebookInfoAPI = () => {
+        var self = this;
+
+        setInterval(this.checkFBLoginInterval, 1000)
+
+        FB.getLoginStatus(function (response) { statusChangeCallback(response); });
+
+        function statusChangeCallback(response) {
+            if (response.status === 'connected')
+                FB.api('/me', { fields: 'email, first_name, last_name' }, self.setFacebookInfoAPI);
+            else if (response.status === 'not_authorized')
+                console.log('not_authorized');
+            else
+                FB.login(function (response) { statusChangeCallback(response); });
+        }
+    }
+
+    private getVKInfoAPI() {
+        this.setVKInfoAPI();
+    }
+
+    private setFacebookInfoAPI = (response: Object) => {
+        this._userService.IsExistEmail(response['email'])
+            .subscribe(isexist => {
+                if (isexist) {
+                    this.user = this.createUser(undefined, undefined, undefined, response['email'], undefined, undefined, undefined, undefined, 'social');
+                    this._userService.Login(this.user)
+                        .subscribe(logged => {
+                            if (logged)
+                                this.loginViaForm(logged);
+                        });
+                }
+                else {
+                    this.tabs[0].active = false;
+                    this.tabs[1].active = true;
+
+                    var firstnameField = <HTMLInputElement>document.getElementById('firstname');
+                    var lastnameField = <HTMLInputElement>document.getElementById('lastname');
+                    var emailField = <HTMLInputElement>document.getElementById('email-reg');
+                    var passwordField = <HTMLInputElement>document.getElementById('password-reg');
+
+                    firstnameField.value = response['first_name'];
+                    lastnameField.value = response['last_name'];
+                    emailField.value = response['email'];
+
+                    firstnameField.classList.remove('ng-invalid');
+                    firstnameField.classList.add('ng-valid');
+                    lastnameField.classList.remove('ng-invalid');
+                    lastnameField.classList.add('ng-valid');
+                    emailField.classList.remove('ng-invalid');
+                    emailField.classList.add('ng-valid');
+
+                    passwordField.focus();
+                    this.isEnableRegisterButton = true;
+                }
+            });
+    }
+
+    private setVKInfoAPI = () => {
+        this.getAccessToken();
+    }
+
+    private getAccessToken = () => {
+        let url = 'https://oauth.vk.com/authorize?client_id=5549517&display=popup&redirect_uri=http://localhost:59993/utils/blank.html&response_type=code&scope=email'
+        this.windowVKAuth = this.popupCenter(url, '', 660, 370);
+
+        this.setCodeInterval = setInterval(this.setAccessTokenInterval, 1000);
+    }
+
+    private setAccessTokenInterval = () => {
+        try {
+            if (this.windowVKAuth.location.href.includes('code=')) {
+                clearInterval(this.setCodeInterval);
+                let href = this.windowVKAuth.location.href;
+                let index = href.indexOf('=');
+                let code = href.substring(index + 1, href.length);
+                this.windowVKAuth.close();
+
+                this._socialService.GetVKInfo(code)
+                    .subscribe(info => {
+                        this._userService.IsExistEmail(info['response'][0]['email'])
+                            .subscribe(isexist => {
+                                if (isexist) {
+                                    this.user = this.createUser(undefined, undefined, undefined, info['response'][0]['email'], undefined, undefined, undefined, undefined, 'social');
+                                    this._userService.Login(this.user)
+                                        .subscribe(logged => {
+                                            if (logged)
+                                                this.loginViaForm(logged);
+                                        });
+                                }
+                                else {
+                                    var firstnameField = <HTMLInputElement>document.getElementById('firstname');
+                                    var lastnameField = <HTMLInputElement>document.getElementById('lastname');
+                                    var emailField = <HTMLInputElement>document.getElementById('email-reg');
+                                    var passwordField = <HTMLInputElement>document.getElementById('password-reg');
+
+                                    firstnameField.value = info['response'][0]['first_name'];
+                                    lastnameField.value = info['response'][0]['last_name'];
+                                    emailField.value = info['response'][0]['email'];
+
+                                    firstnameField.classList.remove('ng-invalid');
+                                    firstnameField.classList.add('ng-valid');
+                                    lastnameField.classList.remove('ng-invalid');
+                                    lastnameField.classList.add('ng-valid');
+                                    emailField.classList.remove('ng-invalid');
+                                    emailField.classList.add('ng-valid');
+
+                                    passwordField.focus();
+                                    this.isEnableRegisterButton = true;
+                                }
+                            });
+                    });
+            }
+        }
+        catch (error) { }
+    }
+
+    private popupCenter(url, title, w, h): Window {
+        var dualScreenLeft = window.screenLeft;
+        var dualScreenTop = window.screenTop;
+
+        var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+        var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+        var left = ((width / 2) - (w / 2)) + dualScreenLeft;
+        var top = ((height / 2) - (h / 2)) + dualScreenTop;
+        var newWindow = window.open(url, title, 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+
+        if (window.focus)
+            newWindow.focus();
+
+        return newWindow;
     }
 }

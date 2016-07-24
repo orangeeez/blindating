@@ -36,6 +36,7 @@ System.register(['angular2/core', 'angular2/router', './user.service', './app.co
                     this._router = _router;
                     this.searchedUsers = new Array();
                     this.isSearchNotFound = false;
+                    this.isSearchUserSelected = false;
                     this.app = app;
                     this.app.headerIsShow = true;
                     this.app.headerProfileImage = this.app.user.ProfileImage;
@@ -43,12 +44,41 @@ System.register(['angular2/core', 'angular2/router', './user.service', './app.co
                 }
                 SearchComponent.prototype.ngOnInit = function () {
                     var _this = this;
-                    this._userService.GetUsers()
+                    this._userService.GetUsers(this.app.user.JWT)
                         .subscribe(function (users) {
                         _this.app.users = users;
                     });
                 };
-                SearchComponent.prototype.showProfileMenuHelper = function (event) {
+                SearchComponent.prototype.selectDeselectSearchUser = function (event) {
+                    if (this.app.selectedUser != null)
+                        this.deselectSearchUser();
+                    else
+                        this.selectSearchUser();
+                };
+                SearchComponent.prototype.selectSearchUser = function () {
+                    var _this = this;
+                    var element = event.srcElement;
+                    while (element.id != 'search-board')
+                        element = element.parentElement;
+                    this._userService.GetUser('JWT', element.lastElementChild.innerHTML)
+                        .subscribe(function (finded) {
+                        _this.app.selectedUser = finded;
+                        if (_this.app.selectedUser.Online)
+                            _this.app.helperPhoneIconPath = "images/app/controls/phone.png";
+                        else
+                            _this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
+                    });
+                    this.showProfileMenu();
+                    this.showHelperMenu();
+                };
+                SearchComponent.prototype.deselectSearchUser = function () {
+                    this.app.selectedUser = null;
+                    this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
+                    this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
+                    this.hideProfileMenu();
+                    this.hideHelperMenu();
+                };
+                SearchComponent.prototype.showProfileMenu = function () {
                     var centralColumn = document.getElementById('central-column');
                     var rightColumn = document.getElementById('right-column');
                     var centralColumnPosition = 83.3;
@@ -64,6 +94,29 @@ System.register(['angular2/core', 'angular2/router', './user.service', './app.co
                             rightColumn.style.width = rightColumnPosition + '%';
                         }
                     }
+                };
+                SearchComponent.prototype.showHelperMenu = function () {
+                    this.app._helperComponent.isSearchUserSelected = true;
+                };
+                SearchComponent.prototype.hideProfileMenu = function () {
+                    var centralColumn = document.getElementById('central-column');
+                    var rightColumn = document.getElementById('right-column');
+                    var centralColumnPosition = 63.3;
+                    var rightColumnPosition = 28.3;
+                    var pmAnimateInterval = setInterval(animate, 10);
+                    function animate() {
+                        if (centralColumnPosition == 83.3)
+                            clearInterval(pmAnimateInterval);
+                        else {
+                            centralColumnPosition++;
+                            rightColumnPosition--;
+                            centralColumn.style.width = centralColumnPosition + '%';
+                            rightColumn.style.width = rightColumnPosition + '%';
+                        }
+                    }
+                };
+                SearchComponent.prototype.hideHelperMenu = function () {
+                    this.app._helperComponent.isSearchUserSelected = false;
                 };
                 SearchComponent = __decorate([
                     core_1.Component({

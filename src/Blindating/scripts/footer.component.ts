@@ -7,8 +7,7 @@ import {AppComponent}      from './app.component'
     selector: 'foot',
     templateUrl: 'app/footer.component.html',
     styleUrls: ['app/footer.component.css'],
-    inputs: ['updateIconPath', 'searchIconPath'],
-    outputs: ['updateUsers']
+    inputs: ['updateIconPath', 'searchIconPath']
 })
 
 export class FooterComponent implements OnInit {
@@ -19,18 +18,18 @@ export class FooterComponent implements OnInit {
     public updateUsersInterval: number = 15;
     public updateIconPath: String;
     public searchIconPath: String;
-    public updateUsers: EventEmitter<any> = new EventEmitter();
 
     constructor(
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
         private _userService: UserService) {
         this.app = app;
     }
+
     ngOnInit() {
-        let searchIcon = document.getElementById('search-icon');
-        let updateIcon = document.getElementById('update-icon');
         this.searchInput = document.getElementById('search-input');
         this.updateText = document.getElementById('update-text');
+        let searchIcon = document.getElementById('search-icon');
+        let updateIcon = document.getElementById('update-icon');
         searchIcon.addEventListener('mouseover', this.showSearchInput);
         updateIcon.addEventListener('mouseover', this.showUpdateText);
         updateIcon.addEventListener('mouseout', this.hideUpdateText);
@@ -38,9 +37,12 @@ export class FooterComponent implements OnInit {
         this.initializeUpdateTimer();
     }
 
-    fireUpdateOnlineUsers() {
+    updateUsers() {
         this.updateUsersInterval = 15;
-        this.updateUsers.next([]);
+        this._userService.GetUsers(this.app.user.JWT)
+            .subscribe(users => {
+                this.app.users = users;
+            });
     }
 
     showSearchInput = () => {
@@ -77,10 +79,9 @@ export class FooterComponent implements OnInit {
 
     private isUsersContainsSearchString = (user: User) => {
         let fullName = (user.Firstname + ' ' + user.Lastname).toUpperCase();
-        if (fullName.includes(this.searchString)) {
-            return true;
-        }
-        else return false;
+        let fullNameConversely = (user.Lastname + ' ' + user.Firstname).toUpperCase();
+
+        return fullName.includes(this.searchString) || fullNameConversely.includes(this.searchString);       
     }
 
     initializeUpdateTimer = () => {
@@ -89,7 +90,7 @@ export class FooterComponent implements OnInit {
 
     updateTimer = () => {
         if (this.updateUsersInterval == 0)
-            this.updateUsersInterval = 15;
+            this.updateUsers();
         else {
             this.updateUsersInterval--;
         }

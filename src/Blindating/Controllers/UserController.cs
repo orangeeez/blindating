@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using ASPAngular2Test.Models;
 using Newtonsoft.Json;
+using ASPAngular2Test.Controllers.Utils;
 
 namespace ASPAngular2Test.Controllers
 {
@@ -15,6 +16,8 @@ namespace ASPAngular2Test.Controllers
         public IUserRepository Users { get; set; }
         [FromServices]
         public IOnelineUserRepository OnlineUsers { get; set; }
+        [FromServices]
+        public IUtils Utils { get; set; }
 
         #region IUserRepository
         [HttpPost]
@@ -32,22 +35,30 @@ namespace ASPAngular2Test.Controllers
         }
 
         [HttpPost]
-        [ActionName("isexist")]
-        public bool IsExist([FromBody] string jwt)
+        [ActionName("isexistjwt")]
+        public bool IsExistJWT([FromBody] string jwt)
         {
-            return Users.IsExist(jwt);
+            return Users.IsExistJWT(jwt);
         }
+
+        [HttpPost]
+        [ActionName("isexistemail")]
+        public bool IsExistEmail([FromBody] string email)
+        {
+            return Users.IsExistEmail(email);
+        }
+
         [HttpPost]
         [ActionName("getuser")]
-        public User GetUser([FromBody]UserUtils.FindUser find)
+        public User GetUser([FromBody] UserUtils.FindUser find)
         {
             return Users.GetUser(find);
         }
-        [HttpGet]
+        [HttpPost]
         [ActionName("getusers")]
-        public List<User> GetUsers()
+        public List<User> GetUsers([FromBody] string jwt)
         {
-            return Users.GetUsers();
+            return Users.GetUsers(jwt);
         }
         #endregion
 
@@ -63,6 +74,15 @@ namespace ASPAngular2Test.Controllers
         public List<User> GetOnlineUsers()
         {
             return OnlineUsers.GetOnlineUsers();
+        }
+        #endregion
+
+        #region Utils
+        [HttpPost]
+        [ActionName("getvkinfo")]
+        public string GetVKInfo([FromBody] string code)
+        {
+            return Utils.GetVKInfo(code);
         }
         #endregion
     }

@@ -1,4 +1,5 @@
 /// <reference path="../typings/browser.d.ts" />
+/// <reference path="../typings/fbsdk.d.ts" />
 System.register(['angular2/platform/browser', './app.component', 'rxjs/Rx'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;

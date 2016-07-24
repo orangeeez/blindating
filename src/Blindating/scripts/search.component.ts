@@ -14,6 +14,7 @@ export class SearchComponent implements OnInit {
     public app: AppComponent;
     public searchedUsers: User[] = new Array<User>();
     public isSearchNotFound: boolean = false;
+    public isSearchUserSelected: boolean = false;
 
     constructor(
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
@@ -27,12 +28,48 @@ export class SearchComponent implements OnInit {
     }
 
     ngOnInit() {
-        this._userService.GetUsers()
+        this._userService.GetUsers(this.app.user.JWT)
             .subscribe(users => {
                 this.app.users = users;
             });
     }
-    showProfileMenuHelper(event) {
+
+    selectDeselectSearchUser(event: Event) {
+        if (this.app.selectedUser != null)
+            this.deselectSearchUser();
+        else
+            this.selectSearchUser();
+    }
+
+    private selectSearchUser() {
+        let element = event.srcElement;
+
+        while (element.id != 'search-board')
+            element = element.parentElement;
+
+        this._userService.GetUser('JWT', element.lastElementChild.innerHTML)
+            .subscribe(finded => {
+                this.app.selectedUser = finded;
+                if (this.app.selectedUser.Online)
+                    this.app.helperPhoneIconPath = "images/app/controls/phone.png";
+                else
+                    this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
+            });
+
+        this.showProfileMenu();
+        this.showHelperMenu();
+    }
+
+    private deselectSearchUser() {
+        this.app.selectedUser = null;
+        this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
+        this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
+
+        this.hideProfileMenu();
+        this.hideHelperMenu();
+    }
+
+    private showProfileMenu() {
         let centralColumn = document.getElementById('central-column');
         let rightColumn = document.getElementById('right-column');
         let centralColumnPosition = 83.3;
@@ -48,5 +85,31 @@ export class SearchComponent implements OnInit {
                 rightColumn.style.width = rightColumnPosition + '%';
             }
         }
+    }
+
+    private showHelperMenu() {
+        this.app._helperComponent.isSearchUserSelected = true;
+    }
+
+    private hideProfileMenu() {
+        let centralColumn = document.getElementById('central-column');
+        let rightColumn = document.getElementById('right-column');
+        let centralColumnPosition = 63.3;
+        let rightColumnPosition = 28.3;
+        let pmAnimateInterval = setInterval(animate, 10);
+        function animate() {
+            if (centralColumnPosition == 83.3)
+                clearInterval(pmAnimateInterval);
+            else {
+                centralColumnPosition++;
+                rightColumnPosition--;
+                centralColumn.style.width = centralColumnPosition + '%';
+                rightColumn.style.width = rightColumnPosition + '%';
+            }
+        }
+    }
+
+    private hideHelperMenu() {
+        this.app._helperComponent.isSearchUserSelected = false;
     }
 }

@@ -1,1 +1,13 @@
-﻿
+﻿.nav-li-decoration:hover {
+    cursor: pointer;
+    background: rgba(128, 128, 128, 0.5);
+}
+.padding {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.nav-image-decoration {
+    display: block;
+    margin: 10px auto;
+    height: 25px;
+}

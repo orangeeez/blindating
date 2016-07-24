@@ -5,20 +5,22 @@
 </nav>
 <div class="fill container-fluid">
     <div class="fill padding-nav row">
-      <div id="left-column" class="fill right-stripe col-md-1">
-          <helper></helper>
+      <div id="left-column" class="fill left-stripe col-md-1">
+          <helper [phoneIconPath]="helperPhoneIconPath"
+                  [phoneHangupIconPath]="helperPhoneHangupIconPath">
+          </helper>
       </div>
       <div id="central-column" class="fill content col-md-10">
           <router-outlet></router-outlet>
       </div>
-      <div id="right-column" class="fill left-stripe col-md-1">
+      <div id="right-column" class="fill right-stripe col-md-1">
           <profilemenu></profilemenu>
       </div>
     </div>
 </div>
 <nav id="navbar-bottom" class="navbar navbar-default navbar-fixed-bottom">
   <div *ngIf="footerIsShow" id="footer" class="container-fluid">
-      <foot [updateIconPath]="footerUpdateIconPath" (updateUsers)="footerUpdateUsers($event)"
+      <foot [updateIconPath]="footerUpdateIconPath"
             [searchIconPath]="footerSearchIconPath">
       </foot>
   </div>

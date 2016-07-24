@@ -9,13 +9,20 @@ namespace ASPAngular2Test.Models
     {
         User Login(User user);
         string Register(User user);
-        bool IsExist(string jwt);
+        bool IsExistJWT(string jwt);
+        bool IsExistEmail(string email);
         User GetUser(UserUtils.FindUser find);
-        List<User> GetUsers();
+        List<User> GetUsers(string jwt);
     }
+
     public interface IOnelineUserRepository
     {
         bool DeleteOnlineUser(int userID);
         List<User> GetOnlineUsers();
+    }
+
+    public interface IUtils
+    {
+        string GetVKInfo(string code);
     }
 }

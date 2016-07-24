@@ -33,7 +33,6 @@ System.register(['angular2/core', './user.service', './app.component'], function
                     this._userService = _userService;
                     this.searchString = '';
                     this.updateUsersInterval = 15;
-                    this.updateUsers = new core_1.EventEmitter();
                     this.showSearchInput = function () {
                         _this.searchInput.hidden = false;
                     };
@@ -63,20 +62,16 @@ System.register(['angular2/core', './user.service', './app.component'], function
                         }
                     };
                     this.isUsersContainsSearchString = function (user) {
-                        console.log(user);
                         var fullName = (user.Firstname + ' ' + user.Lastname).toUpperCase();
-                        if (fullName.includes(_this.searchString)) {
-                            return true;
-                        }
-                        else
-                            return false;
+                        var fullNameConversely = (user.Lastname + ' ' + user.Firstname).toUpperCase();
+                        return fullName.includes(_this.searchString) || fullNameConversely.includes(_this.searchString);
                     };
                     this.initializeUpdateTimer = function () {
                         setInterval(_this.updateTimer, 1000);
                     };
                     this.updateTimer = function () {
                         if (_this.updateUsersInterval == 0)
-                            _this.updateUsersInterval = 15;
+                            _this.updateUsers();
                         else {
                             _this.updateUsersInterval--;
                         }
@@ -90,26 +85,29 @@ System.register(['angular2/core', './user.service', './app.component'], function
                     this.app = app;
                 }
                 FooterComponent.prototype.ngOnInit = function () {
-                    var searchIcon = document.getElementById('search-icon');
-                    var updateIcon = document.getElementById('update-icon');
                     this.searchInput = document.getElementById('search-input');
                     this.updateText = document.getElementById('update-text');
+                    var searchIcon = document.getElementById('search-icon');
+                    var updateIcon = document.getElementById('update-icon');
                     searchIcon.addEventListener('mouseover', this.showSearchInput);
                     updateIcon.addEventListener('mouseover', this.showUpdateText);
                     updateIcon.addEventListener('mouseout', this.hideUpdateText);
                     this.initializeUpdateTimer();
                 };
-                FooterComponent.prototype.fireUpdateOnlineUsers = function () {
+                FooterComponent.prototype.updateUsers = function () {
+                    var _this = this;
                     this.updateUsersInterval = 15;
-                    this.updateUsers.next([]);
+                    this._userService.GetUsers(this.app.user.JWT)
+                        .subscribe(function (users) {
+                        _this.app.users = users;
+                    });
                 };
                 FooterComponent = __decorate([
                     core_1.Component({
                         selector: 'foot',
                         templateUrl: 'app/footer.component.html',
                         styleUrls: ['app/footer.component.css'],
-                        inputs: ['updateIconPath', 'searchIconPath'],
-                        outputs: ['updateUsers']
+                        inputs: ['updateIconPath', 'searchIconPath']
                     }),
                     __param(0, core_1.Host()),
                     __param(0, core_1.Inject(core_1.forwardRef(function () { return app_component_1.AppComponent; }))), 

@@ -1,1 +1,8 @@
-﻿helper
+﻿<ul [hidden]="!isSearchUserSelected" class="nav">
+    <li id="phone-icon" class="nav-li-decoration padding">
+        <img class="nav-image-decoration" [src]="phoneIconPath" />
+    </li>
+    <li id="phone-hangup-icon" class="nav-li-decoration padding">
+        <img class="nav-image-decoration" [src]="phoneHangupIconPath" />
+    </li>
+</ul>

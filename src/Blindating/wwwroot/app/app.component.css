@@ -20,8 +20,10 @@
     padding-right: 0;
 }
 .left-stripe {
-	border-left: 1px solid #e7e7e7;
+	border-right: 1px solid #e7e7e7;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 .right-stripe {
-	border-right: 1px solid #e7e7e7;
+	border-left: 1px solid #e7e7e7;
 }

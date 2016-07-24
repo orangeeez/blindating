@@ -36,6 +36,9 @@
         "Newtonsoft.Json": "8.0.2",
         "jose-jwt": "1.9.1",
         "Microsoft.Net.Http": "2.2.22"
+      },
+      "frameworkAssemblies": {
+        "System.Web.Extensions": "4.0.0.0"
       }
     }
   },
