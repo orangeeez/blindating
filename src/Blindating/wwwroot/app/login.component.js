@@ -54,7 +54,6 @@ System.register(['angular2/core', 'angular2/router', './app.component', './user.
                     this.jwt = null;
                     this.error = null;
                     this.isEnableRegisterButton = false;
-                    this.dfd = new $.Deferred();
                     this.checkFBLoginInterval = function () {
                         if (_this.app.user != undefined) {
                             _this._router.navigate(['Search']);
@@ -154,7 +153,9 @@ System.register(['angular2/core', 'angular2/router', './app.component', './user.
                                 });
                             }
                         }
-                        catch (error) { }
+                        catch (error) {
+                            console.log(error);
+                        }
                     };
                     this.app = app;
                     this.jwt = this.getCookie("jwt");

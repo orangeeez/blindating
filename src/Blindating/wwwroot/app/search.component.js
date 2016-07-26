@@ -68,52 +68,18 @@ System.register(['angular2/core', 'angular2/router', './user.service', './app.co
                         else
                             _this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
                     });
-                    this.showProfileMenu();
+                    this.app.showProfileMenu();
                     this.showHelperMenu();
                 };
                 SearchComponent.prototype.deselectSearchUser = function () {
                     this.app.selectedUser = null;
                     this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
                     this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
-                    this.hideProfileMenu();
+                    this.app.hideProfileMenu();
                     this.hideHelperMenu();
-                };
-                SearchComponent.prototype.showProfileMenu = function () {
-                    var centralColumn = document.getElementById('central-column');
-                    var rightColumn = document.getElementById('right-column');
-                    var centralColumnPosition = 83.3;
-                    var rightColumnPosition = 8.3;
-                    var pmAnimateInterval = setInterval(animate, 10);
-                    function animate() {
-                        if (centralColumnPosition == 63.3)
-                            clearInterval(pmAnimateInterval);
-                        else {
-                            centralColumnPosition--;
-                            rightColumnPosition++;
-                            centralColumn.style.width = centralColumnPosition + '%';
-                            rightColumn.style.width = rightColumnPosition + '%';
-                        }
-                    }
                 };
                 SearchComponent.prototype.showHelperMenu = function () {
                     this.app._helperComponent.isSearchUserSelected = true;
-                };
-                SearchComponent.prototype.hideProfileMenu = function () {
-                    var centralColumn = document.getElementById('central-column');
-                    var rightColumn = document.getElementById('right-column');
-                    var centralColumnPosition = 63.3;
-                    var rightColumnPosition = 28.3;
-                    var pmAnimateInterval = setInterval(animate, 10);
-                    function animate() {
-                        if (centralColumnPosition == 83.3)
-                            clearInterval(pmAnimateInterval);
-                        else {
-                            centralColumnPosition++;
-                            rightColumnPosition--;
-                            centralColumn.style.width = centralColumnPosition + '%';
-                            rightColumn.style.width = rightColumnPosition + '%';
-                        }
-                    }
                 };
                 SearchComponent.prototype.hideHelperMenu = function () {
                     this.app._helperComponent.isSearchUserSelected = false;

@@ -56,7 +56,7 @@ export class SearchComponent implements OnInit {
                     this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
             });
 
-        this.showProfileMenu();
+        this.app.showProfileMenu();
         this.showHelperMenu();
     }
 
@@ -65,48 +65,12 @@ export class SearchComponent implements OnInit {
         this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
         this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
 
-        this.hideProfileMenu();
+        this.app.hideProfileMenu();
         this.hideHelperMenu();
-    }
-
-    private showProfileMenu() {
-        let centralColumn = document.getElementById('central-column');
-        let rightColumn = document.getElementById('right-column');
-        let centralColumnPosition = 83.3;
-        let rightColumnPosition = 8.3;
-        let pmAnimateInterval = setInterval(animate, 10);
-        function animate() {
-            if (centralColumnPosition == 63.3)
-                clearInterval(pmAnimateInterval);
-            else {
-                centralColumnPosition--;
-                rightColumnPosition++;
-                centralColumn.style.width = centralColumnPosition + '%';
-                rightColumn.style.width = rightColumnPosition + '%';
-            }
-        }
     }
 
     private showHelperMenu() {
         this.app._helperComponent.isSearchUserSelected = true;
-    }
-
-    private hideProfileMenu() {
-        let centralColumn = document.getElementById('central-column');
-        let rightColumn = document.getElementById('right-column');
-        let centralColumnPosition = 63.3;
-        let rightColumnPosition = 28.3;
-        let pmAnimateInterval = setInterval(animate, 10);
-        function animate() {
-            if (centralColumnPosition == 83.3)
-                clearInterval(pmAnimateInterval);
-            else {
-                centralColumnPosition++;
-                rightColumnPosition--;
-                centralColumn.style.width = centralColumnPosition + '%';
-                rightColumn.style.width = rightColumnPosition + '%';
-            }
-        }
     }
 
     private hideHelperMenu() {

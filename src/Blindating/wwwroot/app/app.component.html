@@ -13,8 +13,8 @@
       <div id="central-column" class="fill content col-md-10">
           <router-outlet></router-outlet>
       </div>
-      <div id="right-column" class="fill right-stripe col-md-1">
-          <profilemenu></profilemenu>
+      <div (mouseout)="onMouseOutProfileMenu($event)" id="right-column" class="fill right-stripe col-md-1">
+          <profilemenu *ngIf="profilemenuIsShow"></profilemenu>
       </div>
     </div>
 </div>
