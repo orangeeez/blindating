@@ -1,1 +1,8 @@
-﻿
+﻿.comp-decoration {
+    margin-top: 5px;
+    width: 100%;
+}
+
+.main-column-decoration {
+    margin-top: 10px;
+}

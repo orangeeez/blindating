@@ -96,11 +96,6 @@ namespace ASPAngular2Test.Models
             return JWT.Encode(payload, secretKey, JwsAlgorithm.HS256);
         }
 
-        //private bool IsAuthorized(User user)
-        //{
-        //    return IsExistEmail(user.Email) && IsPasswordCorrect(user);
-        //}
-
         private bool IsAuthorized(User user)
         {
             var row = from r in _appDB.Users.AsEnumerable()
@@ -127,17 +122,13 @@ namespace ASPAngular2Test.Models
             User user = _appDB.Users.FirstOrDefault(u => u.ID == userID);
             OnlineUser deleting = _appDB.OnlineUsers.FirstOrDefault(u => u.UserID == userID);
 
-            try
-            {
+            if (deleting != null) { 
                 user.Online = false;
                 _appDB.OnlineUsers.Remove(deleting);
                 _appDB.SaveChanges();
                 return true;
             }
-            catch (ArgumentNullException e)
-            {
-                return false;
-            }
+            else return false;
             
         }
         #endregion

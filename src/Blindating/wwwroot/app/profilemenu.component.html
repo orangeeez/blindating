@@ -1,1 +1,30 @@
-﻿
+﻿<div class="col-md-12 main-column-decoration">
+    <tabset>
+        <tab [heading]="tabs[0].title"
+             [active]="tabs[0].active"
+             [disabled]="tabs[0].disabled"
+             (select)="tabs[0].active = true"
+             (deselect)="tabs[0].active = false">
+        </tab>
+        <tab [heading]="tabs[1].title"
+             [active]="tabs[1].active"
+             [disabled]="tabs[1].disabled"
+             (select)="tabs[1].active = true"
+             (deselect)="tabs[1].active = false">
+        </tab>
+        <tab [heading]="tabs[2].title"
+             [active]="tabs[2].active"
+             [disabled]="tabs[2].disabled"
+             (select)="tabs[2].active = true"
+             (deselect)="tabs[2].active = false">
+        </tab>
+        <tab [heading]="tabs[3].title"
+             [active]="tabs[3].active"
+             [disabled]="tabs[3].disabled"
+             (select)="tabs[3].active = true"
+             (deselect)="tabs[3].active = false">
+        </tab>
+    </tabset>
+    <a *ngIf="app.user != app.selectedUser" (click)="logout()"
+       class="btn btn-danger comp-decoration" href="#" role="button">Logout</a>
+</div>

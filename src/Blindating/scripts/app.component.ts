@@ -1,6 +1,6 @@
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router'
 import {HTTP_PROVIDERS, JSONP_PROVIDERS}      from 'angular2/http'
-import {Component, ViewChild} from 'angular2/core'
+import {Component, ViewChild, ElementRef} from 'angular2/core'
 import {Router}              from 'angular2/router'
 import {UserService}         from './user.service'
 import {SocialService}       from './services/social.service'
@@ -27,13 +27,19 @@ import {User}                from './user'
   { path: '/profile',    name: 'Profile',    component: ProfileComponent },
   { path: '/search',     name: 'Search',     component: SearchComponent }
 ])
+
 export class AppComponent {
     //#region Signaling configuration WebRTC's variables
-    public server = "http://192.168.0.112:8095";
+    public server = "http://192.168.0.115:8095";
     public stun = "stun:stun.l.google.com:19302";
     //#endregion
 
     //#region HTML's construction variables
+    /* App */
+    public navbarTop: HTMLElement;
+    public centralColumn: HTMLElement;
+    public rightColumn: HTMLElement;
+
     /* Header */
     public headerIsShow: boolean = false;
     public headerProfileImage: String;
@@ -44,6 +50,8 @@ export class AppComponent {
     /* Helper */
     public helperPhoneIconPath: String = "images/app/controls/phone-inactive.png";
     public helperPhoneHangupIconPath: String = "images/app/controls/phone-hang-up-inactive.png";
+    /* Profilemenu */
+    public profilemenuIsShow: boolean = false;
     //#endregion
 
     //#region Component's variables
@@ -70,6 +78,55 @@ export class AppComponent {
         window.onbeforeunload = function (e) {
             _userService.DeleteOnlineUser(_userService.user.ID.toString())
                 .subscribe(deleted => { });
+        }
+    }
+
+    ngAfterViewInit() {
+        this.navbarTop = document.getElementById('navbar-top');
+        this.centralColumn = document.getElementById('central-column');
+        this.rightColumn = document.getElementById('right-column');
+    }
+
+    public showProfileMenu() {
+        let centralColumn = this.centralColumn;
+        let rightColumn = this.rightColumn;
+        let centralColumnPosition = 83.3;
+        let rightColumnPosition = 8.3;
+        let pmAnimateInterval = setInterval(animate, 10);
+        function animate() {
+            if (centralColumnPosition == 63.3)
+                clearInterval(pmAnimateInterval);
+            else {
+                centralColumnPosition--;
+                rightColumnPosition++;
+                centralColumn.style.width = centralColumnPosition + '%';
+                rightColumn.style.width = rightColumnPosition + '%';
+            }
+        }
+    }
+
+    public hideProfileMenu(event?: MouseEvent) {
+        let centralColumn = this.centralColumn;
+        let rightColumn = this.rightColumn;
+        let centralColumnPosition = 63.3;
+        let rightColumnPosition = 28.3;
+        let pmAnimateInterval = setInterval(animate, 10);
+        function animate() {
+            if (centralColumnPosition == 83.3)
+                clearInterval(pmAnimateInterval);
+            else {
+                centralColumnPosition++;
+                rightColumnPosition--;
+                centralColumn.style.width = centralColumnPosition + '%';
+                rightColumn.style.width = rightColumnPosition + '%';
+            }
+        }
+    }
+
+    private onMouseOutProfileMenu(event: MouseEvent) {
+        if (event.x < window.innerWidth - this.rightColumn.clientWidth && this.profilemenuIsShow) {
+            this.hideProfileMenu();
+            this.profilemenuIsShow = false;
         }
     }
 }

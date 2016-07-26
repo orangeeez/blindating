@@ -7,7 +7,6 @@ import {User}         from './user'
 import {TAB_DIRECTIVES, Alert} from 'ng2-bootstrap/ng2-bootstrap'
 
 declare var Woogeen: any;
-declare var $: any;
 
 @Component({
     selector: 'login',
@@ -30,7 +29,6 @@ export class LoginComponent implements OnInit {
     public jwt: string = null;
     public error: string = null;
     public isEnableRegisterButton: boolean = false;
-    public dfd = new $.Deferred();
 
     constructor(
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
@@ -313,7 +311,7 @@ export class LoginComponent implements OnInit {
                     });
             }
         }
-        catch (error) { }
+        catch (error) { console.log(error) }
     }
 
     private popupCenter(url, title, w, h): Window {

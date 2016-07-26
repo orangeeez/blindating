@@ -61,10 +61,8 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                     this._router = _router;
                     this._userService = _userService;
                     //#region Signaling configuration WebRTC's variables
-                    this.server = "http://192.168.0.112:8095";
+                    this.server = "http://192.168.0.115:8095";
                     this.stun = "stun:stun.l.google.com:19302";
-                    //#endregion
-                    //#region HTML's construction variables
                     /* Header */
                     this.headerIsShow = false;
                     /* Footer */
@@ -74,12 +72,59 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                     /* Helper */
                     this.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
                     this.helperPhoneHangupIconPath = "images/app/controls/phone-hang-up-inactive.png";
+                    /* Profilemenu */
+                    this.profilemenuIsShow = false;
                     this._router.navigate(['Login']);
                     window.onbeforeunload = function (e) {
                         _userService.DeleteOnlineUser(_userService.user.ID.toString())
                             .subscribe(function (deleted) { });
                     };
                 }
+                AppComponent.prototype.ngAfterViewInit = function () {
+                    this.navbarTop = document.getElementById('navbar-top');
+                    this.centralColumn = document.getElementById('central-column');
+                    this.rightColumn = document.getElementById('right-column');
+                };
+                AppComponent.prototype.showProfileMenu = function () {
+                    var centralColumn = this.centralColumn;
+                    var rightColumn = this.rightColumn;
+                    var centralColumnPosition = 83.3;
+                    var rightColumnPosition = 8.3;
+                    var pmAnimateInterval = setInterval(animate, 10);
+                    function animate() {
+                        if (centralColumnPosition == 63.3)
+                            clearInterval(pmAnimateInterval);
+                        else {
+                            centralColumnPosition--;
+                            rightColumnPosition++;
+                            centralColumn.style.width = centralColumnPosition + '%';
+                            rightColumn.style.width = rightColumnPosition + '%';
+                        }
+                    }
+                };
+                AppComponent.prototype.hideProfileMenu = function (event) {
+                    var centralColumn = this.centralColumn;
+                    var rightColumn = this.rightColumn;
+                    var centralColumnPosition = 63.3;
+                    var rightColumnPosition = 28.3;
+                    var pmAnimateInterval = setInterval(animate, 10);
+                    function animate() {
+                        if (centralColumnPosition == 83.3)
+                            clearInterval(pmAnimateInterval);
+                        else {
+                            centralColumnPosition++;
+                            rightColumnPosition--;
+                            centralColumn.style.width = centralColumnPosition + '%';
+                            rightColumn.style.width = rightColumnPosition + '%';
+                        }
+                    }
+                };
+                AppComponent.prototype.onMouseOutProfileMenu = function (event) {
+                    if (event.x < window.innerWidth - this.rightColumn.clientWidth && this.profilemenuIsShow) {
+                        this.hideProfileMenu();
+                        this.profilemenuIsShow = false;
+                    }
+                };
                 __decorate([
                     core_1.ViewChild(dashboard_component_1.DashboardComponent), 
                     __metadata('design:type', dashboard_component_1.DashboardComponent)

@@ -1,5 +1,10 @@
-﻿<a class="navbar-right" href="#" style="margin-left: 20px" [routerLink]="['Profile']">
-    <img class="navbar-brand img-circle img-align" alt="Brand" [src]="profileImage">
-</a>
+﻿<span>
+    <a (mouseover)="profileImageOver($event)" 
+       (mouseout)="profileImageOut($event)" 
+       [routerLink]="['Profile']"
+       href="" class="navbar-right" style="margin-left: 20px">
+        <img class="navbar-brand img-circle img-align" alt="Brand" [src]="profileImage"/>
+    </a>
+</span>
 <p class="navbar-text navbar-right"><a href="#" class="navbar-link" [routerLink]="['Search']">Search</a></p>
 <p class="navbar-text navbar-right"><a class="navbar-link" [routerLink]="['Dashboard']">Dashboard</a></p>
