@@ -39,6 +39,7 @@ namespace ASPAngular2Test.Models
             {
                 user.JWT = this.CreateJWT(user);
                 _appDB.Users.Add(user);
+                _appDB.InformationUsers.Add(new InformationUser(user.ID));
                 _appDB.SaveChanges();
                 return User.REGISTERED_SUCCESSFULLY;
             }
@@ -62,6 +63,10 @@ namespace ASPAngular2Test.Models
                     user = _appDB.Users.FirstOrDefault(u => u.JWT == find.Value);
                     break;
             }
+            //var infos = from inf in _appDB.InformationUsers where inf.UserForeignKey == user.ID select inf;
+            var query = from r in _appDB.Users
+                        select r.Information.test;
+            string a = query.Single();
             return user;
         }
 
@@ -142,6 +147,14 @@ namespace ASPAngular2Test.Models
             string profile = VkHelpers.GetRequest("https://api.vk.com/method/getProfiles?uid=" + token.user_id + "&access_token=" + token.access_token);
             string profileEdited = profile.Insert(profile.Length - 3, ",\"email\":\""+ token.email + "\"");
             return profileEdited;
+        }
+
+        public List<UserUtils.Quote> AddNewQuote(UserUtils.Quote quote)
+        {
+            _appDB.Quotes.Add(quote);
+            _appDB.SaveChanges();
+
+            return null;
         }
         #endregion
     }

@@ -43,10 +43,13 @@ System.register(['angular2/core', './user.service', './app.component', 'angular2
                         { title: 'Basic', active: true },
                         { title: 'Interests', active: false },
                         { title: 'Eductaion', active: false },
-                        { title: 'Views', active: false }
+                        { title: 'Media', active: false }
                     ];
                     this.app = app;
                 }
+                ProfileMenuComponent.prototype.ngOnInit = function () {
+                    setTimeout(1000);
+                };
                 ProfileMenuComponent.prototype.logout = function () {
                     var _this = this;
                     this._userService.DeleteOnlineUser(this.app.user.ID.toString())

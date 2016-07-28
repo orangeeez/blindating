@@ -50,7 +50,7 @@ System.register(['angular2/core', 'angular2/router', './user.service', './app.co
                     });
                 };
                 SearchComponent.prototype.selectDeselectSearchUser = function (event) {
-                    if (this.app.selectedUser != null)
+                    if (this.app.selectedUser)
                         this.deselectSearchUser();
                     else
                         this.selectSearchUser();
@@ -69,19 +69,13 @@ System.register(['angular2/core', 'angular2/router', './user.service', './app.co
                             _this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
                     });
                     this.app.showProfileMenu();
-                    this.showHelperMenu();
+                    this.app._helperComponent.isSearchUserSelected = true;
                 };
                 SearchComponent.prototype.deselectSearchUser = function () {
                     this.app.selectedUser = null;
                     this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
                     this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
                     this.app.hideProfileMenu();
-                    this.hideHelperMenu();
-                };
-                SearchComponent.prototype.showHelperMenu = function () {
-                    this.app._helperComponent.isSearchUserSelected = true;
-                };
-                SearchComponent.prototype.hideHelperMenu = function () {
                     this.app._helperComponent.isSearchUserSelected = false;
                 };
                 SearchComponent = __decorate([

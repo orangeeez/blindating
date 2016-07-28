@@ -35,7 +35,7 @@ export class SearchComponent implements OnInit {
     }
 
     selectDeselectSearchUser(event: Event) {
-        if (this.app.selectedUser != null)
+        if (this.app.selectedUser)
             this.deselectSearchUser();
         else
             this.selectSearchUser();
@@ -57,7 +57,7 @@ export class SearchComponent implements OnInit {
             });
 
         this.app.showProfileMenu();
-        this.showHelperMenu();
+        this.app._helperComponent.isSearchUserSelected = true;
     }
 
     private deselectSearchUser() {
@@ -66,14 +66,6 @@ export class SearchComponent implements OnInit {
         this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
 
         this.app.hideProfileMenu();
-        this.hideHelperMenu();
-    }
-
-    private showHelperMenu() {
-        this.app._helperComponent.isSearchUserSelected = true;
-    }
-
-    private hideHelperMenu() {
         this.app._helperComponent.isSearchUserSelected = false;
     }
 }

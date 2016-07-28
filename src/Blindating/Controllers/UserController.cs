@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using ASPAngular2Test.Models;
-using Newtonsoft.Json;
-using ASPAngular2Test.Controllers.Utils;
 
 namespace ASPAngular2Test.Controllers
 {
@@ -83,6 +79,12 @@ namespace ASPAngular2Test.Controllers
         public string GetVKInfo([FromBody] string code)
         {
             return Utils.GetVKInfo(code);
+        }
+        [HttpPost]
+        [ActionName("addnewquote")]
+        public List<UserUtils.Quote> AddNewQoute([FromBody] UserUtils.Quote quote)
+        {
+            return Utils.AddNewQuote(quote);
         }
         #endregion
     }

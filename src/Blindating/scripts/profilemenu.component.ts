@@ -14,13 +14,13 @@ import {TAB_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap'
     //outputs: ['myevent']
 })
 
-export class ProfileMenuComponent {
+export class ProfileMenuComponent implements OnInit {
     public app: AppComponent;
     public tabs: Array<any> = [
         { title: 'Basic', active: true },
         { title: 'Interests', active: false },
         { title: 'Eductaion', active: false },
-        { title: 'Views', active: false }
+        { title: 'Media', active: false }
     ];
     //public myname: String;
     //public myevent: EventEmitter<any> = new EventEmitter();
@@ -31,6 +31,10 @@ export class ProfileMenuComponent {
         private _userService: UserService) {
 
         this.app = app;
+    }
+
+    ngOnInit() {
+        setTimeout(1000);
     }
 
     public logout() {

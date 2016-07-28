@@ -25,17 +25,14 @@ export class HeaderComponent {
     }
 
     public profileImageOver(event: MouseEvent) {
-        if (!this.app.profilemenuIsShow) {
-            this.app.profilemenuIsShow = true;
+        if (!this.app.profilemenuIsShow && !this.app.selectedUser) {
             this.app.showProfileMenu();
         }
     }
 
     public profileImageOut(event: MouseEvent) {
-        if (event.x < window.innerWidth - event.fromElement.clientWidth) {
+        if (event.x < window.innerWidth - event.fromElement.clientWidth && !this.app.selectedUser) {
             this.app.hideProfileMenu();
-            this.app.profilemenuIsShow = false;
         }
-        //console.log('x: ' + event.x + ' clientwidth: ' + this.app.rightColumn.clientWidth + ' window.innerWidth: ' + window.innerWidth + ' elemnt: ' + event.fromElement.clientWidth);
     }
 }

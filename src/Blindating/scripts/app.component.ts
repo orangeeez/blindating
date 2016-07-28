@@ -30,7 +30,7 @@ import {User}                from './user'
 
 export class AppComponent {
     //#region Signaling configuration WebRTC's variables
-    public server = "http://192.168.0.115:8095";
+    public server = "http://192.168.0.110:8095";
     public stun = "stun:stun.l.google.com:19302";
     //#endregion
 
@@ -103,6 +103,8 @@ export class AppComponent {
                 rightColumn.style.width = rightColumnPosition + '%';
             }
         }
+
+        this.profilemenuIsShow = true;
     }
 
     public hideProfileMenu(event?: MouseEvent) {
@@ -121,9 +123,13 @@ export class AppComponent {
                 rightColumn.style.width = rightColumnPosition + '%';
             }
         }
+
+        this.profilemenuIsShow = false;
     }
 
     private onMouseOutProfileMenu(event: MouseEvent) {
+        if (this.selectedUser) return;
+
         if (event.x < window.innerWidth - this.rightColumn.clientWidth && this.profilemenuIsShow) {
             this.hideProfileMenu();
             this.profilemenuIsShow = false;

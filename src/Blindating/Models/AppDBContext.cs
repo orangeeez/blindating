@@ -20,5 +20,9 @@ namespace ASPAngular2Test.Models
 
         public DbSet<User> Users { get; set; }
         public DbSet<OnlineUser> OnlineUsers { get; set; }
+        public DbSet<InformationUser> InformationUsers { get; set; }
+        public DbSet<UserUtils.Quote> Quotes { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {}
     }
 }

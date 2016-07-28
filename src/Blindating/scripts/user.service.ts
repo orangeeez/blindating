@@ -20,10 +20,6 @@ export class UserService {
     //#region UserRepository
     Register(user: User): Observable<string> {
         let body = JSON.stringify(user);
-        //let headers = new Headers({
-        //    'Content-Type': 'application/json'
-        //});
-        //let options = new RequestOptions({ headers: headers });
 
         return this.http.post(this.api + "/register", body, this.options)
             .map(user => user.text())
@@ -32,10 +28,6 @@ export class UserService {
 
     Login(user: User): Observable<User> {
         let body = JSON.stringify(user);
-        //let headers = new Headers({
-        //    'Content-Type': 'application/json'
-        //});
-        //let options = new RequestOptions({ headers: headers });
 
         return this.http.post(this.api + "/login", body, this.options)
             .map(logged => logged.json())
@@ -48,10 +40,6 @@ export class UserService {
             Value: value
         }
         let body = JSON.stringify(queryObj);
-        //let headers = new Headers({
-        //    'Content-Type': 'application/json'
-        //});
-        //let options = new RequestOptions({ headers: headers });
 
         return this.http.post(this.api + "/getuser", body, this.options)
             .map(finded => finded.json())
@@ -60,10 +48,6 @@ export class UserService {
 
     GetUsers(jwt: string): Observable<Array<User>> {
         let body = "\"" + jwt + "\"";
-        //let headers = new Headers({
-        //    'Content-Type': 'application/json'
-        //});
-        //let options = new RequestOptions({ headers: headers });
 
         return this.http.post(this.api + "/getusers", body, this.options)
             .map(res => res.json())
@@ -72,10 +56,6 @@ export class UserService {
 
     IsExistJWT(jwt: string): Observable<boolean> {
         let body = "\"" + jwt + "\"";
-        //let headers = new Headers({
-        //    'Content-Type': 'application/json'
-        //});
-        //let options = new RequestOptions({ headers: headers });
 
         return this.http.post(this.api + "/isexistjwt", body, this.options)
             .map(res => !!res.text())
@@ -84,10 +64,6 @@ export class UserService {
 
     IsExistEmail(email: string): Observable<boolean> {
         let body = "\"" + email + "\"";
-        //let headers = new Headers({
-        //    'Content-Type': 'application/json'
-        //});
-        //let options = new RequestOptions({ headers: headers });
 
         return this.http.post(this.api + "/isexistemail", body, this.options)
             .map(res => !!res.text())
@@ -102,10 +78,6 @@ export class UserService {
     //#region OnlineUserRepository
     DeleteOnlineUser(userID: string): Observable<boolean> {
         let body = userID;
-        //let headers = new Headers({
-        //    'Content-Type': 'application/json'
-        //});
-        //let options = new RequestOptions({ headers: headers });
 
         return this.http.post(this.api + "/deleteonlineuser", body, this.options)
             .map(res => !!res.text())
@@ -114,11 +86,6 @@ export class UserService {
 
     GetOnlineUsers(): Observable<Array<User>>
     {
-        //let headers = new Headers({
-        //    'Content-Type': 'application/json'
-        //});
-        //let options = new RequestOptions({ headers: headers });
-
         return this.http.get(this.api + "/getonlineusers", this.options)
             .map(res => res.json())
             .catch(this.handleError)

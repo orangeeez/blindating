@@ -42,17 +42,14 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', 'ng2-boo
                     this.app = app;
                 }
                 HeaderComponent.prototype.profileImageOver = function (event) {
-                    if (!this.app.profilemenuIsShow) {
-                        this.app.profilemenuIsShow = true;
+                    if (!this.app.profilemenuIsShow && !this.app.selectedUser) {
                         this.app.showProfileMenu();
                     }
                 };
                 HeaderComponent.prototype.profileImageOut = function (event) {
-                    if (event.x < window.innerWidth - event.fromElement.clientWidth) {
+                    if (event.x < window.innerWidth - event.fromElement.clientWidth && !this.app.selectedUser) {
                         this.app.hideProfileMenu();
-                        this.app.profilemenuIsShow = false;
                     }
-                    //console.log('x: ' + event.x + ' clientwidth: ' + this.app.rightColumn.clientWidth + ' window.innerWidth: ' + window.innerWidth + ' elemnt: ' + event.fromElement.clientWidth);
                 };
                 HeaderComponent = __decorate([
                     core_1.Component({

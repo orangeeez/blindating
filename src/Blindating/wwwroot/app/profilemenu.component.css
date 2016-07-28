@@ -2,7 +2,16 @@
     margin-top: 5px;
     width: 100%;
 }
-
 .main-column-decoration {
     margin-top: 10px;
+}
+.img-decoration {
+    height: 90px;
+    padding: 0;
+}
+.requisites-decoration {
+    display: inline-block;
+    width: 100%;
+    font-size: 30px;
+    border-bottom: 1px solid #ddd;
 }

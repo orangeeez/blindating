@@ -61,7 +61,7 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                     this._router = _router;
                     this._userService = _userService;
                     //#region Signaling configuration WebRTC's variables
-                    this.server = "http://192.168.0.115:8095";
+                    this.server = "http://192.168.0.110:8095";
                     this.stun = "stun:stun.l.google.com:19302";
                     /* Header */
                     this.headerIsShow = false;
@@ -101,6 +101,7 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                             rightColumn.style.width = rightColumnPosition + '%';
                         }
                     }
+                    this.profilemenuIsShow = true;
                 };
                 AppComponent.prototype.hideProfileMenu = function (event) {
                     var centralColumn = this.centralColumn;
@@ -118,8 +119,11 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                             rightColumn.style.width = rightColumnPosition + '%';
                         }
                     }
+                    this.profilemenuIsShow = false;
                 };
                 AppComponent.prototype.onMouseOutProfileMenu = function (event) {
+                    if (this.selectedUser)
+                        return;
                     if (event.x < window.innerWidth - this.rightColumn.clientWidth && this.profilemenuIsShow) {
                         this.hideProfileMenu();
                         this.profilemenuIsShow = false;

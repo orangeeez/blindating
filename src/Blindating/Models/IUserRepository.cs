@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ASPAngular2Test.Controllers.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,5 +25,6 @@ namespace ASPAngular2Test.Models
     public interface IUtils
     {
         string GetVKInfo(string code);
+        List<UserUtils.Quote> AddNewQuote(UserUtils.Quote quote);
     }
 }
