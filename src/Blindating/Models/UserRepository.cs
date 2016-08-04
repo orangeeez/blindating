@@ -17,7 +17,7 @@ namespace ASPAngular2Test.Models
         {
             this._appDB = _appDB;
         }
-
+        #region IUserRepository
         public User Login(User user)
         {
             if (IsAuthorized(user) || user.Reason == "social")
@@ -64,32 +64,6 @@ namespace ASPAngular2Test.Models
                     user = _appDB.Users.FirstOrDefault(u => u.JWT == find.Value);
                     break;
             }
-
-            //var q = _appDB.Users.Include(u => u.Information).ThenInclude(i => i.Quotes)
-            //    .SingleOrDefault(u => u.ID == 27);
-
-            User q = (from u in _appDB.Users.Include(u => u.Information).ThenInclude(i => i.Quotes)
-                     select u).Single();
-
-            var a = q.Information.Quotes[0].Author;
-            //var id = (from i in _appDB.InformationUsers
-            //        where i.UserID == user.ID
-            //        select i).Single();
-
-            //_appDB.Quotes.Add(new UserUtils.Quote(id.ID, "A", "B"));
-            //_appDB.SaveChanges();
-
-            //var info = (from i in _appDB.InformationUsers
-            //          where i.UserID == user.ID
-            //          select i).Single();
-
-            //var quotes = (from q in _appDB.Quotes
-            //              where q.InformationUserID == 26
-            //              select q).ToList();
-
-            //var query = from r in _appDB.Users
-            //            select r.Information.Quotes[0].Author;
-            //string a = query.Single();
             return user;
         }
 
@@ -134,6 +108,7 @@ namespace ASPAngular2Test.Models
             else
                 return true;
         }
+        #endregion]
 
         #region IOnlineUserRepository
         public List<User> GetOnlineUsers()
@@ -172,9 +147,18 @@ namespace ASPAngular2Test.Models
             return profileEdited;
         }
 
+        public UserUtils.Quote GetRandomQuote(int userID)
+        {
+            var user = (from u in _appDB.Users.Include(u => u.Information).ThenInclude(i => i.Quotes)
+                        where u.ID == userID
+                        select u).SingleOrDefault();
+            var quote = user.Information.Quotes.ElementAt(new Random().Next(0, user.Information.Quotes.Count - 1));
+            return quote;
+        }
+
         public void AddNewQuote(UserUtils.Quote quote)
         {
-            var informationID = (from u in _appDB.Users.Include(i => i.Information)
+            var informationID = (from u in _appDB.Users.Include(u => u.Information)
                                  where u.ID == quote.UserID
                                  select u.Information.ID).SingleOrDefault();
 

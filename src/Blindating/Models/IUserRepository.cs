@@ -25,6 +25,7 @@ namespace ASPAngular2Test.Models
     public interface IUtils
     {
         string GetVKInfo(string code);
+        UserUtils.Quote GetRandomQuote(int userID);
         void AddNewQuote(UserUtils.Quote quote);
     }
 }

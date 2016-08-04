@@ -30,7 +30,6 @@ export class LoginComponent implements OnInit {
     public error: string = null;
     public isEnableRegisterButton: boolean = false;
 
-    /* ngModel */
     public firstnameFieldValue: string;
     public lastnameFieldValue: string;
     public emailregFieldValue: string;

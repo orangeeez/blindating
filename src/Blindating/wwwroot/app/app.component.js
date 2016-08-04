@@ -1,4 +1,4 @@
-System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.service', './services/social.service', './dashboard.component', './profile.component', './login.component', './search.component', './footer.component', './header.component', './helper.component', './profilemenu.component'], function(exports_1, context_1) {
+System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.service', './services/social.service', './services/userinfo.service', './dashboard.component', './profile.component', './login.component', './search.component', './footer.component', './header.component', './helper.component', './profilemenu.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var router_1, http_1, core_1, router_2, user_service_1, social_service_1, dashboard_component_1, profile_component_1, login_component_1, search_component_1, footer_component_1, header_component_1, helper_component_1, profilemenu_component_1;
+    var router_1, http_1, core_1, router_2, user_service_1, social_service_1, userinfo_service_1, dashboard_component_1, profile_component_1, login_component_1, search_component_1, footer_component_1, header_component_1, helper_component_1, profilemenu_component_1;
     var AppComponent;
     return {
         setters:[
@@ -29,6 +29,9 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
             },
             function (social_service_1_1) {
                 social_service_1 = social_service_1_1;
+            },
+            function (userinfo_service_1_1) {
+                userinfo_service_1 = userinfo_service_1_1;
             },
             function (dashboard_component_1_1) {
                 dashboard_component_1 = dashboard_component_1_1;
@@ -57,14 +60,16 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
         execute: function() {
             AppComponent = (function () {
                 //#endregion
-                function AppComponent(_router, _userService) {
+                function AppComponent(_router, _userService, _userInfoService) {
                     this._router = _router;
                     this._userService = _userService;
+                    this._userInfoService = _userInfoService;
                     //#region Signaling configuration WebRTC's variables
-                    this.server = "http://192.168.0.110:8095";
+                    this.server = "http://192.168.0.114:8095";
                     this.stun = "stun:stun.l.google.com:19302";
                     /* Header */
                     this.headerIsShow = false;
+                    this.headerProfileImage = "images/users/profile/avatar/ryzhkov.jpg";
                     /* Footer */
                     this.footerIsShow = false;
                     this.footerUpdateIconPath = "images/app/controls/update.png";
@@ -86,6 +91,7 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                     this.rightColumn = document.getElementById('right-column');
                 };
                 AppComponent.prototype.showProfileMenu = function () {
+                    var _this = this;
                     var centralColumn = this.centralColumn;
                     var rightColumn = this.rightColumn;
                     var centralColumnPosition = 83.3;
@@ -100,6 +106,18 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                             centralColumn.style.width = centralColumnPosition + '%';
                             rightColumn.style.width = rightColumnPosition + '%';
                         }
+                    }
+                    if (this.selectedUser != null) {
+                        this._userInfoService.GetRandomQuote(this.selectedUser.ID.toString())
+                            .subscribe(function (quote) {
+                            _this._profileMenuComponent.quote = quote;
+                        });
+                    }
+                    else {
+                        this._userInfoService.GetRandomQuote(this.user.ID.toString())
+                            .subscribe(function (quote) {
+                            _this._profileMenuComponent.quote = quote;
+                        });
                     }
                     this.profilemenuIsShow = true;
                 };
@@ -151,7 +169,7 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                         templateUrl: 'app/app.component.html',
                         styleUrls: ['app/app.component.css', 'css/styles.css'],
                         directives: [router_1.ROUTER_DIRECTIVES, footer_component_1.FooterComponent, header_component_1.HeaderComponent, helper_component_1.HelperComponent, profilemenu_component_1.ProfileMenuComponent],
-                        providers: [http_1.HTTP_PROVIDERS, router_1.ROUTER_PROVIDERS, http_1.JSONP_PROVIDERS, user_service_1.UserService, social_service_1.SocialService]
+                        providers: [http_1.HTTP_PROVIDERS, router_1.ROUTER_PROVIDERS, http_1.JSONP_PROVIDERS, user_service_1.UserService, social_service_1.SocialService, userinfo_service_1.UserInfoService]
                     }),
                     router_1.RouteConfig([
                         { path: '/login', name: 'Login', component: login_component_1.LoginComponent },
@@ -159,7 +177,7 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                         { path: '/profile', name: 'Profile', component: profile_component_1.ProfileComponent },
                         { path: '/search', name: 'Search', component: search_component_1.SearchComponent }
                     ]), 
-                    __metadata('design:paramtypes', [router_2.Router, user_service_1.UserService])
+                    __metadata('design:paramtypes', [router_2.Router, user_service_1.UserService, userinfo_service_1.UserInfoService])
                 ], AppComponent);
                 return AppComponent;
             }());

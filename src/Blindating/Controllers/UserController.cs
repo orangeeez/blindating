@@ -81,6 +81,12 @@ namespace ASPAngular2Test.Controllers
             return Utils.GetVKInfo(code);
         }
         [HttpPost]
+        [ActionName("getrandomquote")]
+        public UserUtils.Quote GetRandomQuote([FromBody]int userID)
+        {
+            return Utils.GetRandomQuote(userID);
+        }
+        [HttpPost]
         [ActionName("addnewquote")]
         public void AddNewQoute([FromBody] UserUtils.Quote quote)
         {

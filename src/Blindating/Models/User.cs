@@ -59,6 +59,7 @@ namespace ASPAngular2Test.Models
         public int UserFK { get; set; }
 
         public virtual User User { get; set; }
+        [JsonIgnore]
         public virtual List<UserUtils.Quote> Quotes { get; set; }
     }
 }

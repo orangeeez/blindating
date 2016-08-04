@@ -1,5 +1,6 @@
 ﻿import {Component, EventEmitter, OnInit, Host, Inject, forwardRef} from 'angular2/core'
 import {User}              from './user'
+import {Quote}              from './utils/user.utils'
 import {UserService}       from './user.service'
 import {AppComponent}      from './app.component'
 import {Router}            from 'angular2/router'
@@ -20,6 +21,7 @@ export class ProfileMenuComponent implements OnInit {
         { title: 'Eductaion', active: false },
         { title: 'Media', active: false }
     ];
+    public quote: Quote;
 
     constructor(
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
@@ -47,8 +49,4 @@ export class ProfileMenuComponent implements OnInit {
             });
         
     }
-
-    //fire() {
-    //    this.myevent.next(['abc', 'def']);
-    //}
 }

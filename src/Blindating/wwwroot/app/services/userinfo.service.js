@@ -11,7 +11,7 @@ System.register(['angular2/http', 'angular2/core'], function(exports_1, context_
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var http_1, core_1;
-    var SocialService;
+    var UserInfoService;
     return {
         setters:[
             function (http_1_1) {
@@ -21,25 +21,25 @@ System.register(['angular2/http', 'angular2/core'], function(exports_1, context_
                 core_1 = core_1_1;
             }],
         execute: function() {
-            SocialService = (function () {
-                function SocialService(http) {
+            UserInfoService = (function () {
+                function UserInfoService(http) {
                     this.http = http;
                     this.api = 'api/user';
                     this.headers = new http_1.Headers({ 'Content-Type': 'application/json' });
                     this.options = new http_1.RequestOptions({ headers: this.headers });
                 }
-                SocialService.prototype.GetVKInfo = function (code) {
-                    var body = "\"" + code + "\"";
-                    return this.http.post(this.api + "/getvkinfo", body, this.options)
+                UserInfoService.prototype.GetRandomQuote = function (userID) {
+                    var body = userID;
+                    return this.http.post(this.api + "/getrandomquote", body, this.options)
                         .map(function (res) { return res.json(); });
                 };
-                SocialService = __decorate([
+                UserInfoService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [http_1.Http])
-                ], SocialService);
-                return SocialService;
+                ], UserInfoService);
+                return UserInfoService;
             }());
-            exports_1("SocialService", SocialService);
+            exports_1("UserInfoService", UserInfoService);
         }
     }
 });

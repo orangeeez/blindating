@@ -4,6 +4,8 @@ import {Component, ViewChild, ElementRef} from 'angular2/core'
 import {Router}              from 'angular2/router'
 import {UserService}         from './user.service'
 import {SocialService}       from './services/social.service'
+import {UserInfoService}       from './services/userinfo.service'
+
 import {DashboardComponent}  from './dashboard.component'
 import {ProfileComponent}    from './profile.component'
 import {LoginComponent}      from './login.component'
@@ -19,7 +21,7 @@ import {User}                from './user'
   templateUrl: 'app/app.component.html',
   styleUrls: ['app/app.component.css', 'css/styles.css'],
   directives: [ROUTER_DIRECTIVES, FooterComponent, HeaderComponent, HelperComponent, ProfileMenuComponent],
-  providers: [HTTP_PROVIDERS, ROUTER_PROVIDERS, JSONP_PROVIDERS, UserService, SocialService]
+  providers: [HTTP_PROVIDERS, ROUTER_PROVIDERS, JSONP_PROVIDERS, UserService, SocialService, UserInfoService]
 })
 @RouteConfig([
   { path: '/login',      name: 'Login',      component: LoginComponent },
@@ -30,7 +32,7 @@ import {User}                from './user'
 
 export class AppComponent {
     //#region Signaling configuration WebRTC's variables
-    public server = "http://192.168.0.110:8095";
+    public server = "http://192.168.0.114:8095";
     public stun = "stun:stun.l.google.com:19302";
     //#endregion
 
@@ -42,7 +44,7 @@ export class AppComponent {
 
     /* Header */
     public headerIsShow: boolean = false;
-    public headerProfileImage: String;
+    public headerProfileImage: String = "images/users/profile/avatar/ryzhkov.jpg";
     /* Footer */
     public footerIsShow: boolean = false;
     public footerUpdateIconPath: String = "images/app/controls/update.png";
@@ -72,7 +74,8 @@ export class AppComponent {
     //#endregion
 
     constructor(private _router: Router,
-                private _userService: UserService) {
+                private _userService: UserService,
+                private _userInfoService: UserInfoService) {
         this._router.navigate(['Login']);
 
         window.onbeforeunload = function (e) {
@@ -102,6 +105,19 @@ export class AppComponent {
                 centralColumn.style.width = centralColumnPosition + '%';
                 rightColumn.style.width = rightColumnPosition + '%';
             }
+        }
+
+        if (this.selectedUser != null) {
+            this._userInfoService.GetRandomQuote(this.selectedUser.ID.toString())
+                .subscribe(quote => {
+                    this._profileMenuComponent.quote = quote;
+                });
+        }
+        else {
+            this._userInfoService.GetRandomQuote(this.user.ID.toString())
+                .subscribe(quote => {
+                    this._profileMenuComponent.quote = quote;
+                });
         }
 
         this.profilemenuIsShow = true;

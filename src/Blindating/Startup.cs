@@ -35,7 +35,7 @@ namespace ASPAngular2Test
             services.AddEntityFramework()
                 .AddSqlServer()
                 .AddDbContext<AppDBContext>(options =>
-                    options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
+                    options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"] + "MultipleActiveResultSets=True"));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

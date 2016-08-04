@@ -36,6 +36,12 @@
                     <span id="lastname" class="requisites-decoration">{{app.selectedUser?.Lastname || app.user.Lastname}}</span>
                 </div>
             </div>
+            <div *ngIf="quote" style="margin-top: 5px;">
+                <blockquote>
+                    <p>{{quote?.Content}}</p>
+                    <footer>{{quote?.Author}}</footer>
+                </blockquote>
+            </div>
             <a *ngIf="!app.selectedUser"
                (click)="logout()"
                class="btn btn-danger comp-decoration" href="#" role="button">Logout</a>
