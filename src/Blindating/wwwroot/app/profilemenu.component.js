@@ -34,8 +34,6 @@ System.register(['angular2/core', './user.service', './app.component', 'angular2
             }],
         execute: function() {
             ProfileMenuComponent = (function () {
-                //public myname: String;
-                //public myevent: EventEmitter<any> = new EventEmitter();
                 function ProfileMenuComponent(app, _router, _userService) {
                     this._router = _router;
                     this._userService = _userService;
@@ -47,9 +45,7 @@ System.register(['angular2/core', './user.service', './app.component', 'angular2
                     ];
                     this.app = app;
                 }
-                ProfileMenuComponent.prototype.ngOnInit = function () {
-                    setTimeout(1000);
-                };
+                ProfileMenuComponent.prototype.ngOnInit = function () { };
                 ProfileMenuComponent.prototype.logout = function () {
                     var _this = this;
                     this._userService.DeleteOnlineUser(this.app.user.ID.toString())

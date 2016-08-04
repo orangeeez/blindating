@@ -1,14 +1,16 @@
 ﻿
 using Newtonsoft.Json;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 
 namespace ASPAngular2Test.Models
 {
     public class User
     {
-        [Key]
         public int ID { get; set; }
         public string Firstname { get; set; }
         public string Lastname { get; set; }
@@ -21,8 +23,7 @@ namespace ASPAngular2Test.Models
         public string ProfileImage { get; set; }
         public bool Online { get; set; } = false;
 
-        [JsonIgnore] 
-        [IgnoreDataMember]
+        [JsonIgnore]
         public virtual InformationUser Information { get; set; }
 
         public static string EMAIL_ALREADY_EXIST = "User with current email is already registered.";
@@ -49,15 +50,15 @@ namespace ASPAngular2Test.Models
 
     public class InformationUser
     {
+        public InformationUser()
+        {
+            this.Quotes = new List<UserUtils.Quote>();
+        }
+
         public int ID { get; set; }
-        public int UserID { get; set; }
-        public string test { get; set; } = "lol";
+        public int UserFK { get; set; }
 
         public virtual User User { get; set; }
-
-        public InformationUser(int UserID)
-        {
-            this.UserID = UserID;
-        }
+        public virtual List<UserUtils.Quote> Quotes { get; set; }
     }
 }

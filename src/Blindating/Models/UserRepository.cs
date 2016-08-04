@@ -5,6 +5,7 @@ using System;
 using ASPAngular2Test.Controllers.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Microsoft.Data.Entity;
 
 namespace ASPAngular2Test.Models
 {
@@ -38,8 +39,8 @@ namespace ASPAngular2Test.Models
             else
             {
                 user.JWT = this.CreateJWT(user);
+                user.Information = new InformationUser();
                 _appDB.Users.Add(user);
-                _appDB.InformationUsers.Add(new InformationUser(user.ID));
                 _appDB.SaveChanges();
                 return User.REGISTERED_SUCCESSFULLY;
             }
@@ -63,10 +64,32 @@ namespace ASPAngular2Test.Models
                     user = _appDB.Users.FirstOrDefault(u => u.JWT == find.Value);
                     break;
             }
-            //var infos = from inf in _appDB.InformationUsers where inf.UserForeignKey == user.ID select inf;
-            var query = from r in _appDB.Users
-                        select r.Information.test;
-            string a = query.Single();
+
+            //var q = _appDB.Users.Include(u => u.Information).ThenInclude(i => i.Quotes)
+            //    .SingleOrDefault(u => u.ID == 27);
+
+            User q = (from u in _appDB.Users.Include(u => u.Information).ThenInclude(i => i.Quotes)
+                     select u).Single();
+
+            var a = q.Information.Quotes[0].Author;
+            //var id = (from i in _appDB.InformationUsers
+            //        where i.UserID == user.ID
+            //        select i).Single();
+
+            //_appDB.Quotes.Add(new UserUtils.Quote(id.ID, "A", "B"));
+            //_appDB.SaveChanges();
+
+            //var info = (from i in _appDB.InformationUsers
+            //          where i.UserID == user.ID
+            //          select i).Single();
+
+            //var quotes = (from q in _appDB.Quotes
+            //              where q.InformationUserID == 26
+            //              select q).ToList();
+
+            //var query = from r in _appDB.Users
+            //            select r.Information.Quotes[0].Author;
+            //string a = query.Single();
             return user;
         }
 
@@ -149,12 +172,15 @@ namespace ASPAngular2Test.Models
             return profileEdited;
         }
 
-        public List<UserUtils.Quote> AddNewQuote(UserUtils.Quote quote)
+        public void AddNewQuote(UserUtils.Quote quote)
         {
+            var informationID = (from u in _appDB.Users.Include(i => i.Information)
+                                 where u.ID == quote.UserID
+                                 select u.Information.ID).SingleOrDefault();
+
+            quote.InformationFK = informationID;
             _appDB.Quotes.Add(quote);
             _appDB.SaveChanges();
-
-            return null;
         }
         #endregion
     }

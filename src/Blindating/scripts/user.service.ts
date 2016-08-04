@@ -58,7 +58,7 @@ export class UserService {
         let body = "\"" + jwt + "\"";
 
         return this.http.post(this.api + "/isexistjwt", body, this.options)
-            .map(res => !!res.text())
+            .map(res => JSON.parse(res.text()))
             .catch(this.handleError)
     }
 
@@ -66,7 +66,7 @@ export class UserService {
         let body = "\"" + email + "\"";
 
         return this.http.post(this.api + "/isexistemail", body, this.options)
-            .map(res => !!res.text())
+            .map(res => JSON.parse(res.text()))
             .catch(this.handleError)
     }
 

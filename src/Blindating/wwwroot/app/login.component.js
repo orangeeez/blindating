@@ -90,9 +90,9 @@ System.register(['angular2/core', 'angular2/router', './app.component', './user.
                                 var lastnameField = document.getElementById('lastname');
                                 var emailField = document.getElementById('email-reg');
                                 var passwordField = document.getElementById('password-reg');
-                                firstnameField.value = response['first_name'];
-                                lastnameField.value = response['last_name'];
-                                emailField.value = response['email'];
+                                _this.firstnameFieldValue = response['first_name'];
+                                _this.lastnameFieldValue = response['last_name'];
+                                _this.emailregFieldValue = response['email'];
                                 firstnameField.classList.remove('ng-invalid');
                                 firstnameField.classList.add('ng-valid');
                                 lastnameField.classList.remove('ng-invalid');
@@ -133,13 +133,15 @@ System.register(['angular2/core', 'angular2/router', './app.component', './user.
                                             });
                                         }
                                         else {
+                                            _this.tabs[0].active = false;
+                                            _this.tabs[1].active = true;
                                             var firstnameField = document.getElementById('firstname');
                                             var lastnameField = document.getElementById('lastname');
                                             var emailField = document.getElementById('email-reg');
                                             var passwordField = document.getElementById('password-reg');
-                                            firstnameField.value = info['response'][0]['first_name'];
-                                            lastnameField.value = info['response'][0]['last_name'];
-                                            emailField.value = info['response'][0]['email'];
+                                            _this.firstnameFieldValue = info['response'][0]['first_name'];
+                                            _this.lastnameFieldValue = info['response'][0]['last_name'];
+                                            _this.emailregFieldValue = info['response'][0]['email'];
                                             firstnameField.classList.remove('ng-invalid');
                                             firstnameField.classList.add('ng-valid');
                                             lastnameField.classList.remove('ng-invalid');
@@ -209,10 +211,10 @@ System.register(['angular2/core', 'angular2/router', './app.component', './user.
                         _this.loginViaForm(logged);
                     });
                 };
-                LoginComponent.prototype.register = function (event, firstname, lastname, email, password) {
+                LoginComponent.prototype.register = function (event) {
                     var _this = this;
                     event.preventDefault();
-                    this.user = this.createUser(undefined, firstname, lastname, email, password);
+                    this.user = this.createUser(undefined, this.firstnameFieldValue, this.lastnameFieldValue, this.emailregFieldValue, this.passwordFieldValue);
                     this._userService.Register(this.user)
                         .subscribe(function (response) {
                         _this.registerViaForm(response);

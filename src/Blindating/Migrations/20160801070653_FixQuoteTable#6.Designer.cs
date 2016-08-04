@@ -8,9 +8,10 @@ using ASPAngular2Test.Models;
 namespace ASPAngular2Test.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20160801070653_FixQuoteTable#6")]
+    partial class FixQuoteTable6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -21,7 +22,7 @@ namespace ASPAngular2Test.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("UserFK");
+                    b.Property<int>("UserID");
 
                     b.HasKey("ID");
                 });
@@ -77,7 +78,7 @@ namespace ASPAngular2Test.Migrations
 
                     b.Property<string>("Content");
 
-                    b.Property<int>("InformationFK");
+                    b.Property<int>("InformationUserID");
 
                     b.HasKey("ID");
                 });
@@ -86,7 +87,7 @@ namespace ASPAngular2Test.Migrations
                 {
                     b.HasOne("ASPAngular2Test.Models.User")
                         .WithOne()
-                        .HasForeignKey("ASPAngular2Test.Models.InformationUser", "UserFK");
+                        .HasForeignKey("ASPAngular2Test.Models.InformationUser", "UserID");
                 });
 
             modelBuilder.Entity("ASPAngular2Test.Models.OnlineUser", b =>
@@ -100,7 +101,7 @@ namespace ASPAngular2Test.Migrations
                 {
                     b.HasOne("ASPAngular2Test.Models.InformationUser")
                         .WithMany()
-                        .HasForeignKey("InformationFK");
+                        .HasForeignKey("InformationUserID");
                 });
         }
     }

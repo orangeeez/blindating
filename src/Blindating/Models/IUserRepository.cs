@@ -25,6 +25,6 @@ namespace ASPAngular2Test.Models
     public interface IUtils
     {
         string GetVKInfo(string code);
-        List<UserUtils.Quote> AddNewQuote(UserUtils.Quote quote);
+        void AddNewQuote(UserUtils.Quote quote);
     }
 }

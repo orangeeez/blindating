@@ -68,13 +68,13 @@ System.register(['angular2/http', 'angular2/core', 'rxjs/Observable'], function(
                 UserService.prototype.IsExistJWT = function (jwt) {
                     var body = "\"" + jwt + "\"";
                     return this.http.post(this.api + "/isexistjwt", body, this.options)
-                        .map(function (res) { return !!res.text(); })
+                        .map(function (res) { return JSON.parse(res.text()); })
                         .catch(this.handleError);
                 };
                 UserService.prototype.IsExistEmail = function (email) {
                     var body = "\"" + email + "\"";
                     return this.http.post(this.api + "/isexistemail", body, this.options)
-                        .map(function (res) { return !!res.text(); })
+                        .map(function (res) { return JSON.parse(res.text()); })
                         .catch(this.handleError);
                 };
                 UserService.prototype.handleError = function (error) {

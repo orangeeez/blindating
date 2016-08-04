@@ -82,9 +82,9 @@ namespace ASPAngular2Test.Controllers
         }
         [HttpPost]
         [ActionName("addnewquote")]
-        public List<UserUtils.Quote> AddNewQoute([FromBody] UserUtils.Quote quote)
+        public void AddNewQoute([FromBody] UserUtils.Quote quote)
         {
-            return Utils.AddNewQuote(quote);
+            Utils.AddNewQuote(quote);
         }
         #endregion
     }

@@ -30,6 +30,13 @@ export class LoginComponent implements OnInit {
     public error: string = null;
     public isEnableRegisterButton: boolean = false;
 
+    /* ngModel */
+    public firstnameFieldValue: string;
+    public lastnameFieldValue: string;
+    public emailregFieldValue: string;
+    public passwordFieldValue: string;
+
+
     constructor(
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
         private _router: Router,
@@ -91,10 +98,14 @@ export class LoginComponent implements OnInit {
             });
     }
 
-    public register(event, firstname, lastname, email, password) {
+    public register(event) {
         event.preventDefault();
 
-        this.user = this.createUser(undefined, firstname, lastname, email, password);
+        this.user = this.createUser(undefined,
+            this.firstnameFieldValue,
+            this.lastnameFieldValue,
+            this.emailregFieldValue,
+            this.passwordFieldValue);
 
         this._userService.Register(this.user)
             .subscribe(response => {
@@ -238,9 +249,9 @@ export class LoginComponent implements OnInit {
                     var emailField = <HTMLInputElement>document.getElementById('email-reg');
                     var passwordField = <HTMLInputElement>document.getElementById('password-reg');
 
-                    firstnameField.value = response['first_name'];
-                    lastnameField.value = response['last_name'];
-                    emailField.value = response['email'];
+                    this.firstnameFieldValue = response['first_name'];
+                    this.lastnameFieldValue = response['last_name'];
+                    this.emailregFieldValue = response['email'];
 
                     firstnameField.classList.remove('ng-invalid');
                     firstnameField.classList.add('ng-valid');
@@ -288,14 +299,17 @@ export class LoginComponent implements OnInit {
                                         });
                                 }
                                 else {
+                                    this.tabs[0].active = false;
+                                    this.tabs[1].active = true;
+
                                     var firstnameField = <HTMLInputElement>document.getElementById('firstname');
                                     var lastnameField = <HTMLInputElement>document.getElementById('lastname');
                                     var emailField = <HTMLInputElement>document.getElementById('email-reg');
                                     var passwordField = <HTMLInputElement>document.getElementById('password-reg');
 
-                                    firstnameField.value = info['response'][0]['first_name'];
-                                    lastnameField.value = info['response'][0]['last_name'];
-                                    emailField.value = info['response'][0]['email'];
+                                    this.firstnameFieldValue = info['response'][0]['first_name'];
+                                    this.lastnameFieldValue = info['response'][0]['last_name'];
+                                    this.emailregFieldValue = info['response'][0]['email']
 
                                     firstnameField.classList.remove('ng-invalid');
                                     firstnameField.classList.add('ng-valid');

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,11 +17,15 @@ namespace ASPAngular2Test.Models
         public class Quote
         {
             public int ID { get; set; }
-            public int InformationUserID { get; set; }
+            public int InformationFK { get; set; }
+
             public string Author { get; set; }
             public string Content { get; set; }
 
-            //public InformationUser InformationUser { get; set; }
+            public virtual InformationUser Information { get; set; }
+
+            [NotMapped]
+            public int UserID { get; set; }
         }
     }
 }

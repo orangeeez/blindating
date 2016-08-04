@@ -23,6 +23,16 @@ namespace ASPAngular2Test.Models
         public DbSet<InformationUser> InformationUsers { get; set; }
         public DbSet<UserUtils.Quote> Quotes { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {}
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            modelBuilder.Entity<User>()
+                .HasOne(p => p.Information)
+                .WithOne(i => i.User)
+                .HasForeignKey<InformationUser>(b => b.UserFK);
+
+            modelBuilder.Entity<InformationUser>()
+                .HasMany(p => p.Quotes)
+                .WithOne(i => i.Information)
+                .HasForeignKey(b => b.InformationFK);
+        }
     }
 }

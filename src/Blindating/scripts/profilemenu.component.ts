@@ -10,8 +10,6 @@ import {TAB_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap'
     templateUrl: 'app/profilemenu.component.html',
     styleUrls: ['app/profilemenu.component.css'],
     directives: [TAB_DIRECTIVES]
-    //inputs: ['myname'],
-    //outputs: ['myevent']
 })
 
 export class ProfileMenuComponent implements OnInit {
@@ -22,8 +20,6 @@ export class ProfileMenuComponent implements OnInit {
         { title: 'Eductaion', active: false },
         { title: 'Media', active: false }
     ];
-    //public myname: String;
-    //public myevent: EventEmitter<any> = new EventEmitter();
 
     constructor(
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
@@ -33,9 +29,7 @@ export class ProfileMenuComponent implements OnInit {
         this.app = app;
     }
 
-    ngOnInit() {
-        setTimeout(1000);
-    }
+    ngOnInit() {}
 
     public logout() {
         this._userService.DeleteOnlineUser(this.app.user.ID.toString())
