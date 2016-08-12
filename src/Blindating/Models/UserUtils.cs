@@ -27,5 +27,35 @@ namespace ASPAngular2Test.Models
             [NotMapped]
             public int UserID { get; set; }
         }
+
+        public class Photo
+        {
+            public int ID { get; set; }
+            public int InformationPhotoFK { get; set; }
+
+            public string Path { get; set; }
+            public int Width { get; set; }
+            public int Height { get; set; }
+
+            public virtual InformationUser Information { get; set; }
+
+            [NotMapped]
+            public int UserID { get; set; }
+        }
+
+        public class Conversation
+        {
+            public int ID { get; set; }
+            public int InformationConversationFK { get; set; }
+
+            public string JWT { get; set; }
+
+            public virtual InformationUser Information { get; set; }
+
+            [NotMapped]
+            public int UserID { get; set; }
+            [NotMapped]
+            public User User { get; set; }
+        }
     }
 }

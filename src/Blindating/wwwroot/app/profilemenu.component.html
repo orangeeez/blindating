@@ -1,5 +1,5 @@
 ﻿<div class="container-fluid">
-    <div class="row">
+    <div *ngIf="!isOpenPhotos" class="row">
         <div class="col-md-12 main-column-decoration">
             <tabset>
                 <tab [heading]="tabs[0].title"
@@ -42,9 +42,42 @@
                     <footer>{{quote?.Author}}</footer>
                 </blockquote>
             </div>
+            <div *ngIf="photos" style="margin-top: 5px;">
+                <div (click)="openPhotos()"
+                     class="headerline-decoration">Photos</div>
+                <div class="row row-padding">
+                    <div *ngFor="#photo of photos | iterateto: {to: 4}" class="col-md-3 photos-decoration col-no-padding">
+                        <img (click)="openGallery($event)"
+                             src="{{photo.Path}}" />
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="conversations" style="margin-top: 5px;">
+                <div class="headerline-decoration">Last conversations</div>
+                <div class="row row-padding">
+                    <div *ngFor="#conversation of conversations | iterateto: {to: 6}" id="search-board" class="col-md-2 col-no-padding">
+                        <div (click)="app._searchComponent.selectDeselectSearchUser($event)" 
+                            class="center-child-div">
+                            <img id="profile-image" class="navbar-brand img-circle without-padding" src="{{conversation.User.ProfileImage}}" />
+                            <span class="profile-image-text">
+                                <span *ngIf="app.selectedUser == null">Profile</span>
+                            </span>
+                            <img [hidden]="!conversation.User.Online" src="images/app/controls/online.png" class="online-img-decoration" />
+                        </div>
+                        <div class="center-child-div">{{conversation.User.Firstname}}</div>
+                        <div [hidden]="!visible">{{conversation.User.JWT}}</div>
+                    </div>
+                    </div>
+                </div>
             <a *ngIf="!app.selectedUser"
                (click)="logout()"
                class="btn btn-danger comp-decoration" href="#" role="button">Logout</a>
+        </div>
+    </div>
+    <div *ngIf="isOpenPhotos" class="row">
+        <div class="col-md-12 main-column-decoration">
+            <profilemenu-photos [photos]="photos"
+                                (onBack)="onBackPhotos()"></profilemenu-photos>
         </div>
     </div>
 </div>

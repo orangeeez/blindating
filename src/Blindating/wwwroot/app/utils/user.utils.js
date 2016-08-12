@@ -1,7 +1,7 @@
 System.register([], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var Quote;
+    var Quote, Photo, Conversation;
     return {
         setters:[],
         execute: function() {
@@ -11,6 +11,18 @@ System.register([], function(exports_1, context_1) {
                 return Quote;
             }());
             exports_1("Quote", Quote);
+            Photo = (function () {
+                function Photo() {
+                }
+                return Photo;
+            }());
+            exports_1("Photo", Photo);
+            Conversation = (function () {
+                function Conversation() {
+                }
+                return Conversation;
+            }());
+            exports_1("Conversation", Conversation);
         }
     }
 });

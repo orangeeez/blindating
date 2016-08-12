@@ -53,6 +53,8 @@ namespace ASPAngular2Test.Models
         public InformationUser()
         {
             this.Quotes = new List<UserUtils.Quote>();
+            this.Photos = new List<UserUtils.Photo>();
+            this.Conversations = new List<UserUtils.Conversation>();
         }
 
         public int ID { get; set; }
@@ -61,5 +63,9 @@ namespace ASPAngular2Test.Models
         public virtual User User { get; set; }
         [JsonIgnore]
         public virtual List<UserUtils.Quote> Quotes { get; set; }
+        [JsonIgnore]
+        public virtual List<UserUtils.Photo> Photos { get; set; }
+        [JsonIgnore]
+        public virtual List<UserUtils.Conversation> Conversations { get; set; }
     }
 }

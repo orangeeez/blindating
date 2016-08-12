@@ -54,9 +54,9 @@ export class SearchComponent implements OnInit {
                     this.app.helperPhoneIconPath = "images/app/controls/phone.png";
                 else
                     this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
+                this.app.showProfileMenu();
             });
 
-        this.app.showProfileMenu();
         this.app._helperComponent.isSearchUserSelected = true;
     }
 

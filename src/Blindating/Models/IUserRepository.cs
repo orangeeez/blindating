@@ -27,5 +27,7 @@ namespace ASPAngular2Test.Models
         string GetVKInfo(string code);
         UserUtils.Quote GetRandomQuote(int userID);
         void AddNewQuote(UserUtils.Quote quote);
+        List<UserUtils.Photo> GetPhotos(int userID);
+        List<UserUtils.Conversation> GetConversations(int userID);
     }
 }

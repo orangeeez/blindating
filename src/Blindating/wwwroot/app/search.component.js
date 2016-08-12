@@ -67,8 +67,8 @@ System.register(['angular2/core', 'angular2/router', './user.service', './app.co
                             _this.app.helperPhoneIconPath = "images/app/controls/phone.png";
                         else
                             _this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
+                        _this.app.showProfileMenu();
                     });
-                    this.app.showProfileMenu();
                     this.app._helperComponent.isSearchUserSelected = true;
                 };
                 SearchComponent.prototype.deselectSearchUser = function () {

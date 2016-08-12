@@ -4,6 +4,7 @@ var gulp = require('gulp');
 var paths = {
     npmSrc: "./node_modules/",
     libTarget: "./wwwroot/libs/",
+    cssTarget: "./wwwroot/css/"
 };
 
 var libsToMove = [
@@ -18,8 +19,18 @@ var libsToMove = [
    paths.npmSrc + '/moment/moment.js',
    paths.npmSrc + '/croppie/croppie.min.js',
    paths.npmSrc + '/jquery/dist/jquery.min.js',
+   paths.npmSrc + '/photoswipe/dist/photoswipe.min.js',
+   paths.npmSrc + '/photoswipe/dist/photoswipe-ui-default.min.js'
+];
+
+var cssToMove = [
+    paths.npmSrc + '/photoswipe/dist/photoswipe.css',
+    paths.npmSrc + '/photoswipe/dist/default-skin/default-skin.css'
 ];
 
 gulp.task('moveToLibs', function () {
     return gulp.src(libsToMove).pipe(gulp.dest(paths.libTarget));
+});
+gulp.task('moveToCSS', function () {
+    return gulp.src(cssToMove).pipe(gulp.dest(paths.cssTarget));
 });

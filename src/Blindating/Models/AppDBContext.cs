@@ -22,6 +22,7 @@ namespace ASPAngular2Test.Models
         public DbSet<OnlineUser> OnlineUsers { get; set; }
         public DbSet<InformationUser> InformationUsers { get; set; }
         public DbSet<UserUtils.Quote> Quotes { get; set; }
+        public DbSet<UserUtils.Photo> Photos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<User>()
@@ -33,6 +34,16 @@ namespace ASPAngular2Test.Models
                 .HasMany(p => p.Quotes)
                 .WithOne(i => i.Information)
                 .HasForeignKey(b => b.InformationFK);
+
+            modelBuilder.Entity<InformationUser>()
+                .HasMany(p => p.Photos)
+                .WithOne(i => i.Information)
+                .HasForeignKey(b => b.InformationPhotoFK);
+
+            modelBuilder.Entity<InformationUser>()
+                .HasMany(p => p.Conversations)
+                .WithOne(i => i.Information)
+                .HasForeignKey(b => b.InformationConversationFK);
         }
     }
 }

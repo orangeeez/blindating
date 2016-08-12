@@ -68,6 +68,36 @@ namespace ASPAngular2Test.Migrations
                     b.HasKey("ID");
                 });
 
+            modelBuilder.Entity("ASPAngular2Test.Models.UserUtils+Conversation", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("InformationConversationFK");
+
+                    b.Property<int?>("InformationID");
+
+                    b.Property<string>("JWT");
+
+                    b.HasKey("ID");
+                });
+
+            modelBuilder.Entity("ASPAngular2Test.Models.UserUtils+Photo", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Height");
+
+                    b.Property<int>("InformationPhotoFK");
+
+                    b.Property<string>("Path");
+
+                    b.Property<int>("Width");
+
+                    b.HasKey("ID");
+                });
+
             modelBuilder.Entity("ASPAngular2Test.Models.UserUtils+Quote", b =>
                 {
                     b.Property<int>("ID")
@@ -94,6 +124,20 @@ namespace ASPAngular2Test.Migrations
                     b.HasOne("ASPAngular2Test.Models.User")
                         .WithMany()
                         .HasForeignKey("UserID");
+                });
+
+            modelBuilder.Entity("ASPAngular2Test.Models.UserUtils+Conversation", b =>
+                {
+                    b.HasOne("ASPAngular2Test.Models.InformationUser")
+                        .WithMany()
+                        .HasForeignKey("InformationID");
+                });
+
+            modelBuilder.Entity("ASPAngular2Test.Models.UserUtils+Photo", b =>
+                {
+                    b.HasOne("ASPAngular2Test.Models.InformationUser")
+                        .WithMany()
+                        .HasForeignKey("InformationPhotoFK");
                 });
 
             modelBuilder.Entity("ASPAngular2Test.Models.UserUtils+Quote", b =>

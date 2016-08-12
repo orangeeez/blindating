@@ -28,6 +28,7 @@
     padding-right: 0 !important;
 }
 .right-stripe {
+    overflow-y: scroll;
 	border-left: 1px solid #e7e7e7;
     padding-left: 0 !important;
     padding-right: 0 !important;

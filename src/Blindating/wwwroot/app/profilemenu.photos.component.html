@@ -1,0 +1,15 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="header-fixed">
+            <div style="float: left;"><img (click)="back()"
+                      [src]="headerUndoIconPath" class="undo-decoration" /></div>
+            <div style="text-align: center;">Photos</div>
+        </div>
+        <div class="col-md-12 main-column-decoration col-no-padding" style="margin-top: 40px;">
+            <div *ngFor="#photo of photos" class="col-md-3 photos-decoration col-no-padding">
+                <img (click)="openGallery($event)"
+                     src="{{photo.Path}}" />
+            </div>
+        </div>
+    </div>
+</div>

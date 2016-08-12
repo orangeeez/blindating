@@ -107,18 +107,36 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                             rightColumn.style.width = rightColumnPosition + '%';
                         }
                     }
+                    //#region Get All for Profile Menu
                     if (this.selectedUser != null) {
                         this._userInfoService.GetRandomQuote(this.selectedUser.ID.toString())
                             .subscribe(function (quote) {
                             _this._profileMenuComponent.quote = quote;
+                            _this._userInfoService.GetPhotos(_this.selectedUser.ID.toString())
+                                .subscribe(function (photos) {
+                                _this._profileMenuComponent.photos = photos;
+                                _this._userInfoService.GetConversations(_this.selectedUser.ID.toString())
+                                    .subscribe(function (conversations) {
+                                    _this._profileMenuComponent.conversations = conversations;
+                                });
+                            });
                         });
                     }
                     else {
                         this._userInfoService.GetRandomQuote(this.user.ID.toString())
                             .subscribe(function (quote) {
                             _this._profileMenuComponent.quote = quote;
+                            _this._userInfoService.GetPhotos(_this.user.ID.toString())
+                                .subscribe(function (photos) {
+                                _this._profileMenuComponent.photos = photos;
+                                _this._userInfoService.GetConversations(_this.user.ID.toString())
+                                    .subscribe(function (conversations) {
+                                    _this._profileMenuComponent.conversations = conversations;
+                                });
+                            });
                         });
                     }
+                    //#endregion
                     this.profilemenuIsShow = true;
                 };
                 AppComponent.prototype.hideProfileMenu = function (event) {

@@ -92,6 +92,18 @@ namespace ASPAngular2Test.Controllers
         {
             Utils.AddNewQuote(quote);
         }
+        [HttpPost]
+        [ActionName("getphotos")]
+        public List<UserUtils.Photo> GetPhotos([FromBody]int userID)
+        {
+            return Utils.GetPhotos(userID);
+        }
+        [HttpPost]
+        [ActionName("getconversations")]
+        public List<UserUtils.Conversation> GetConversations([FromBody]int userID)
+        {
+            return Utils.GetConversations(userID);
+        }
         #endregion
     }
 }

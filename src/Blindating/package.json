@@ -17,7 +17,8 @@
     "zone.js": "^0.6.12",
     "croppie": "^2.1.0",
     "typings": "^0.8.1",
-    "jquery": "^3.0.0"
+    "jquery": "^3.0.0",
+    "photoswipe": "^4.1.1"
   },
   "devDependencies": {
     "gulp": "^3.9.0",

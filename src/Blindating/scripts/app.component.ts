@@ -16,6 +16,7 @@ import {HelperComponent}     from './helper.component'
 import {ProfileMenuComponent} from './profilemenu.component'
 import {User}                from './user'
 
+
 @Component({
   selector: 'my-app',
   templateUrl: 'app/app.component.html',
@@ -107,18 +108,36 @@ export class AppComponent {
             }
         }
 
+        //#region Get All for Profile Menu
         if (this.selectedUser != null) {
             this._userInfoService.GetRandomQuote(this.selectedUser.ID.toString())
                 .subscribe(quote => {
                     this._profileMenuComponent.quote = quote;
+                    this._userInfoService.GetPhotos(this.selectedUser.ID.toString())
+                        .subscribe(photos => {
+                            this._profileMenuComponent.photos = photos;
+                            this._userInfoService.GetConversations(this.selectedUser.ID.toString())
+                                .subscribe(conversations => {
+                                    this._profileMenuComponent.conversations = conversations;
+                                });
+                        });
                 });
         }
         else {
             this._userInfoService.GetRandomQuote(this.user.ID.toString())
                 .subscribe(quote => {
                     this._profileMenuComponent.quote = quote;
+                    this._userInfoService.GetPhotos(this.user.ID.toString())
+                        .subscribe(photos => {
+                            this._profileMenuComponent.photos = photos;
+                            this._userInfoService.GetConversations(this.user.ID.toString())
+                                .subscribe(conversations => {
+                                    this._profileMenuComponent.conversations = conversations;
+                                });
+                        });
                 });
         }
+        //#endregion
 
         this.profilemenuIsShow = true;
     }

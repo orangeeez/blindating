@@ -166,6 +166,29 @@ namespace ASPAngular2Test.Models
             _appDB.Quotes.Add(quote);
             _appDB.SaveChanges();
         }
+
+        public List<UserUtils.Photo> GetPhotos(int userID)
+        {
+            var user =(from u in _appDB.Users.Include(u => u.Information).ThenInclude(i => i.Photos)
+                       where u.ID == userID
+                       select u).SingleOrDefault();
+            var photos = user.Information.Photos;
+            return photos;
+        }
+
+        public List<UserUtils.Conversation> GetConversations(int userID)
+        {
+            var user = (from u in _appDB.Users.Include(u => u.Information).ThenInclude(i => i.Conversations)
+                        where u.ID == userID
+                        select u).SingleOrDefault();
+            var conversations = user.Information.Conversations;
+            foreach (UserUtils.Conversation conversation in conversations)
+            {
+                UserUtils.FindUser fu = new UserUtils.FindUser { Field = "JWT", Value = conversation.JWT };
+                conversation.User = this.GetUser(fu);
+            }
+            return conversations;
+        }
         #endregion
     }
 }

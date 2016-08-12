@@ -33,6 +33,16 @@ System.register(['angular2/http', 'angular2/core'], function(exports_1, context_
                     return this.http.post(this.api + "/getrandomquote", body, this.options)
                         .map(function (res) { return res.json(); });
                 };
+                UserInfoService.prototype.GetPhotos = function (userID) {
+                    var body = userID;
+                    return this.http.post(this.api + "/getphotos", body, this.options)
+                        .map(function (res) { return res.json(); });
+                };
+                UserInfoService.prototype.GetConversations = function (userID) {
+                    var body = userID;
+                    return this.http.post(this.api + "/getconversations", body, this.options)
+                        .map(function (res) { return res.json(); });
+                };
                 UserInfoService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [http_1.Http])

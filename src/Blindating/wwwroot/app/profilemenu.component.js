@@ -1,4 +1,4 @@
-System.register(['angular2/core', './user.service', './app.component', 'angular2/router', 'ng2-bootstrap/ng2-bootstrap'], function(exports_1, context_1) {
+System.register(['angular2/core', './user.service', './app.component', 'angular2/router', './pipes/iterateto.pipe', 'ng2-bootstrap/ng2-bootstrap', './profilemenu.photos.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -13,7 +13,7 @@ System.register(['angular2/core', './user.service', './app.component', 'angular2
     var __param = (this && this.__param) || function (paramIndex, decorator) {
         return function (target, key) { decorator(target, key, paramIndex); }
     };
-    var core_1, user_service_1, app_component_1, router_1, ng2_bootstrap_1;
+    var core_1, user_service_1, app_component_1, router_1, iterateto_pipe_1, ng2_bootstrap_1, profilemenu_photos_component_1;
     var ProfileMenuComponent;
     return {
         setters:[
@@ -29,8 +29,14 @@ System.register(['angular2/core', './user.service', './app.component', 'angular2
             function (router_1_1) {
                 router_1 = router_1_1;
             },
+            function (iterateto_pipe_1_1) {
+                iterateto_pipe_1 = iterateto_pipe_1_1;
+            },
             function (ng2_bootstrap_1_1) {
                 ng2_bootstrap_1 = ng2_bootstrap_1_1;
+            },
+            function (profilemenu_photos_component_1_1) {
+                profilemenu_photos_component_1 = profilemenu_photos_component_1_1;
             }],
         execute: function() {
             ProfileMenuComponent = (function () {
@@ -43,6 +49,7 @@ System.register(['angular2/core', './user.service', './app.component', 'angular2
                         { title: 'Eductaion', active: false },
                         { title: 'Media', active: false }
                     ];
+                    this.isOpenPhotos = false;
                     this.app = app;
                 }
                 ProfileMenuComponent.prototype.ngOnInit = function () { };
@@ -62,12 +69,50 @@ System.register(['angular2/core', './user.service', './app.component', 'angular2
                         }
                     });
                 };
+                ProfileMenuComponent.prototype.openPhotos = function () {
+                    this.isOpenPhotos = true;
+                };
+                ProfileMenuComponent.prototype.onBackPhotos = function () {
+                    this.isOpenPhotos = false;
+                };
+                //#region OpenGallery
+                ProfileMenuComponent.prototype.openGallery = function (event) {
+                    var items = [];
+                    for (var _i = 0, _a = this.photos; _i < _a.length; _i++) {
+                        var photo = _a[_i];
+                        if ("http://localhost:59993/" + photo.Path === event.target['src'])
+                            items.unshift({
+                                src: 'http://localhost:59993/' + photo.Path,
+                                w: photo.Width,
+                                h: photo.Height
+                            });
+                        else
+                            items.push({
+                                src: 'http://localhost:59993/' + photo.Path,
+                                w: photo.Width,
+                                h: photo.Height
+                            });
+                    }
+                    var openPhotoSwipe = function (items) {
+                        var pswpElement = document.querySelectorAll('.pswp')[0];
+                        var options = {
+                            history: false,
+                            focus: false,
+                            showAnimationDuration: 0,
+                            hideAnimationDuration: 0
+                        };
+                        var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+                        gallery.init();
+                    };
+                    openPhotoSwipe(items);
+                };
                 ProfileMenuComponent = __decorate([
                     core_1.Component({
                         selector: 'profilemenu',
                         templateUrl: 'app/profilemenu.component.html',
-                        styleUrls: ['app/profilemenu.component.css'],
-                        directives: [ng2_bootstrap_1.TAB_DIRECTIVES]
+                        styleUrls: ['app/profilemenu.component.css', 'app/search.component.css'],
+                        pipes: [iterateto_pipe_1.IterateToPipe],
+                        directives: [ng2_bootstrap_1.TAB_DIRECTIVES, profilemenu_photos_component_1.ProfileMenuPhotosComponent]
                     }),
                     __param(0, core_1.Host()),
                     __param(0, core_1.Inject(core_1.forwardRef(function () { return app_component_1.AppComponent; }))), 
