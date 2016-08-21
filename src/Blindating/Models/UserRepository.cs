@@ -72,6 +72,7 @@ namespace ASPAngular2Test.Models
             List<User> users = new List<User>();
             var query = from r in _appDB.Users
                         select r;
+
             users.AddRange(query);
             users.RemoveAll(user => user.JWT == jwt);
             return users;

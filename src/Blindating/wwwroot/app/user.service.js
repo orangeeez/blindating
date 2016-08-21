@@ -1,4 +1,4 @@
-System.register(['angular2/http', 'angular2/core', 'rxjs/Observable'], function(exports_1, context_1) {
+System.register(['angular2/http', 'angular2/core', 'rxjs/Observable', './mock/utils'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/http', 'angular2/core', 'rxjs/Observable'], function(
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var http_1, core_1, Observable_1;
+    var http_1, core_1, Observable_1, utils_1;
     var UserService;
     return {
         setters:[
@@ -22,6 +22,9 @@ System.register(['angular2/http', 'angular2/core', 'rxjs/Observable'], function(
             },
             function (Observable_1_1) {
                 Observable_1 = Observable_1_1;
+            },
+            function (utils_1_1) {
+                utils_1 = utils_1_1;
             }],
         execute: function() {
             UserService = (function () {
@@ -39,13 +42,13 @@ System.register(['angular2/http', 'angular2/core', 'rxjs/Observable'], function(
                 //#region UserRepository
                 UserService.prototype.Register = function (user) {
                     var body = JSON.stringify(user);
-                    return this.http.post(this.api + "/register", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/register", body, this.options)
                         .map(function (user) { return user.text(); })
                         .catch(this.handleError);
                 };
                 UserService.prototype.Login = function (user) {
                     var body = JSON.stringify(user);
-                    return this.http.post(this.api + "/login", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/login", body, this.options)
                         .map(function (logged) { return logged.json(); })
                         .catch(this.handleError);
                 };
@@ -55,25 +58,25 @@ System.register(['angular2/http', 'angular2/core', 'rxjs/Observable'], function(
                         Value: value
                     };
                     var body = JSON.stringify(queryObj);
-                    return this.http.post(this.api + "/getuser", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getuser", body, this.options)
                         .map(function (finded) { return finded.json(); })
                         .catch(this.handleError);
                 };
                 UserService.prototype.GetUsers = function (jwt) {
                     var body = "\"" + jwt + "\"";
-                    return this.http.post(this.api + "/getusers", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getusers", body, this.options)
                         .map(function (res) { return res.json(); })
                         .catch(this.handleError);
                 };
                 UserService.prototype.IsExistJWT = function (jwt) {
                     var body = "\"" + jwt + "\"";
-                    return this.http.post(this.api + "/isexistjwt", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/isexistjwt", body, this.options)
                         .map(function (res) { return JSON.parse(res.text()); })
                         .catch(this.handleError);
                 };
                 UserService.prototype.IsExistEmail = function (email) {
                     var body = "\"" + email + "\"";
-                    return this.http.post(this.api + "/isexistemail", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/isexistemail", body, this.options)
                         .map(function (res) { return JSON.parse(res.text()); })
                         .catch(this.handleError);
                 };
@@ -84,12 +87,12 @@ System.register(['angular2/http', 'angular2/core', 'rxjs/Observable'], function(
                 //#region OnlineUserRepository
                 UserService.prototype.DeleteOnlineUser = function (userID) {
                     var body = userID;
-                    return this.http.post(this.api + "/deleteonlineuser", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/deleteonlineuser", body, this.options)
                         .map(function (res) { return !!res.text(); })
                         .catch(this.handleError);
                 };
                 UserService.prototype.GetOnlineUsers = function () {
-                    return this.http.get(this.api + "/getonlineusers", this.options)
+                    return this.http.get(utils_1.API_ADDRESS + this.api + "/getonlineusers", this.options)
                         .map(function (res) { return res.json(); })
                         .catch(this.handleError);
                 };

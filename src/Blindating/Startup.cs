@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ASPAngular2Test.Models;
 using Microsoft.Data.Entity;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ASPAngular2Test
 {
@@ -32,6 +31,7 @@ namespace ASPAngular2Test
             services.AddSingleton<IOnelineUserRepository, UserRepository>();
             services.AddSingleton<IUtils, UserRepository>();
             services.AddSingleton<IUtilsRepository, UtilsRepository>();
+            services.AddCors();
             services.AddMvc();
             services.AddEntityFramework()
                 .AddSqlServer()
@@ -51,6 +51,10 @@ namespace ASPAngular2Test
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
+            app.UseCors(builder => builder
+                                   .AllowAnyHeader()
+                                   .AllowAnyMethod()
+                                   .AllowAnyOrigin());
             app.UseMvc();
         }
 

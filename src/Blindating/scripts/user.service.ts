@@ -2,6 +2,7 @@ import {Http, Response, Headers, RequestOptions} from 'angular2/http'
 import {Injectable}     from 'angular2/core'
 import {Observable}     from 'rxjs/Observable'
 import {User}           from './user'
+import {API_ADDRESS}    from './mock/utils'
 
 @Injectable()
 export class UserService {
@@ -21,7 +22,7 @@ export class UserService {
     Register(user: User): Observable<string> {
         let body = JSON.stringify(user);
 
-        return this.http.post(this.api + "/register", body, this.options)
+        return this.http.post(API_ADDRESS + this.api + "/register", body, this.options)
             .map(user => user.text())
             .catch(this.handleError)
     }
@@ -29,7 +30,7 @@ export class UserService {
     Login(user: User): Observable<User> {
         let body = JSON.stringify(user);
 
-        return this.http.post(this.api + "/login", body, this.options)
+        return this.http.post(API_ADDRESS + this.api + "/login", body, this.options)
             .map(logged => logged.json())
             .catch(this.handleError)
     }
@@ -41,7 +42,7 @@ export class UserService {
         }
         let body = JSON.stringify(queryObj);
 
-        return this.http.post(this.api + "/getuser", body, this.options)
+        return this.http.post(API_ADDRESS + this.api + "/getuser", body, this.options)
             .map(finded => finded.json())
             .catch(this.handleError)
     }
@@ -49,7 +50,7 @@ export class UserService {
     GetUsers(jwt: string): Observable<Array<User>> {
         let body = "\"" + jwt + "\"";
 
-        return this.http.post(this.api + "/getusers", body, this.options)
+        return this.http.post(API_ADDRESS + this.api + "/getusers", body, this.options)
             .map(res => res.json())
             .catch(this.handleError)
     }
@@ -57,7 +58,7 @@ export class UserService {
     IsExistJWT(jwt: string): Observable<boolean> {
         let body = "\"" + jwt + "\"";
 
-        return this.http.post(this.api + "/isexistjwt", body, this.options)
+        return this.http.post(API_ADDRESS + this.api + "/isexistjwt", body, this.options)
             .map(res => JSON.parse(res.text()))
             .catch(this.handleError)
     }
@@ -65,7 +66,7 @@ export class UserService {
     IsExistEmail(email: string): Observable<boolean> {
         let body = "\"" + email + "\"";
 
-        return this.http.post(this.api + "/isexistemail", body, this.options)
+        return this.http.post(API_ADDRESS + this.api + "/isexistemail", body, this.options)
             .map(res => JSON.parse(res.text()))
             .catch(this.handleError)
     }
@@ -79,14 +80,14 @@ export class UserService {
     DeleteOnlineUser(userID: string): Observable<boolean> {
         let body = userID;
 
-        return this.http.post(this.api + "/deleteonlineuser", body, this.options)
+        return this.http.post(API_ADDRESS + this.api + "/deleteonlineuser", body, this.options)
             .map(res => !!res.text())
             .catch(this.handleError)
     }
 
     GetOnlineUsers(): Observable<Array<User>>
     {
-        return this.http.get(this.api + "/getonlineusers", this.options)
+        return this.http.get(API_ADDRESS + this.api + "/getonlineusers", this.options)
             .map(res => res.json())
             .catch(this.handleError)
     }

@@ -1,6 +1,7 @@
 ﻿import {Http, Response, Headers, RequestOptions, Jsonp} from 'angular2/http'
 import {Injectable}     from 'angular2/core'
 import {Observable}     from 'rxjs/Observable'
+import {API_ADDRESS}    from './../mock/utils'
 
 @Injectable()
 export class SocialService {
@@ -13,7 +14,7 @@ export class SocialService {
     GetVKInfo(code: string) {
         let body = "\"" + code + "\"";
 
-        return this.http.post(this.api + "/getvkinfo", body, this.options)
+        return this.http.post(API_ADDRESS + this.api + "/getvkinfo", body, this.options)
             .map(res => res.json());
     }
 }

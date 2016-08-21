@@ -1,4 +1,4 @@
-System.register(['angular2/http', 'angular2/core'], function(exports_1, context_1) {
+System.register(['angular2/http', 'angular2/core', './../mock/utils'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/http', 'angular2/core'], function(exports_1, context_
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var http_1, core_1;
+    var http_1, core_1, utils_1;
     var SocialService;
     return {
         setters:[
@@ -19,6 +19,9 @@ System.register(['angular2/http', 'angular2/core'], function(exports_1, context_
             },
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (utils_1_1) {
+                utils_1 = utils_1_1;
             }],
         execute: function() {
             SocialService = (function () {
@@ -30,7 +33,7 @@ System.register(['angular2/http', 'angular2/core'], function(exports_1, context_
                 }
                 SocialService.prototype.GetVKInfo = function (code) {
                     var body = "\"" + code + "\"";
-                    return this.http.post(this.api + "/getvkinfo", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getvkinfo", body, this.options)
                         .map(function (res) { return res.json(); });
                 };
                 SocialService = __decorate([
