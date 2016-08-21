@@ -36,3 +36,16 @@ html, body {
 #dashboard .textbox .textarea:focus {
     outline: none;
 }
+#profilemenu input {
+    border: none;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    color: #337ab7;
+}
+#profilemenu input:focus {
+    outline: none;
+}
+#profilemenu .dropdown-menu {
+    overflow-y: scroll;
+    max-height: 190px;
+}

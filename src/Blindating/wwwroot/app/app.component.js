@@ -1,4 +1,4 @@
-System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.service', './services/social.service', './services/userinfo.service', './dashboard.component', './profile.component', './login.component', './search.component', './footer.component', './header.component', './helper.component', './profilemenu.component'], function(exports_1, context_1) {
+System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.service', './services/social.service', './services/userinfo.service', './services/utils.service', './dashboard.component', './profile.component', './login.component', './search.component', './footer.component', './header.component', './helper.component', './profilemenu.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var router_1, http_1, core_1, router_2, user_service_1, social_service_1, userinfo_service_1, dashboard_component_1, profile_component_1, login_component_1, search_component_1, footer_component_1, header_component_1, helper_component_1, profilemenu_component_1;
+    var router_1, http_1, core_1, router_2, user_service_1, social_service_1, userinfo_service_1, utils_service_1, dashboard_component_1, profile_component_1, login_component_1, search_component_1, footer_component_1, header_component_1, helper_component_1, profilemenu_component_1;
     var AppComponent;
     return {
         setters:[
@@ -32,6 +32,9 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
             },
             function (userinfo_service_1_1) {
                 userinfo_service_1 = userinfo_service_1_1;
+            },
+            function (utils_service_1_1) {
+                utils_service_1 = utils_service_1_1;
             },
             function (dashboard_component_1_1) {
                 dashboard_component_1 = dashboard_component_1_1;
@@ -187,7 +190,7 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                         templateUrl: 'app/app.component.html',
                         styleUrls: ['app/app.component.css', 'css/styles.css'],
                         directives: [router_1.ROUTER_DIRECTIVES, footer_component_1.FooterComponent, header_component_1.HeaderComponent, helper_component_1.HelperComponent, profilemenu_component_1.ProfileMenuComponent],
-                        providers: [http_1.HTTP_PROVIDERS, router_1.ROUTER_PROVIDERS, http_1.JSONP_PROVIDERS, user_service_1.UserService, social_service_1.SocialService, userinfo_service_1.UserInfoService]
+                        providers: [http_1.HTTP_PROVIDERS, router_1.ROUTER_PROVIDERS, http_1.JSONP_PROVIDERS, user_service_1.UserService, social_service_1.SocialService, userinfo_service_1.UserInfoService, utils_service_1.UtilsService]
                     }),
                     router_1.RouteConfig([
                         { path: '/login', name: 'Login', component: login_component_1.LoginComponent },

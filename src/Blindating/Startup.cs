@@ -31,6 +31,7 @@ namespace ASPAngular2Test
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IOnelineUserRepository, UserRepository>();
             services.AddSingleton<IUtils, UserRepository>();
+            services.AddSingleton<IUtilsRepository, UtilsRepository>();
             services.AddMvc();
             services.AddEntityFramework()
                 .AddSqlServer()

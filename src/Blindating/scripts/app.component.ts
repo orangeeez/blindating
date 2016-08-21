@@ -5,7 +5,7 @@ import {Router}              from 'angular2/router'
 import {UserService}         from './user.service'
 import {SocialService}       from './services/social.service'
 import {UserInfoService}       from './services/userinfo.service'
-
+import {UtilsService}       from './services/utils.service'
 import {DashboardComponent}  from './dashboard.component'
 import {ProfileComponent}    from './profile.component'
 import {LoginComponent}      from './login.component'
@@ -22,7 +22,7 @@ import {User}                from './user'
   templateUrl: 'app/app.component.html',
   styleUrls: ['app/app.component.css', 'css/styles.css'],
   directives: [ROUTER_DIRECTIVES, FooterComponent, HeaderComponent, HelperComponent, ProfileMenuComponent],
-  providers: [HTTP_PROVIDERS, ROUTER_PROVIDERS, JSONP_PROVIDERS, UserService, SocialService, UserInfoService]
+  providers: [HTTP_PROVIDERS, ROUTER_PROVIDERS, JSONP_PROVIDERS, UserService, SocialService, UserInfoService, UtilsService]
 })
 @RouteConfig([
   { path: '/login',      name: 'Login',      component: LoginComponent },

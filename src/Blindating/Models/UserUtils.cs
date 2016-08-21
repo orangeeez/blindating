@@ -57,5 +57,18 @@ namespace ASPAngular2Test.Models
             [NotMapped]
             public User User { get; set; }
         }
+
+        public class Question
+        {
+            public int ID { get; set; }
+            public int InformationPersonalFK { get; set; }
+
+            public string Message { get; set; }
+
+            public virtual InformationUser Information { get; set; }
+
+            [NotMapped]
+            public int UserID { get; set; }
+        }
     }
 }

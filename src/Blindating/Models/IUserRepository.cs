@@ -29,5 +29,6 @@ namespace ASPAngular2Test.Models
         void AddNewQuote(UserUtils.Quote quote);
         List<UserUtils.Photo> GetPhotos(int userID);
         List<UserUtils.Conversation> GetConversations(int userID);
+        List<string> GetCities(string country);
     }
 }

@@ -108,7 +108,7 @@ System.register(['angular2/core', 'angular2/router', './app.component', './user.
                         _this.getAccessToken();
                     };
                     this.getAccessToken = function () {
-                        var url = 'https://oauth.vk.com/authorize?client_id=5549517&display=popup&redirect_uri=http://localhost:59993/utils/blank.html&response_type=code&scope=email';
+                        var url = 'https://oauth.vk.com/authorize?client_id=5549517&display=popup&redirect_uri=http://192.168.0.114:59993/utils/blank.html&response_type=code&scope=email';
                         _this.windowVKAuth = _this.popupCenter(url, '', 660, 370);
                         _this.setCodeInterval = setInterval(_this.setAccessTokenInterval, 1000);
                     };

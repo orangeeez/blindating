@@ -1,4 +1,4 @@
-﻿<div class="container-fluid">
+﻿<div id="profilemenu" class="container-fluid">
     <div *ngIf="!isOpenPhotos" class="row">
         <div class="col-md-12 main-column-decoration">
             <tabset>
@@ -27,22 +27,104 @@
                      (deselect)="tabs[3].active = false">
                 </tab>
             </tabset>
-            <div class="row" style="margin-top: 5px;">
+            <div class="row menu-5px-margin">
                 <div class="col-md-4">
-                    <img class="navbar-brand img-circle img-decoration" alt="Brand" [src]="app.selectedUser?.ProfileImage || app.user.ProfileImage" />
+                    <img [src]="app.selectedUser?.ProfileImage || app.user.ProfileImage"
+                         class="navbar-brand img-circle img-decoration" alt="Brand" />
                 </div>
                 <div class="col-md-8">
                     <span id="firstname" class="requisites-decoration">{{app.selectedUser?.Firstname || app.user.Firstname}}</span>
                     <span id="lastname" class="requisites-decoration">{{app.selectedUser?.Lastname || app.user.Lastname}}</span>
                 </div>
             </div>
-            <div *ngIf="quote" style="margin-top: 5px;">
+            <div *ngIf="quote" class="menu-5px-margin">
                 <blockquote>
                     <p>{{quote?.Content}}</p>
                     <footer>{{quote?.Author}}</footer>
                 </blockquote>
             </div>
-            <div *ngIf="photos" style="margin-top: 5px;">
+            <div *ngIf="purpose" class="menu-5px-margin">
+                <div class="headerline-nobackground">I WANT TO BLIND WITH</div>
+                <span dropdown>
+                    <input dropdownToggle type="text" id="gender-dropdown" placeholder="Gender" readonly 
+                           [value]="gender"
+                           [size]="gender?.length || 6" />
+                    <span>for</span>
+                    <ul class="dropdown-menu" dropdownMenu aria-labelledby="gender-dropdown">
+                        <li *ngFor="#gender of genders">
+                            <a id="gender" class="dropdown-item"
+                               (click)="dropdownSelect($event)">{{gender}}</a>
+                        </li>
+                    </ul>
+                    <span dropdown>
+                        <input dropdownToggle type="text" id="relation-dropdown" placeholder="Relationship" readonly
+                               [value]="relation"
+                               [size]="relation?.length || 11" />
+                        <ul class="dropdown-menu" dropdownMenu aria-labelledby="relation-dropdown">
+                            <li *ngFor="#relation of relationships">
+                                <a id="relation" class="dropdown-item"
+                                   (click)="dropdownSelect($event)">{{relation}}</a>
+                            </li>
+                        </ul>
+                    </span>
+                </span>
+                <div>
+                    <span dropdown>
+                        <input dropdownToggle type="text" id="agefrom-dropdown" placeholder="From" readonly
+                               [value]="age.from"
+                               [size]="age.from?.length || 4" />
+                        <span>to</span>
+                        <ul class="dropdown-menu" dropdownMenu aria-labelledby="agefrom-dropdown">
+                            <li *ngFor="#age of ages">
+                                <a id="age-from" class="dropdown-item"
+                                   (click)="dropdownSelect($event)">{{age}}</a>
+                            </li>
+                        </ul>
+                    </span>
+                    <span dropdown>
+                        <input dropdownToggle type="text" id="ageto-dropdown" placeholder="To" readonly
+                            [value]="age.to"
+                            [size]="age.to?.length || 2" />
+                        <ul class="dropdown-menu" dropdownMenu aria-labelledby="ageto-dropdown">
+                            <li *ngFor="#age of ages">
+                                <a id="age-to" class="dropdown-item"
+                                (click)="dropdownSelect($event)">{{age}}</a>
+                            </li>
+                        </ul>
+                    </span>
+                        <span>years old</span>
+                </div>
+                <div>
+                    <span>In</span>
+                    <span dropdown>
+                        <input dropdownToggle type="text" id="country-dropdown" placeholder="Country"
+                               [(ngModel)]="country"
+                               [size]="country?.length || 7"
+                               (keyup)="searchDropdownInput($event)" />
+                        <ul class="dropdown-menu" dropdownMenu aria-labelledby="country-dropdown">
+                            <li *ngFor="#country of countries">
+                                <a id="country" class="dropdown-item"
+                                   (click)="dropdownSelect($event)">{{country}}</a>
+                            </li>
+                        </ul>
+                    </span>
+                    <span dropdown>
+                        <input dropdownToggle type="text" id="city-dropdown" placeholder="City"
+                               [(ngModel)]="city"
+                               [size]="city?.length || 4" 
+                               (keyup)="searchDropdownInput($event)" />
+                        <ul class="dropdown-menu" dropdownMenu aria-labelledby="city-dropdown">
+                            <li *ngFor="#city of cities">
+                                <a id="city" class="dropdown-item"
+                                   (click)="dropdownSelect($event)">{{city}}</a>
+                            </li>
+                        </ul>
+                    </span>
+                    <!--<input id="country" placeholder="Country" size="7" />
+                    <input id="city" placeholder="City" size="4" />-->
+                </div>
+            </div>
+            <div *ngIf="photos" class="menu-5px-margin">
                 <div (click)="openPhotos()"
                      class="headerline-decoration">Photos</div>
                 <div class="row row-padding">
@@ -52,7 +134,7 @@
                     </div>
                 </div>
             </div>
-            <div *ngIf="conversations" style="margin-top: 5px;">
+            <div *ngIf="conversations" class="menu-5px-margin">
                 <div class="headerline-decoration">Last conversations</div>
                 <div class="row row-padding">
                     <div *ngFor="#conversation of conversations | iterateto: {to: 6}" id="search-board" class="col-md-2 col-no-padding">

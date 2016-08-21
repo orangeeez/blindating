@@ -270,7 +270,7 @@ export class LoginComponent implements OnInit {
     }
 
     private getAccessToken = () => {
-        let url = 'https://oauth.vk.com/authorize?client_id=5549517&display=popup&redirect_uri=http://localhost:59993/utils/blank.html&response_type=code&scope=email'
+        let url = 'https://oauth.vk.com/authorize?client_id=5549517&display=popup&redirect_uri=http://192.168.0.114:59993/utils/blank.html&response_type=code&scope=email'
         this.windowVKAuth = this.popupCenter(url, '', 660, 370);
 
         this.setCodeInterval = setInterval(this.setAccessTokenInterval, 1000);

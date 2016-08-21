@@ -31,4 +31,11 @@ export class UserInfoService {
         return this.http.post(this.api + "/getconversations", body, this.options)
             .map(res => res.json());
     }
+
+    GetCities(country: string) {
+        let body = "\"" + country + "\"";
+
+        return this.http.post(this.api + "/getcities", body, this.options)
+            .map(res => res.json());
+    }
 }

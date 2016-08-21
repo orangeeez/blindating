@@ -8,6 +8,7 @@
 }
 .img-decoration {
     height: 90px;
+    width: 90px;
     padding: 0;
 }
 .requisites-decoration {
@@ -21,7 +22,14 @@
     background-color: #eee;
     padding-left: 10px;
 }
+.headerline-nobackground {
+    font-size: 17px;
+}
 .photos-decoration img {
+    cursor: pointer;
+    max-width: 100%;
+}
+.photos-decoration img:hover {
     cursor: pointer;
     max-width: 100%;
 }
@@ -60,3 +68,10 @@ blockquote {
 .header-fixed img {
     height: 25px;
 }
+.menu-5px-margin {
+    margin-top: 5px;
+}
+::-webkit-input-placeholder { font-size: 13px; padding-left: 5px; }
+::-moz-placeholder { font-size: 13px; padding-left: 5px; }
+:-ms-input-placeholder { font-size: 13px; padding-left: 5px; }
+input:-moz-placeholder { font-size: 13px; padding-left: 5px; }

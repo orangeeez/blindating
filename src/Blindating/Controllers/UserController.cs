@@ -104,6 +104,12 @@ namespace ASPAngular2Test.Controllers
         {
             return Utils.GetConversations(userID);
         }
+        [HttpPost]
+        [ActionName("getcities")]
+        public List<string> GetCities([FromBody] string country)
+        {
+            return Utils.GetCities(country);
+        }
         #endregion
     }
 }

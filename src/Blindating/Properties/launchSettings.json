@@ -17,6 +17,8 @@
     },
     "web": {
       "commandName": "web",
+      "launchBrowser": true,
+      "launchUrl": "http://192.168.0.114:59993/",
       "environmentVariables": {
         "Hosting:Environment": "Development"
       }

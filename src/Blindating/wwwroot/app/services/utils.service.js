@@ -11,7 +11,7 @@ System.register(['angular2/http', 'angular2/core'], function(exports_1, context_
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var http_1, core_1;
-    var UserInfoService;
+    var UtilsService;
     return {
         setters:[
             function (http_1_1) {
@@ -21,40 +21,20 @@ System.register(['angular2/http', 'angular2/core'], function(exports_1, context_
                 core_1 = core_1_1;
             }],
         execute: function() {
-            UserInfoService = (function () {
-                function UserInfoService(http) {
+            UtilsService = (function () {
+                function UtilsService(http) {
                     this.http = http;
-                    this.api = 'api/user';
+                    this.api = 'api/utils';
                     this.headers = new http_1.Headers({ 'Content-Type': 'application/json' });
                     this.options = new http_1.RequestOptions({ headers: this.headers });
                 }
-                UserInfoService.prototype.GetRandomQuote = function (userID) {
-                    var body = userID;
-                    return this.http.post(this.api + "/getrandomquote", body, this.options)
-                        .map(function (res) { return res.json(); });
-                };
-                UserInfoService.prototype.GetPhotos = function (userID) {
-                    var body = userID;
-                    return this.http.post(this.api + "/getphotos", body, this.options)
-                        .map(function (res) { return res.json(); });
-                };
-                UserInfoService.prototype.GetConversations = function (userID) {
-                    var body = userID;
-                    return this.http.post(this.api + "/getconversations", body, this.options)
-                        .map(function (res) { return res.json(); });
-                };
-                UserInfoService.prototype.GetCities = function (country) {
-                    var body = "\"" + country + "\"";
-                    return this.http.post(this.api + "/getcities", body, this.options)
-                        .map(function (res) { return res.json(); });
-                };
-                UserInfoService = __decorate([
+                UtilsService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [http_1.Http])
-                ], UserInfoService);
-                return UserInfoService;
+                ], UtilsService);
+                return UtilsService;
             }());
-            exports_1("UserInfoService", UserInfoService);
+            exports_1("UtilsService", UtilsService);
         }
     }
 });

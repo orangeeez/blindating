@@ -23,6 +23,8 @@ namespace ASPAngular2Test.Models
         public DbSet<InformationUser> InformationUsers { get; set; }
         public DbSet<UserUtils.Quote> Quotes { get; set; }
         public DbSet<UserUtils.Photo> Photos { get; set; }
+        public DbSet<Utils.Country> Countries { get; set; }
+        public DbSet<Utils.City> Cities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<User>()

@@ -115,7 +115,7 @@ namespace ASPAngular2Test.Models
         {
             List<User> onlineUsers = new List<User>();
             var query = from r in _appDB.OnlineUsers
-                    select r.User;
+                        select r.User;
             onlineUsers.AddRange(query);
             return onlineUsers;
         }
@@ -188,6 +188,17 @@ namespace ASPAngular2Test.Models
                 conversation.User = this.GetUser(fu);
             }
             return conversations;
+        }
+
+        public List<string> GetCities(string country)
+        {
+            string abr = (from c in _appDB.Countries
+                         where c.En == country
+                         select c.Abr).FirstOrDefault();
+
+            return (from city in _appDB.Cities
+                    where city.Abr == abr
+                    select city.En).ToList();
         }
         #endregion
     }

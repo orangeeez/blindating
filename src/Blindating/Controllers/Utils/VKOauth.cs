@@ -62,7 +62,7 @@ namespace ASPAngular2Test.Controllers.Utils
 
         public static string GetAccessTokenUrl(String app_id, String app_secret, String code)
         {
-            return String.Format(@"https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&code={2}&redirect_uri=http://localhost:59993/utils/blank.html", app_id, app_secret, code);
+            return String.Format(@"https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&code={2}&redirect_uri=http://192.168.0.114:59993/utils/blank.html", app_id, app_secret, code);
         }
 
         //public static string GetApiUrl(string app_id, string method, string sig, )
