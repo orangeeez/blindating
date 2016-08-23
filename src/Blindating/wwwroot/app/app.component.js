@@ -82,6 +82,8 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                     this.helperPhoneHangupIconPath = "images/app/controls/phone-hang-up-inactive.png";
                     /* Profilemenu */
                     this.profilemenuIsShow = false;
+                    this.profilemenuAcceptIconPath = "images/app/controls/accept.png";
+                    this.profilemenuDeclineIconPath = "images/app/controls/decline.png";
                     this._router.navigate(['Login']);
                     window.onbeforeunload = function (e) {
                         _userService.DeleteOnlineUser(_userService.user.ID.toString())
@@ -111,34 +113,29 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                         }
                     }
                     //#region Get All for Profile Menu
-                    if (this.selectedUser != null) {
-                        this._userInfoService.GetRandomQuote(this.selectedUser.ID.toString())
-                            .subscribe(function (quote) {
-                            _this._profileMenuComponent.quote = quote;
-                            _this._userInfoService.GetPhotos(_this.selectedUser.ID.toString())
-                                .subscribe(function (photos) {
-                                _this._profileMenuComponent.photos = photos;
-                                _this._userInfoService.GetConversations(_this.selectedUser.ID.toString())
-                                    .subscribe(function (conversations) {
-                                    _this._profileMenuComponent.conversations = conversations;
+                    var tuser;
+                    if (this.selectedUser != null)
+                        tuser = this.selectedUser;
+                    else
+                        tuser = this.user;
+                    this._userInfoService.GetRandomQuote(tuser.ID.toString())
+                        .subscribe(function (quote) {
+                        _this._profileMenuComponent.quote = quote;
+                        _this._userInfoService.GetPhotos(tuser.ID.toString())
+                            .subscribe(function (photos) {
+                            _this._profileMenuComponent.photos = photos;
+                            _this._userInfoService.GetConversations(tuser.ID.toString())
+                                .subscribe(function (conversations) {
+                                _this._profileMenuComponent.conversations = conversations;
+                                _this.updateConversationsData(_this._profileMenuComponent.conversations);
+                                _this._userInfoService.GetQuestions(tuser.ID.toString())
+                                    .subscribe(function (questions) {
+                                    _this._profileMenuComponent.questions = questions;
+                                    _this._profileMenuComponent.question = questions[0].Message;
                                 });
                             });
                         });
-                    }
-                    else {
-                        this._userInfoService.GetRandomQuote(this.user.ID.toString())
-                            .subscribe(function (quote) {
-                            _this._profileMenuComponent.quote = quote;
-                            _this._userInfoService.GetPhotos(_this.user.ID.toString())
-                                .subscribe(function (photos) {
-                                _this._profileMenuComponent.photos = photos;
-                                _this._userInfoService.GetConversations(_this.user.ID.toString())
-                                    .subscribe(function (conversations) {
-                                    _this._profileMenuComponent.conversations = conversations;
-                                });
-                            });
-                        });
-                    }
+                    });
                     //#endregion
                     this.profilemenuIsShow = true;
                 };
@@ -166,6 +163,16 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                     if (event.x < window.innerWidth - this.rightColumn.clientWidth && this.profilemenuIsShow) {
                         this.hideProfileMenu();
                         this.profilemenuIsShow = false;
+                    }
+                };
+                AppComponent.prototype.updateConversationsData = function (conversations) {
+                    console.log('updateConversations');
+                    for (var _i = 0, conversations_1 = conversations; _i < conversations_1.length; _i++) {
+                        var c = conversations_1[_i];
+                        var start = new Date(Date.parse(c.Start.toString()));
+                        var end = new Date(Date.parse(c.Start.toString()));
+                        c.StartString = start.getFullYear() + '/' + start.getMonth() + '/' + start.getDate();
+                        c.EndString = end.getFullYear() + '/' + end.getMonth() + '/' + end.getDate();
                     }
                 };
                 __decorate([

@@ -14,7 +14,9 @@
           <router-outlet></router-outlet>
       </div>
       <div (mouseout)="onMouseOutProfileMenu($event)" id="right-column" class="fill right-stripe col-md-1">
-          <profilemenu *ngIf="profilemenuIsShow"></profilemenu>
+          <profilemenu *ngIf="profilemenuIsShow"
+                       [acceptIconPath]="profilemenuAcceptIconPath"
+                       [declineIconPath]="profilemenuDeclineIconPath"></profilemenu>
       </div>
     </div>
 </div>

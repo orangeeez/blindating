@@ -8,9 +8,10 @@ using ASPAngular2Test.Models;
 namespace ASPAngular2Test.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20160821202602_AddPreferenceTable")]
+    partial class AddPreferenceTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -73,17 +74,9 @@ namespace ASPAngular2Test.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Duration");
-
-                    b.Property<DateTime>("End");
-
                     b.Property<int>("InformationConversationFK");
 
                     b.Property<string>("JWT");
-
-                    b.Property<string>("Length");
-
-                    b.Property<DateTime>("Start");
 
                     b.HasKey("ID");
                 });
@@ -122,18 +115,6 @@ namespace ASPAngular2Test.Migrations
                     b.Property<string>("Relationship");
 
                     b.Property<string>("To");
-
-                    b.HasKey("ID");
-                });
-
-            modelBuilder.Entity("ASPAngular2Test.Models.UserUtils+Question", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("InformationQuestionFK");
-
-                    b.Property<string>("Message");
 
                     b.HasKey("ID");
                 });
@@ -209,13 +190,6 @@ namespace ASPAngular2Test.Migrations
                     b.HasOne("ASPAngular2Test.Models.InformationUser")
                         .WithOne()
                         .HasForeignKey("ASPAngular2Test.Models.UserUtils+Preference", "InformationPreferenceFK");
-                });
-
-            modelBuilder.Entity("ASPAngular2Test.Models.UserUtils+Question", b =>
-                {
-                    b.HasOne("ASPAngular2Test.Models.InformationUser")
-                        .WithMany()
-                        .HasForeignKey("InformationQuestionFK");
                 });
 
             modelBuilder.Entity("ASPAngular2Test.Models.UserUtils+Quote", b =>

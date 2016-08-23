@@ -82,7 +82,7 @@ namespace ASPAngular2Test.Controllers
         }
         [HttpPost]
         [ActionName("getrandomquote")]
-        public UserUtils.Quote GetRandomQuote([FromBody]int userID)
+        public UserUtils.Quote GetRandomQuote([FromBody] int userID)
         {
             return Utils.GetRandomQuote(userID);
         }
@@ -109,6 +109,24 @@ namespace ASPAngular2Test.Controllers
         public List<string> GetCities([FromBody] string country)
         {
             return Utils.GetCities(country);
+        }
+        [HttpPost]
+        [ActionName("getquestions")]
+        public List<UserUtils.Question> GetQuestions([FromBody] int userID)
+        {
+            return Utils.GetQuestions(userID);
+        }
+        [HttpPost]
+        [ActionName("getpreferences")]
+        public UserUtils.Preference GetPreferences([FromBody] int userID)
+        {
+            return Utils.GetPreferences(userID);
+        }
+        [HttpPost]
+        [ActionName("setpreference")]
+        public bool SetPreference([FromBody] UserUtils.PreferenceUser preference)
+        {
+            return Utils.SetPreference(preference);
         }
         #endregion
     }

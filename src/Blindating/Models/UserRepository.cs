@@ -183,10 +183,15 @@ namespace ASPAngular2Test.Models
                         where u.ID == userID
                         select u).SingleOrDefault();
             var conversations = user.Information.Conversations;
+
             foreach (UserUtils.Conversation conversation in conversations)
             {
                 UserUtils.FindUser fu = new UserUtils.FindUser { Field = "JWT", Value = conversation.JWT };
                 conversation.User = this.GetUser(fu);
+                var start = conversation.Start;
+                var end = conversation.End;
+                var ts = end.Subtract(start);
+                conversation.Length = ts.Hours + ":" + ts.Minutes + ":" + ts.Seconds;
             }
             return conversations;
         }
@@ -200,6 +205,74 @@ namespace ASPAngular2Test.Models
             return (from city in _appDB.Cities
                     where city.Abr == abr
                     select city.En).ToList();
+        }
+
+        public List<UserUtils.Question> GetQuestions(int userID)
+        {
+            var user = (from u in _appDB.Users.Include(u => u.Information).ThenInclude(i => i.Questions)
+                        where u.ID == userID
+                        select u).SingleOrDefault();
+            var questions = user.Information.Questions;
+            return questions;
+        }
+
+        public UserUtils.Preference GetPreferences(int userID)
+        {
+            var informationID = (from u in _appDB.Users.Include(u => u.Information)
+                                 where u.ID == userID
+                                 select u.Information.ID).SingleOrDefault();
+
+            return _appDB.Preferences.SingleOrDefault(sp => sp.InformationPreferenceFK == informationID);
+        }
+
+        public bool SetPreference(UserUtils.PreferenceUser preference)
+        {
+            var informationID = (from u in _appDB.Users.Include(u => u.Information)
+                                 where u.ID == preference.UserID
+                                 select u.Information.ID).SingleOrDefault();
+
+            if (!_appDB.Preferences.Any(ap => ap.InformationPreferenceFK == informationID))
+            {
+                UserUtils.Preference p = new UserUtils.Preference();
+                
+                this.CreateOrUpdatePreference(p, preference);
+                p.InformationPreferenceFK = informationID;
+                _appDB.Preferences.Add(p);
+                _appDB.SaveChanges();
+                return true;
+            }
+            else
+            {
+                UserUtils.Preference tp =_appDB.Preferences.Single(sp => sp.InformationPreferenceFK == informationID);
+                this.CreateOrUpdatePreference(tp, preference);
+                _appDB.SaveChanges();
+                return true;
+            }
+        }
+
+        private void CreateOrUpdatePreference(UserUtils.Preference createorget, UserUtils.PreferenceUser set)
+        {
+            switch (set.Field)
+            {
+                case "gender":
+                    createorget.Gender = set.Value;
+                    break;
+                case "relation":
+                    createorget.Relationship = set.Value;
+                    break;
+                case "age-from":
+                    createorget.From = set.Value;
+                    break;
+                case "age-to":
+                    createorget.To = set.Value;
+                    break;
+                case "country":
+                    createorget.Country = set.Value;
+                    break;
+                case "city":
+                    createorget.City = set.Value;
+                    break;
+            }
         }
         #endregion
     }

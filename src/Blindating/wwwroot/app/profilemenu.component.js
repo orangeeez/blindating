@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/common', './mock/countries', './user.service', './services/userinfo.service', './app.component', 'angular2/router', './pipes/iterateto.pipe', 'ng2-bootstrap/ng2-bootstrap', './profilemenu.photos.component'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/common', './mock/countries', './user.service', './services/userinfo.service', './app.component', 'angular2/router', './pipes/iterateto.pipe', 'ng2-bootstrap/ng2-bootstrap', './profilemenu.photos.component', './profilemenu.conversations.component', './mock/utils'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -13,7 +13,7 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './user
     var __param = (this && this.__param) || function (paramIndex, decorator) {
         return function (target, key) { decorator(target, key, paramIndex); }
     };
-    var core_1, common_1, countries_1, user_service_1, userinfo_service_1, app_component_1, router_1, iterateto_pipe_1, ng2_bootstrap_1, profilemenu_photos_component_1;
+    var core_1, common_1, countries_1, user_service_1, userinfo_service_1, app_component_1, router_1, iterateto_pipe_1, ng2_bootstrap_1, profilemenu_photos_component_1, profilemenu_conversations_component_1, utils_1;
     var ProfileMenuComponent;
     return {
         setters:[
@@ -46,6 +46,12 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './user
             },
             function (profilemenu_photos_component_1_1) {
                 profilemenu_photos_component_1 = profilemenu_photos_component_1_1;
+            },
+            function (profilemenu_conversations_component_1_1) {
+                profilemenu_conversations_component_1 = profilemenu_conversations_component_1_1;
+            },
+            function (utils_1_1) {
+                utils_1 = utils_1_1;
             }],
         execute: function() {
             ProfileMenuComponent = (function () {
@@ -61,6 +67,7 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './user
                         { title: 'Media', active: false }
                     ];
                     this.purpose = true;
+                    this.question = "";
                     this.gender = "";
                     this.genders = ['Man', 'Woman ', 'Anyway'];
                     this.relation = "";
@@ -72,6 +79,7 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './user
                     this.country = "";
                     this.countries = countries_1.COUNTRIES;
                     this.isOpenPhotos = false;
+                    this.isOpenConversations = false;
                     this.filterDropdownInputCountry = function (country) {
                         return country.includes(_this.country);
                     };
@@ -80,7 +88,18 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './user
                     };
                     this.app = app;
                 }
-                ProfileMenuComponent.prototype.ngOnInit = function () { };
+                ProfileMenuComponent.prototype.ngOnInit = function () {
+                    var _this = this;
+                    this._userInfoService.GetPreferences(this.app.user.ID + "")
+                        .subscribe(function (preferences) {
+                        _this.gender = preferences.Gender;
+                        _this.relation = preferences.Relationship;
+                        _this.age['from'] = preferences.From;
+                        _this.age['to'] = preferences.To;
+                        _this.country = preferences.Country;
+                        _this.city = preferences.City;
+                    });
+                };
                 ProfileMenuComponent.prototype.logout = function () {
                     var _this = this;
                     this._userService.DeleteOnlineUser(this.app.user.ID.toString())
@@ -103,25 +122,33 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './user
                     switch (element['id']) {
                         case 'gender':
                             this.gender = element['innerHTML'];
+                            this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                             break;
                         case 'relation':
                             this.relation = element['innerHTML'];
+                            this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                             break;
                         case 'age-from':
                             this.age.from = element['innerHTML'];
+                            this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                             break;
                         case 'age-to':
                             this.age.to = element['innerHTML'];
+                            this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                             break;
                         case 'country':
                             this.country = element['innerHTML'];
+                            this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                             this._userInfoService.GetCities(this.country)
                                 .subscribe(function (cities) {
                                 _this.CITIES = cities;
                                 _this.cities = cities;
                             });
                             break;
-                        case 'city': this.city = element['innerHTML'];
+                        case 'city':
+                            this.city = element['innerHTML'];
+                            this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
+                            break;
                     }
                 };
                 ProfileMenuComponent.prototype.searchDropdownInput = function (event) {
@@ -129,6 +156,7 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './user
                     switch (element['id']) {
                         case 'country-dropdown': this.countries = countries_1.COUNTRIES.filter(this.filterDropdownInputCountry);
                         case 'city-dropdown':
+                            console.log(this.CITIES);
                             this.cities = this.CITIES.filter(this.filterDropdownInputCity);
                     }
                 };
@@ -138,22 +166,31 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './user
                 ProfileMenuComponent.prototype.onBackPhotos = function () {
                     this.isOpenPhotos = false;
                 };
+                ProfileMenuComponent.prototype.openConversations = function () {
+                    this.isOpenConversations = true;
+                };
+                ProfileMenuComponent.prototype.onBackConversations = function () {
+                    this.isOpenConversations = false;
+                };
+                ProfileMenuComponent.prototype.onAcceptQuestion = function () {
+                };
+                ProfileMenuComponent.prototype.onDeclineQuestion = function () {
+                };
                 //#region OpenGallery
                 ProfileMenuComponent.prototype.openGallery = function (event) {
                     var items = [];
                     for (var _i = 0, _a = this.photos; _i < _a.length; _i++) {
                         var photo = _a[_i];
-                        if ("http://localhost:59993/" + photo.Path === event.target['src']) {
-                            console.log(photo);
+                        if (utils_1.API_ADDRESS + photo.Path === event.target['src']) {
                             items.unshift({
-                                src: 'http://localhost:59993/' + photo.Path,
+                                src: utils_1.API_ADDRESS + photo.Path,
                                 w: photo.Width,
                                 h: photo.Height
                             });
                         }
                         else
                             items.push({
-                                src: 'http://localhost:59993/' + photo.Path,
+                                src: utils_1.API_ADDRESS + photo.Path,
                                 w: photo.Width,
                                 h: photo.Height
                             });
@@ -177,7 +214,8 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './user
                         templateUrl: 'app/profilemenu.component.html',
                         styleUrls: ['app/profilemenu.component.css', 'app/search.component.css', 'css/styles.css'],
                         pipes: [iterateto_pipe_1.IterateToPipe],
-                        directives: [common_1.CORE_DIRECTIVES, ng2_bootstrap_1.DROPDOWN_DIRECTIVES, ng2_bootstrap_1.TAB_DIRECTIVES, profilemenu_photos_component_1.ProfileMenuPhotosComponent]
+                        directives: [common_1.CORE_DIRECTIVES, ng2_bootstrap_1.DROPDOWN_DIRECTIVES, ng2_bootstrap_1.TAB_DIRECTIVES, profilemenu_photos_component_1.ProfileMenuPhotosComponent, profilemenu_conversations_component_1.ProfileMenuConversationsComponent],
+                        inputs: ['acceptIconPath', 'declineIconPath']
                     }),
                     __param(0, core_1.Host()),
                     __param(0, core_1.Inject(core_1.forwardRef(function () { return app_component_1.AppComponent; }))), 

@@ -14,5 +14,25 @@ export class Photo {
 export class Conversation {
     ID: number;
     JWT: string;
+    Start: Date;
+    End: Date;
+    Duration: Date;
+    Length: string;
+    StartString: string;
+    EndString: string;
+    DurationString: string;
     User: User;
+}
+export class Preference {
+    ID: number;
+    Gender: string;
+    Relationship: string;
+    From: string;
+    To: string;
+    Country: string;
+    City: string;
+}
+export class Question {
+    ID: number;
+    Message: string;
 }

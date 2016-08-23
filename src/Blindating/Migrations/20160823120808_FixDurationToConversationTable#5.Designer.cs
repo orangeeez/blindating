@@ -8,9 +8,10 @@ using ASPAngular2Test.Models;
 namespace ASPAngular2Test.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20160823120808_FixDurationToConversationTable#5")]
+    partial class FixDurationToConversationTable5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -81,7 +82,7 @@ namespace ASPAngular2Test.Migrations
 
                     b.Property<string>("JWT");
 
-                    b.Property<string>("Length");
+                    b.Property<double>("Length");
 
                     b.Property<DateTime>("Start");
 

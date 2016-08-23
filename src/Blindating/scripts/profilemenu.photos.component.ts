@@ -5,6 +5,7 @@ import {SocialService}       from './services/social.service'
 import {UserInfoService}     from './services/userinfo.service'
 import {User}                from './user'
 import {Photo}              from './utils/user.utils'
+import {API_ADDRESS} from './mock/utils'
 
 declare var PhotoSwipe, PhotoSwipeUI_Default;
 
@@ -23,7 +24,7 @@ export class ProfileMenuPhotosComponent implements OnInit {
     public photos: Array<Photo>;
     constructor() {}
 
-    ngOnInit() { }
+    ngOnInit() {}
 
     public back() {
         this.onBack.emit([]);
@@ -33,14 +34,14 @@ export class ProfileMenuPhotosComponent implements OnInit {
     public openGallery(event: MouseEvent) {
         let items: Array<any> = [];
         for (let photo of this.photos) {
-            if ("http://localhost:59993/" + photo.Path === event.target['src'])
+            if (API_ADDRESS + photo.Path === event.target['src'])
                 items.unshift({
-                    src: 'http://localhost:59993/' + photo.Path,
+                    src: API_ADDRESS + photo.Path,
                     w: photo.Width,
                     h: photo.Height
                 });
             else items.push({
-                src: 'http://localhost:59993/' + photo.Path,
+                src: API_ADDRESS + photo.Path,
                 w: photo.Width,
                 h: photo.Height
             })

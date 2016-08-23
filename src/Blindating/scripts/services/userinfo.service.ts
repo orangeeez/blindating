@@ -1,7 +1,7 @@
 ﻿import {Http, Response, Headers, RequestOptions, Jsonp} from 'angular2/http'
 import {Injectable}     from 'angular2/core'
 import {Observable}     from 'rxjs/Observable'
-import {Quote, Photo, Conversation}          from './../utils/user.utils'
+import {Quote, Photo, Conversation, Preference, Question}          from './../utils/user.utils'
 import {API_ADDRESS}    from './../mock/utils'
 
 
@@ -39,5 +39,31 @@ export class UserInfoService {
 
         return this.http.post(API_ADDRESS + this.api + "/getcities", body, this.options)
             .map(res => res.json());
+    }
+
+    GetQuestions(userID: string): Observable<Array<Question>> {
+        let body = userID;
+
+        return this.http.post(API_ADDRESS + this.api + "/getquestions", body, this.options)
+            .map(res => res.json());
+    }
+
+    GetPreferences(userID: string): Observable<Preference> {
+        let body = userID;
+
+        return this.http.post(API_ADDRESS + this.api + "/getpreferences", body, this.options)
+            .map(res => res.json());
+    }
+
+    SetPreference(userID: number, field: string, value: string): Observable<boolean> {
+        let queryObj = {
+            UserID: userID,
+            Field: field,
+            Value: value
+        }
+        let body = JSON.stringify(queryObj);
+
+        return this.http.post(API_ADDRESS + this.api + "/setpreference", body, this.options)
+            .map(res => !!res.text());
     }
 }

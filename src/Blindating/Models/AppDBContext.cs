@@ -25,6 +25,8 @@ namespace ASPAngular2Test.Models
         public DbSet<UserUtils.Photo> Photos { get; set; }
         public DbSet<Utils.Country> Countries { get; set; }
         public DbSet<Utils.City> Cities { get; set; }
+        public DbSet<UserUtils.Preference> Preferences { get; set; }
+        public DbSet<UserUtils.Question> Questions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<User>()
@@ -46,6 +48,16 @@ namespace ASPAngular2Test.Models
                 .HasMany(p => p.Conversations)
                 .WithOne(i => i.Information)
                 .HasForeignKey(b => b.InformationConversationFK);
+
+            modelBuilder.Entity<InformationUser>()
+                .HasOne(p => p.Preference)
+                .WithOne(i => i.Information)
+                .HasForeignKey<UserUtils.Preference>(b => b.InformationPreferenceFK);
+
+            modelBuilder.Entity<InformationUser>()
+                .HasMany(p => p.Questions)
+                .WithOne(i => i.Information)
+                .HasForeignKey(b => b.InformationQuestionFK);
         }
     }
 }

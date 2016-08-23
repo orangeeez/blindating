@@ -14,6 +14,13 @@ namespace ASPAngular2Test.Models
             public string Value { get; set; }
         }
 
+        public class PreferenceUser
+        {
+            public int UserID { get; set; }
+            public string Field { get; set; }
+            public string Value { get; set; }
+        }
+
         public class Quote
         {
             public int ID { get; set; }
@@ -49,6 +56,10 @@ namespace ASPAngular2Test.Models
             public int InformationConversationFK { get; set; }
 
             public string JWT { get; set; }
+            public DateTime Start { get; set; }
+            public DateTime End { get; set; }
+            public DateTime Duration { get; set; }
+            public string Length { get; set; }
 
             public virtual InformationUser Information { get; set; }
 
@@ -61,9 +72,27 @@ namespace ASPAngular2Test.Models
         public class Question
         {
             public int ID { get; set; }
-            public int InformationPersonalFK { get; set; }
+            public int InformationQuestionFK { get; set; }
 
             public string Message { get; set; }
+
+            public virtual InformationUser Information { get; set; }
+
+            [NotMapped]
+            public int UserID { get; set; }
+        }
+
+        public class Preference
+        {
+            public int ID { get; set; }
+            public int InformationPreferenceFK { get; set; }
+
+            public string Gender { get; set; }
+            public string Relationship { get; set; }
+            public string From { get; set; }
+            public string To { get; set; }
+            public string Country { get; set; }
+            public string City { get; set; }
 
             public virtual InformationUser Information { get; set; }
 

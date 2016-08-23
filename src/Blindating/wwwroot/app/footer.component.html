@@ -1,13 +1,23 @@
 ﻿<div class="container-fluid">
     <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
-            <li class="navbar-left"><img id="update-icon" class="navbar-brand icon-decoration" alt="Brand" [src]="updateIconPath" (click)="updateUsers($event)"></li>
-            <li class="navbar-text navbar-left">
-                <span id="update-text" class="update-text-decoration" [hidden]="!visible">Last users update was {{updateUsersInterval}}s ago</span>
+            <li class="navbar-left">
+                <img id="update-icon" class="navbar-brand icon-decoration" alt="Brand"
+                     [src]="updateIconPath"
+                     (click)="updateUsers($event)">
             </li>
-            <li class="navbar-left"><img id="search-icon" class="navbar-brand" alt="Brand" [src]="searchIconPath"></li>
+            <li class="navbar-text navbar-left">
+                <span id="update-text" class="update-text-decoration"
+                      [hidden]="!visible">Last users update was{{updateUsersInterval}}s ago</span>
+            </li>
+            <li class="navbar-left">
+                <img id="search-icon" class="navbar-brand" alt="Brand"
+                     [src]="searchIconPath">
+            </li>
             <li class="navbar-text navbar-left margin-correction">
-                <input id="search-input" class="search-input-decoration" [hidden]="!visible" (keyup)="filterUsers($event)" />
+                <input id="search-input" class="search-input-decoration"
+                       [hidden]="!visible"
+                       (keyup)="filterUsers($event)" />
             </li>
         </ul>
     </div>

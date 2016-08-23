@@ -8,9 +8,10 @@ using ASPAngular2Test.Models;
 namespace ASPAngular2Test.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20160823053622_AddStartEndToConversationTable")]
+    partial class AddStartEndToConversationTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -73,15 +74,11 @@ namespace ASPAngular2Test.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Duration");
-
                     b.Property<DateTime>("End");
 
                     b.Property<int>("InformationConversationFK");
 
                     b.Property<string>("JWT");
-
-                    b.Property<string>("Length");
 
                     b.Property<DateTime>("Start");
 

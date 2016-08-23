@@ -30,5 +30,9 @@ namespace ASPAngular2Test.Models
         List<UserUtils.Photo> GetPhotos(int userID);
         List<UserUtils.Conversation> GetConversations(int userID);
         List<string> GetCities(string country);
+
+        List<UserUtils.Question> GetQuestions(int userID);
+        UserUtils.Preference GetPreferences(int userID); 
+        bool SetPreference(UserUtils.PreferenceUser preference);
     }
 }

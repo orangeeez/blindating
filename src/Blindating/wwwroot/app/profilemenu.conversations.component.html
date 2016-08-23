@@ -1,0 +1,35 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="header-fixed">
+            <div style="float: left;">
+                <img (click)="back()"
+                     [src]="headerUndoIconPath" class="undo-decoration" />
+            </div>
+            <div style="text-align: center;">Conversations</div>
+        </div>
+        <div class="col-md-12 main-column-decoration col-no-padding" style="margin-top: 25px;">
+            <div class="row row-padding">
+                <div *ngFor="#conversation of conversations" id="search-board" class="col-no-padding block-center" style="height: 70px; margin-top: 10px;">
+                    <div class="col-md-6">
+                        <div (click)="app._searchComponent.selectDeselectSearchUser($event)"
+                             class="center-child-div">
+                            <img id="profile-image" class="navbar-brand img-circle without-padding"
+                                 src="{{conversation.User.ProfileImage}}" />
+                            <span class="profile-image-text">
+                                <span *ngIf="app.selectedUser == null">Profile</span>
+                            </span>
+                            <img [hidden]="!conversation.User.Online" src="images/app/controls/online.png" class="online-img-decoration" />
+                        </div>
+                        <div class="center-child-div">{{conversation.User.Firstname}}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div><span>Start: </span>{{conversation.StartString}}</div>
+                        <div><span>End: </span>{{conversation.EndString}}</div>
+                        <div><span>Duration: </span>{{conversation.Length}}</div>
+                    </div>
+                    <div [hidden]="!visible">{{conversation.User.JWT}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

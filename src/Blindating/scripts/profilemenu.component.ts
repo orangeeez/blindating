@@ -2,7 +2,7 @@
 import {CORE_DIRECTIVES} from 'angular2/common'
 import {User}              from './user'
 import {COUNTRIES} from './mock/countries'
-import {Quote, Photo, Conversation} from './utils/user.utils'
+import {Quote, Photo, Conversation, Question} from './utils/user.utils'
 import {UserService}       from './user.service'
 import {UserInfoService}   from './services/userinfo.service'
 import {AppComponent}      from './app.component'
@@ -10,6 +10,9 @@ import {Router}            from 'angular2/router'
 import {IterateToPipe}     from './pipes/iterateto.pipe'
 import {TAB_DIRECTIVES, DROPDOWN_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap'
 import {ProfileMenuPhotosComponent} from './profilemenu.photos.component'
+import {ProfileMenuConversationsComponent} from './profilemenu.conversations.component'
+
+import {API_ADDRESS} from './mock/utils'
 
 declare var PhotoSwipe, PhotoSwipeUI_Default;
 
@@ -18,11 +21,15 @@ declare var PhotoSwipe, PhotoSwipeUI_Default;
     templateUrl: 'app/profilemenu.component.html',
     styleUrls: ['app/profilemenu.component.css', 'app/search.component.css', 'css/styles.css'],
     pipes: [IterateToPipe],
-    directives: [CORE_DIRECTIVES, DROPDOWN_DIRECTIVES, TAB_DIRECTIVES, ProfileMenuPhotosComponent]
+    directives: [CORE_DIRECTIVES, DROPDOWN_DIRECTIVES, TAB_DIRECTIVES, ProfileMenuPhotosComponent, ProfileMenuConversationsComponent],
+    inputs: ['acceptIconPath', 'declineIconPath']
 })
 
 export class ProfileMenuComponent implements OnInit {
     public CITIES: Array<string>;
+    public acceptIconPath: string;
+    public declineIconPath: string;
+
     public app: AppComponent;
     public tabs: Array<any> = [
         { title: 'Basic', active: true },
@@ -34,6 +41,9 @@ export class ProfileMenuComponent implements OnInit {
     public quote: Quote;
     public photos: Array<Photo>;
     public conversations: Array<Conversation>;
+
+    public question: string = "";
+    public questions: Array<Question>;
 
     public gender: string = "";
     public genders: Array<string> = ['Man', 'Woman ', 'Anyway'];
@@ -51,6 +61,7 @@ export class ProfileMenuComponent implements OnInit {
     public countries: Array<string> = COUNTRIES;
 
     public isOpenPhotos: boolean = false;
+    public isOpenConversations: boolean = false;
 
     constructor(
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
@@ -61,7 +72,17 @@ export class ProfileMenuComponent implements OnInit {
         this.app = app;
     }
 
-    ngOnInit() { }
+    ngOnInit() {
+        this._userInfoService.GetPreferences(this.app.user.ID + "")
+            .subscribe(preferences => {
+                this.gender = preferences.Gender;
+                this.relation = preferences.Relationship;
+                this.age['from'] = preferences.From;
+                this.age['to'] = preferences.To;
+                this.country = preferences.Country;
+                this.city = preferences.City;
+            });
+    }
 
     public logout() {
         this._userService.DeleteOnlineUser(this.app.user.ID.toString())
@@ -82,23 +103,35 @@ export class ProfileMenuComponent implements OnInit {
     public dropdownSelect(event: MouseEvent): void {
         var element = event.target;
         switch (element['id']) {
-            case 'gender': this.gender = element['innerHTML'];
+            case 'gender':
+                this.gender = element['innerHTML'];
+                this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                 break;
-            case 'relation': this.relation = element['innerHTML'];
+            case 'relation':
+                this.relation = element['innerHTML'];
+                this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                 break;
-            case 'age-from': this.age.from = element['innerHTML'];
+            case 'age-from':
+                this.age.from = element['innerHTML'];
+                this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                 break;
-            case 'age-to': this.age.to = element['innerHTML'];
+            case 'age-to':
+                this.age.to = element['innerHTML'];
+                this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                 break;
             case 'country':
                 this.country = element['innerHTML'];
+                this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                 this._userInfoService.GetCities(this.country)
                     .subscribe(cities => {
                         this.CITIES = cities;
                         this.cities = cities;
                     });
                 break;
-            case 'city': this.city = element['innerHTML'];
+            case 'city':
+                this.city = element['innerHTML'];
+                this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
+                break;
         }
     }
 
@@ -107,6 +140,7 @@ export class ProfileMenuComponent implements OnInit {
         switch (element['id']) {
             case 'country-dropdown': this.countries = COUNTRIES.filter(this.filterDropdownInputCountry)
             case 'city-dropdown':
+                console.log(this.CITIES);
                 this.cities = this.CITIES.filter(this.filterDropdownInputCity)
         }
     }
@@ -117,6 +151,22 @@ export class ProfileMenuComponent implements OnInit {
 
     public onBackPhotos() {
         this.isOpenPhotos = false;
+    }
+
+    public openConversations() {
+        this.isOpenConversations = true;
+    }
+
+    public onBackConversations() {
+        this.isOpenConversations = false;
+    }
+
+    public onAcceptQuestion() {
+
+    }
+
+    public onDeclineQuestion() {
+
     }
 
     private filterDropdownInputCountry = (country: string): boolean => {
@@ -130,16 +180,15 @@ export class ProfileMenuComponent implements OnInit {
     public openGallery(event: MouseEvent) {
         let items: Array<any> = [];
         for (let photo of this.photos) {
-            if ("http://localhost:59993/" + photo.Path === event.target['src']) {
-                console.log(photo);
+            if (API_ADDRESS + photo.Path === event.target['src']) {
                 items.unshift({
-                    src: 'http://localhost:59993/' + photo.Path,
+                    src: API_ADDRESS + photo.Path,
                     w: photo.Width,
                     h: photo.Height
                 });
             }
             else items.push({
-                src: 'http://localhost:59993/' + photo.Path,
+                src: API_ADDRESS + photo.Path,
                 w: photo.Width,
                 h: photo.Height
             })

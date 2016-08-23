@@ -15,7 +15,7 @@ import {HeaderComponent}     from './header.component'
 import {HelperComponent}     from './helper.component'
 import {ProfileMenuComponent} from './profilemenu.component'
 import {User}                from './user'
-
+import {Conversation}        from './utils/user.utils'
 
 @Component({
   selector: 'my-app',
@@ -55,6 +55,9 @@ export class AppComponent {
     public helperPhoneHangupIconPath: String = "images/app/controls/phone-hang-up-inactive.png";
     /* Profilemenu */
     public profilemenuIsShow: boolean = false;
+    public profilemenuAcceptIconPath: String = "images/app/controls/accept.png";
+    public profilemenuDeclineIconPath: String = "images/app/controls/decline.png";
+
     //#endregion
 
     //#region Component's variables
@@ -109,34 +112,30 @@ export class AppComponent {
         }
 
         //#region Get All for Profile Menu
-        if (this.selectedUser != null) {
-            this._userInfoService.GetRandomQuote(this.selectedUser.ID.toString())
-                .subscribe(quote => {
-                    this._profileMenuComponent.quote = quote;
-                    this._userInfoService.GetPhotos(this.selectedUser.ID.toString())
-                        .subscribe(photos => {
-                            this._profileMenuComponent.photos = photos;
-                            this._userInfoService.GetConversations(this.selectedUser.ID.toString())
-                                .subscribe(conversations => {
-                                    this._profileMenuComponent.conversations = conversations;
-                                });
-                        });
-                });
-        }
-        else {
-            this._userInfoService.GetRandomQuote(this.user.ID.toString())
-                .subscribe(quote => {
-                    this._profileMenuComponent.quote = quote;
-                    this._userInfoService.GetPhotos(this.user.ID.toString())
-                        .subscribe(photos => {
-                            this._profileMenuComponent.photos = photos;
-                            this._userInfoService.GetConversations(this.user.ID.toString())
-                                .subscribe(conversations => {
-                                    this._profileMenuComponent.conversations = conversations;
-                                });
-                        });
-                });
-        }
+        var tuser: User;
+        if (this.selectedUser != null)
+            tuser = this.selectedUser;
+        else
+            tuser = this.user;
+
+        this._userInfoService.GetRandomQuote(tuser.ID.toString())
+            .subscribe(quote => {
+                this._profileMenuComponent.quote = quote;
+                this._userInfoService.GetPhotos(tuser.ID.toString())
+                    .subscribe(photos => {
+                        this._profileMenuComponent.photos = photos;
+                        this._userInfoService.GetConversations(tuser.ID.toString())
+                            .subscribe(conversations => {
+                                this._profileMenuComponent.conversations = conversations;
+                                this.updateConversationsData(this._profileMenuComponent.conversations);
+                                this._userInfoService.GetQuestions(tuser.ID.toString())
+                                    .subscribe(questions => {
+                                        this._profileMenuComponent.questions = questions;
+                                        this._profileMenuComponent.question = questions[0].Message;
+                                    });
+                            });
+                    });
+            });
         //#endregion
 
         this.profilemenuIsShow = true;
@@ -168,6 +167,17 @@ export class AppComponent {
         if (event.x < window.innerWidth - this.rightColumn.clientWidth && this.profilemenuIsShow) {
             this.hideProfileMenu();
             this.profilemenuIsShow = false;
+        }
+    }
+
+    public updateConversationsData(conversations: Array<Conversation>) {
+        console.log('updateConversations');
+        for (let c of conversations) {
+            let start = new Date(Date.parse(c.Start.toString()));
+            let end = new Date(Date.parse(c.Start.toString()));
+
+            c.StartString = start.getFullYear() + '/' + start.getMonth() + '/' + start.getDate();
+            c.EndString = end.getFullYear() + '/' + end.getMonth() + '/' + end.getDate();
         }
     }
 }

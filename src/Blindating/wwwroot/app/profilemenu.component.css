@@ -71,6 +71,19 @@ blockquote {
 .menu-5px-margin {
     margin-top: 5px;
 }
+.block-center {
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+.question-buttons:hover {
+    cursor:pointer;
+    background-color: #eee;
+}
+.decline {
+    width: 35px;
+    padding: 5.5px;
+}
 ::-webkit-input-placeholder { font-size: 13px; padding-left: 5px; }
 ::-moz-placeholder { font-size: 13px; padding-left: 5px; }
 :-ms-input-placeholder { font-size: 13px; padding-left: 5px; }
