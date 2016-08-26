@@ -1,7 +1,7 @@
 ﻿import {Http, Response, Headers, RequestOptions, Jsonp} from 'angular2/http'
 import {Injectable}     from 'angular2/core'
 import {Observable}     from 'rxjs/Observable'
-import {Quote, Photo, Conversation, Preference, Question}          from './../utils/user.utils'
+import {Quote, Photo, Conversation, Preference, Question, Answer}          from './../utils/user.utils'
 import {API_ADDRESS}    from './../mock/utils'
 
 
@@ -65,5 +65,22 @@ export class UserInfoService {
 
         return this.http.post(API_ADDRESS + this.api + "/setpreference", body, this.options)
             .map(res => !!res.text());
+    }
+
+    SetAnswer(answer: Answer): Observable<boolean> {
+        let body = JSON.stringify(answer);
+
+        return this.http.post(API_ADDRESS + this.api + "/setanswer", body, this.options)
+            .map(res => !!res.text());
+    }
+
+    GetAnswerNotification(answerID: string): Observable<any> {
+        return this.http.post(API_ADDRESS + this.api + "/getanswernotification", answerID, this.options)
+            .map(res => res.json());
+    }
+
+    GetNotifications(userID: string): Observable<Array<string>> {
+        return this.http.post(API_ADDRESS + this.api + "/getnotifications", userID, this.options)
+            .map(res => res.json());
     }
 }

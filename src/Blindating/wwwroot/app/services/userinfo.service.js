@@ -71,6 +71,19 @@ System.register(['angular2/http', 'angular2/core', './../mock/utils'], function(
                     return this.http.post(utils_1.API_ADDRESS + this.api + "/setpreference", body, this.options)
                         .map(function (res) { return !!res.text(); });
                 };
+                UserInfoService.prototype.SetAnswer = function (answer) {
+                    var body = JSON.stringify(answer);
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/setanswer", body, this.options)
+                        .map(function (res) { return !!res.text(); });
+                };
+                UserInfoService.prototype.GetAnswerNotification = function (answerID) {
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getanswernotification", answerID, this.options)
+                        .map(function (res) { return res.json(); });
+                };
+                UserInfoService.prototype.GetNotifications = function (userID) {
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getnotifications", userID, this.options)
+                        .map(function (res) { return res.json(); });
+                };
                 UserInfoService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [http_1.Http])

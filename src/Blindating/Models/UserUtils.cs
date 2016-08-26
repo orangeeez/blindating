@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -10,6 +11,17 @@ namespace ASPAngular2Test.Models
     {
         public class FindUser
         {
+            public FindUser() { }
+            public FindUser(string field, string value)
+            {
+                this.Field = field;
+                this.Value = value;
+            }
+            public FindUser(string field, int value)
+            {
+                this.Field = field;
+                this.Value = value.ToString();
+            }
             public string Field { get; set; }
             public string Value { get; set; }
         }
@@ -71,6 +83,10 @@ namespace ASPAngular2Test.Models
 
         public class Question
         {
+            public Question()
+            {
+                this.Answers = new List<Answer>();
+            }
             public int ID { get; set; }
             public int InformationQuestionFK { get; set; }
 
@@ -78,6 +94,21 @@ namespace ASPAngular2Test.Models
 
             public virtual InformationUser Information { get; set; }
 
+            [JsonIgnore]
+            public virtual List<Answer> Answers { get; set; }
+            [NotMapped]
+            public int UserID { get; set; }
+        }
+
+        public class Answer
+        {
+            public int ID { get; set; }
+            public int QuestionAnswerFK { get; set; }
+
+            public int RemoteUserID { get; set; }
+            public bool Result { get; set; }
+
+            public virtual Question Question { get; set; }
             [NotMapped]
             public int UserID { get; set; }
         }
@@ -96,6 +127,19 @@ namespace ASPAngular2Test.Models
 
             public virtual InformationUser Information { get; set; }
 
+            [NotMapped]
+            public int UserID { get; set; }
+        }
+
+        public class Notification
+        {
+            public int ID { get; set; }
+            public int InformationNotificationFK { get; set; }
+
+            public string Table { get; set; }
+            public int EntityID { get; set; }
+
+            public virtual InformationUser Information { get; set; }
             [NotMapped]
             public int UserID { get; set; }
         }

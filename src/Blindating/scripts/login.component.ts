@@ -3,6 +3,9 @@ import {Router, ROUTER_DIRECTIVES} from 'angular2/router'
 import {AppComponent} from './app.component'
 import {UserService}  from './user.service'
 import {SocialService} from './services/social.service'
+import {UserInfoService} from './services/userinfo.service'
+import {Answer}          from './utils/user.utils'
+
 import {User}         from './user'
 import {TAB_DIRECTIVES, Alert} from 'ng2-bootstrap/ng2-bootstrap'
 
@@ -40,7 +43,8 @@ export class LoginComponent implements OnInit {
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
         private _router: Router,
         private _userService: UserService,
-        private _socialService: SocialService) {
+        private _socialService: SocialService,
+        private _userInfoService: UserInfoService) {
             this.app = app;
             this.jwt = this.getCookie("jwt");
         }
@@ -147,6 +151,11 @@ export class LoginComponent implements OnInit {
         this.user = user;
         this.app.user = this.user;
         this._userService.SaveUserState(this.app.user);
+
+        this._userInfoService.GetNotifications(this.user.ID.toString())
+            .subscribe(notifications => {
+                this.app.profilemenuNotifications = notifications;
+            });
     }
 
     private initializeWebRTC() {

@@ -11,12 +11,13 @@ import {AppComponent}      from './app.component'
     templateUrl: 'app/header.component.html',
     styleUrls: ['app/header.component.css'],
     directives: [ROUTER_DIRECTIVES, CORE_DIRECTIVES, DROPDOWN_DIRECTIVES],
-    inputs: ['profileImage']
+    inputs: ['profileImage', 'notifications']
 })
 
 export class HeaderComponent {
     public app: AppComponent;
     public profileImage: String;
+    public notifications: Array<any>;
 
     constructor(
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,

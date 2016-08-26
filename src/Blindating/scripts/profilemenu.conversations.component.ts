@@ -26,13 +26,6 @@ export class ProfileMenuConversationsComponent implements OnInit {
 
     ngOnInit() {
         this.app.updateConversationsData(this.conversations);
-        //for (let c of this.conversations) {
-        //    let start = new Date(Date.parse(c.Start.toString()));
-        //    let end = new Date(Date.parse(c.Start.toString()));
-
-        //    c.StartString = start.getFullYear() + '/' + start.getMonth() + '/' + start.getDate();
-        //    c.EndString = end.getFullYear() + '/' + end.getMonth() + '/' + end.getDate();
-        //}
     }
 
     public back() {

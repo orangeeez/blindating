@@ -12,3 +12,15 @@
     margin: 0 5px;
     width: 45px;
 }
+.navbar-right .notification-img-decoration {
+    position:absolute;
+    top: 3px;
+    left: 15px;
+    color: #337ab7
+}
+.navbar-right .notification-digit-decoration {
+    position:absolute;
+    top: -1px;
+    left: 19.3px;
+    color: white;
+}

@@ -6,6 +6,8 @@ using ASPAngular2Test.Controllers.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Microsoft.Data.Entity;
+using System.Data.Objects;
+using System.Data.Entity.Infrastructure;
 
 namespace ASPAngular2Test.Models
 {
@@ -62,6 +64,9 @@ namespace ASPAngular2Test.Models
             {
                 case "JWT":
                     user = _appDB.Users.FirstOrDefault(u => u.JWT == find.Value);
+                    break;
+                case "ID":
+                    user = _appDB.Users.FirstOrDefault(u => u.ID == int.Parse(find.Value));
                     break;
             }
             return user;
@@ -191,7 +196,7 @@ namespace ASPAngular2Test.Models
                 var start = conversation.Start;
                 var end = conversation.End;
                 var ts = end.Subtract(start);
-                conversation.Length = ts.Hours + ":" + ts.Minutes + ":" + ts.Seconds;
+                conversation.Length = ts.Hours + "h " + ts.Minutes + "m " + ts.Seconds + "s ";
             }
             return conversations;
         }
@@ -214,6 +219,13 @@ namespace ASPAngular2Test.Models
                         select u).SingleOrDefault();
             var questions = user.Information.Questions;
             return questions;
+        }
+
+        private int GetQuestionID(string message, int informationFK)
+        {
+            return (from q in _appDB.Questions
+                    where q.Message == message && q.InformationQuestionFK == informationFK
+                    select q.ID).SingleOrDefault();
         }
 
         public UserUtils.Preference GetPreferences(int userID)
@@ -248,6 +260,65 @@ namespace ASPAngular2Test.Models
                 _appDB.SaveChanges();
                 return true;
             }
+        }
+
+        public bool SetAnswer(UserUtils.Answer answer)
+        {  
+            var informationRemoteFK = (from u in _appDB.Users.Include(u => u.Information)
+                                      where u.ID == answer.UserID
+                                      select u.Information.ID).SingleOrDefault();
+
+            var informationFK = (from u in _appDB.Users.Include(u => u.Information)
+                                       where u.ID == answer.RemoteUserID
+                                       select u.Information.ID).SingleOrDefault();
+
+            var questionFK = (from q in _appDB.Questions
+                              where q.InformationQuestionFK == informationRemoteFK
+                              select q.ID).SingleOrDefault();
+
+            answer.QuestionAnswerFK = questionFK;
+            this._appDB.Answers.Add(answer);
+            this._appDB.SaveChanges();
+
+            UserUtils.Notification notification = new UserUtils.Notification();
+            notification.InformationNotificationFK = informationRemoteFK;
+            notification.Table = "Answer";
+            notification.EntityID = answer.ID;
+            this._appDB.Notifications.Add(notification);
+            this._appDB.SaveChanges();
+
+            return true;
+        }
+
+        public List<string> GetNotifications(int userID)
+        {
+            List<string> jsonNotifications = new List<string>();
+            var user = (from u in _appDB.Users.Include(u => u.Information).ThenInclude(i => i.Notifications)
+                        where u.ID == userID
+                        select u).SingleOrDefault();
+            var notifications = user.Information.Notifications;
+
+            foreach (var n in notifications)
+                jsonNotifications.Add(JsonConvert.SerializeObject(n));
+
+            return jsonNotifications;
+        }
+
+        public dynamic GetAnswerNotification(int answerID)
+        {
+            var answer = (from a in _appDB.Answers
+                          where a.ID == answerID
+                          select a).SingleOrDefault();
+
+            var question = (from q in _appDB.Questions
+                            where q.ID == answer.QuestionAnswerFK
+                            select q.Message).SingleOrDefault();
+
+            var remoteUser = (from u in _appDB.Users
+                              where u.ID == answer.RemoteUserID
+                              select u).SingleOrDefault();
+
+            return new { Question = question, Result = answer.Result, Remote = remoteUser };
         }
 
         private void CreateOrUpdatePreference(UserUtils.Preference createorget, UserUtils.PreferenceUser set)

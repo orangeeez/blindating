@@ -56,6 +56,7 @@ namespace ASPAngular2Test.Models
             this.Photos = new List<UserUtils.Photo>();
             this.Conversations = new List<UserUtils.Conversation>();
             this.Questions = new List<UserUtils.Question>();
+            this.Notifications = new List<UserUtils.Notification>();
         }
 
         public int ID { get; set; }
@@ -72,5 +73,7 @@ namespace ASPAngular2Test.Models
         public virtual List<UserUtils.Question> Questions { get; set; }
         [JsonIgnore]
         public virtual UserUtils.Preference Preference { get; set; }
+        [JsonIgnore]
+        public virtual List<UserUtils.Notification> Notifications { get; set; }
     }
 }

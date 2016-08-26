@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', './app.component', './user.service', './services/social.service', './user', 'ng2-bootstrap/ng2-bootstrap'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/router', './app.component', './user.service', './services/social.service', './services/userinfo.service', './user', 'ng2-bootstrap/ng2-bootstrap'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -13,7 +13,7 @@ System.register(['angular2/core', 'angular2/router', './app.component', './user.
     var __param = (this && this.__param) || function (paramIndex, decorator) {
         return function (target, key) { decorator(target, key, paramIndex); }
     };
-    var core_1, router_1, app_component_1, user_service_1, social_service_1, user_1, ng2_bootstrap_1;
+    var core_1, router_1, app_component_1, user_service_1, social_service_1, userinfo_service_1, user_1, ng2_bootstrap_1;
     var LoginComponent;
     return {
         setters:[
@@ -32,6 +32,9 @@ System.register(['angular2/core', 'angular2/router', './app.component', './user.
             function (social_service_1_1) {
                 social_service_1 = social_service_1_1;
             },
+            function (userinfo_service_1_1) {
+                userinfo_service_1 = userinfo_service_1_1;
+            },
             function (user_1_1) {
                 user_1 = user_1_1;
             },
@@ -40,11 +43,12 @@ System.register(['angular2/core', 'angular2/router', './app.component', './user.
             }],
         execute: function() {
             LoginComponent = (function () {
-                function LoginComponent(app, _router, _userService, _socialService) {
+                function LoginComponent(app, _router, _userService, _socialService, _userInfoService) {
                     var _this = this;
                     this._router = _router;
                     this._userService = _userService;
                     this._socialService = _socialService;
+                    this._userInfoService = _userInfoService;
                     this.alert = { show: null, type: 'success', reason: null };
                     this.tabs = [
                         { title: 'Login', active: true },
@@ -248,9 +252,14 @@ System.register(['angular2/core', 'angular2/router', './app.component', './user.
                     };
                 };
                 LoginComponent.prototype.initializeUser = function (user) {
+                    var _this = this;
                     this.user = user;
                     this.app.user = this.user;
                     this._userService.SaveUserState(this.app.user);
+                    this._userInfoService.GetNotifications(this.user.ID.toString())
+                        .subscribe(function (notifications) {
+                        _this.app.profilemenuNotifications = notifications;
+                    });
                 };
                 LoginComponent.prototype.initializeWebRTC = function () {
                     this.user.Peer = new Woogeen.PeerClient({
@@ -322,7 +331,7 @@ System.register(['angular2/core', 'angular2/router', './app.component', './user.
                     }),
                     __param(0, core_1.Host()),
                     __param(0, core_1.Inject(core_1.forwardRef(function () { return app_component_1.AppComponent; }))), 
-                    __metadata('design:paramtypes', [app_component_1.AppComponent, router_1.Router, user_service_1.UserService, social_service_1.SocialService])
+                    __metadata('design:paramtypes', [app_component_1.AppComponent, router_1.Router, user_service_1.UserService, social_service_1.SocialService, userinfo_service_1.UserInfoService])
                 ], LoginComponent);
                 return LoginComponent;
             }());

@@ -27,6 +27,8 @@ namespace ASPAngular2Test.Models
         public DbSet<Utils.City> Cities { get; set; }
         public DbSet<UserUtils.Preference> Preferences { get; set; }
         public DbSet<UserUtils.Question> Questions { get; set; }
+        public DbSet<UserUtils.Answer> Answers { get; set; }
+        public DbSet<UserUtils.Notification> Notifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<User>()
@@ -58,6 +60,16 @@ namespace ASPAngular2Test.Models
                 .HasMany(p => p.Questions)
                 .WithOne(i => i.Information)
                 .HasForeignKey(b => b.InformationQuestionFK);
+
+            modelBuilder.Entity<InformationUser>()
+                .HasMany(p => p.Notifications)
+                .WithOne(i => i.Information)
+                .HasForeignKey(b => b.InformationNotificationFK);
+
+            modelBuilder.Entity<UserUtils.Question>()
+                .HasMany(p => p.Answers)
+                .WithOne(i => i.Question)
+                .HasForeignKey(b => b.QuestionAnswerFK);
         }
     }
 }

@@ -42,7 +42,6 @@ export class SearchComponent implements OnInit {
     }
 
     private selectSearchUser() {
-        console.log('select user');
         let element = event.srcElement;
 
         while (element.id != 'search-board')

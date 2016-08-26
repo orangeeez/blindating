@@ -34,5 +34,8 @@ namespace ASPAngular2Test.Models
         List<UserUtils.Question> GetQuestions(int userID);
         UserUtils.Preference GetPreferences(int userID); 
         bool SetPreference(UserUtils.PreferenceUser preference);
+        bool SetAnswer(UserUtils.Answer answer);
+        List<string> GetNotifications(int userID);
+        dynamic GetAnswerNotification(int answerID);
     }
 }

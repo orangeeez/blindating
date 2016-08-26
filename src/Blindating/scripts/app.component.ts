@@ -1,6 +1,6 @@
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router'
 import {HTTP_PROVIDERS, JSONP_PROVIDERS}      from 'angular2/http'
-import {Component, ViewChild, ElementRef} from 'angular2/core'
+import {Component, ViewChild, ElementRef, OnInit, AfterViewInit} from 'angular2/core'
 import {Router}              from 'angular2/router'
 import {UserService}         from './user.service'
 import {SocialService}       from './services/social.service'
@@ -31,7 +31,7 @@ import {Conversation}        from './utils/user.utils'
   { path: '/search',     name: 'Search',     component: SearchComponent }
 ])
 
-export class AppComponent {
+export class AppComponent implements OnInit, AfterViewInit {
     //#region Signaling configuration WebRTC's variables
     public server = "http://192.168.0.114:8095";
     public stun = "stun:stun.l.google.com:19302";
@@ -57,6 +57,7 @@ export class AppComponent {
     public profilemenuIsShow: boolean = false;
     public profilemenuAcceptIconPath: String = "images/app/controls/accept.png";
     public profilemenuDeclineIconPath: String = "images/app/controls/decline.png";
+    public profilemenuNotifications: Array<any>;
 
     //#endregion
 
@@ -87,6 +88,8 @@ export class AppComponent {
                 .subscribe(deleted => { });
         }
     }
+
+    ngOnInit() { }
 
     ngAfterViewInit() {
         this.navbarTop = document.getElementById('navbar-top');
@@ -171,13 +174,12 @@ export class AppComponent {
     }
 
     public updateConversationsData(conversations: Array<Conversation>) {
-        console.log('updateConversations');
         for (let c of conversations) {
             let start = new Date(Date.parse(c.Start.toString()));
             let end = new Date(Date.parse(c.Start.toString()));
 
-            c.StartString = start.getFullYear() + '/' + start.getMonth() + '/' + start.getDate();
-            c.EndString = end.getFullYear() + '/' + end.getMonth() + '/' + end.getDate();
+            c.StartString = start.getFullYear() + '/' + start.getMonth() + '/' + start.getDate() + ' ' + start.getHours() + 'h ' + start.getMinutes() + 'm ' + start.getSeconds() + 's';
+            c.EndString = end.getFullYear() + '/' + end.getMonth() + '/' + end.getDate() + ' ' + end.getHours() + 'h ' + end.getMinutes() + 'm ' + end.getSeconds() + 's';
         }
     }
 }

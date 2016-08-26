@@ -57,7 +57,6 @@ System.register(['angular2/core', 'angular2/router', './user.service', './app.co
                 };
                 SearchComponent.prototype.selectSearchUser = function () {
                     var _this = this;
-                    console.log('select user');
                     var element = event.srcElement;
                     while (element.id != 'search-board')
                         element = element.parentElement;

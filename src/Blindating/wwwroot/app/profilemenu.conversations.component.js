@@ -25,12 +25,6 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                 }
                 ProfileMenuConversationsComponent.prototype.ngOnInit = function () {
                     this.app.updateConversationsData(this.conversations);
-                    //for (let c of this.conversations) {
-                    //    let start = new Date(Date.parse(c.Start.toString()));
-                    //    let end = new Date(Date.parse(c.Start.toString()));
-                    //    c.StartString = start.getFullYear() + '/' + start.getMonth() + '/' + start.getDate();
-                    //    c.EndString = end.getFullYear() + '/' + end.getMonth() + '/' + end.getDate();
-                    //}
                 };
                 ProfileMenuConversationsComponent.prototype.back = function () {
                     this.onBack.emit([]);

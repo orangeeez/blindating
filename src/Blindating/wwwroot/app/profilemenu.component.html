@@ -106,7 +106,7 @@
                     <div *ngIf="questions" class="menu-5px-margin block-center">
                         <div class="headerline-nobackground">MY QUESTIONS FOR YOU</div>
                         <span>{{question}}</span>
-                        <div>
+                        <div *ngIf="app.selectedUser">
                             <img [src]="acceptIconPath"
                                  (click)="onAcceptQuestion()"
                                  class="question-buttons" />
@@ -133,7 +133,7 @@
                                 <div *ngFor="#conversation of conversations | iterateto: {to: 6}" id="search-board" class="col-md-2 col-no-padding">
                                     <div (click)="app._searchComponent.selectDeselectSearchUser($event)"
                                          class="center-child-div">
-                                        <img id="profile-image" class="navbar-brand img-circle without-padding" 
+                                        <img id="profile-image" class="navbar-brand img-circle without-padding"
                                              src="{{conversation.User.ProfileImage}}" />
                                         <span class="profile-image-text">
                                             <span *ngIf="app.selectedUser == null">Profile</span>
@@ -149,8 +149,6 @@
                            (click)="logout()"
                            class="btn btn-danger comp-decoration" href="#" role="button">Logout</a>
                     </div>
-
-
                 </tab>
                 <tab [heading]="tabs[1].title"
                      [active]="tabs[1].active"
@@ -169,6 +167,13 @@
                      [disabled]="tabs[3].disabled"
                      (select)="tabs[3].active = true"
                      (deselect)="tabs[3].active = false">
+                    <template tabHeading>
+                        <i class="fa fa-bell-o fa-lg"
+                           [class]="bellClass"></i>
+                    </template>
+                    <profilemenu-notifications [app]="app"
+                                               [notifications]="notifications">
+                    </profilemenu-notifications>
                 </tab>
             </tabset>
         </div>

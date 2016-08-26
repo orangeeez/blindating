@@ -36,3 +36,14 @@ export class Question {
     ID: number;
     Message: string;
 }
+export class Answer {
+    ID: number;
+    Result: boolean;
+    UserID: number;
+    RemoteUserID: number;
+}
+export class Notification {
+    ID: number;
+    Table: string;
+    EntityID: string;
+}

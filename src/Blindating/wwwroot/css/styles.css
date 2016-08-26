@@ -49,3 +49,6 @@ html, body {
     overflow-y: scroll;
     max-height: 190px;
 }
+#profilemenu .nav-item > a {
+    padding: 10px 10px !important;
+}

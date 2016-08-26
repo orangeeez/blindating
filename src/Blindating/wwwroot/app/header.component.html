@@ -1,10 +1,23 @@
 ﻿<span>
-    <a (mouseover)="profileImageOver($event)" 
-       (mouseout)="profileImageOut($event)" 
+    <a (mouseover)="profileImageOver($event)"
+       (mouseout)="profileImageOut($event)"
        [routerLink]="['Profile']"
-       href="" class="navbar-right" style="margin-left: 20px">
-        <img class="navbar-brand img-circle img-align" alt="Brand" [src]="profileImage"/>
+       href="" class="navbar-right" style="margin-left: 20px; position: relative;">
+        <img class="navbar-brand img-circle img-align" alt="Brand"
+             [src]="profileImage" />
+        <i class="notification-img-decoration fa fa-circle fa-lg"
+           [hidden]="!notifications">
+        </i>
+        <i class="notification-digit-decoration"
+           [hidden]="!notifications">{{notifications.length}}
+        </i>
     </a>
 </span>
-<p class="navbar-text navbar-right"><a href="#" class="navbar-link" [routerLink]="['Search']">Search</a></p>
-<p class="navbar-text navbar-right"><a class="navbar-link" [routerLink]="['Dashboard']">Dashboard</a></p>
+<p class="navbar-text navbar-right">
+    <a href="#" class="navbar-link"
+       [routerLink]="['Search']">Search</a>
+</p>
+<p class="navbar-text navbar-right">
+    <a class="navbar-link"
+       [routerLink]="['Dashboard']">Dashboard</a>
+</p>

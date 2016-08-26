@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/common', './mock/countries', './user.service', './services/userinfo.service', './app.component', 'angular2/router', './pipes/iterateto.pipe', 'ng2-bootstrap/ng2-bootstrap', './profilemenu.photos.component', './profilemenu.conversations.component', './mock/utils'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/common', './mock/countries', './user.service', './services/userinfo.service', './app.component', 'angular2/router', './pipes/iterateto.pipe', 'ng2-bootstrap/ng2-bootstrap', './profilemenu.photos.component', './profilemenu.conversations.component', './profilemenu.notifications.component', './mock/utils'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -13,7 +13,7 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './user
     var __param = (this && this.__param) || function (paramIndex, decorator) {
         return function (target, key) { decorator(target, key, paramIndex); }
     };
-    var core_1, common_1, countries_1, user_service_1, userinfo_service_1, app_component_1, router_1, iterateto_pipe_1, ng2_bootstrap_1, profilemenu_photos_component_1, profilemenu_conversations_component_1, utils_1;
+    var core_1, common_1, countries_1, user_service_1, userinfo_service_1, app_component_1, router_1, iterateto_pipe_1, ng2_bootstrap_1, profilemenu_photos_component_1, profilemenu_conversations_component_1, profilemenu_notifications_component_1, utils_1;
     var ProfileMenuComponent;
     return {
         setters:[
@@ -50,6 +50,9 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './user
             function (profilemenu_conversations_component_1_1) {
                 profilemenu_conversations_component_1 = profilemenu_conversations_component_1_1;
             },
+            function (profilemenu_notifications_component_1_1) {
+                profilemenu_notifications_component_1 = profilemenu_notifications_component_1_1;
+            },
             function (utils_1_1) {
                 utils_1 = utils_1_1;
             }],
@@ -60,11 +63,12 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './user
                     this._router = _router;
                     this._userService = _userService;
                     this._userInfoService = _userInfoService;
+                    this.bellClass = 'fa fa-bell-o fa-lg';
                     this.tabs = [
                         { title: 'Basic', active: true },
                         { title: 'Interests', active: false },
                         { title: 'Eductaion', active: false },
-                        { title: 'Media', active: false }
+                        { title: 'Notifications', active: false }
                     ];
                     this.purpose = true;
                     this.question = "";
@@ -90,6 +94,11 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './user
                 }
                 ProfileMenuComponent.prototype.ngOnInit = function () {
                     var _this = this;
+                    if (this.notifications && !this.app.selectedUser) {
+                        this.bellClass = 'fa fa-bell fa-lg';
+                        this.tabs[0]["active"] = false;
+                        this.tabs[3]["active"] = true;
+                    }
                     this._userInfoService.GetPreferences(this.app.user.ID + "")
                         .subscribe(function (preferences) {
                         _this.gender = preferences.Gender;
@@ -156,7 +165,6 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './user
                     switch (element['id']) {
                         case 'country-dropdown': this.countries = countries_1.COUNTRIES.filter(this.filterDropdownInputCountry);
                         case 'city-dropdown':
-                            console.log(this.CITIES);
                             this.cities = this.CITIES.filter(this.filterDropdownInputCity);
                     }
                 };
@@ -173,6 +181,14 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './user
                     this.isOpenConversations = false;
                 };
                 ProfileMenuComponent.prototype.onAcceptQuestion = function () {
+                    var answer = {
+                        ID: 0,
+                        Result: true,
+                        UserID: this.app.selectedUser.ID,
+                        RemoteUserID: this.app.user.ID
+                    };
+                    this._userInfoService.SetAnswer(answer)
+                        .subscribe(function (isAdded) { });
                 };
                 ProfileMenuComponent.prototype.onDeclineQuestion = function () {
                 };
@@ -214,8 +230,8 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './user
                         templateUrl: 'app/profilemenu.component.html',
                         styleUrls: ['app/profilemenu.component.css', 'app/search.component.css', 'css/styles.css'],
                         pipes: [iterateto_pipe_1.IterateToPipe],
-                        directives: [common_1.CORE_DIRECTIVES, ng2_bootstrap_1.DROPDOWN_DIRECTIVES, ng2_bootstrap_1.TAB_DIRECTIVES, profilemenu_photos_component_1.ProfileMenuPhotosComponent, profilemenu_conversations_component_1.ProfileMenuConversationsComponent],
-                        inputs: ['acceptIconPath', 'declineIconPath']
+                        directives: [common_1.CORE_DIRECTIVES, ng2_bootstrap_1.DROPDOWN_DIRECTIVES, ng2_bootstrap_1.TAB_DIRECTIVES, profilemenu_photos_component_1.ProfileMenuPhotosComponent, profilemenu_conversations_component_1.ProfileMenuConversationsComponent, profilemenu_notifications_component_1.ProfileMenuNotificationsComponent],
+                        inputs: ['acceptIconPath', 'declineIconPath', 'notifications']
                     }),
                     __param(0, core_1.Host()),
                     __param(0, core_1.Inject(core_1.forwardRef(function () { return app_component_1.AppComponent; }))), 

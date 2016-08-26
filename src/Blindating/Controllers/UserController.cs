@@ -128,6 +128,24 @@ namespace ASPAngular2Test.Controllers
         {
             return Utils.SetPreference(preference);
         }
+        [HttpPost]
+        [ActionName("setanswer")]
+        public bool SetAnswer([FromBody] UserUtils.Answer answer)
+        {
+            return Utils.SetAnswer(answer);
+        }
+        [HttpPost]
+        [ActionName("getnotifications")]
+        public List<string> GetNotifications([FromBody] int userID)
+        {
+            return Utils.GetNotifications(userID);
+        }
+        [HttpPost]
+        [ActionName("getanswernotification")]
+        public dynamic GetAnswer([FromBody] int answerID)
+        {
+            return Utils.GetAnswerNotification(answerID);
+        }
         #endregion
     }
 }

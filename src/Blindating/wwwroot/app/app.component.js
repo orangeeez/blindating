@@ -90,6 +90,7 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                             .subscribe(function (deleted) { });
                     };
                 }
+                AppComponent.prototype.ngOnInit = function () { };
                 AppComponent.prototype.ngAfterViewInit = function () {
                     this.navbarTop = document.getElementById('navbar-top');
                     this.centralColumn = document.getElementById('central-column');
@@ -166,13 +167,12 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                     }
                 };
                 AppComponent.prototype.updateConversationsData = function (conversations) {
-                    console.log('updateConversations');
                     for (var _i = 0, conversations_1 = conversations; _i < conversations_1.length; _i++) {
                         var c = conversations_1[_i];
                         var start = new Date(Date.parse(c.Start.toString()));
                         var end = new Date(Date.parse(c.Start.toString()));
-                        c.StartString = start.getFullYear() + '/' + start.getMonth() + '/' + start.getDate();
-                        c.EndString = end.getFullYear() + '/' + end.getMonth() + '/' + end.getDate();
+                        c.StartString = start.getFullYear() + '/' + start.getMonth() + '/' + start.getDate() + ' ' + start.getHours() + 'h ' + start.getMinutes() + 'm ' + start.getSeconds() + 's';
+                        c.EndString = end.getFullYear() + '/' + end.getMonth() + '/' + end.getDate() + ' ' + end.getHours() + 'h ' + end.getMinutes() + 'm ' + end.getSeconds() + 's';
                     }
                 };
                 __decorate([

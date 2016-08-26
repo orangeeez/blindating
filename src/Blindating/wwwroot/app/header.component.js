@@ -57,7 +57,7 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', 'ng2-boo
                         templateUrl: 'app/header.component.html',
                         styleUrls: ['app/header.component.css'],
                         directives: [router_1.ROUTER_DIRECTIVES, common_1.CORE_DIRECTIVES, ng2_bootstrap_1.DROPDOWN_DIRECTIVES],
-                        inputs: ['profileImage']
+                        inputs: ['profileImage', 'notifications']
                     }),
                     __param(0, core_1.Host()),
                     __param(0, core_1.Inject(core_1.forwardRef(function () { return app_component_1.AppComponent; }))), 

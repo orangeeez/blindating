@@ -8,9 +8,10 @@ using ASPAngular2Test.Models;
 namespace ASPAngular2Test.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20160824155016_AddNotificationTable")]
+    partial class AddNotificationTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -98,20 +99,6 @@ namespace ASPAngular2Test.Migrations
                     b.Property<string>("Length");
 
                     b.Property<DateTime>("Start");
-
-                    b.HasKey("ID");
-                });
-
-            modelBuilder.Entity("ASPAngular2Test.Models.UserUtils+Notification", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("EntityID");
-
-                    b.Property<int>("InformationNotificationFK");
-
-                    b.Property<string>("Table");
 
                     b.HasKey("ID");
                 });
@@ -230,13 +217,6 @@ namespace ASPAngular2Test.Migrations
                     b.HasOne("ASPAngular2Test.Models.InformationUser")
                         .WithMany()
                         .HasForeignKey("InformationConversationFK");
-                });
-
-            modelBuilder.Entity("ASPAngular2Test.Models.UserUtils+Notification", b =>
-                {
-                    b.HasOne("ASPAngular2Test.Models.InformationUser")
-                        .WithMany()
-                        .HasForeignKey("InformationNotificationFK");
                 });
 
             modelBuilder.Entity("ASPAngular2Test.Models.UserUtils+Photo", b =>

@@ -1,6 +1,7 @@
 <nav id="navbar-top" class="navbar navbar-default navbar-fixed-top">
   <div *ngIf="headerIsShow" id="header" class="container-fluid">   
-  	<headnav [profileImage]="headerProfileImage"></headnav>
+  	<headnav [profileImage]="headerProfileImage"
+             [notifications]="profilemenuNotifications"></headnav>
   </div>
 </nav>
 <div class="fill container-fluid">
@@ -16,7 +17,8 @@
       <div (mouseout)="onMouseOutProfileMenu($event)" id="right-column" class="fill right-stripe col-md-1">
           <profilemenu *ngIf="profilemenuIsShow"
                        [acceptIconPath]="profilemenuAcceptIconPath"
-                       [declineIconPath]="profilemenuDeclineIconPath"></profilemenu>
+                       [declineIconPath]="profilemenuDeclineIconPath"
+                       [notifications]="profilemenuNotifications"></profilemenu>
       </div>
     </div>
 </div>

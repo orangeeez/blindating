@@ -2,7 +2,7 @@
 import {CORE_DIRECTIVES} from 'angular2/common'
 import {User}              from './user'
 import {COUNTRIES} from './mock/countries'
-import {Quote, Photo, Conversation, Question} from './utils/user.utils'
+import {Quote, Photo, Conversation, Question, Answer} from './utils/user.utils'
 import {UserService}       from './user.service'
 import {UserInfoService}   from './services/userinfo.service'
 import {AppComponent}      from './app.component'
@@ -11,6 +11,7 @@ import {IterateToPipe}     from './pipes/iterateto.pipe'
 import {TAB_DIRECTIVES, DROPDOWN_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap'
 import {ProfileMenuPhotosComponent} from './profilemenu.photos.component'
 import {ProfileMenuConversationsComponent} from './profilemenu.conversations.component'
+import {ProfileMenuNotificationsComponent} from './profilemenu.notifications.component'
 
 import {API_ADDRESS} from './mock/utils'
 
@@ -21,26 +22,28 @@ declare var PhotoSwipe, PhotoSwipeUI_Default;
     templateUrl: 'app/profilemenu.component.html',
     styleUrls: ['app/profilemenu.component.css', 'app/search.component.css', 'css/styles.css'],
     pipes: [IterateToPipe],
-    directives: [CORE_DIRECTIVES, DROPDOWN_DIRECTIVES, TAB_DIRECTIVES, ProfileMenuPhotosComponent, ProfileMenuConversationsComponent],
-    inputs: ['acceptIconPath', 'declineIconPath']
+    directives: [CORE_DIRECTIVES, DROPDOWN_DIRECTIVES, TAB_DIRECTIVES, ProfileMenuPhotosComponent, ProfileMenuConversationsComponent, ProfileMenuNotificationsComponent],
+    inputs: ['acceptIconPath', 'declineIconPath', 'notifications']
 })
 
 export class ProfileMenuComponent implements OnInit {
     public CITIES: Array<string>;
     public acceptIconPath: string;
     public declineIconPath: string;
+    public bellClass: string = 'fa fa-bell-o fa-lg';
 
     public app: AppComponent;
     public tabs: Array<any> = [
         { title: 'Basic', active: true },
         { title: 'Interests', active: false },
         { title: 'Eductaion', active: false },
-        { title: 'Media', active: false }
+        { title: 'Notifications', active: false }
     ];
     public purpose: boolean = true;
     public quote: Quote;
     public photos: Array<Photo>;
     public conversations: Array<Conversation>;
+    public notifications: Array<any>;
 
     public question: string = "";
     public questions: Array<Question>;
@@ -73,6 +76,12 @@ export class ProfileMenuComponent implements OnInit {
     }
 
     ngOnInit() {
+        if (this.notifications && !this.app.selectedUser) {
+            this.bellClass = 'fa fa-bell fa-lg';
+            this.tabs[0]["active"] = false;
+            this.tabs[3]["active"] = true;
+        }
+
         this._userInfoService.GetPreferences(this.app.user.ID + "")
             .subscribe(preferences => {
                 this.gender = preferences.Gender;
@@ -140,7 +149,6 @@ export class ProfileMenuComponent implements OnInit {
         switch (element['id']) {
             case 'country-dropdown': this.countries = COUNTRIES.filter(this.filterDropdownInputCountry)
             case 'city-dropdown':
-                console.log(this.CITIES);
                 this.cities = this.CITIES.filter(this.filterDropdownInputCity)
         }
     }
@@ -162,7 +170,14 @@ export class ProfileMenuComponent implements OnInit {
     }
 
     public onAcceptQuestion() {
-
+        let answer: Answer = {
+            ID: 0,
+            Result: true,
+            UserID: this.app.selectedUser.ID,
+            RemoteUserID: this.app.user.ID
+        }
+        this._userInfoService.SetAnswer(answer)
+            .subscribe(isAdded => { });
     }
 
     public onDeclineQuestion() {
