@@ -12,9 +12,9 @@
     <link href="css/photoswipe/default-skin.css" rel="stylesheet" />
 
     <script src="libs/system.src.js"></script>
+    <script src="libs/system-polyfills.js"></script>
     <script src="libs/es6-shim.min.js"></script>
     <script src="libs/angular2.dev.js"></script>
-    <script src="libs/system-polyfills.js"></script>
     <script src="libs/angular2-polyfills.js"></script>
     <script src="libs/Rx.js"></script>
     <script src="libs/router.dev.js"></script>
@@ -40,7 +40,7 @@
           }
         },
           map: {
-            moment: 'libs/moment.js'
+              moment: 'libs/moment.js',
           }
       });
       System.import('app/main')

@@ -258,7 +258,10 @@ System.register(['angular2/core', 'angular2/router', './app.component', './user.
                     this._userService.SaveUserState(this.app.user);
                     this._userInfoService.GetNotifications(this.user.ID.toString())
                         .subscribe(function (notifications) {
-                        _this.app.profilemenuNotifications = notifications;
+                        if (notifications.length != 0)
+                            _this.app.profilemenuNotifications = notifications;
+                        _this.app.headerIsShow = true;
+                        _this.app.headerProfileImage = _this.app.user.ProfileImage;
                     });
                 };
                 LoginComponent.prototype.initializeWebRTC = function () {

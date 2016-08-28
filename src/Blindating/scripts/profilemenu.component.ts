@@ -45,6 +45,7 @@ export class ProfileMenuComponent implements OnInit {
     public conversations: Array<Conversation>;
     public notifications: Array<any>;
 
+    public currentQuestionIndex: number;
     public question: string = "";
     public questions: Array<Question>;
 
@@ -114,23 +115,18 @@ export class ProfileMenuComponent implements OnInit {
         switch (element['id']) {
             case 'gender':
                 this.gender = element['innerHTML'];
-                this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                 break;
             case 'relation':
                 this.relation = element['innerHTML'];
-                this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                 break;
             case 'age-from':
                 this.age.from = element['innerHTML'];
-                this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                 break;
             case 'age-to':
                 this.age.to = element['innerHTML'];
-                this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                 break;
             case 'country':
                 this.country = element['innerHTML'];
-                this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                 this._userInfoService.GetCities(this.country)
                     .subscribe(cities => {
                         this.CITIES = cities;
@@ -139,9 +135,10 @@ export class ProfileMenuComponent implements OnInit {
                 break;
             case 'city':
                 this.city = element['innerHTML'];
-                this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                 break;
         }
+
+        this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
     }
 
     public searchDropdownInput(event: KeyboardEvent) {
@@ -169,18 +166,47 @@ export class ProfileMenuComponent implements OnInit {
         this.isOpenConversations = false;
     }
 
+    public onExitProfile(event: Event) {
+        if (this.app.selectedUser)
+            this.app._searchComponent.deselectSearchUser();
+        else
+            this.app.hideProfileMenu();
+    }
+    
     public onAcceptQuestion() {
         let answer: Answer = {
             ID: 0,
             Result: true,
             UserID: this.app.selectedUser.ID,
-            RemoteUserID: this.app.user.ID
+            RemoteUserID: this.app.user.ID,
+            Message: this.question
         }
         this._userInfoService.SetAnswer(answer)
             .subscribe(isAdded => { });
+
+        this.currentQuestionIndex++;
+        if (this.currentQuestionIndex >= this.questions.length)
+            this.question = null;
+        else
+            this.question = this.questions[this.currentQuestionIndex]["Message"];
     }
 
     public onDeclineQuestion() {
+        let answer: Answer = {
+            ID: 0,
+            Result: false,
+            UserID: this.app.selectedUser.ID,
+            RemoteUserID: this.app.user.ID,
+            Message: this.question
+        }
+        this._userInfoService.SetAnswer(answer)
+            .subscribe(isAdded => { });
+
+        this.currentQuestionIndex++;
+        if (this.currentQuestionIndex >= this.questions.length)
+            this.question = null;
+        else
+            this.question = this.questions[this.currentQuestionIndex]["Message"];
 
     }
 

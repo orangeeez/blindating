@@ -29,4 +29,6 @@
 }
 :host >>> .notification-decoration {
     background-color: aliceblue;
+    display: table;
+    margin-top: 5px;
 }

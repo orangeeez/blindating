@@ -1,4 +1,6 @@
 ﻿<div id="profilemenu" class="container-fluid">
+    <div (click)="onExitProfile()"
+         class="fa fa-times fa-lg exit-profile-button"></div>
     <div *ngIf="!isOpenPhotos && !isOpenConversations" class="row">
         <div class="col-md-12 main-column-decoration">
             <tabset>
@@ -103,7 +105,7 @@
                             </span>
                         </div>
                     </div>
-                    <div *ngIf="questions" class="menu-5px-margin block-center">
+                    <div *ngIf="question" class="menu-5px-margin block-center">
                         <div class="headerline-nobackground">MY QUESTIONS FOR YOU</div>
                         <span>{{question}}</span>
                         <div *ngIf="app.selectedUser">
@@ -162,7 +164,8 @@
                      (select)="tabs[2].active = true"
                      (deselect)="tabs[2].active = false">
                 </tab>
-                <tab [heading]="tabs[3].title"
+                <tab *ngIf="!app?.selectedUser"
+                     [heading]="tabs[3].title"
                      [active]="tabs[3].active"
                      [disabled]="tabs[3].disabled"
                      (select)="tabs[3].active = true"

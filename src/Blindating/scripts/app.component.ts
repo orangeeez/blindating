@@ -89,7 +89,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
     }
 
-    ngOnInit() { }
+    ngOnInit() {}
 
     ngAfterViewInit() {
         this.navbarTop = document.getElementById('navbar-top');
@@ -133,6 +133,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                                 this.updateConversationsData(this._profileMenuComponent.conversations);
                                 this._userInfoService.GetQuestions(tuser.ID.toString())
                                     .subscribe(questions => {
+                                        this._profileMenuComponent.currentQuestionIndex = 0;
                                         this._profileMenuComponent.questions = questions;
                                         this._profileMenuComponent.question = questions[0].Message;
                                     });

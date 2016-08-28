@@ -84,6 +84,15 @@ blockquote {
     width: 35px;
     padding: 5.5px;
 }
+.exit-profile-button {
+    z-index: 3;
+    position: absolute;
+    top: 10px;
+    right: 5px;
+}
+.exit-profile-button:hover {
+    cursor: pointer;
+}
 
 ::-webkit-input-placeholder { font-size: 13px; padding-left: 5px; }
 ::-moz-placeholder { font-size: 13px; padding-left: 5px; }

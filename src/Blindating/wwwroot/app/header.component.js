@@ -39,8 +39,17 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', 'ng2-boo
             HeaderComponent = (function () {
                 function HeaderComponent(app, _userService) {
                     this._userService = _userService;
+                    this.notificationsDigitLeft = '19.3px';
                     this.app = app;
                 }
+                HeaderComponent.prototype.ngOnInit = function () {
+                    if (this.notifications.length > 9) {
+                        this.notificationsCounter = '9+';
+                        this.notificationsDigitLeft = '16px';
+                    }
+                    else
+                        this.notificationsCounter = this.notifications.length + "";
+                };
                 HeaderComponent.prototype.profileImageOver = function (event) {
                     if (!this.app.profilemenuIsShow && !this.app.selectedUser) {
                         this.app.showProfileMenu();

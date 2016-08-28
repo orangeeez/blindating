@@ -25,6 +25,7 @@ export class NotificationHTMLPipe implements PipeTransform {
                             resultColor = 'red';
 
                         answerNotificationObservable.next(`
+                        <div class="notification-decoration">
                             <div class="col-md-4">
                                 <div class="center-child-div">
                                     <img id="profile-image" class="navbar-brand img-circle without-padding"
@@ -32,18 +33,19 @@ export class NotificationHTMLPipe implements PipeTransform {
                                     <img [hidden]="` + !a["Remote"]["Online"] + `" src="images/app/controls/online.png" class="online-img-decoration" />
                                 </div>
                             </div>
-                        <div class="col-md-8">
-                            <div>
-                                <span><span class="` + nameColor + `">` + a["Remote"]["Firstname"] + ' ' +
-                                          a["Remote"]["Lastname"] + '</span> answered ' +
-                                          `<span class="` + resultColor + `">` + a["Result"] + '</span> on your question:' + `
-                                          </span>
+                            <div class="col-md-8">
+                                <div>
+                                    <span><span class="` + nameColor + `">` + a["Remote"]["Firstname"] + ' ' +
+                                              a["Remote"]["Lastname"] + '</span> answered ' +
+                                              `<span class="` + resultColor + `">` + a["Result"] + '</span> on your question:' + `
+                                              </span>
+                                </div>
+                                <div>
+                                    <span>` + a["Question"] + `
+                                    </span>
+                                </div>
                             </div>
-                            <div>
-                                <span>` + a["Question"] + `
-                                </span>
-                            </div>
-                    </div>`);
+                        </div>`);
                     });
         }
         return answerNotificationObservable;

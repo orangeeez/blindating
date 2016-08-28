@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Entity;
+using Microsoft.Data.Entity.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,14 +9,14 @@ namespace ASPAngular2Test.Models
 {
     public class AppDBContext : DbContext
     {
-        private static bool _created = false;
+        //private static bool _created = false;
 
         public AppDBContext()
         {
-            if (!_created)
-            {
-                _created = true;
-            }
+            //if (!_created)
+            //{
+            //    _created = true;
+            //}
         }
 
         public DbSet<User> Users { get; set; }
@@ -70,6 +71,11 @@ namespace ASPAngular2Test.Models
                 .HasMany(p => p.Answers)
                 .WithOne(i => i.Question)
                 .HasForeignKey(b => b.QuestionAnswerFK);
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+            options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=ApplicationDatabase;Trusted_Connection=True;");
         }
     }
 }

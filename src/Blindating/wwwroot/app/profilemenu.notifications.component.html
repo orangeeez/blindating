@@ -1,6 +1,6 @@
 ﻿<div class="container-fluid">
     <div class="row">
-        <div class="col-md-12 main-column-decoration col-no-padding notification-decoration">
+        <div class="col-md-12 main-column-decoration col-no-padding">
             <div *ngFor="#notification of notifications"
                  [innerHTML]="notification | notificationHTML | async">
             </div>

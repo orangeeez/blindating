@@ -50,7 +50,6 @@ namespace ASPAngular2Test
             app.UseIISPlatformHandler();
             app.UseDefaultFiles();
             app.UseStaticFiles();
-
             app.UseCors(builder => builder
                                    .AllowAnyHeader()
                                    .AllowAnyMethod()

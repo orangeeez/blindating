@@ -22,8 +22,6 @@ export class SearchComponent implements OnInit {
         private _router: Router) {
 
         this.app = app;
-        this.app.headerIsShow = true;
-        this.app.headerProfileImage = this.app.user.ProfileImage;
         this.app.footerIsShow = true;
     }
 
@@ -60,7 +58,7 @@ export class SearchComponent implements OnInit {
         this.app._helperComponent.isSearchUserSelected = true;
     }
 
-    private deselectSearchUser() {
+    public deselectSearchUser() {
         this.app.selectedUser = null;
         this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
         this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";

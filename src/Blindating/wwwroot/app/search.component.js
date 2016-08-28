@@ -38,8 +38,6 @@ System.register(['angular2/core', 'angular2/router', './user.service', './app.co
                     this.isSearchNotFound = false;
                     this.isSearchUserSelected = false;
                     this.app = app;
-                    this.app.headerIsShow = true;
-                    this.app.headerProfileImage = this.app.user.ProfileImage;
                     this.app.footerIsShow = true;
                 }
                 SearchComponent.prototype.ngOnInit = function () {

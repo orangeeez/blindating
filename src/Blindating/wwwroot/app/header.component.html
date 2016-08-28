@@ -5,12 +5,16 @@
        href="" class="navbar-right" style="margin-left: 20px; position: relative;">
         <img class="navbar-brand img-circle img-align" alt="Brand"
              [src]="profileImage" />
-        <i class="notification-img-decoration fa fa-circle fa-lg"
-           [hidden]="!notifications">
-        </i>
-        <i class="notification-digit-decoration"
-           [hidden]="!notifications">{{notifications.length}}
-        </i>
+        <span *ngIf="notifications">
+            <i class="notification-img-decoration fa fa-circle fa-lg"
+               [hidden]="!notifications">
+            </i>
+            <i class="notification-digit-decoration"
+               [style.left]="notificationsDigitLeft"
+               [hidden]="!notifications">
+                {{notificationsCounter}}
+            </i>
+        </span>
     </a>
 </span>
 <p class="navbar-text navbar-right">

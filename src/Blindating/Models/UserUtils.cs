@@ -111,6 +111,8 @@ namespace ASPAngular2Test.Models
             public virtual Question Question { get; set; }
             [NotMapped]
             public int UserID { get; set; }
+            [NotMapped]
+            public string Message { get; set; }
         }
 
         public class Preference

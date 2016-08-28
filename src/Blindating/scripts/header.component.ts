@@ -14,15 +14,26 @@ import {AppComponent}      from './app.component'
     inputs: ['profileImage', 'notifications']
 })
 
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
     public app: AppComponent;
     public profileImage: String;
     public notifications: Array<any>;
+    public notificationsCounter: string;
+    public notificationsDigitLeft = '19.3px';
 
     constructor(
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
         private _userService: UserService) {
         this.app = app;
+    }
+
+    ngOnInit() {
+        if (this.notifications.length > 9) {
+            this.notificationsCounter = '9+';
+            this.notificationsDigitLeft = '16px';
+        }
+        else 
+            this.notificationsCounter = this.notifications.length + "";
     }
 
     public profileImageOver(event: MouseEvent) {

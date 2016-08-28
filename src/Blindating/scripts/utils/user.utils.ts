@@ -41,6 +41,7 @@ export class Answer {
     Result: boolean;
     UserID: number;
     RemoteUserID: number;
+    Message: string;
 }
 export class Notification {
     ID: number;

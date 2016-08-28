@@ -154,7 +154,10 @@ export class LoginComponent implements OnInit {
 
         this._userInfoService.GetNotifications(this.user.ID.toString())
             .subscribe(notifications => {
-                this.app.profilemenuNotifications = notifications;
+                if (notifications.length != 0)
+                    this.app.profilemenuNotifications = notifications;
+                    this.app.headerIsShow = true;
+                    this.app.headerProfileImage = this.app.user.ProfileImage;
             });
     }
 

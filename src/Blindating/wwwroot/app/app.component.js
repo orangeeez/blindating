@@ -131,6 +131,7 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                                 _this.updateConversationsData(_this._profileMenuComponent.conversations);
                                 _this._userInfoService.GetQuestions(tuser.ID.toString())
                                     .subscribe(function (questions) {
+                                    _this._profileMenuComponent.currentQuestionIndex = 0;
                                     _this._profileMenuComponent.questions = questions;
                                     _this._profileMenuComponent.question = questions[0].Message;
                                 });

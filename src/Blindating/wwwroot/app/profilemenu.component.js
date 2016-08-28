@@ -131,23 +131,18 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './user
                     switch (element['id']) {
                         case 'gender':
                             this.gender = element['innerHTML'];
-                            this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                             break;
                         case 'relation':
                             this.relation = element['innerHTML'];
-                            this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                             break;
                         case 'age-from':
                             this.age.from = element['innerHTML'];
-                            this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                             break;
                         case 'age-to':
                             this.age.to = element['innerHTML'];
-                            this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                             break;
                         case 'country':
                             this.country = element['innerHTML'];
-                            this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                             this._userInfoService.GetCities(this.country)
                                 .subscribe(function (cities) {
                                 _this.CITIES = cities;
@@ -156,9 +151,9 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './user
                             break;
                         case 'city':
                             this.city = element['innerHTML'];
-                            this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                             break;
                     }
+                    this._userInfoService.SetPreference(this.app.user.ID, element['id'], element['innerHTML']).subscribe();
                 };
                 ProfileMenuComponent.prototype.searchDropdownInput = function (event) {
                     var element = event.target;
@@ -180,17 +175,43 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './user
                 ProfileMenuComponent.prototype.onBackConversations = function () {
                     this.isOpenConversations = false;
                 };
+                ProfileMenuComponent.prototype.onExitProfile = function (event) {
+                    if (this.app.selectedUser)
+                        this.app._searchComponent.deselectSearchUser();
+                    else
+                        this.app.hideProfileMenu();
+                };
                 ProfileMenuComponent.prototype.onAcceptQuestion = function () {
                     var answer = {
                         ID: 0,
                         Result: true,
                         UserID: this.app.selectedUser.ID,
-                        RemoteUserID: this.app.user.ID
+                        RemoteUserID: this.app.user.ID,
+                        Message: this.question
                     };
                     this._userInfoService.SetAnswer(answer)
                         .subscribe(function (isAdded) { });
+                    this.currentQuestionIndex++;
+                    if (this.currentQuestionIndex >= this.questions.length)
+                        this.question = null;
+                    else
+                        this.question = this.questions[this.currentQuestionIndex]["Message"];
                 };
                 ProfileMenuComponent.prototype.onDeclineQuestion = function () {
+                    var answer = {
+                        ID: 0,
+                        Result: false,
+                        UserID: this.app.selectedUser.ID,
+                        RemoteUserID: this.app.user.ID,
+                        Message: this.question
+                    };
+                    this._userInfoService.SetAnswer(answer)
+                        .subscribe(function (isAdded) { });
+                    this.currentQuestionIndex++;
+                    if (this.currentQuestionIndex >= this.questions.length)
+                        this.question = null;
+                    else
+                        this.question = this.questions[this.currentQuestionIndex]["Message"];
                 };
                 //#region OpenGallery
                 ProfileMenuComponent.prototype.openGallery = function (event) {
