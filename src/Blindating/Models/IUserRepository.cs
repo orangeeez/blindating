@@ -37,5 +37,6 @@ namespace ASPAngular2Test.Models
         bool SetAnswer(UserUtils.Answer answer);
         List<string> GetNotifications(int userID);
         dynamic GetAnswerNotification(int answerID);
+        bool UpdateNotifications(List<UserUtils.Notification> updateNotifications);
     }
 }

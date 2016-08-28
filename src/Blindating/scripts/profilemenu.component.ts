@@ -1,10 +1,12 @@
-﻿import {Component, EventEmitter, OnInit, Host, Inject, forwardRef} from 'angular2/core'
+﻿import {Component, EventEmitter, OnInit, OnDestroy, Host, Inject, forwardRef} from 'angular2/core'
 import {CORE_DIRECTIVES} from 'angular2/common'
 import {User}              from './user'
 import {COUNTRIES} from './mock/countries'
-import {Quote, Photo, Conversation, Question, Answer} from './utils/user.utils'
+import {Quote, Photo, Conversation, Question, Answer, Notification} from './utils/user.utils'
+import {Profilemenu} from './utils/component.utils'
 import {UserService}       from './user.service'
 import {UserInfoService}   from './services/userinfo.service'
+import {SaveComponentService}   from './services/savecomponent.service'
 import {AppComponent}      from './app.component'
 import {Router}            from 'angular2/router'
 import {IterateToPipe}     from './pipes/iterateto.pipe'
@@ -26,7 +28,8 @@ declare var PhotoSwipe, PhotoSwipeUI_Default;
     inputs: ['acceptIconPath', 'declineIconPath', 'notifications']
 })
 
-export class ProfileMenuComponent implements OnInit {
+export class ProfileMenuComponent implements OnInit, OnDestroy {
+    public profilemenu: Profilemenu;
     public CITIES: Array<string>;
     public acceptIconPath: string;
     public declineIconPath: string;
@@ -71,27 +74,74 @@ export class ProfileMenuComponent implements OnInit {
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
         private _router: Router,
         private _userService: UserService,
-        private _userInfoService: UserInfoService) {
+        private _userInfoService: UserInfoService,
+        private _saveComponentService: SaveComponentService) {
 
         this.app = app;
     }
 
     ngOnInit() {
-        if (this.notifications && !this.app.selectedUser) {
-            this.bellClass = 'fa fa-bell fa-lg';
-            this.tabs[0]["active"] = false;
-            this.tabs[3]["active"] = true;
+        if (!this._saveComponentService.isProfilemenuSaved) {
+            this._userInfoService.GetPreferences(this.app.user.ID + "")
+                .subscribe(preferences => {
+                    this.gender = preferences.Gender;
+                    this.relation = preferences.Relationship;
+                    this.age['from'] = preferences.From;
+                    this.age['to'] = preferences.To;
+                    this.country = preferences.Country;
+                    this.city = preferences.City;
+                });
+        }
+        else {
+            this.profilemenu = this._saveComponentService.LoadProfilemenu();
+            this.photos = this.profilemenu.photos;
+            this.notifications = this.profilemenu.notifications;
+            this.conversations = this.profilemenu.conversations;
+            this.questions = this.profilemenu.questions;
+            this.question = this.profilemenu.question;
+            this.cities = this.profilemenu.cities;
+            this.CITIES = this.profilemenu.CITIES;
+            this.country = this.profilemenu.country;
+            this.city = this.profilemenu.city;
+            this.gender = this.profilemenu.gender;
+            this.relation = this.profilemenu.relation;
+            this.age = this.profilemenu.age;
+            this.quote = this.profilemenu.quote;
+            this.currentQuestionIndex = this.profilemenu.currentQuestionIndex;
+            this.isOpenConversations = this.profilemenu.isOpenConversations;
+            this.isOpenPhotos = this.profilemenu.isOpenPhotos;
         }
 
-        this._userInfoService.GetPreferences(this.app.user.ID + "")
-            .subscribe(preferences => {
-                this.gender = preferences.Gender;
-                this.relation = preferences.Relationship;
-                this.age['from'] = preferences.From;
-                this.age['to'] = preferences.To;
-                this.country = preferences.Country;
-                this.city = preferences.City;
-            });
+        for (var notification of this.notifications) {
+            var n = JSON.parse(notification) as Notification;
+            if (!n.IsShown && !this.app.selectedUser) {
+                this.bellClass = 'fa fa-bell fa-lg';
+                this.tabs[0]["active"] = false;
+                this.tabs[3]["active"] = true;
+            }
+        }
+    }
+
+    ngOnDestroy() {
+        this.profilemenu = new Profilemenu();
+        this.profilemenu.photos = this.photos;
+        this.profilemenu.notifications = this.notifications;
+        this.profilemenu.conversations = this.conversations;
+        this.profilemenu.questions = this.questions;
+        this.profilemenu.cities = this.cities;
+        this.profilemenu.CITIES = this.CITIES;
+        this.profilemenu.country = this.country;
+        this.profilemenu.city = this.city;
+        this.profilemenu.gender = this.gender;
+        this.profilemenu.relation = this.relation;
+        this.profilemenu.age = this.age;
+        this.profilemenu.question = this.question;
+        this.profilemenu.quote = this.quote;
+        this.profilemenu.currentQuestionIndex = this.currentQuestionIndex;
+        this.profilemenu.isOpenConversations = this.isOpenConversations;
+        this.profilemenu.isOpenPhotos = this.isOpenPhotos;
+
+        this._saveComponentService.SaveProfilemenu(this.profilemenu);
     }
 
     public logout() {
@@ -171,6 +221,20 @@ export class ProfileMenuComponent implements OnInit {
             this.app._searchComponent.deselectSearchUser();
         else
             this.app.hideProfileMenu();
+    }
+
+    public onQuestionLeft() {
+        if (this.currentQuestionIndex - 1 >= 0) {
+            this.currentQuestionIndex--;
+            this.question = this.questions[this.currentQuestionIndex]["Message"];
+        }
+    }
+
+    public onQuestionRight() {
+        if (this.currentQuestionIndex + 1 <= this.questions.length) {
+            this.currentQuestionIndex++;
+            this.question = this.questions[this.currentQuestionIndex]["Message"];
+        }
     }
     
     public onAcceptQuestion() {

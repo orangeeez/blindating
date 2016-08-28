@@ -43,12 +43,19 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', 'ng2-boo
                     this.app = app;
                 }
                 HeaderComponent.prototype.ngOnInit = function () {
-                    if (this.notifications.length > 9) {
-                        this.notificationsCounter = '9+';
-                        this.notificationsDigitLeft = '16px';
+                    var c = 0;
+                    for (var _i = 0, _a = this.notifications; _i < _a.length; _i++) {
+                        var notification = _a[_i];
+                        var n = JSON.parse(notification);
+                        if (!n.IsShown) {
+                            c++;
+                            if (c > 9) {
+                                this.notificationsCounter = '9+';
+                                this.notificationsDigitLeft = '16px';
+                            }
+                        }
                     }
-                    else
-                        this.notificationsCounter = this.notifications.length + "";
+                    this.notificationsCounter = c + "";
                 };
                 HeaderComponent.prototype.profileImageOver = function (event) {
                     if (!this.app.profilemenuIsShow && !this.app.selectedUser) {

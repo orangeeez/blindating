@@ -1,7 +1,7 @@
 ﻿import {Http, Response, Headers, RequestOptions, Jsonp} from 'angular2/http'
 import {Injectable}     from 'angular2/core'
 import {Observable}     from 'rxjs/Observable'
-import {Quote, Photo, Conversation, Preference, Question, Answer}          from './../utils/user.utils'
+import {Quote, Photo, Conversation, Preference, Question, Answer, Notification}          from './../utils/user.utils'
 import {API_ADDRESS}    from './../mock/utils'
 
 
@@ -14,44 +14,32 @@ export class UserInfoService {
     constructor(private http: Http) { }
 
     GetRandomQuote(userID: string): Observable<Quote> {
-        let body = userID;
-
-        return this.http.post(API_ADDRESS + this.api + "/getrandomquote", body, this.options)
+        return this.http.post(API_ADDRESS + this.api + "/getrandomquote", userID, this.options)
             .map(res => res.json());
     }
 
     GetPhotos(userID: string): Observable<Array<Photo>> {
-        let body = userID;
-
-        return this.http.post(API_ADDRESS + this.api + "/getphotos", body, this.options)
+        return this.http.post(API_ADDRESS + this.api + "/getphotos", userID, this.options)
             .map(res => res.json());
     }
 
     GetConversations(userID: string): Observable<Array<Conversation>> {
-        let body = userID;
-
-        return this.http.post(API_ADDRESS + this.api + "/getconversations", body, this.options)
+        return this.http.post(API_ADDRESS + this.api + "/getconversations", userID, this.options)
             .map(res => res.json());
     }
 
     GetCities(country: string) {
-        let body = "\"" + country + "\"";
-
-        return this.http.post(API_ADDRESS + this.api + "/getcities", body, this.options)
+        return this.http.post(API_ADDRESS + this.api + "/getcities", country, this.options)
             .map(res => res.json());
     }
 
     GetQuestions(userID: string): Observable<Array<Question>> {
-        let body = userID;
-
-        return this.http.post(API_ADDRESS + this.api + "/getquestions", body, this.options)
+        return this.http.post(API_ADDRESS + this.api + "/getquestions", userID, this.options)
             .map(res => res.json());
     }
 
     GetPreferences(userID: string): Observable<Preference> {
-        let body = userID;
-
-        return this.http.post(API_ADDRESS + this.api + "/getpreferences", body, this.options)
+        return this.http.post(API_ADDRESS + this.api + "/getpreferences", userID, this.options)
             .map(res => res.json());
     }
 
@@ -61,16 +49,13 @@ export class UserInfoService {
             Field: field,
             Value: value
         }
-        let body = JSON.stringify(queryObj);
 
-        return this.http.post(API_ADDRESS + this.api + "/setpreference", body, this.options)
+        return this.http.post(API_ADDRESS + this.api + "/setpreference", JSON.stringify(queryObj), this.options)
             .map(res => !!res.text());
     }
 
     SetAnswer(answer: Answer): Observable<boolean> {
-        let body = JSON.stringify(answer);
-
-        return this.http.post(API_ADDRESS + this.api + "/setanswer", body, this.options)
+        return this.http.post(API_ADDRESS + this.api + "/setanswer", JSON.stringify(answer), this.options)
             .map(res => !!res.text());
     }
 
@@ -82,5 +67,10 @@ export class UserInfoService {
     GetNotifications(userID: string): Observable<Array<string>> {
         return this.http.post(API_ADDRESS + this.api + "/getnotifications", userID, this.options)
             .map(res => res.json());
+    }
+
+    UpdateNotifications(notifications: Array<Notification>): Observable<boolean> {
+        return this.http.post(API_ADDRESS + this.api + "/updatenotifications", JSON.stringify(notifications), this.options)
+            .map(res => !!res.text());
     }
 }

@@ -1,10 +1,11 @@
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router'
 import {HTTP_PROVIDERS, JSONP_PROVIDERS}      from 'angular2/http'
-import {Component, ViewChild, ElementRef, OnInit, AfterViewInit} from 'angular2/core'
+import {Component, ViewChild, ElementRef, OnInit, AfterViewInit,} from 'angular2/core'
 import {Router}              from 'angular2/router'
 import {UserService}         from './user.service'
 import {SocialService}       from './services/social.service'
 import {UserInfoService}       from './services/userinfo.service'
+import {SaveComponentService} from './services/savecomponent.service'
 import {UtilsService}       from './services/utils.service'
 import {DashboardComponent}  from './dashboard.component'
 import {ProfileComponent}    from './profile.component'
@@ -22,7 +23,7 @@ import {Conversation}        from './utils/user.utils'
   templateUrl: 'app/app.component.html',
   styleUrls: ['app/app.component.css', 'css/styles.css'],
   directives: [ROUTER_DIRECTIVES, FooterComponent, HeaderComponent, HelperComponent, ProfileMenuComponent],
-  providers: [HTTP_PROVIDERS, ROUTER_PROVIDERS, JSONP_PROVIDERS, UserService, SocialService, UserInfoService, UtilsService]
+  providers: [HTTP_PROVIDERS, ROUTER_PROVIDERS, JSONP_PROVIDERS, UserService, SocialService, UserInfoService, SaveComponentService, UtilsService]
 })
 @RouteConfig([
   { path: '/login',      name: 'Login',      component: LoginComponent },
@@ -76,11 +77,14 @@ export class AppComponent implements OnInit, AfterViewInit {
     public _profileMenuComponent: ProfileMenuComponent;
     @ViewChild(HelperComponent)
     public _helperComponent: HelperComponent;
+    @ViewChild(HeaderComponent)
+    public _headerComponent: HeaderComponent;
     //#endregion
 
     constructor(private _router: Router,
                 private _userService: UserService,
-                private _userInfoService: UserInfoService) {
+                private _userInfoService: UserInfoService,
+                private _saveComponentService: SaveComponentService) {
         this._router.navigate(['Login']);
 
         window.onbeforeunload = function (e) {
@@ -120,26 +124,27 @@ export class AppComponent implements OnInit, AfterViewInit {
             tuser = this.selectedUser;
         else
             tuser = this.user;
-
-        this._userInfoService.GetRandomQuote(tuser.ID.toString())
-            .subscribe(quote => {
-                this._profileMenuComponent.quote = quote;
-                this._userInfoService.GetPhotos(tuser.ID.toString())
-                    .subscribe(photos => {
-                        this._profileMenuComponent.photos = photos;
-                        this._userInfoService.GetConversations(tuser.ID.toString())
-                            .subscribe(conversations => {
-                                this._profileMenuComponent.conversations = conversations;
-                                this.updateConversationsData(this._profileMenuComponent.conversations);
-                                this._userInfoService.GetQuestions(tuser.ID.toString())
-                                    .subscribe(questions => {
-                                        this._profileMenuComponent.currentQuestionIndex = 0;
-                                        this._profileMenuComponent.questions = questions;
-                                        this._profileMenuComponent.question = questions[0].Message;
-                                    });
-                            });
-                    });
-            });
+        if (!this._saveComponentService.isProfilemenuSaved) {
+            this._userInfoService.GetRandomQuote(tuser.ID.toString())
+                .subscribe(quote => {
+                    this._profileMenuComponent.quote = quote;
+                    this._userInfoService.GetPhotos(tuser.ID.toString())
+                        .subscribe(photos => {
+                            this._profileMenuComponent.photos = photos;
+                            this._userInfoService.GetConversations(tuser.ID.toString())
+                                .subscribe(conversations => {
+                                    this._profileMenuComponent.conversations = conversations;
+                                    this.updateConversationsData(this._profileMenuComponent.conversations);
+                                    this._userInfoService.GetQuestions(tuser.ID.toString())
+                                        .subscribe(questions => {
+                                            this._profileMenuComponent.currentQuestionIndex = 0;
+                                            this._profileMenuComponent.questions = questions;
+                                            this._profileMenuComponent.question = questions[0].Message;
+                                        });
+                                });
+                        });
+                });
+        }
         //#endregion
 
         this.profilemenuIsShow = true;

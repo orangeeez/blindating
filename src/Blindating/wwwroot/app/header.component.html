@@ -5,7 +5,7 @@
        href="" class="navbar-right" style="margin-left: 20px; position: relative;">
         <img class="navbar-brand img-circle img-align" alt="Brand"
              [src]="profileImage" />
-        <span *ngIf="notifications">
+        <span *ngIf="notificationsCounter != '0'">
             <i class="notification-img-decoration fa fa-circle fa-lg"
                [hidden]="!notifications">
             </i>

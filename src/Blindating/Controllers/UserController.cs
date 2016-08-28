@@ -146,6 +146,12 @@ namespace ASPAngular2Test.Controllers
         {
             return Utils.GetAnswerNotification(answerID);
         }
+        [HttpPost]
+        [ActionName("updatenotifications")]
+        public dynamic UpdateNotifications([FromBody] List<UserUtils.Notification> updateNotifications)
+        {
+            return Utils.UpdateNotifications(updateNotifications);
+        }
         #endregion
     }
 }

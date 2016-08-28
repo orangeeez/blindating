@@ -32,33 +32,27 @@ System.register(['angular2/http', 'angular2/core', './../mock/utils'], function(
                     this.options = new http_1.RequestOptions({ headers: this.headers });
                 }
                 UserInfoService.prototype.GetRandomQuote = function (userID) {
-                    var body = userID;
-                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getrandomquote", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getrandomquote", userID, this.options)
                         .map(function (res) { return res.json(); });
                 };
                 UserInfoService.prototype.GetPhotos = function (userID) {
-                    var body = userID;
-                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getphotos", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getphotos", userID, this.options)
                         .map(function (res) { return res.json(); });
                 };
                 UserInfoService.prototype.GetConversations = function (userID) {
-                    var body = userID;
-                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getconversations", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getconversations", userID, this.options)
                         .map(function (res) { return res.json(); });
                 };
                 UserInfoService.prototype.GetCities = function (country) {
-                    var body = "\"" + country + "\"";
-                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getcities", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getcities", country, this.options)
                         .map(function (res) { return res.json(); });
                 };
                 UserInfoService.prototype.GetQuestions = function (userID) {
-                    var body = userID;
-                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getquestions", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getquestions", userID, this.options)
                         .map(function (res) { return res.json(); });
                 };
                 UserInfoService.prototype.GetPreferences = function (userID) {
-                    var body = userID;
-                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getpreferences", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getpreferences", userID, this.options)
                         .map(function (res) { return res.json(); });
                 };
                 UserInfoService.prototype.SetPreference = function (userID, field, value) {
@@ -67,13 +61,11 @@ System.register(['angular2/http', 'angular2/core', './../mock/utils'], function(
                         Field: field,
                         Value: value
                     };
-                    var body = JSON.stringify(queryObj);
-                    return this.http.post(utils_1.API_ADDRESS + this.api + "/setpreference", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/setpreference", JSON.stringify(queryObj), this.options)
                         .map(function (res) { return !!res.text(); });
                 };
                 UserInfoService.prototype.SetAnswer = function (answer) {
-                    var body = JSON.stringify(answer);
-                    return this.http.post(utils_1.API_ADDRESS + this.api + "/setanswer", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/setanswer", JSON.stringify(answer), this.options)
                         .map(function (res) { return !!res.text(); });
                 };
                 UserInfoService.prototype.GetAnswerNotification = function (answerID) {
@@ -83,6 +75,10 @@ System.register(['angular2/http', 'angular2/core', './../mock/utils'], function(
                 UserInfoService.prototype.GetNotifications = function (userID) {
                     return this.http.post(utils_1.API_ADDRESS + this.api + "/getnotifications", userID, this.options)
                         .map(function (res) { return res.json(); });
+                };
+                UserInfoService.prototype.UpdateNotifications = function (notifications) {
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/updatenotifications", JSON.stringify(notifications), this.options)
+                        .map(function (res) { return !!res.text(); });
                 };
                 UserInfoService = __decorate([
                     core_1.Injectable(), 

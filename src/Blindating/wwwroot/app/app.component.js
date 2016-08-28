@@ -1,4 +1,4 @@
-System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.service', './services/social.service', './services/userinfo.service', './services/utils.service', './dashboard.component', './profile.component', './login.component', './search.component', './footer.component', './header.component', './helper.component', './profilemenu.component'], function(exports_1, context_1) {
+System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.service', './services/social.service', './services/userinfo.service', './services/savecomponent.service', './services/utils.service', './dashboard.component', './profile.component', './login.component', './search.component', './footer.component', './header.component', './helper.component', './profilemenu.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var router_1, http_1, core_1, router_2, user_service_1, social_service_1, userinfo_service_1, utils_service_1, dashboard_component_1, profile_component_1, login_component_1, search_component_1, footer_component_1, header_component_1, helper_component_1, profilemenu_component_1;
+    var router_1, http_1, core_1, router_2, user_service_1, social_service_1, userinfo_service_1, savecomponent_service_1, utils_service_1, dashboard_component_1, profile_component_1, login_component_1, search_component_1, footer_component_1, header_component_1, helper_component_1, profilemenu_component_1;
     var AppComponent;
     return {
         setters:[
@@ -32,6 +32,9 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
             },
             function (userinfo_service_1_1) {
                 userinfo_service_1 = userinfo_service_1_1;
+            },
+            function (savecomponent_service_1_1) {
+                savecomponent_service_1 = savecomponent_service_1_1;
             },
             function (utils_service_1_1) {
                 utils_service_1 = utils_service_1_1;
@@ -63,10 +66,11 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
         execute: function() {
             AppComponent = (function () {
                 //#endregion
-                function AppComponent(_router, _userService, _userInfoService) {
+                function AppComponent(_router, _userService, _userInfoService, _saveComponentService) {
                     this._router = _router;
                     this._userService = _userService;
                     this._userInfoService = _userInfoService;
+                    this._saveComponentService = _saveComponentService;
                     //#region Signaling configuration WebRTC's variables
                     this.server = "http://192.168.0.114:8095";
                     this.stun = "stun:stun.l.google.com:19302";
@@ -119,25 +123,27 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                         tuser = this.selectedUser;
                     else
                         tuser = this.user;
-                    this._userInfoService.GetRandomQuote(tuser.ID.toString())
-                        .subscribe(function (quote) {
-                        _this._profileMenuComponent.quote = quote;
-                        _this._userInfoService.GetPhotos(tuser.ID.toString())
-                            .subscribe(function (photos) {
-                            _this._profileMenuComponent.photos = photos;
-                            _this._userInfoService.GetConversations(tuser.ID.toString())
-                                .subscribe(function (conversations) {
-                                _this._profileMenuComponent.conversations = conversations;
-                                _this.updateConversationsData(_this._profileMenuComponent.conversations);
-                                _this._userInfoService.GetQuestions(tuser.ID.toString())
-                                    .subscribe(function (questions) {
-                                    _this._profileMenuComponent.currentQuestionIndex = 0;
-                                    _this._profileMenuComponent.questions = questions;
-                                    _this._profileMenuComponent.question = questions[0].Message;
+                    if (!this._saveComponentService.isProfilemenuSaved) {
+                        this._userInfoService.GetRandomQuote(tuser.ID.toString())
+                            .subscribe(function (quote) {
+                            _this._profileMenuComponent.quote = quote;
+                            _this._userInfoService.GetPhotos(tuser.ID.toString())
+                                .subscribe(function (photos) {
+                                _this._profileMenuComponent.photos = photos;
+                                _this._userInfoService.GetConversations(tuser.ID.toString())
+                                    .subscribe(function (conversations) {
+                                    _this._profileMenuComponent.conversations = conversations;
+                                    _this.updateConversationsData(_this._profileMenuComponent.conversations);
+                                    _this._userInfoService.GetQuestions(tuser.ID.toString())
+                                        .subscribe(function (questions) {
+                                        _this._profileMenuComponent.currentQuestionIndex = 0;
+                                        _this._profileMenuComponent.questions = questions;
+                                        _this._profileMenuComponent.question = questions[0].Message;
+                                    });
                                 });
                             });
                         });
-                    });
+                    }
                     //#endregion
                     this.profilemenuIsShow = true;
                 };
@@ -192,13 +198,17 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                     core_1.ViewChild(helper_component_1.HelperComponent), 
                     __metadata('design:type', helper_component_1.HelperComponent)
                 ], AppComponent.prototype, "_helperComponent", void 0);
+                __decorate([
+                    core_1.ViewChild(header_component_1.HeaderComponent), 
+                    __metadata('design:type', header_component_1.HeaderComponent)
+                ], AppComponent.prototype, "_headerComponent", void 0);
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'my-app',
                         templateUrl: 'app/app.component.html',
                         styleUrls: ['app/app.component.css', 'css/styles.css'],
                         directives: [router_1.ROUTER_DIRECTIVES, footer_component_1.FooterComponent, header_component_1.HeaderComponent, helper_component_1.HelperComponent, profilemenu_component_1.ProfileMenuComponent],
-                        providers: [http_1.HTTP_PROVIDERS, router_1.ROUTER_PROVIDERS, http_1.JSONP_PROVIDERS, user_service_1.UserService, social_service_1.SocialService, userinfo_service_1.UserInfoService, utils_service_1.UtilsService]
+                        providers: [http_1.HTTP_PROVIDERS, router_1.ROUTER_PROVIDERS, http_1.JSONP_PROVIDERS, user_service_1.UserService, social_service_1.SocialService, userinfo_service_1.UserInfoService, savecomponent_service_1.SaveComponentService, utils_service_1.UtilsService]
                     }),
                     router_1.RouteConfig([
                         { path: '/login', name: 'Login', component: login_component_1.LoginComponent },
@@ -206,7 +216,7 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                         { path: '/profile', name: 'Profile', component: profile_component_1.ProfileComponent },
                         { path: '/search', name: 'Search', component: search_component_1.SearchComponent }
                     ]), 
-                    __metadata('design:paramtypes', [router_2.Router, user_service_1.UserService, userinfo_service_1.UserInfoService])
+                    __metadata('design:paramtypes', [router_2.Router, user_service_1.UserService, userinfo_service_1.UserInfoService, savecomponent_service_1.SaveComponentService])
                 ], AppComponent);
                 return AppComponent;
             }());

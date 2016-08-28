@@ -106,8 +106,24 @@
                         </div>
                     </div>
                     <div *ngIf="question" class="menu-5px-margin block-center">
-                        <div class="headerline-nobackground">MY QUESTIONS FOR YOU</div>
-                        <span>{{question}}</span>
+                        <div class="row">
+                            <div (click)="onQuestionLeft()"
+                                 class="col-md-1 question-arrow">
+                                <i *ngIf="currentQuestionIndex != 0"
+                                   class="fa fa-angle-left fa-2x" aria-hidden="true"></i>
+                            </div>
+                            <div class="col-md-10 headerline-nobackground">
+                                MY QUESTIONS FOR YOU
+                                <div style="font-size: 15px;">
+                                    {{question}}
+                                </div>
+                            </div>
+                            <div (click)="onQuestionRight()"
+                                 class="col-md-1 question-arrow">
+                                <i *ngIf="currentQuestionIndex != questions.length - 1"
+                                   class="fa fa-angle-right fa-2x" aria-hidden="true"></i>
+                            </div>
+                        </div>
                         <div *ngIf="app.selectedUser">
                             <img [src]="acceptIconPath"
                                  (click)="onAcceptQuestion()"
@@ -185,7 +201,6 @@
         <div class="col-md-12 main-column-decoration">
             <profilemenu-photos [photos]="photos"
                                 (onBack)="onBackPhotos()">
-
             </profilemenu-photos>
         </div>
     </div>
@@ -194,7 +209,6 @@
             <profilemenu-conversations [app]="app"
                                        [conversations]="conversations"
                                        (onBack)="onBackConversations()">
-
             </profilemenu-conversations>
         </div>
     </div>

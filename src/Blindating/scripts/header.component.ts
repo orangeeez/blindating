@@ -5,6 +5,7 @@ import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap'
 import {User}              from './user'
 import {UserService}       from './user.service'
 import {AppComponent}      from './app.component'
+import {Notification}      from './utils/user.utils'
 
 @Component({
     selector: 'headnav',
@@ -28,12 +29,18 @@ export class HeaderComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (this.notifications.length > 9) {
-            this.notificationsCounter = '9+';
-            this.notificationsDigitLeft = '16px';
+        var c = 0;
+        for (var notification of this.notifications) {
+            var n = JSON.parse(notification) as Notification;
+            if (!n.IsShown) {
+                c++;
+                if (c > 9) {
+                    this.notificationsCounter = '9+';
+                    this.notificationsDigitLeft = '16px';
+                }
+            }
         }
-        else 
-            this.notificationsCounter = this.notifications.length + "";
+        this.notificationsCounter = c + "";
     }
 
     public profileImageOver(event: MouseEvent) {

@@ -140,6 +140,7 @@ namespace ASPAngular2Test.Models
 
             public string Table { get; set; }
             public int EntityID { get; set; }
+            public bool IsShown { get; set; }
 
             public virtual InformationUser Information { get; set; }
             [NotMapped]

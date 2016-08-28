@@ -381,6 +381,22 @@ namespace ASPAngular2Test.Models
             }
         }
 
+        public bool UpdateNotifications(List<UserUtils.Notification> updateNotifications)
+        {
+            using (var _appDB = new AppDBContext())
+            {
+                var ids = updateNotifications.AsQueryable()
+                                        .Select(u => (int)u.ID).ToList();
+
+                var notifications = (from n in _appDB.Notifications
+                                     where ids.Contains(n.ID)
+                                     select n).ToList();
+
+                notifications.ForEach(n => n.IsShown = true);
+                _appDB.SaveChanges();
+                return true;
+            }
+        }
         private void CreateOrUpdatePreference(UserUtils.Preference createorget, UserUtils.PreferenceUser set)
         {
             switch (set.Field)
