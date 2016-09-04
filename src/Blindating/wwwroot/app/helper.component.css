@@ -11,3 +11,15 @@
     margin: 10px auto;
     height: 25px;
 }
+.calling {
+    background-color: aqua;
+}
+.initiated {
+    background-color: aqua;
+}
+.disabled {
+    pointer-events: none;
+}
+.denied {
+    background-color: lightcoral;
+}

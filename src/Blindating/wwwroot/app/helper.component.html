@@ -1,8 +1,53 @@
-﻿<ul [hidden]="!isSearchUserSelected" class="nav">
-    <li id="phone-icon" class="nav-li-decoration padding">
-        <img class="nav-image-decoration" [src]="phoneIconPath" />
+﻿<ul [hidden]="!app.selectedUser && !app.callingUser && !app.callerUser" 
+    class="nav">
+    <li *ngIf="app.communicationState == 'calling' || app.communicationState == 'initiatedCalling'" id="remote" class="padding calling initiated denied"
+        [class.calling]="isCallingBlink"
+        [class.initiated]="isCallInitiated"
+        [class.denied]="isCallDenied">
+        <div id="search-board"
+             (click)="app._searchComponent.selectDeselectSearchUser($event)">
+            <div class="center-child-div">
+                <img id="profile-image" class="navbar-brand img-circle without-padding" src="{{app.callingUser.ProfileImage}}" />
+                <span class="profile-image-text">
+                    <span *ngIf="!app.selectedUser">Profile</span>
+                    <span *ngIf="app.selectedUser"
+                          class="cross-decoration">X</span>
+                </span>
+            </div>
+            <div *ngIf="app.communicationState == 'initiatedCalling'" class="center-child-div">{{duration}}</div>
+            <div [hidden]="!visible">{{app.callingUser.JWT}}</div>
+        </div>
     </li>
-    <li id="phone-hangup-icon" class="nav-li-decoration padding">
-        <img class="nav-image-decoration" [src]="phoneHangupIconPath" />
+    <li *ngIf="app.communicationState == 'caller' || app.communicationState == 'initiatedCaller'" id="remote" class="padding calling initiated denied"
+        [class.calling]="isCallingBlink"
+        [class.initiated]="isCallInitiated"
+        [class.denied]="isCallDenied">
+        <div id="search-board">
+            <div class="center-child-div">
+                <img id="profile-image" class="navbar-brand img-circle without-padding" src="{{app.callerUser.ProfileImage}}" />
+            </div>
+            <div *ngIf="app.communicationState == 'initiatedCaller'" class="center-child-div">{{duration}}</div>
+            <div [hidden]="!visible">{{app.callerUser.JWT}}</div>
+        </div>
+    </li>
+    <li *ngIf="app.communicationState !='caller'    && 
+        app.communicationState != 'initiatedCaller' &&
+        app.communicationState != 'initiatedCalling'" id="phone-icon" class="nav-li-decoration padding"
+        (click)="inviteAcceptCall()"
+        (mouseover)="onPhoneMouseOver()"
+        [class.nav-li-decoration]="isPhoneClassEnabled"
+        [class.disabled]="isPhoneDisabled">
+        <img class="nav-image-decoration" 
+             [src]="phoneIconPath "/>
+    </li>
+    <li *ngIf="app.communicationState == 'calling'   || 
+        app.communicationState == 'initiatedCalling' ||
+        app.communicationState == 'initiatedCaller' " id="phone-hangup-icon" class="nav-li-decoration padding"
+        (click)="denyCall()"
+        (mouseover)="onPhoneMouseOver()"
+        [class.nav-li-decoration]="isPhoneHangupClassEnabled"
+        [class.disabled]="isPhoneHangupDisabled">
+        <img class="nav-image-decoration" 
+             [src]="phoneHangupIconPath" />
     </li>
 </ul>

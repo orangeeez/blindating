@@ -44,14 +44,16 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', 'ng2-boo
                 }
                 HeaderComponent.prototype.ngOnInit = function () {
                     var c = 0;
-                    for (var _i = 0, _a = this.notifications; _i < _a.length; _i++) {
-                        var notification = _a[_i];
-                        var n = JSON.parse(notification);
-                        if (!n.IsShown) {
-                            c++;
-                            if (c > 9) {
-                                this.notificationsCounter = '9+';
-                                this.notificationsDigitLeft = '16px';
+                    if (this.notifications) {
+                        for (var _i = 0, _a = this.notifications; _i < _a.length; _i++) {
+                            var notification = _a[_i];
+                            var n = JSON.parse(notification);
+                            if (!n.IsShown) {
+                                c++;
+                                if (c > 9) {
+                                    this.notificationsCounter = '9+';
+                                    this.notificationsDigitLeft = '16px';
+                                }
                             }
                         }
                     }

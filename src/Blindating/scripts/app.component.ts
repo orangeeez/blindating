@@ -43,6 +43,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     public navbarTop: HTMLElement;
     public centralColumn: HTMLElement;
     public rightColumn: HTMLElement;
+    public communicationState: string = 'none';
 
     /* Header */
     public headerIsShow: boolean = false;
@@ -66,11 +67,15 @@ export class AppComponent implements OnInit, AfterViewInit {
     public user: User;
     public users: User[];
     public selectedUser: User;
+    public callingUser: User;
+    public callerUser: User;
     //#endregion
 
     //#region Child Components
     @ViewChild(DashboardComponent)
     public _dashboardComponent: DashboardComponent;
+    @ViewChild(LoginComponent)
+    public _loginComponent: LoginComponent;
     @ViewChild(SearchComponent)
     public _searchComponent: SearchComponent;
     @ViewChild(ProfileMenuComponent)
@@ -117,36 +122,6 @@ export class AppComponent implements OnInit, AfterViewInit {
                 rightColumn.style.width = rightColumnPosition + '%';
             }
         }
-
-        //#region Get All for Profile Menu
-        var tuser: User;
-        if (this.selectedUser != null)
-            tuser = this.selectedUser;
-        else
-            tuser = this.user;
-        if (!this._saveComponentService.isProfilemenuSaved) {
-            this._userInfoService.GetRandomQuote(tuser.ID.toString())
-                .subscribe(quote => {
-                    this._profileMenuComponent.quote = quote;
-                    this._userInfoService.GetPhotos(tuser.ID.toString())
-                        .subscribe(photos => {
-                            this._profileMenuComponent.photos = photos;
-                            this._userInfoService.GetConversations(tuser.ID.toString())
-                                .subscribe(conversations => {
-                                    this._profileMenuComponent.conversations = conversations;
-                                    this.updateConversationsData(this._profileMenuComponent.conversations);
-                                    this._userInfoService.GetQuestions(tuser.ID.toString())
-                                        .subscribe(questions => {
-                                            this._profileMenuComponent.currentQuestionIndex = 0;
-                                            this._profileMenuComponent.questions = questions;
-                                            this._profileMenuComponent.question = questions[0].Message;
-                                        });
-                                });
-                        });
-                });
-        }
-        //#endregion
-
         this.profilemenuIsShow = true;
     }
 

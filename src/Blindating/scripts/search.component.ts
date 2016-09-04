@@ -39,6 +39,7 @@ export class SearchComponent implements OnInit {
             this.selectSearchUser();
     }
 
+
     private selectSearchUser() {
         let element = event.srcElement;
 
@@ -49,21 +50,28 @@ export class SearchComponent implements OnInit {
             .subscribe(finded => {
                 this.app.selectedUser = finded;
                 if (this.app.selectedUser.Online)
-                    this.app.helperPhoneIconPath = "images/app/controls/phone.png";
+                    this.enableCalling();
                 else
-                    this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
+                    this.disableCalling();
+
                 this.app.showProfileMenu();
             });
-
-        this.app._helperComponent.isSearchUserSelected = true;
     }
 
     public deselectSearchUser() {
         this.app.selectedUser = null;
-        this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
-        this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
-
         this.app.hideProfileMenu();
-        this.app._helperComponent.isSearchUserSelected = false;
+    }
+
+    private enableCalling() {
+        this.app.helperPhoneIconPath = "images/app/controls/phone.png";
+        this.app._helperComponent.isPhoneDisabled = false;
+        this.app._helperComponent.isPhoneClassEnabled = true;
+    }
+
+    private disableCalling() {
+        this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
+        this.app._helperComponent.isPhoneDisabled = true;
+        this.app._helperComponent.isPhoneClassEnabled = false;
     }
 }

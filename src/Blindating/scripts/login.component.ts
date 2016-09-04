@@ -38,16 +38,15 @@ export class LoginComponent implements OnInit {
     public emailregFieldValue: string;
     public passwordFieldValue: string;
 
-
     constructor(
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
         private _router: Router,
         private _userService: UserService,
         private _socialService: SocialService,
         private _userInfoService: UserInfoService) {
-            this.app = app;
-            this.jwt = this.getCookie("jwt");
-        }
+        this.app = app;
+        this.jwt = this.getCookie("jwt");
+    }
 
     ngOnInit() {
         //#region FB SDK INIT
@@ -154,10 +153,9 @@ export class LoginComponent implements OnInit {
 
         this._userInfoService.GetNotifications(this.user.ID.toString())
             .subscribe(notifications => {
-                if (notifications.length != 0)
-                    this.app.profilemenuNotifications = notifications;
-                    this.app.headerIsShow = true;
-                    this.app.headerProfileImage = this.app.user.ProfileImage;
+                this.app.profilemenuNotifications = notifications;
+                this.app.headerIsShow = true;
+                this.app.headerProfileImage = this.app.user.ProfileImage;
             });
     }
 
@@ -168,10 +166,69 @@ export class LoginComponent implements OnInit {
             }]
         });
         this.user.Peer.connect({
-            host: this.app.server, token: this.app.user.Firstname + this.app.user.Lastname
+            host: this.app.server, token: this.app.user.JWT
         });
         this.app.user = this.user;
+
+        this.app.user.Peer.on('chat-invited', this.onUserCalling);
+
+        this.app.user.Peer.on('data-received', this.onDataReceived);
+
+        this.app.user.Peer.on('chat-started', this.onCallStarted);
+
+        this.app.user.Peer.on('chat-stopped', this.onCallStopped);
+
+        this.app.user.Peer.on('chat-denied', this.onCallDenied);
+
         this._userService.SaveUserState(this.app.user);
+    }
+
+    private onUserCalling = (e) => {
+        this._userService.GetUser("JWT", e.senderId)
+            .subscribe(calling => {
+                this.app.callingUser = calling;
+                this.app.communicationState = 'calling';
+                this.app._helperComponent.phoneIconPath = "images/app/controls/phone.png"
+                this.app._helperComponent.phoneHangupIconPath = "images/app/controls/phone-hang-up.png"
+                this.app._helperComponent.isPhoneDisabled = false;
+                this.app._helperComponent.isPhoneClassEnabled = true;
+                this.app._helperComponent.isPhoneHangupDisabled = false;
+                this.app._helperComponent.isPhoneHangupClassEnabled = true;
+                this.app._helperComponent.callingInterval = setInterval(this.app._helperComponent.onCallingBlink, 500);
+            });
+    }
+
+    private onDataReceived = (e) => { }
+
+    private onCallStarted = (e) => {
+        if (this.app.communicationState != 'initiatedCalling') {
+            this.app.communicationState = 'initiatedCaller';
+            this.app._helperComponent.startDuration();
+        }
+
+        this.app._helperComponent.isCallInitiated = true;
+        clearInterval(this.app._helperComponent.interval);
+    }
+
+    private onCallStopped = (e) => {
+        this.app._helperComponent.isCallDenied = true;
+        setTimeout(this.disappearCall, 2000);
+    }
+
+    private onCallDenied = (e) => {
+        this.app._helperComponent.isCallDenied = true;
+        setTimeout(this.disappearCall, 2000);
+    }
+
+    private disappearCall = () => {
+        this.app.callerUser = null;
+        this.app.callingUser = null;
+        this.app._helperComponent.isCallInitiated = false;
+        this.app._helperComponent.isCallDenied = false;
+        this.app.communicationState = 'none';
+        this.app._helperComponent.startDurationTime = new Date(0, 0, 0, 0, 0, 0, 0);
+        clearInterval(this.app._helperComponent.interval);
+        clearTimeout(this.app._helperComponent.durationTimeout);
     }
 
     private registerViaForm(response: string)

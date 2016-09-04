@@ -20,4 +20,5 @@ export class Profilemenu {
     public isOpenPhotos: boolean;
     public isOpenConversations: boolean;
     public notificationHTML: Array<any> = [];
+    public user: User;
 }

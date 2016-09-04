@@ -114,9 +114,7 @@
                             </div>
                             <div class="col-md-10 headerline-nobackground">
                                 MY QUESTIONS FOR YOU
-                                <div style="font-size: 15px;">
-                                    {{question}}
-                                </div>
+                                <div style="font-size: 15px;">{{question}}</div>
                             </div>
                             <div (click)="onQuestionRight()"
                                  class="col-md-1 question-arrow">
@@ -148,7 +146,8 @@
                             <div (click)="openConversations()"
                                  class="headerline-decoration">Last conversations</div>
                             <div class="row row-padding">
-                                <div *ngFor="#conversation of conversations | iterateto: {to: 6}" id="search-board" class="col-md-2 col-no-padding">
+                                <div *ngFor="#conversation of conversations | iterateto: {to: 6}"
+                                     id="search-board" class="col-md-2 col-no-padding">
                                     <div (click)="app._searchComponent.selectDeselectSearchUser($event)"
                                          class="center-child-div">
                                         <img id="profile-image" class="navbar-brand img-circle without-padding"
@@ -156,7 +155,8 @@
                                         <span class="profile-image-text">
                                             <span *ngIf="app.selectedUser == null">Profile</span>
                                         </span>
-                                        <img [hidden]="!conversation.User.Online" src="images/app/controls/online.png" class="online-img-decoration" />
+                                        <img [hidden]="!conversation.User.Online"
+                                             src="images/app/controls/online.png" class="online-img-decoration" />
                                     </div>
                                     <div class="center-child-div">{{conversation.User.Firstname}}</div>
                                     <div [hidden]="!visible">{{conversation.User.JWT}}</div>
@@ -190,7 +190,8 @@
                         <i class="fa fa-bell-o fa-lg"
                            [class]="bellClass"></i>
                     </template>
-                    <profilemenu-notifications [app]="app"
+                    <profilemenu-notifications *ngIf="tabs[3].active"
+                                               [app]="app"
                                                [notifications]="notifications">
                     </profilemenu-notifications>
                 </tab>

@@ -37,47 +37,46 @@ System.register(['angular2/core', './../services/userinfo.service', './../servic
                     var nameColor = 'name';
                     var resultColor;
                     var notificationBackground = 'notification-decoration';
-                    var notification = JSON.parse(n);
                     var notificationObservable = new Subject_1.Subject();
-                    if (this._saveComponentService.isProfilemenuSaved) {
-                        var nHTML = this._saveComponentService.notificationHTML.shift();
-                        this._saveComponentService.notificationHTML.push(nHTML);
-                        switch (nHTML["table"]) {
-                            case "Answer":
-                                if (nHTML["notification"]["Result"])
+                    //if (this._saveComponentService.isProfilemenuSaved) {
+                    //    var nHTML = this._saveComponentService.notificationHTML.shift();
+                    //    this._saveComponentService.notificationHTML.push(nHTML);
+                    //    switch (nHTML["table"]) {
+                    //        case "Answer":
+                    //            if (nHTML["notification"]["Result"])
+                    //                resultColor = 'green';
+                    //            else
+                    //                resultColor = 'red';
+                    //            if (!nHTML["isShown"])
+                    //                notificationBackground = 'new-notification-decoration';
+                    //            setTimeout(() =>
+                    //                notificationObservable.next(this.insertAnswerNotificationHTML(nHTML["notification"], notificationBackground, nameColor, resultColor)), 1000);
+                    //            break;
+                    //    }
+                    //    return notificationObservable;
+                    //}
+                    //else {
+                    var notification = JSON.parse(n);
+                    switch (notification.Table) {
+                        case "Answer":
+                            this._userInfoService.GetAnswerNotification(notification.EntityID.toString())
+                                .subscribe(function (n) {
+                                //this._saveComponentService.notificationHTML.push({ table: 'Answer', notification: n, isShown: notification.IsShown });
+                                if (n["Result"])
                                     resultColor = 'green';
                                 else
                                     resultColor = 'red';
-                                if (nHTML["isShown"])
+                                if (!notification.IsShown)
                                     notificationBackground = 'new-notification-decoration';
-                                setTimeout(function () {
-                                    return notificationObservable.next(_this.insertAnswerNotificationHTML(nHTML["notification"], notificationBackground, nameColor, resultColor));
-                                }, 1000);
-                                break;
-                        }
-                        return notificationObservable;
+                                notificationObservable.next(_this.insertAnswerNotificationHTML(n, notificationBackground, nameColor, resultColor));
+                            });
+                            break;
                     }
-                    else {
-                        switch (notification.Table) {
-                            case "Answer":
-                                this._userInfoService.GetAnswerNotification(notification.EntityID.toString())
-                                    .subscribe(function (n) {
-                                    _this._saveComponentService.notificationHTML.push({ table: 'Answer', notification: n, isShown: notification.IsShown });
-                                    if (n["Result"])
-                                        resultColor = 'green';
-                                    else
-                                        resultColor = 'red';
-                                    if (!notification.IsShown)
-                                        notificationBackground = 'new-notification-decoration';
-                                    notificationObservable.next(_this.insertAnswerNotificationHTML(n, notificationBackground, nameColor, resultColor));
-                                });
-                                break;
-                        }
-                        return notificationObservable;
-                    }
+                    return notificationObservable;
+                    //}
                 };
                 NotificationHTMLPipe.prototype.insertAnswerNotificationHTML = function (notification, background, nameColor, resultColor) {
-                    return "        <div class=\"" + background + "\">\n                            <div class=\"col-md-4\">\n                                <div class=\"center-child-div\">\n                                    <img id=\"profile-image\" class=\"navbar-brand img-circle without-padding\"\n                                         src=\"" + notification["Remote"]["ProfileImage"] + "\" />\n                                    <img [hidden]=\"" + !notification["Remote"]["Online"] + "\" src=\"images/app/controls/online.png\" class=\"online-img-decoration\" />\n                                </div>\n                            </div>\n                            <div class=\"col-md-8\">\n                                <div>\n                                    <span><span class=\"" + nameColor + "\">" + notification["Remote"]["Firstname"] + ' ' +
+                    return "        <div class=\"" + background + "\">\n                            <div class=\"col-md-4\">\n                                <div class=\"center-child-div\">\n                                    <img id=\"profile-image\" class=\"navbar-brand img-circle without-padding\"\n                                         src=\"" + notification["Remote"]["ProfileImage"] + "\" />\n                                    <img hidden=\"" + !notification["Remote"]["Online"] + "\" src=\"images/app/controls/online.png\" class=\"online-img-decoration\" />\n                                </div>\n                            </div>\n                            <div class=\"col-md-8\">\n                                <div>\n                                    <span><span class=\"" + nameColor + "\">" + notification["Remote"]["Firstname"] + ' ' +
                         notification["Remote"]["Lastname"] + '</span> answered ' +
                         "<span class=\"" + resultColor + "\">" + notification["Result"] + '</span> on your question:' + "\n                                                </span>\n                                </div>\n                                <div>\n                                    <span>"
                         + notification["Question"] +

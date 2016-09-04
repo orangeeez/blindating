@@ -58,6 +58,47 @@ System.register(['angular2/core', 'angular2/router', './app.component', './user.
                     this.jwt = null;
                     this.error = null;
                     this.isEnableRegisterButton = false;
+                    this.onUserCalling = function (e) {
+                        _this._userService.GetUser("JWT", e.senderId)
+                            .subscribe(function (calling) {
+                            _this.app.callingUser = calling;
+                            _this.app.communicationState = 'calling';
+                            _this.app._helperComponent.phoneIconPath = "images/app/controls/phone.png";
+                            _this.app._helperComponent.phoneHangupIconPath = "images/app/controls/phone-hang-up.png";
+                            _this.app._helperComponent.isPhoneDisabled = false;
+                            _this.app._helperComponent.isPhoneClassEnabled = true;
+                            _this.app._helperComponent.isPhoneHangupDisabled = false;
+                            _this.app._helperComponent.isPhoneHangupClassEnabled = true;
+                            _this.app._helperComponent.callingInterval = setInterval(_this.app._helperComponent.onCallingBlink, 500);
+                        });
+                    };
+                    this.onDataReceived = function (e) { };
+                    this.onCallStarted = function (e) {
+                        if (_this.app.communicationState != 'initiatedCalling') {
+                            _this.app.communicationState = 'initiatedCaller';
+                            _this.app._helperComponent.startDuration();
+                        }
+                        _this.app._helperComponent.isCallInitiated = true;
+                        clearInterval(_this.app._helperComponent.interval);
+                    };
+                    this.onCallStopped = function (e) {
+                        _this.app._helperComponent.isCallDenied = true;
+                        setTimeout(_this.disappearCall, 2000);
+                    };
+                    this.onCallDenied = function (e) {
+                        _this.app._helperComponent.isCallDenied = true;
+                        setTimeout(_this.disappearCall, 2000);
+                    };
+                    this.disappearCall = function () {
+                        _this.app.callerUser = null;
+                        _this.app.callingUser = null;
+                        _this.app._helperComponent.isCallInitiated = false;
+                        _this.app._helperComponent.isCallDenied = false;
+                        _this.app.communicationState = 'none';
+                        _this.app._helperComponent.startDurationTime = new Date(0, 0, 0, 0, 0, 0, 0);
+                        clearInterval(_this.app._helperComponent.interval);
+                        clearTimeout(_this.app._helperComponent.durationTimeout);
+                    };
                     this.checkFBLoginInterval = function () {
                         if (_this.app.user != undefined) {
                             _this._router.navigate(['Search']);
@@ -258,8 +299,7 @@ System.register(['angular2/core', 'angular2/router', './app.component', './user.
                     this._userService.SaveUserState(this.app.user);
                     this._userInfoService.GetNotifications(this.user.ID.toString())
                         .subscribe(function (notifications) {
-                        if (notifications.length != 0)
-                            _this.app.profilemenuNotifications = notifications;
+                        _this.app.profilemenuNotifications = notifications;
                         _this.app.headerIsShow = true;
                         _this.app.headerProfileImage = _this.app.user.ProfileImage;
                     });
@@ -271,9 +311,14 @@ System.register(['angular2/core', 'angular2/router', './app.component', './user.
                             }]
                     });
                     this.user.Peer.connect({
-                        host: this.app.server, token: this.app.user.Firstname + this.app.user.Lastname
+                        host: this.app.server, token: this.app.user.JWT
                     });
                     this.app.user = this.user;
+                    this.app.user.Peer.on('chat-invited', this.onUserCalling);
+                    this.app.user.Peer.on('data-received', this.onDataReceived);
+                    this.app.user.Peer.on('chat-started', this.onCallStarted);
+                    this.app.user.Peer.on('chat-stopped', this.onCallStopped);
+                    this.app.user.Peer.on('chat-denied', this.onCallDenied);
                     this._userService.SaveUserState(this.app.user);
                 };
                 LoginComponent.prototype.registerViaForm = function (response) {

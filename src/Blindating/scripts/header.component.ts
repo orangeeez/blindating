@@ -25,18 +25,20 @@ export class HeaderComponent implements OnInit {
     constructor(
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
         private _userService: UserService) {
-        this.app = app;
+            this.app = app;
     }
 
     ngOnInit() {
         var c = 0;
-        for (var notification of this.notifications) {
-            var n = JSON.parse(notification) as Notification;
-            if (!n.IsShown) {
-                c++;
-                if (c > 9) {
-                    this.notificationsCounter = '9+';
-                    this.notificationsDigitLeft = '16px';
+        if (this.notifications) {
+            for (var notification of this.notifications) {
+                var n = JSON.parse(notification) as Notification;
+                if (!n.IsShown) {
+                    c++;
+                    if (c > 9) {
+                        this.notificationsCounter = '9+';
+                        this.notificationsDigitLeft = '16px';
+                    }
                 }
             }
         }

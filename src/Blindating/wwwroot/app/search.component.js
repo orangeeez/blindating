@@ -62,19 +62,25 @@ System.register(['angular2/core', 'angular2/router', './user.service', './app.co
                         .subscribe(function (finded) {
                         _this.app.selectedUser = finded;
                         if (_this.app.selectedUser.Online)
-                            _this.app.helperPhoneIconPath = "images/app/controls/phone.png";
+                            _this.enableCalling();
                         else
-                            _this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
+                            _this.disableCalling();
                         _this.app.showProfileMenu();
                     });
-                    this.app._helperComponent.isSearchUserSelected = true;
                 };
                 SearchComponent.prototype.deselectSearchUser = function () {
                     this.app.selectedUser = null;
-                    this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
-                    this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
                     this.app.hideProfileMenu();
-                    this.app._helperComponent.isSearchUserSelected = false;
+                };
+                SearchComponent.prototype.enableCalling = function () {
+                    this.app.helperPhoneIconPath = "images/app/controls/phone.png";
+                    this.app._helperComponent.isPhoneDisabled = false;
+                    this.app._helperComponent.isPhoneClassEnabled = true;
+                };
+                SearchComponent.prototype.disableCalling = function () {
+                    this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
+                    this.app._helperComponent.isPhoneDisabled = true;
+                    this.app._helperComponent.isPhoneClassEnabled = false;
                 };
                 SearchComponent = __decorate([
                     core_1.Component({

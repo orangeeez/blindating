@@ -8,6 +8,7 @@ System.register([], function(exports_1, context_1) {
             SaveComponentService = (function () {
                 function SaveComponentService() {
                     this.notificationHTML = [];
+                    this.isProfilemenuSaved = false;
                 }
                 SaveComponentService.prototype.SaveProfilemenu = function (profilemenu) {
                     this.profilemenu = profilemenu;

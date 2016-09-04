@@ -41,14 +41,12 @@ System.register(['angular2/http', 'angular2/core', 'rxjs/Observable', './mock/ut
                 //#endregion
                 //#region UserRepository
                 UserService.prototype.Register = function (user) {
-                    var body = JSON.stringify(user);
-                    return this.http.post(utils_1.API_ADDRESS + this.api + "/register", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/register", JSON.stringify(user), this.options)
                         .map(function (user) { return user.text(); })
                         .catch(this.handleError);
                 };
                 UserService.prototype.Login = function (user) {
-                    var body = JSON.stringify(user);
-                    return this.http.post(utils_1.API_ADDRESS + this.api + "/login", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/login", JSON.stringify(user), this.options)
                         .map(function (logged) { return logged.json(); })
                         .catch(this.handleError);
                 };
@@ -57,26 +55,22 @@ System.register(['angular2/http', 'angular2/core', 'rxjs/Observable', './mock/ut
                         Field: field,
                         Value: value
                     };
-                    var body = JSON.stringify(queryObj);
-                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getuser", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getuser", JSON.stringify(queryObj), this.options)
                         .map(function (finded) { return finded.json(); })
                         .catch(this.handleError);
                 };
                 UserService.prototype.GetUsers = function (jwt) {
-                    var body = "\"" + jwt + "\"";
-                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getusers", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getusers", "\"" + jwt + "\"", this.options)
                         .map(function (res) { return res.json(); })
                         .catch(this.handleError);
                 };
                 UserService.prototype.IsExistJWT = function (jwt) {
-                    var body = "\"" + jwt + "\"";
-                    return this.http.post(utils_1.API_ADDRESS + this.api + "/isexistjwt", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/isexistjwt", "\"" + jwt + "\"", this.options)
                         .map(function (res) { return JSON.parse(res.text()); })
                         .catch(this.handleError);
                 };
                 UserService.prototype.IsExistEmail = function (email) {
-                    var body = "\"" + email + "\"";
-                    return this.http.post(utils_1.API_ADDRESS + this.api + "/isexistemail", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/isexistemail", "\"" + email + "\"", this.options)
                         .map(function (res) { return JSON.parse(res.text()); })
                         .catch(this.handleError);
                 };
@@ -86,8 +80,7 @@ System.register(['angular2/http', 'angular2/core', 'rxjs/Observable', './mock/ut
                 //#endregion
                 //#region OnlineUserRepository
                 UserService.prototype.DeleteOnlineUser = function (userID) {
-                    var body = userID;
-                    return this.http.post(utils_1.API_ADDRESS + this.api + "/deleteonlineuser", body, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/deleteonlineuser", userID, this.options)
                         .map(function (res) { return !!res.text(); })
                         .catch(this.handleError);
                 };

@@ -1,15 +1,20 @@
 ﻿<div class="container-fluid">
     <div class="row">
-        <div *ngIf="isSearchNotFound" class="col-md-12 search-not-found-decoration">No Matches Found</div>
+        <div *ngIf="isSearchNotFound" class="col-md-12 search-not-found-decoration">
+            No Matches Found
+        </div>
         <div *ngIf="searchedUsers.length == 0 && !isSearchNotFound">
-            <div *ngFor="#user of app.users" id="search-board" class="col-md-1" (click)="selectDeselectSearchUser($event)">
+            <div *ngFor="#user of app.users" id="search-board" class="col-md-1"
+                 (click)="selectDeselectSearchUser($event)">
                 <div class="center-child-div">
                     <img id="profile-image" class="navbar-brand img-circle without-padding" src="{{user.ProfileImage}}" />
                     <span class="profile-image-text">
                         <span *ngIf="app.selectedUser == null">Profile</span>
-                        <span *ngIf="app.selectedUser != null && app.selectedUser.JWT == user.JWT" class="cross-decoration">X</span>
+                        <span *ngIf="app.selectedUser != null && app.selectedUser.JWT == user.JWT" 
+                              class="cross-decoration">X</span>
                     </span>
-                    <img [hidden]="!user.Online" src="images/app/controls/online.png" class="online-img-decoration"/>
+                    <img [hidden]="!user.Online"
+                         src="images/app/controls/online.png" class="online-img-decoration" />
                 </div>
                 <div class="center-child-div">{{user.Firstname}}</div>
                 <div class="center-child-div">{{user.Lastname}}</div>
@@ -17,14 +22,17 @@
             </div>
         </div>
         <div *ngIf="searchedUsers.length > 0">
-            <div *ngFor="#user of searchedUsers" id="search-board" class="col-md-1" (click)="selectDeselectSearchUser($event)">
+            <div *ngFor="#user of searchedUsers" id="search-board" class="col-md-1"
+                 (click)="selectDeselectSearchUser($event)">
                 <div class="center-child-div">
                     <img id="profile-image" class="navbar-brand img-circle without-padding" src="{{user.ProfileImage}}" />
                     <span class="profile-image-text">
                         <span *ngIf="app.selectedUser == null">Profile</span>
-                        <span *ngIf="app.selectedUser != null && app.selectedUser.JWT == user.JWT" class="cross-decoration">X</span>
+                        <span *ngIf="app.selectedUser != null && app.selectedUser.JWT == user.JWT" 
+                              class="cross-decoration">X</span>
                     </span>
-                    <img [hidden]="!user.Online" src="images/app/controls/online.png" class="online-img-decoration"/>
+                    <img [hidden]="!user.Online" 
+                         src="images/app/controls/online.png" class="online-img-decoration" />
                 </div>
                 <div class="center-child-div">{{user.Firstname}}</div>
                 <div class="center-child-div">{{user.Lastname}}</div>

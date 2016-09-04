@@ -101,36 +101,66 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './util
                 }
                 ProfileMenuComponent.prototype.ngOnInit = function () {
                     var _this = this;
-                    if (!this._saveComponentService.isProfilemenuSaved) {
-                        this._userInfoService.GetPreferences(this.app.user.ID + "")
-                            .subscribe(function (preferences) {
-                            _this.gender = preferences.Gender;
-                            _this.relation = preferences.Relationship;
-                            _this.age['from'] = preferences.From;
-                            _this.age['to'] = preferences.To;
-                            _this.country = preferences.Country;
-                            _this.city = preferences.City;
+                    var tuser;
+                    if (this.app.selectedUser) {
+                        tuser = this.app.selectedUser;
+                        this.selectedUserBeforeDestroy = tuser;
+                    }
+                    else
+                        tuser = this.app.user;
+                    //if (this._saveComponentService.isProfilemenuSaved) {
+                    //    if (this._saveComponentService.profilemenu) {
+                    //        if (tuser.JWT == this._saveComponentService.profilemenu.user.JWT) {
+                    //            this.profilemenu = this._saveComponentService.LoadProfilemenu();
+                    //            this.photos = this.profilemenu.photos;
+                    //            this.notifications = this.profilemenu.notifications;
+                    //            this.conversations = this.profilemenu.conversations;
+                    //            this.questions = this.profilemenu.questions;
+                    //            this.question = this.profilemenu.question;
+                    //            this.cities = this.profilemenu.cities;
+                    //            this.CITIES = this.profilemenu.CITIES;
+                    //            this.country = this.profilemenu.country;
+                    //            this.city = this.profilemenu.city;
+                    //            this.gender = this.profilemenu.gender;
+                    //            this.relation = this.profilemenu.relation;
+                    //            this.age = this.profilemenu.age;
+                    //            this.quote = this.profilemenu.quote;
+                    //            this.currentQuestionIndex = this.profilemenu.currentQuestionIndex;
+                    //            this.isOpenConversations = this.profilemenu.isOpenConversations;
+                    //            this.isOpenPhotos = this.profilemenu.isOpenPhotos;
+                    //        }
+                    //    }
+                    //}
+                    //else {
+                    this._userInfoService.GetRandomQuote(tuser.ID.toString())
+                        .subscribe(function (quote) {
+                        _this.quote = quote;
+                        _this._userInfoService.GetPhotos(tuser.ID.toString())
+                            .subscribe(function (photos) {
+                            _this.photos = photos;
+                            _this._userInfoService.GetConversations(tuser.ID.toString())
+                                .subscribe(function (conversations) {
+                                _this.conversations = conversations;
+                                _this.updateConversationsData(_this.conversations);
+                                _this._userInfoService.GetQuestions(tuser.ID.toString())
+                                    .subscribe(function (questions) {
+                                    _this.currentQuestionIndex = 0;
+                                    _this.questions = questions;
+                                    _this.question = questions[0].Message;
+                                    _this._userInfoService.GetPreferences(tuser.ID + "")
+                                        .subscribe(function (preferences) {
+                                        _this.gender = preferences.Gender;
+                                        _this.relation = preferences.Relationship;
+                                        _this.age['from'] = preferences.From;
+                                        _this.age['to'] = preferences.To;
+                                        _this.country = preferences.Country;
+                                        _this.city = preferences.City;
+                                    });
+                                });
+                            });
                         });
-                    }
-                    else {
-                        this.profilemenu = this._saveComponentService.LoadProfilemenu();
-                        this.photos = this.profilemenu.photos;
-                        this.notifications = this.profilemenu.notifications;
-                        this.conversations = this.profilemenu.conversations;
-                        this.questions = this.profilemenu.questions;
-                        this.question = this.profilemenu.question;
-                        this.cities = this.profilemenu.cities;
-                        this.CITIES = this.profilemenu.CITIES;
-                        this.country = this.profilemenu.country;
-                        this.city = this.profilemenu.city;
-                        this.gender = this.profilemenu.gender;
-                        this.relation = this.profilemenu.relation;
-                        this.age = this.profilemenu.age;
-                        this.quote = this.profilemenu.quote;
-                        this.currentQuestionIndex = this.profilemenu.currentQuestionIndex;
-                        this.isOpenConversations = this.profilemenu.isOpenConversations;
-                        this.isOpenPhotos = this.profilemenu.isOpenPhotos;
-                    }
+                    });
+                    //}
                     for (var _i = 0, _a = this.notifications; _i < _a.length; _i++) {
                         var notification = _a[_i];
                         var n = JSON.parse(notification);
@@ -147,10 +177,10 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './util
                     this.profilemenu.notifications = this.notifications;
                     this.profilemenu.conversations = this.conversations;
                     this.profilemenu.questions = this.questions;
+                    this.profilemenu.city = this.city;
                     this.profilemenu.cities = this.cities;
                     this.profilemenu.CITIES = this.CITIES;
                     this.profilemenu.country = this.country;
-                    this.profilemenu.city = this.city;
                     this.profilemenu.gender = this.gender;
                     this.profilemenu.relation = this.relation;
                     this.profilemenu.age = this.age;
@@ -159,6 +189,10 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './util
                     this.profilemenu.currentQuestionIndex = this.currentQuestionIndex;
                     this.profilemenu.isOpenConversations = this.isOpenConversations;
                     this.profilemenu.isOpenPhotos = this.isOpenPhotos;
+                    if (this.selectedUserBeforeDestroy)
+                        this.profilemenu.user = this.selectedUserBeforeDestroy;
+                    else
+                        this.profilemenu.user = this.app.user;
                     this._saveComponentService.SaveProfilemenu(this.profilemenu);
                 };
                 ProfileMenuComponent.prototype.logout = function () {
@@ -276,6 +310,15 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './util
                         this.question = null;
                     else
                         this.question = this.questions[this.currentQuestionIndex]["Message"];
+                };
+                ProfileMenuComponent.prototype.updateConversationsData = function (conversations) {
+                    for (var _i = 0, conversations_1 = conversations; _i < conversations_1.length; _i++) {
+                        var c = conversations_1[_i];
+                        var start = new Date(Date.parse(c.Start.toString()));
+                        var end = new Date(Date.parse(c.Start.toString()));
+                        c.StartString = start.getFullYear() + '/' + start.getMonth() + '/' + start.getDate() + ' ' + start.getHours() + 'h ' + start.getMinutes() + 'm ' + start.getSeconds() + 's';
+                        c.EndString = end.getFullYear() + '/' + end.getMonth() + '/' + end.getDate() + ' ' + end.getHours() + 'h ' + end.getMinutes() + 'm ' + end.getSeconds() + 's';
+                    }
                 };
                 //#region OpenGallery
                 ProfileMenuComponent.prototype.openGallery = function (event) {

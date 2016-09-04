@@ -14,48 +14,48 @@ export class NotificationHTMLPipe implements PipeTransform {
         var nameColor = 'name';
         var resultColor: string;
         var notificationBackground = 'notification-decoration';
-        var notification = JSON.parse(n) as Notification;
         var notificationObservable: Subject<any> = new Subject<any>();
 
-        if (this._saveComponentService.isProfilemenuSaved) {
-            var nHTML = this._saveComponentService.notificationHTML.shift();
-            this._saveComponentService.notificationHTML.push(nHTML);
-            switch (nHTML["table"]) {
+        //if (this._saveComponentService.isProfilemenuSaved) {
+        //    var nHTML = this._saveComponentService.notificationHTML.shift();
+        //    this._saveComponentService.notificationHTML.push(nHTML);
+        //    switch (nHTML["table"]) {
+        //        case "Answer":
+        //            if (nHTML["notification"]["Result"])
+        //                resultColor = 'green';
+        //            else
+        //                resultColor = 'red';
+
+        //            if (!nHTML["isShown"])
+        //                notificationBackground = 'new-notification-decoration';
+        //            setTimeout(() =>
+        //                notificationObservable.next(this.insertAnswerNotificationHTML(nHTML["notification"], notificationBackground, nameColor, resultColor)), 1000);
+        //            break;
+        //    }
+        //    return notificationObservable;
+        //}
+        //else {
+            var notification = JSON.parse(n) as Notification;
+            switch (notification.Table) {
                 case "Answer":
-                    if (nHTML["notification"]["Result"])
-                        resultColor = 'green';
-                    else
-                        resultColor = 'red';
+                    this._userInfoService.GetAnswerNotification(notification.EntityID.toString())
+                        .subscribe(n => {
+                            //this._saveComponentService.notificationHTML.push({ table: 'Answer', notification: n, isShown: notification.IsShown });
 
-                    if (nHTML["isShown"])
-                        notificationBackground = 'new-notification-decoration';
-                    setTimeout(() =>
-                        notificationObservable.next(this.insertAnswerNotificationHTML(nHTML["notification"], notificationBackground, nameColor, resultColor)), 1000);
+                            if (n["Result"])
+                                resultColor = 'green';
+                            else
+                                resultColor = 'red';
+
+                            if (!notification.IsShown)
+                                notificationBackground = 'new-notification-decoration';
+
+                            notificationObservable.next(this.insertAnswerNotificationHTML(n, notificationBackground, nameColor, resultColor));
+                        });
                     break;
-            }
+                }
             return notificationObservable;
-        }
-        else {
-        switch (notification.Table) {
-            case "Answer":
-                this._userInfoService.GetAnswerNotification(notification.EntityID.toString())
-                    .subscribe(n => {
-                        this._saveComponentService.notificationHTML.push({ table: 'Answer', notification: n, isShown: notification.IsShown });
-
-                        if (n["Result"])
-                            resultColor = 'green';
-                        else
-                            resultColor = 'red';
-
-                        if (!notification.IsShown)
-                            notificationBackground = 'new-notification-decoration';
-
-                        notificationObservable.next(this.insertAnswerNotificationHTML(n, notificationBackground, nameColor, resultColor));
-                    });
-                break;
-            }
-        return notificationObservable;
-        }
+        //}
     }
 
     private insertAnswerNotificationHTML(notification: any, background: string, nameColor: string, resultColor: string): string {
@@ -64,7 +64,7 @@ export class NotificationHTMLPipe implements PipeTransform {
                                 <div class="center-child-div">
                                     <img id="profile-image" class="navbar-brand img-circle without-padding"
                                          src="` + notification["Remote"]["ProfileImage"] + `" />
-                                    <img [hidden]="` + !notification["Remote"]["Online"] + `" src="images/app/controls/online.png" class="online-img-decoration" />
+                                    <img hidden="` + !notification["Remote"]["Online"] + `" src="images/app/controls/online.png" class="online-img-decoration" />
                                 </div>
                             </div>
                             <div class="col-md-8">

@@ -30,6 +30,7 @@ declare var PhotoSwipe, PhotoSwipeUI_Default;
 
 export class ProfileMenuComponent implements OnInit, OnDestroy {
     public profilemenu: Profilemenu;
+    public selectedUserBeforeDestroy: User;
     public CITIES: Array<string>;
     public acceptIconPath: string;
     public declineIconPath: string;
@@ -81,36 +82,67 @@ export class ProfileMenuComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        if (!this._saveComponentService.isProfilemenuSaved) {
-            this._userInfoService.GetPreferences(this.app.user.ID + "")
-                .subscribe(preferences => {
-                    this.gender = preferences.Gender;
-                    this.relation = preferences.Relationship;
-                    this.age['from'] = preferences.From;
-                    this.age['to'] = preferences.To;
-                    this.country = preferences.Country;
-                    this.city = preferences.City;
+        var tuser: User;
+        if (this.app.selectedUser) {
+            tuser = this.app.selectedUser;
+            this.selectedUserBeforeDestroy = tuser;
+        }
+        else
+            tuser = this.app.user;
+
+        //if (this._saveComponentService.isProfilemenuSaved) {
+        //    if (this._saveComponentService.profilemenu) {
+        //        if (tuser.JWT == this._saveComponentService.profilemenu.user.JWT) {
+        //            this.profilemenu = this._saveComponentService.LoadProfilemenu();
+        //            this.photos = this.profilemenu.photos;
+        //            this.notifications = this.profilemenu.notifications;
+        //            this.conversations = this.profilemenu.conversations;
+        //            this.questions = this.profilemenu.questions;
+        //            this.question = this.profilemenu.question;
+        //            this.cities = this.profilemenu.cities;
+        //            this.CITIES = this.profilemenu.CITIES;
+        //            this.country = this.profilemenu.country;
+        //            this.city = this.profilemenu.city;
+        //            this.gender = this.profilemenu.gender;
+        //            this.relation = this.profilemenu.relation;
+        //            this.age = this.profilemenu.age;
+        //            this.quote = this.profilemenu.quote;
+        //            this.currentQuestionIndex = this.profilemenu.currentQuestionIndex;
+        //            this.isOpenConversations = this.profilemenu.isOpenConversations;
+        //            this.isOpenPhotos = this.profilemenu.isOpenPhotos;
+        //        }
+        //    }
+        //}
+        //else {
+            this._userInfoService.GetRandomQuote(tuser.ID.toString())
+                .subscribe(quote => {
+                    this.quote = quote;
+                    this._userInfoService.GetPhotos(tuser.ID.toString())
+                        .subscribe(photos => {
+                            this.photos = photos;
+                            this._userInfoService.GetConversations(tuser.ID.toString())
+                                .subscribe(conversations => {
+                                    this.conversations = conversations;
+                                    this.updateConversationsData(this.conversations);
+                                    this._userInfoService.GetQuestions(tuser.ID.toString())
+                                        .subscribe(questions => {
+                                            this.currentQuestionIndex = 0;
+                                            this.questions = questions;
+                                            this.question = questions[0].Message;
+                                            this._userInfoService.GetPreferences(tuser.ID + "")
+                                                .subscribe(preferences => {
+                                                    this.gender = preferences.Gender;
+                                                    this.relation = preferences.Relationship;
+                                                    this.age['from'] = preferences.From;
+                                                    this.age['to'] = preferences.To;
+                                                    this.country = preferences.Country;
+                                                    this.city = preferences.City;
+                                                });
+                                        });
+                                });
+                        });
                 });
-        }
-        else {
-            this.profilemenu = this._saveComponentService.LoadProfilemenu();
-            this.photos = this.profilemenu.photos;
-            this.notifications = this.profilemenu.notifications;
-            this.conversations = this.profilemenu.conversations;
-            this.questions = this.profilemenu.questions;
-            this.question = this.profilemenu.question;
-            this.cities = this.profilemenu.cities;
-            this.CITIES = this.profilemenu.CITIES;
-            this.country = this.profilemenu.country;
-            this.city = this.profilemenu.city;
-            this.gender = this.profilemenu.gender;
-            this.relation = this.profilemenu.relation;
-            this.age = this.profilemenu.age;
-            this.quote = this.profilemenu.quote;
-            this.currentQuestionIndex = this.profilemenu.currentQuestionIndex;
-            this.isOpenConversations = this.profilemenu.isOpenConversations;
-            this.isOpenPhotos = this.profilemenu.isOpenPhotos;
-        }
+        //}
 
         for (var notification of this.notifications) {
             var n = JSON.parse(notification) as Notification;
@@ -128,10 +160,10 @@ export class ProfileMenuComponent implements OnInit, OnDestroy {
         this.profilemenu.notifications = this.notifications;
         this.profilemenu.conversations = this.conversations;
         this.profilemenu.questions = this.questions;
+        this.profilemenu.city = this.city;
         this.profilemenu.cities = this.cities;
         this.profilemenu.CITIES = this.CITIES;
         this.profilemenu.country = this.country;
-        this.profilemenu.city = this.city;
         this.profilemenu.gender = this.gender;
         this.profilemenu.relation = this.relation;
         this.profilemenu.age = this.age;
@@ -140,6 +172,11 @@ export class ProfileMenuComponent implements OnInit, OnDestroy {
         this.profilemenu.currentQuestionIndex = this.currentQuestionIndex;
         this.profilemenu.isOpenConversations = this.isOpenConversations;
         this.profilemenu.isOpenPhotos = this.isOpenPhotos;
+
+        if (this.selectedUserBeforeDestroy)
+            this.profilemenu.user = this.selectedUserBeforeDestroy;
+        else
+            this.profilemenu.user = this.app.user;
 
         this._saveComponentService.SaveProfilemenu(this.profilemenu);
     }
@@ -280,6 +317,16 @@ export class ProfileMenuComponent implements OnInit, OnDestroy {
 
     private filterDropdownInputCity = (city: string): boolean => {
         return city.includes(this.city);
+    }
+
+    public updateConversationsData(conversations: Array<Conversation>) {
+        for (let c of conversations) {
+            let start = new Date(Date.parse(c.Start.toString()));
+            let end = new Date(Date.parse(c.Start.toString()));
+
+            c.StartString = start.getFullYear() + '/' + start.getMonth() + '/' + start.getDate() + ' ' + start.getHours() + 'h ' + start.getMinutes() + 'm ' + start.getSeconds() + 's';
+            c.EndString = end.getFullYear() + '/' + end.getMonth() + '/' + end.getDate() + ' ' + end.getHours() + 'h ' + end.getMinutes() + 'm ' + end.getSeconds() + 's';
+        }
     }
     //#region OpenGallery
     public openGallery(event: MouseEvent) {

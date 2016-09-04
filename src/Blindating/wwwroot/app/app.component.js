@@ -74,6 +74,7 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                     //#region Signaling configuration WebRTC's variables
                     this.server = "http://192.168.0.114:8095";
                     this.stun = "stun:stun.l.google.com:19302";
+                    this.communicationState = 'none';
                     /* Header */
                     this.headerIsShow = false;
                     this.headerProfileImage = "images/users/profile/avatar/ryzhkov.jpg";
@@ -101,7 +102,6 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                     this.rightColumn = document.getElementById('right-column');
                 };
                 AppComponent.prototype.showProfileMenu = function () {
-                    var _this = this;
                     var centralColumn = this.centralColumn;
                     var rightColumn = this.rightColumn;
                     var centralColumnPosition = 83.3;
@@ -117,34 +117,6 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                             rightColumn.style.width = rightColumnPosition + '%';
                         }
                     }
-                    //#region Get All for Profile Menu
-                    var tuser;
-                    if (this.selectedUser != null)
-                        tuser = this.selectedUser;
-                    else
-                        tuser = this.user;
-                    if (!this._saveComponentService.isProfilemenuSaved) {
-                        this._userInfoService.GetRandomQuote(tuser.ID.toString())
-                            .subscribe(function (quote) {
-                            _this._profileMenuComponent.quote = quote;
-                            _this._userInfoService.GetPhotos(tuser.ID.toString())
-                                .subscribe(function (photos) {
-                                _this._profileMenuComponent.photos = photos;
-                                _this._userInfoService.GetConversations(tuser.ID.toString())
-                                    .subscribe(function (conversations) {
-                                    _this._profileMenuComponent.conversations = conversations;
-                                    _this.updateConversationsData(_this._profileMenuComponent.conversations);
-                                    _this._userInfoService.GetQuestions(tuser.ID.toString())
-                                        .subscribe(function (questions) {
-                                        _this._profileMenuComponent.currentQuestionIndex = 0;
-                                        _this._profileMenuComponent.questions = questions;
-                                        _this._profileMenuComponent.question = questions[0].Message;
-                                    });
-                                });
-                            });
-                        });
-                    }
-                    //#endregion
                     this.profilemenuIsShow = true;
                 };
                 AppComponent.prototype.hideProfileMenu = function (event) {
@@ -186,6 +158,10 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                     core_1.ViewChild(dashboard_component_1.DashboardComponent), 
                     __metadata('design:type', dashboard_component_1.DashboardComponent)
                 ], AppComponent.prototype, "_dashboardComponent", void 0);
+                __decorate([
+                    core_1.ViewChild(login_component_1.LoginComponent), 
+                    __metadata('design:type', login_component_1.LoginComponent)
+                ], AppComponent.prototype, "_loginComponent", void 0);
                 __decorate([
                     core_1.ViewChild(search_component_1.SearchComponent), 
                     __metadata('design:type', search_component_1.SearchComponent)
