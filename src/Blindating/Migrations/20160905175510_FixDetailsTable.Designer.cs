@@ -8,9 +8,10 @@ using ASPAngular2Test.Models;
 namespace ASPAngular2Test.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20160905175510_FixDetailsTable")]
+    partial class FixDetailsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -87,11 +88,15 @@ namespace ASPAngular2Test.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("Duration");
+
                     b.Property<DateTime>("End");
 
                     b.Property<int>("InformationConversationFK");
 
                     b.Property<string>("JWT");
+
+                    b.Property<string>("Length");
 
                     b.Property<DateTime>("Start");
 
@@ -121,27 +126,27 @@ namespace ASPAngular2Test.Migrations
 
                     b.Property<string>("Firstname");
 
-                    b.Property<string>("Gender");
-
                     b.Property<string>("HairColor");
 
                     b.Property<int>("Height");
 
                     b.Property<string>("IHave");
 
-                    b.Property<string>("IWear");
-
                     b.Property<int>("InformationDetailsFK");
+
+                    b.Property<int?>("InformationID");
 
                     b.Property<string>("MyBestPart");
 
+                    b.Property<string>("Orientation");
+
                     b.Property<string>("OverallAppearance");
 
-                    b.Property<string>("PrefferedLanguage");
+                    b.Property<string>("PrefferdLanguage");
 
-                    b.Property<string>("RelationshipStatus");
+                    b.Property<string>("Relationship");
 
-                    b.Property<string>("SexualOrientation");
+                    b.Property<string>("Wear");
 
                     b.Property<string>("Work");
 
@@ -283,8 +288,8 @@ namespace ASPAngular2Test.Migrations
             modelBuilder.Entity("ASPAngular2Test.Models.UserUtils+Detail", b =>
                 {
                     b.HasOne("ASPAngular2Test.Models.InformationUser")
-                        .WithOne()
-                        .HasForeignKey("ASPAngular2Test.Models.UserUtils+Detail", "InformationDetailsFK");
+                        .WithMany()
+                        .HasForeignKey("InformationID");
                 });
 
             modelBuilder.Entity("ASPAngular2Test.Models.UserUtils+Notification", b =>

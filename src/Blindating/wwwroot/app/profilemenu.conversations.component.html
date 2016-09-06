@@ -11,7 +11,7 @@
             <div class="row row-padding">
                 <div *ngFor="#conversation of conversations" id="search-board" class="col-no-padding block-center" style="height: 70px; margin-top: 10px;">
                     <div class="col-md-4">
-                        <div (click)="app._searchComponent.selectDeselectSearchUser($event)"
+                        <div (click)="app.selectDeselectUser($event)"
                              class="center-child-div">
                             <img id="profile-image" class="navbar-brand img-circle without-padding"
                                  src="{{conversation.User.ProfileImage}}" />
@@ -23,9 +23,8 @@
                         <div class="center-child-div">{{conversation.User.Firstname}}</div>
                     </div>
                     <div class="col-md-8">
-                        <div><span>Start: </span>{{conversation.StartString}}</div>
-                        <div><span>End: </span>{{conversation.EndString}}</div>
-                        <div><span>Duration: </span>{{conversation.Length}}</div>
+                        <div>{{conversation.DateString}}</div>
+                        <div><span>at </span> {{conversation.TimeString}}</div>
                     </div>
                     <div [hidden]="!visible">{{conversation.User.JWT}}</div>
                 </div>

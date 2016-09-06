@@ -70,8 +70,6 @@ namespace ASPAngular2Test.Models
             public string JWT { get; set; }
             public DateTime Start { get; set; }
             public DateTime End { get; set; }
-            public DateTime Duration { get; set; }
-            public string Length { get; set; }
 
             public virtual InformationUser Information { get; set; }
 
@@ -141,6 +139,37 @@ namespace ASPAngular2Test.Models
             public string Table { get; set; }
             public int EntityID { get; set; }
             public bool IsShown { get; set; }
+
+            public virtual InformationUser Information { get; set; }
+            [NotMapped]
+            public int UserID { get; set; }
+        }
+
+        public class Detail
+        {
+            public int ID { get; set; }
+            public int InformationDetailsFK { get; set; }
+
+            public string Firstname { get; set; }
+            public DateTime BirthDate { get; set; }
+            public string City { get; set; }
+            public string Gender { get; set; }
+            public string PrefferedLanguage { get; set; }
+            public string AlsoSpeak { get; set; }
+            public string RelationshipStatus { get; set; }
+            public string SexualOrientation { get; set; }
+            public string Work { get; set; }
+            public string Education { get; set; }
+            public string Ethnicity { get; set; }
+            public string BodyType { get; set; }
+            public int Height { get; set; }
+            public string HairColor { get; set; }
+            public string EyeColor { get; set; }
+            public string IWear { get; set; }
+            public string IHave { get; set; }
+            public string ClothingStyle { get; set; }
+            public string MyBestPart { get; set; }
+            public string OverallAppearance { get; set; }
 
             public virtual InformationUser Information { get; set; }
             [NotMapped]

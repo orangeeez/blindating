@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace ASPAngular2Test.Models
 {
-    public interface IUtilsRepository
+    public interface IDetailsRepository
     {
+        UserUtils.Detail GetDetails(int userID);
     }
 }

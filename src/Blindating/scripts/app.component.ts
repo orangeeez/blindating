@@ -7,6 +7,7 @@ import {SocialService}       from './services/social.service'
 import {UserInfoService}       from './services/userinfo.service'
 import {SaveComponentService} from './services/savecomponent.service'
 import {UtilsService}       from './services/utils.service'
+import {UserDetailsService}       from './services/userdetails.service'
 import {DashboardComponent}  from './dashboard.component'
 import {ProfileComponent}    from './profile.component'
 import {LoginComponent}      from './login.component'
@@ -23,7 +24,7 @@ import {Conversation}        from './utils/user.utils'
   templateUrl: 'app/app.component.html',
   styleUrls: ['app/app.component.css', 'css/styles.css'],
   directives: [ROUTER_DIRECTIVES, FooterComponent, HeaderComponent, HelperComponent, ProfileMenuComponent],
-  providers: [HTTP_PROVIDERS, ROUTER_PROVIDERS, JSONP_PROVIDERS, UserService, SocialService, UserInfoService, SaveComponentService, UtilsService]
+  providers: [HTTP_PROVIDERS, ROUTER_PROVIDERS, JSONP_PROVIDERS, UserService, SocialService, UserInfoService, SaveComponentService, UtilsService, UserDetailsService]
 })
 @RouteConfig([
   { path: '/login',      name: 'Login',      component: LoginComponent },
@@ -145,22 +146,54 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.profilemenuIsShow = false;
     }
 
+    selectDeselectUser(event: Event) {
+        if (this.selectedUser)
+            this.deselectUser();
+        else
+            this.selectUser();
+    }
+
+    private selectUser() {
+        let element = event.srcElement;
+
+        while (element.id != 'search-board')
+            element = element.parentElement;
+
+        this._userService.GetUser('JWT', element.lastElementChild.innerHTML)
+            .subscribe(finded => {
+                this.selectedUser = finded;
+                if (this.selectedUser.Online)
+                    this.enableCalling();
+                else
+                    this.disableCalling();
+
+                this.showProfileMenu();
+            });
+    }
+
+    public deselectUser() {
+        this.selectedUser = null;
+        this.hideProfileMenu();
+    }
+
+    private enableCalling() {
+        this.helperPhoneIconPath = "images/app/controls/phone.png";
+        this._helperComponent.isPhoneDisabled = false;
+        this._helperComponent.isPhoneClassEnabled = true;
+    }
+
+    private disableCalling() {
+        this.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
+        this._helperComponent.isPhoneDisabled = true;
+        this._helperComponent.isPhoneClassEnabled = false;
+    }
+
     private onMouseOutProfileMenu(event: MouseEvent) {
         if (this.selectedUser) return;
 
         if (event.x < window.innerWidth - this.rightColumn.clientWidth && this.profilemenuIsShow) {
             this.hideProfileMenu();
             this.profilemenuIsShow = false;
-        }
-    }
-
-    public updateConversationsData(conversations: Array<Conversation>) {
-        for (let c of conversations) {
-            let start = new Date(Date.parse(c.Start.toString()));
-            let end = new Date(Date.parse(c.Start.toString()));
-
-            c.StartString = start.getFullYear() + '/' + start.getMonth() + '/' + start.getDate() + ' ' + start.getHours() + 'h ' + start.getMinutes() + 'm ' + start.getSeconds() + 's';
-            c.EndString = end.getFullYear() + '/' + end.getMonth() + '/' + end.getDate() + ' ' + end.getHours() + 'h ' + end.getMinutes() + 'm ' + end.getSeconds() + 's';
         }
     }
 }

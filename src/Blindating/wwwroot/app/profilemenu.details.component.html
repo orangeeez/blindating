@@ -1,0 +1,39 @@
+﻿<div class="row menu-5px-margin">
+    <div class="col-md-12 main-column-decoration">
+        <div class="headerline-decoration-details">
+            <div class="col-md-8">
+                Basic Information
+            </div>
+            <div class="col-md-4 text-align-right">
+                <i *ngIf="!app.selectedUser" class="fa fa-pencil fa-lg edit-decoration"
+                   (click)="edit()"></i>
+            </div>
+        </div>
+        <div *ngFor="#detail of basicInformation; #i = index" style="height: 20px;">
+            <div class="col-md-6">
+                <i [ngClass]="basicInformationIcons[i]" style="width: 20px;"></i>
+                {{detail}}
+            </div>
+            <div *ngIf="content" class="col-md-6 text-align-right"
+                [innerHTML]="content | iterateOverObject: {value: detail}">
+            </div>
+        </div>
+        <div class="headerline-decoration-details">
+            <div class="col-md-8">
+                Looks
+            </div>
+            <div class="col-md-4 text-align-right">
+                <i *ngIf="!app.selectedUser" class="fa fa-pencil fa-lg edit-decoration"></i>
+            </div>
+        </div>
+        <div *ngFor="#look of looks; #i = index" style="height: 20px;">
+            <div class="col-md-6">
+                <i [ngClass]="looksIcons[i]" style="width: 20px;"></i>
+                {{look}}
+            </div>
+            <div *ngIf="content" class="col-md-6 text-align-right"
+                [innerHTML]="content | iterateOverObject: {value: look}">
+            </div>
+        </div>
+    </div>
+</div>

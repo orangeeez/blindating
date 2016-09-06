@@ -1,4 +1,4 @@
-System.register(['angular2/core', './user.service', './app.component'], function(exports_1, context_1) {
+System.register(['angular2/core', './user.service', './utils/utils', './app.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -13,7 +13,7 @@ System.register(['angular2/core', './user.service', './app.component'], function
     var __param = (this && this.__param) || function (paramIndex, decorator) {
         return function (target, key) { decorator(target, key, paramIndex); }
     };
-    var core_1, user_service_1, app_component_1;
+    var core_1, user_service_1, utils_1, app_component_1;
     var HelperComponent;
     return {
         setters:[
@@ -22,6 +22,9 @@ System.register(['angular2/core', './user.service', './app.component'], function
             },
             function (user_service_1_1) {
                 user_service_1 = user_service_1_1;
+            },
+            function (utils_1_1) {
+                utils_1 = utils_1_1;
             },
             function (app_component_1_1) {
                 app_component_1 = app_component_1_1;
@@ -61,12 +64,10 @@ System.register(['angular2/core', './user.service', './app.component'], function
                         var m = _this.startDurationTime.getMinutes();
                         var s = _this.startDurationTime.getSeconds();
                         _this.startDurationTime.setSeconds(s + 1);
-                        h = _this.checkTime(h);
-                        m = _this.checkTime(m);
-                        s = _this.checkTime(s);
-                        if (h.valueOf() != 0)
-                            _this.duration = h + ":" + m + ":" + s;
-                        else
+                        h = utils_1.Utils.CheckTime(h);
+                        m = utils_1.Utils.CheckTime(m);
+                        s = utils_1.Utils.CheckTime(s);
+                        h.valueOf() != 0 ? _this.duration = h + ":" + m + ":" + s :
                             _this.duration = m + ":" + s;
                         _this.durationTimeout = setTimeout(_this.startDuration, 1000);
                     };
@@ -74,6 +75,7 @@ System.register(['angular2/core', './user.service', './app.component'], function
                         _this.app.callerUser = null;
                         _this.app.callingUser = null;
                         _this.app.communicationState = 'none';
+                        _this.isCallInitiated = false;
                         _this.isCallDenied = false;
                         _this.startDurationTime = new Date(0, 0, 0, 0, 0, 0, 0);
                         clearInterval(_this.callingInterval);
@@ -88,6 +90,7 @@ System.register(['angular2/core', './user.service', './app.component'], function
                         this.app.communicationState = 'initiatedCalling';
                         this.isCallInitiated = true;
                         this.startDuration();
+                        this.app._helperComponent.startConversationTime = new Date();
                         clearInterval(this.callingInterval);
                     }
                     else {
@@ -100,11 +103,6 @@ System.register(['angular2/core', './user.service', './app.component'], function
                         this.interval = setInterval(this.onCallingBlink, 500);
                     }
                     //this.app.user.Peer.send('abc', this.app.selectedUser.JWT); 
-                };
-                HelperComponent.prototype.checkTime = function (i) {
-                    if (i < 10)
-                        i = "0" + i;
-                    return i;
                 };
                 HelperComponent = __decorate([
                     core_1.Component({

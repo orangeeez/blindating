@@ -47,41 +47,6 @@ System.register(['angular2/core', 'angular2/router', './user.service', './app.co
                         _this.app.users = users;
                     });
                 };
-                SearchComponent.prototype.selectDeselectSearchUser = function (event) {
-                    if (this.app.selectedUser)
-                        this.deselectSearchUser();
-                    else
-                        this.selectSearchUser();
-                };
-                SearchComponent.prototype.selectSearchUser = function () {
-                    var _this = this;
-                    var element = event.srcElement;
-                    while (element.id != 'search-board')
-                        element = element.parentElement;
-                    this._userService.GetUser('JWT', element.lastElementChild.innerHTML)
-                        .subscribe(function (finded) {
-                        _this.app.selectedUser = finded;
-                        if (_this.app.selectedUser.Online)
-                            _this.enableCalling();
-                        else
-                            _this.disableCalling();
-                        _this.app.showProfileMenu();
-                    });
-                };
-                SearchComponent.prototype.deselectSearchUser = function () {
-                    this.app.selectedUser = null;
-                    this.app.hideProfileMenu();
-                };
-                SearchComponent.prototype.enableCalling = function () {
-                    this.app.helperPhoneIconPath = "images/app/controls/phone.png";
-                    this.app._helperComponent.isPhoneDisabled = false;
-                    this.app._helperComponent.isPhoneClassEnabled = true;
-                };
-                SearchComponent.prototype.disableCalling = function () {
-                    this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
-                    this.app._helperComponent.isPhoneDisabled = true;
-                    this.app._helperComponent.isPhoneClassEnabled = false;
-                };
                 SearchComponent = __decorate([
                     core_1.Component({
                         selector: 'search',

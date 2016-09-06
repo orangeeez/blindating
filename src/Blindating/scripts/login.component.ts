@@ -4,7 +4,7 @@ import {AppComponent} from './app.component'
 import {UserService}  from './user.service'
 import {SocialService} from './services/social.service'
 import {UserInfoService} from './services/userinfo.service'
-import {Answer}          from './utils/user.utils'
+import {Answer, Conversation}          from './utils/user.utils'
 
 import {User}         from './user'
 import {TAB_DIRECTIVES, Alert} from 'ng2-bootstrap/ng2-bootstrap'
@@ -204,6 +204,8 @@ export class LoginComponent implements OnInit {
         if (this.app.communicationState != 'initiatedCalling') {
             this.app.communicationState = 'initiatedCaller';
             this.app._helperComponent.startDuration();
+            this.app._helperComponent.startConversationTime = new Date();
+
         }
 
         this.app._helperComponent.isCallInitiated = true;
@@ -212,6 +214,15 @@ export class LoginComponent implements OnInit {
 
     private onCallStopped = (e) => {
         this.app._helperComponent.isCallDenied = true;
+        let conversation: any = {
+            ID: 0,
+            UserID: this.app.user.ID,
+            JWT: e.senderId == this.app.user.JWT ? e.peerId : e.senderId,
+            Start: this.app._helperComponent.startConversationTime.toLocaleString(),
+            End: new Date().toLocaleString()
+        }
+        this._userInfoService.AddConversation(conversation)
+            .subscribe();
         setTimeout(this.disappearCall, 2000);
     }
 

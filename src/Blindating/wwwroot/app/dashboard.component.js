@@ -38,6 +38,8 @@ System.register(['angular2/core', 'angular2/router', './user.service', './app.co
                     this._userService = _userService;
                     this._router = _router;
                     this.app = app;
+                    //this.app._headerComponent.isSearchActive = false;
+                    //this.app._headerComponent.isDashboardActive = true;
                 }
                 DashboardComponent.prototype.ngOnInit = function () {
                     this.dashboard = new dashboard_1.dDashboard();

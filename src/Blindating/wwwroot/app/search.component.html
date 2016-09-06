@@ -5,7 +5,7 @@
         </div>
         <div *ngIf="searchedUsers.length == 0 && !isSearchNotFound">
             <div *ngFor="#user of app.users" id="search-board" class="col-md-1"
-                 (click)="selectDeselectSearchUser($event)">
+                 (click)="app.selectDeselectUser($event)">
                 <div class="center-child-div">
                     <img id="profile-image" class="navbar-brand img-circle without-padding" src="{{user.ProfileImage}}" />
                     <span class="profile-image-text">
@@ -23,7 +23,7 @@
         </div>
         <div *ngIf="searchedUsers.length > 0">
             <div *ngFor="#user of searchedUsers" id="search-board" class="col-md-1"
-                 (click)="selectDeselectSearchUser($event)">
+                 (click)="app.selectDeselectUser($event)">
                 <div class="center-child-div">
                     <img id="profile-image" class="navbar-brand img-circle without-padding" src="{{user.ProfileImage}}" />
                     <span class="profile-image-text">

@@ -1,7 +1,7 @@
 System.register([], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var Quote, Photo, Conversation, Preference, Question, Answer, Notification;
+    var Quote, Photo, Conversation, Preference, Question, Answer, Notification, Detail;
     return {
         setters:[],
         execute: function() {
@@ -47,6 +47,12 @@ System.register([], function(exports_1, context_1) {
                 return Notification;
             }());
             exports_1("Notification", Notification);
+            Detail = (function () {
+                function Detail() {
+                }
+                return Detail;
+            }());
+            exports_1("Detail", Detail);
         }
     }
 });

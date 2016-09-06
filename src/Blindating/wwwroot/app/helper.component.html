@@ -5,7 +5,7 @@
         [class.initiated]="isCallInitiated"
         [class.denied]="isCallDenied">
         <div id="search-board"
-             (click)="app._searchComponent.selectDeselectSearchUser($event)">
+             (click)="app.selectDeselectUser($event)">
             <div class="center-child-div">
                 <img id="profile-image" class="navbar-brand img-circle without-padding" src="{{app.callingUser.ProfileImage}}" />
                 <span class="profile-image-text">
@@ -22,9 +22,15 @@
         [class.calling]="isCallingBlink"
         [class.initiated]="isCallInitiated"
         [class.denied]="isCallDenied">
-        <div id="search-board">
+        <div id="search-board"
+            (click)="app.selectDeselectUser($event)">
             <div class="center-child-div">
                 <img id="profile-image" class="navbar-brand img-circle without-padding" src="{{app.callerUser.ProfileImage}}" />
+                <span class="profile-image-text">
+                    <span *ngIf="!app.selectedUser">Profile</span>
+                    <span *ngIf="app.selectedUser"
+                          class="cross-decoration">X</span>
+                </span>
             </div>
             <div *ngIf="app.communicationState == 'initiatedCaller'" class="center-child-div">{{duration}}</div>
             <div [hidden]="!visible">{{app.callerUser.JWT}}</div>

@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/common', './mock/countries', './utils/component.utils', './user.service', './services/userinfo.service', './services/savecomponent.service', './app.component', 'angular2/router', './pipes/iterateto.pipe', 'ng2-bootstrap/ng2-bootstrap', './profilemenu.photos.component', './profilemenu.conversations.component', './profilemenu.notifications.component', './mock/utils'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/common', './mock/countries', './utils/component.utils', './user.service', './services/userinfo.service', './services/savecomponent.service', './app.component', 'angular2/router', './pipes/iterateto.pipe', 'ng2-bootstrap/ng2-bootstrap', './profilemenu.photos.component', './profilemenu.conversations.component', './profilemenu.notifications.component', './profilemenu.details.component', './mock/utils'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -13,7 +13,7 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './util
     var __param = (this && this.__param) || function (paramIndex, decorator) {
         return function (target, key) { decorator(target, key, paramIndex); }
     };
-    var core_1, common_1, countries_1, component_utils_1, user_service_1, userinfo_service_1, savecomponent_service_1, app_component_1, router_1, iterateto_pipe_1, ng2_bootstrap_1, profilemenu_photos_component_1, profilemenu_conversations_component_1, profilemenu_notifications_component_1, utils_1;
+    var core_1, common_1, countries_1, component_utils_1, user_service_1, userinfo_service_1, savecomponent_service_1, app_component_1, router_1, iterateto_pipe_1, ng2_bootstrap_1, profilemenu_photos_component_1, profilemenu_conversations_component_1, profilemenu_notifications_component_1, profilemenu_details_component_1, utils_1;
     var ProfileMenuComponent;
     return {
         setters:[
@@ -59,6 +59,9 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './util
             function (profilemenu_notifications_component_1_1) {
                 profilemenu_notifications_component_1 = profilemenu_notifications_component_1_1;
             },
+            function (profilemenu_details_component_1_1) {
+                profilemenu_details_component_1 = profilemenu_details_component_1_1;
+            },
             function (utils_1_1) {
                 utils_1 = utils_1_1;
             }],
@@ -73,8 +76,8 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './util
                     this.bellClass = 'fa fa-bell-o fa-lg';
                     this.tabs = [
                         { title: 'Basic', active: true },
-                        { title: 'Interests', active: false },
-                        { title: 'Eductaion', active: false },
+                        { title: 'Details', active: false },
+                        { title: 'Wishes', active: false },
                         { title: 'Notifications', active: false }
                     ];
                     this.purpose = true;
@@ -132,33 +135,34 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './util
                     //    }
                     //}
                     //else {
+                    this._userInfoService.GetPhotos(tuser.ID.toString())
+                        .subscribe(function (photos) {
+                        _this.photos = photos;
+                    });
                     this._userInfoService.GetRandomQuote(tuser.ID.toString())
                         .subscribe(function (quote) {
-                        _this.quote = quote;
-                        _this._userInfoService.GetPhotos(tuser.ID.toString())
-                            .subscribe(function (photos) {
-                            _this.photos = photos;
-                            _this._userInfoService.GetConversations(tuser.ID.toString())
-                                .subscribe(function (conversations) {
-                                _this.conversations = conversations;
-                                _this.updateConversationsData(_this.conversations);
-                                _this._userInfoService.GetQuestions(tuser.ID.toString())
-                                    .subscribe(function (questions) {
-                                    _this.currentQuestionIndex = 0;
-                                    _this.questions = questions;
-                                    _this.question = questions[0].Message;
-                                    _this._userInfoService.GetPreferences(tuser.ID + "")
-                                        .subscribe(function (preferences) {
-                                        _this.gender = preferences.Gender;
-                                        _this.relation = preferences.Relationship;
-                                        _this.age['from'] = preferences.From;
-                                        _this.age['to'] = preferences.To;
-                                        _this.country = preferences.Country;
-                                        _this.city = preferences.City;
-                                    });
-                                });
-                            });
-                        });
+                        if (quote.ID != 0)
+                            _this.quote = quote;
+                    });
+                    this._userInfoService.GetConversations(tuser.ID.toString())
+                        .subscribe(function (conversations) {
+                        _this.conversations = conversations;
+                    });
+                    this._userInfoService.GetQuestions(tuser.ID.toString())
+                        .subscribe(function (questions) {
+                        _this.currentQuestionIndex = 0;
+                        _this.questions = questions;
+                        if (_this.questions.length != 0)
+                            _this.question = questions[0].Message;
+                    });
+                    this._userInfoService.GetPreferences(tuser.ID + "")
+                        .subscribe(function (preferences) {
+                        _this.gender = preferences.Gender;
+                        _this.relation = preferences.Relationship;
+                        _this.age['from'] = preferences.From;
+                        _this.age['to'] = preferences.To;
+                        _this.country = preferences.Country;
+                        _this.city = preferences.City;
                     });
                     //}
                     for (var _i = 0, _a = this.notifications; _i < _a.length; _i++) {
@@ -263,7 +267,7 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './util
                 };
                 ProfileMenuComponent.prototype.onExitProfile = function (event) {
                     if (this.app.selectedUser)
-                        this.app._searchComponent.deselectSearchUser();
+                        this.app.deselectUser();
                     else
                         this.app.hideProfileMenu();
                 };
@@ -311,15 +315,6 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './util
                     else
                         this.question = this.questions[this.currentQuestionIndex]["Message"];
                 };
-                ProfileMenuComponent.prototype.updateConversationsData = function (conversations) {
-                    for (var _i = 0, conversations_1 = conversations; _i < conversations_1.length; _i++) {
-                        var c = conversations_1[_i];
-                        var start = new Date(Date.parse(c.Start.toString()));
-                        var end = new Date(Date.parse(c.Start.toString()));
-                        c.StartString = start.getFullYear() + '/' + start.getMonth() + '/' + start.getDate() + ' ' + start.getHours() + 'h ' + start.getMinutes() + 'm ' + start.getSeconds() + 's';
-                        c.EndString = end.getFullYear() + '/' + end.getMonth() + '/' + end.getDate() + ' ' + end.getHours() + 'h ' + end.getMinutes() + 'm ' + end.getSeconds() + 's';
-                    }
-                };
                 //#region OpenGallery
                 ProfileMenuComponent.prototype.openGallery = function (event) {
                     var items = [];
@@ -358,7 +353,7 @@ System.register(['angular2/core', 'angular2/common', './mock/countries', './util
                         templateUrl: 'app/profilemenu.component.html',
                         styleUrls: ['app/profilemenu.component.css', 'app/search.component.css', 'css/styles.css'],
                         pipes: [iterateto_pipe_1.IterateToPipe],
-                        directives: [common_1.CORE_DIRECTIVES, ng2_bootstrap_1.DROPDOWN_DIRECTIVES, ng2_bootstrap_1.TAB_DIRECTIVES, profilemenu_photos_component_1.ProfileMenuPhotosComponent, profilemenu_conversations_component_1.ProfileMenuConversationsComponent, profilemenu_notifications_component_1.ProfileMenuNotificationsComponent],
+                        directives: [common_1.CORE_DIRECTIVES, ng2_bootstrap_1.DROPDOWN_DIRECTIVES, ng2_bootstrap_1.TAB_DIRECTIVES, profilemenu_photos_component_1.ProfileMenuPhotosComponent, profilemenu_conversations_component_1.ProfileMenuConversationsComponent, profilemenu_notifications_component_1.ProfileMenuNotificationsComponent, profilemenu_details_component_1.ProfileMenuDetailsComponent],
                         inputs: ['acceptIconPath', 'declineIconPath', 'notifications']
                     }),
                     __param(0, core_1.Host()),

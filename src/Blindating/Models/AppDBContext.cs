@@ -9,15 +9,7 @@ namespace ASPAngular2Test.Models
 {
     public class AppDBContext : DbContext
     {
-        //private static bool _created = false;
-
-        public AppDBContext()
-        {
-            //if (!_created)
-            //{
-            //    _created = true;
-            //}
-        }
+        public AppDBContext() { }
 
         public DbSet<User> Users { get; set; }
         public DbSet<OnlineUser> OnlineUsers { get; set; }
@@ -30,6 +22,8 @@ namespace ASPAngular2Test.Models
         public DbSet<UserUtils.Question> Questions { get; set; }
         public DbSet<UserUtils.Answer> Answers { get; set; }
         public DbSet<UserUtils.Notification> Notifications { get; set; }
+        public DbSet<UserUtils.Conversation> Conversations{ get; set; }
+        public DbSet<UserUtils.Detail> Details { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<User>()
@@ -56,6 +50,11 @@ namespace ASPAngular2Test.Models
                 .HasOne(p => p.Preference)
                 .WithOne(i => i.Information)
                 .HasForeignKey<UserUtils.Preference>(b => b.InformationPreferenceFK);
+
+            modelBuilder.Entity<InformationUser>()
+                .HasOne(p => p.Detail)
+                .WithOne(i => i.Information)
+                .HasForeignKey<UserUtils.Detail>(b => b.InformationDetailsFK);
 
             modelBuilder.Entity<InformationUser>()
                 .HasMany(p => p.Questions)

@@ -75,5 +75,7 @@ namespace ASPAngular2Test.Models
         public virtual UserUtils.Preference Preference { get; set; }
         [JsonIgnore]
         public virtual List<UserUtils.Notification> Notifications { get; set; }
+        [JsonIgnore]
+        public virtual UserUtils.Detail Detail { get; set; }
     }
 }

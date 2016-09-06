@@ -12,14 +12,8 @@ using Microsoft.Data.Entity.Infrastructure;
 
 namespace ASPAngular2Test.Models
 {
-    public class UserRepository : IUserRepository, IOnelineUserRepository, IUtils
+    public class UserRepository : IUserRepository, IOnelineUserRepository, IUtilsRepository
     {
-        private readonly AppDBContext _appDB;
-
-        public UserRepository(AppDBContext _appDB)
-        {
-            this._appDB = _appDB;
-        }
         #region IUserRepository
         public User Login(User user)
         {
@@ -48,6 +42,7 @@ namespace ASPAngular2Test.Models
                 {
                     user.JWT = this.CreateJWT(user);
                     user.Information = new InformationUser();
+                    user.Information.Detail = new UserUtils.Detail();
                     _appDB.Users.Add(user);
                     _appDB.SaveChanges();
                     return User.REGISTERED_SUCCESSFULLY;
@@ -188,7 +183,12 @@ namespace ASPAngular2Test.Models
                 var user = (from u in _appDB.Users.Include(u => u.Information).ThenInclude(i => i.Quotes)
                             where u.ID == userID
                             select u).SingleOrDefault();
-                var quote = user.Information.Quotes.ElementAt(new Random().Next(0, user.Information.Quotes.Count - 1));
+
+                var quote = new UserUtils.Quote();
+
+                if (user.Information.Quotes.Count != 0)
+                    quote = user.Information.Quotes.ElementAt(new Random().Next(0, user.Information.Quotes.Count - 1));
+
                 return quote;
             }
         }
@@ -227,17 +227,29 @@ namespace ASPAngular2Test.Models
                             where u.ID == userID
                             select u).SingleOrDefault();
                 var conversations = user.Information.Conversations;
+                conversations.Reverse();
 
                 foreach (UserUtils.Conversation conversation in conversations)
                 {
                     UserUtils.FindUser fu = new UserUtils.FindUser { Field = "JWT", Value = conversation.JWT };
                     conversation.User = this.GetUser(fu);
-                    var start = conversation.Start;
-                    var end = conversation.End;
-                    var ts = end.Subtract(start);
-                    conversation.Length = ts.Hours + "h " + ts.Minutes + "m " + ts.Seconds + "s ";
                 }
                 return conversations;
+            }
+        }
+
+        public bool AddConversation(UserUtils.Conversation conversation)
+        {
+            using (var _appDB = new AppDBContext())
+            {
+                var informationID = (from u in _appDB.Users.Include(u => u.Information)
+                                     where u.ID == conversation.UserID
+                                     select u.Information.ID).SingleOrDefault();
+
+                conversation.InformationConversationFK = informationID;
+                _appDB.Conversations.Add(conversation);
+                _appDB.SaveChanges();
+                return true;
             }
         }
 
@@ -330,15 +342,15 @@ namespace ASPAngular2Test.Models
                                   select q.ID).SingleOrDefault();
 
                 answer.QuestionAnswerFK = questionFK;
-                this._appDB.Answers.Add(answer);
-                this._appDB.SaveChanges();
+                _appDB.Answers.Add(answer);
+                _appDB.SaveChanges();
 
                 UserUtils.Notification notification = new UserUtils.Notification();
                 notification.InformationNotificationFK = informationFK;
                 notification.Table = "Answer";
                 notification.EntityID = answer.ID;
-                this._appDB.Notifications.Add(notification);
-                this._appDB.SaveChanges();
+                _appDB.Notifications.Add(notification);
+                _appDB.SaveChanges();
 
                 return true;
             }
@@ -353,6 +365,7 @@ namespace ASPAngular2Test.Models
                             where u.ID == userID
                             select u).SingleOrDefault();
                 var notifications = user.Information.Notifications;
+                notifications.Reverse();
 
                 foreach (var n in notifications)
                     jsonNotifications.Add(JsonConvert.SerializeObject(n));

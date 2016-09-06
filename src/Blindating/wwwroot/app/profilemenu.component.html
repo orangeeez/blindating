@@ -26,7 +26,8 @@
                             <footer>{{quote?.Author}}</footer>
                         </blockquote>
                     </div>
-                    <div *ngIf="purpose" class="block-center">
+                    <div *ngIf="purpose" class="block-center"
+                         [class.disabled]="app.selectedUser">
                         <div class="headerline-nobackground">I WANT TO BLIND WITH</div>
                         <span dropdown>
                             <input dropdownToggle type="text" id="gender-dropdown" placeholder="Gender" readonly
@@ -148,7 +149,7 @@
                             <div class="row row-padding">
                                 <div *ngFor="#conversation of conversations | iterateto: {to: 6}"
                                      id="search-board" class="col-md-2 col-no-padding">
-                                    <div (click)="app._searchComponent.selectDeselectSearchUser($event)"
+                                    <div (click)="app.selectDeselectUser($event)"
                                          class="center-child-div">
                                         <img id="profile-image" class="navbar-brand img-circle without-padding"
                                              src="{{conversation.User.ProfileImage}}" />
@@ -168,11 +169,15 @@
                            class="btn btn-danger comp-decoration" href="#" role="button">Logout</a>
                     </div>
                 </tab>
-                <tab [heading]="tabs[1].title"
-                     [active]="tabs[1].active"
-                     [disabled]="tabs[1].disabled"
-                     (select)="tabs[1].active = true"
-                     (deselect)="tabs[1].active = false">
+                <tab [heading]  = "tabs[1].title"
+                     [active]   = "tabs[1].active"
+                     [disabled] = "tabs[1].disabled"
+                     (select)   = "tabs[1].active = true"
+                     (deselect) = "tabs[1].active = false">
+
+                    <profilemenu-details *ngIf="tabs[1].active"
+                                         [app]="app">
+                    </profilemenu-details>
                 </tab>
                 <tab [heading]="tabs[2].title"
                      [active]="tabs[2].active"

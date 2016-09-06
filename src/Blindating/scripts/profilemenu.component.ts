@@ -2,7 +2,6 @@
 import {CORE_DIRECTIVES} from 'angular2/common'
 import {User}              from './user'
 import {COUNTRIES} from './mock/countries'
-import {Quote, Photo, Conversation, Question, Answer, Notification} from './utils/user.utils'
 import {Profilemenu} from './utils/component.utils'
 import {UserService}       from './user.service'
 import {UserInfoService}   from './services/userinfo.service'
@@ -14,7 +13,8 @@ import {TAB_DIRECTIVES, DROPDOWN_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap'
 import {ProfileMenuPhotosComponent} from './profilemenu.photos.component'
 import {ProfileMenuConversationsComponent} from './profilemenu.conversations.component'
 import {ProfileMenuNotificationsComponent} from './profilemenu.notifications.component'
-
+import {ProfileMenuDetailsComponent} from './profilemenu.details.component'
+import {Quote, Photo, Conversation, Question, Answer, Notification} from './utils/user.utils'
 import {API_ADDRESS} from './mock/utils'
 
 declare var PhotoSwipe, PhotoSwipeUI_Default;
@@ -24,7 +24,7 @@ declare var PhotoSwipe, PhotoSwipeUI_Default;
     templateUrl: 'app/profilemenu.component.html',
     styleUrls: ['app/profilemenu.component.css', 'app/search.component.css', 'css/styles.css'],
     pipes: [IterateToPipe],
-    directives: [CORE_DIRECTIVES, DROPDOWN_DIRECTIVES, TAB_DIRECTIVES, ProfileMenuPhotosComponent, ProfileMenuConversationsComponent, ProfileMenuNotificationsComponent],
+    directives: [CORE_DIRECTIVES, DROPDOWN_DIRECTIVES, TAB_DIRECTIVES, ProfileMenuPhotosComponent, ProfileMenuConversationsComponent, ProfileMenuNotificationsComponent, ProfileMenuDetailsComponent],
     inputs: ['acceptIconPath', 'declineIconPath', 'notifications']
 })
 
@@ -39,8 +39,8 @@ export class ProfileMenuComponent implements OnInit, OnDestroy {
     public app: AppComponent;
     public tabs: Array<any> = [
         { title: 'Basic', active: true },
-        { title: 'Interests', active: false },
-        { title: 'Eductaion', active: false },
+        { title: 'Details', active: false },
+        { title: 'Wishes', active: false },
         { title: 'Notifications', active: false }
     ];
     public purpose: boolean = true;
@@ -61,7 +61,7 @@ export class ProfileMenuComponent implements OnInit, OnDestroy {
 
     public age: any = { from: '', to: '' };
     public ages: Array<number> = Array.from(Array(80).keys()).slice(16, 80);
-    
+
     public city: string = "";
     public cities: Array<string> = [];
 
@@ -114,34 +114,41 @@ export class ProfileMenuComponent implements OnInit, OnDestroy {
         //    }
         //}
         //else {
-            this._userInfoService.GetRandomQuote(tuser.ID.toString())
-                .subscribe(quote => {
+
+        this._userInfoService.GetPhotos(tuser.ID.toString())
+            .subscribe(photos => {
+                this.photos = photos;
+            });
+
+        this._userInfoService.GetRandomQuote(tuser.ID.toString())
+            .subscribe(quote => {
+                if (quote.ID != 0)
                     this.quote = quote;
-                    this._userInfoService.GetPhotos(tuser.ID.toString())
-                        .subscribe(photos => {
-                            this.photos = photos;
-                            this._userInfoService.GetConversations(tuser.ID.toString())
-                                .subscribe(conversations => {
-                                    this.conversations = conversations;
-                                    this.updateConversationsData(this.conversations);
-                                    this._userInfoService.GetQuestions(tuser.ID.toString())
-                                        .subscribe(questions => {
-                                            this.currentQuestionIndex = 0;
-                                            this.questions = questions;
-                                            this.question = questions[0].Message;
-                                            this._userInfoService.GetPreferences(tuser.ID + "")
-                                                .subscribe(preferences => {
-                                                    this.gender = preferences.Gender;
-                                                    this.relation = preferences.Relationship;
-                                                    this.age['from'] = preferences.From;
-                                                    this.age['to'] = preferences.To;
-                                                    this.country = preferences.Country;
-                                                    this.city = preferences.City;
-                                                });
-                                        });
-                                });
-                        });
-                });
+            });
+
+        this._userInfoService.GetConversations(tuser.ID.toString())
+            .subscribe(conversations => {
+                this.conversations = conversations;
+            });
+
+        this._userInfoService.GetQuestions(tuser.ID.toString())
+            .subscribe(questions => {
+                this.currentQuestionIndex = 0;
+                this.questions = questions;
+
+                if (this.questions.length != 0)
+                    this.question = questions[0].Message;
+            });
+
+        this._userInfoService.GetPreferences(tuser.ID + "")
+            .subscribe(preferences => {
+                this.gender = preferences.Gender;
+                this.relation = preferences.Relationship;
+                this.age['from'] = preferences.From;
+                this.age['to'] = preferences.To;
+                this.country = preferences.Country;
+                this.city = preferences.City;
+            });
         //}
 
         for (var notification of this.notifications) {
@@ -255,7 +262,7 @@ export class ProfileMenuComponent implements OnInit, OnDestroy {
 
     public onExitProfile(event: Event) {
         if (this.app.selectedUser)
-            this.app._searchComponent.deselectSearchUser();
+            this.app.deselectUser();
         else
             this.app.hideProfileMenu();
     }
@@ -273,7 +280,7 @@ export class ProfileMenuComponent implements OnInit, OnDestroy {
             this.question = this.questions[this.currentQuestionIndex]["Message"];
         }
     }
-    
+
     public onAcceptQuestion() {
         let answer: Answer = {
             ID: 0,
@@ -317,16 +324,6 @@ export class ProfileMenuComponent implements OnInit, OnDestroy {
 
     private filterDropdownInputCity = (city: string): boolean => {
         return city.includes(this.city);
-    }
-
-    public updateConversationsData(conversations: Array<Conversation>) {
-        for (let c of conversations) {
-            let start = new Date(Date.parse(c.Start.toString()));
-            let end = new Date(Date.parse(c.Start.toString()));
-
-            c.StartString = start.getFullYear() + '/' + start.getMonth() + '/' + start.getDate() + ' ' + start.getHours() + 'h ' + start.getMinutes() + 'm ' + start.getSeconds() + 's';
-            c.EndString = end.getFullYear() + '/' + end.getMonth() + '/' + end.getDate() + ' ' + end.getHours() + 'h ' + end.getMinutes() + 'm ' + end.getSeconds() + 's';
-        }
     }
     //#region OpenGallery
     public openGallery(event: MouseEvent) {

@@ -7,9 +7,6 @@ import {User}                from './user'
 import {Answer, Notification}              from './utils/user.utils'
 import {NotificationHTMLPipe}     from './pipes/notificationHTML.pipe'
 
-
-declare var PhotoSwipe, PhotoSwipeUI_Default;
-
 @Component({
     selector: 'profilemenu-notifications',
     templateUrl: 'app/profilemenu.notifications.component.html',
@@ -24,7 +21,7 @@ export class ProfileMenuNotificationsComponent implements OnInit, OnDestroy{
     public updateNotifications: Array<Notification> = new Array<Notification>();
     constructor(private _userInfoService: UserInfoService) {}
 
-    ngOnInit() { }
+    ngOnInit() {}
 
     ngOnDestroy() {
         for (var notification of this.notifications) {
@@ -32,6 +29,7 @@ export class ProfileMenuNotificationsComponent implements OnInit, OnDestroy{
             if (!n.IsShown) {
                 n.IsShown = true;
                 this.updateNotifications.push(n);
+                this.app._profileMenuComponent.bellClass = 'fa fa-bell-o fa-lg';
             }
         }
 

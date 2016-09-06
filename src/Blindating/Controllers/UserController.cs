@@ -13,7 +13,7 @@ namespace ASPAngular2Test.Controllers
         [FromServices]
         public IOnelineUserRepository OnlineUsers { get; set; }
         [FromServices]
-        public IUtils Utils { get; set; }
+        public IUtilsRepository Utils { get; set; }
 
         #region IUserRepository
         [HttpPost]
@@ -94,13 +94,13 @@ namespace ASPAngular2Test.Controllers
         }
         [HttpPost]
         [ActionName("getphotos")]
-        public List<UserUtils.Photo> GetPhotos([FromBody]int userID)
+        public List<UserUtils.Photo> GetPhotos([FromBody] int userID)
         {
             return Utils.GetPhotos(userID);
         }
         [HttpPost]
         [ActionName("getconversations")]
-        public List<UserUtils.Conversation> GetConversations([FromBody]int userID)
+        public List<UserUtils.Conversation> GetConversations([FromBody] int userID)
         {
             return Utils.GetConversations(userID);
         }
@@ -139,6 +139,12 @@ namespace ASPAngular2Test.Controllers
         public List<string> GetNotifications([FromBody] int userID)
         {
             return Utils.GetNotifications(userID);
+        }
+        [HttpPost]
+        [ActionName("addconversation")]
+        public bool AddConversation([FromBody] UserUtils.Conversation conversation)
+        {
+            return Utils.AddConversation(conversation);
         }
         [HttpPost]
         [ActionName("getanswernotification")]

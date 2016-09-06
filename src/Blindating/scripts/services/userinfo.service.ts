@@ -28,8 +28,13 @@ export class UserInfoService {
             .map(res => res.json());
     }
 
+    AddConversation(conversation: Conversation): Observable<boolean> {
+        return this.http.post(API_ADDRESS + this.api + "/addconversation", JSON.stringify(conversation), this.options)
+            .map(res => !!res.text());
+    }
+
     GetCities(country: string) {
-        return this.http.post(API_ADDRESS + this.api + "/getcities", country, this.options)
+        return this.http.post(API_ADDRESS + this.api + "/getcities", "\"" + country + "\"", this.options)
             .map(res => res.json());
     }
 

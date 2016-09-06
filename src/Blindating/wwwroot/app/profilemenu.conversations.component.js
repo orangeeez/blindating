@@ -1,4 +1,4 @@
-System.register(['angular2/core'], function(exports_1, context_1) {
+System.register(['angular2/core', './utils/utils'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,24 +10,38 @@ System.register(['angular2/core'], function(exports_1, context_1) {
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1;
+    var core_1, utils_1;
     var ProfileMenuConversationsComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (utils_1_1) {
+                utils_1 = utils_1_1;
             }],
         execute: function() {
             ProfileMenuConversationsComponent = (function () {
                 function ProfileMenuConversationsComponent() {
                     this.onBack = new core_1.EventEmitter();
                     this.headerUndoIconPath = "/images/app/controls/undo.png";
+                    this.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                    this.days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                 }
                 ProfileMenuConversationsComponent.prototype.ngOnInit = function () {
-                    this.app.updateConversationsData(this.conversations);
+                    this.updateConversationsData(this.conversations);
                 };
                 ProfileMenuConversationsComponent.prototype.back = function () {
                     this.onBack.emit([]);
+                };
+                ProfileMenuConversationsComponent.prototype.updateConversationsData = function (conversations) {
+                    for (var _i = 0, conversations_1 = conversations; _i < conversations_1.length; _i++) {
+                        var c = conversations_1[_i];
+                        var start = new Date(Date.parse(c.Start.toString()));
+                        var end = new Date(Date.parse(c.End.toString()));
+                        c.DateString = this.days[start.getDay()] + ', ' + this.months[start.getMonth()] + ' ' + start.getDate();
+                        c.TimeString = utils_1.Utils.CheckTime(start.getHours()) + ":" + utils_1.Utils.CheckTime(start.getMinutes());
+                    }
                 };
                 ProfileMenuConversationsComponent = __decorate([
                     core_1.Component({

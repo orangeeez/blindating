@@ -29,8 +29,8 @@ namespace ASPAngular2Test
             services.AddApplicationInsightsTelemetry(Configuration);
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IOnelineUserRepository, UserRepository>();
-            services.AddSingleton<IUtils, UserRepository>();
-            services.AddSingleton<IUtilsRepository, UtilsRepository>();
+            services.AddSingleton<IUtilsRepository, UserRepository>();
+            services.AddSingleton<IDetailsRepository, DetailsRepository>();
             services.AddCors();
             services.AddMvc();
             services.AddEntityFramework()

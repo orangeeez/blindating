@@ -16,12 +16,9 @@ export class Conversation {
     JWT: string;
     Start: Date;
     End: Date;
-    Duration: Date;
-    Length: string;
-    StartString: string;
-    EndString: string;
-    DurationString: string;
-    User: User;
+    DateString: string;
+    TimeString: string;
+    UserID: number;
 }
 export class Preference {
     ID: number;
@@ -48,4 +45,26 @@ export class Notification {
     Table: string;
     EntityID: string;
     IsShown: boolean;
+}
+export class Detail {
+    ID: number;
+    Firstname: string;
+    BirthDate: Date
+    City: string
+    PrefferdLanguage: string
+    AlsoSpeak: string;
+    Relationship: string;
+    Orientation: string;
+    Work: string;
+    Education: string;
+    Ethnicity: string;
+    BodyType: string;
+    Height: number;
+    HairColor: string;
+    EyeColor: string;
+    Wear: string;
+    IHave: string;
+    ClothingStyle: string;
+    MyBestPart: string;
+    OverallAppearance: string;
 }

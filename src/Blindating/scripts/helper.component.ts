@@ -1,6 +1,7 @@
 ﻿import {Component, OnInit, Host, Inject, forwardRef} from 'angular2/core'
 import {User}              from './user'
 import {UserService}       from './user.service'
+import {Utils}       from './utils/utils'
 import {AppComponent}      from './app.component'
 
 @Component({
@@ -24,7 +25,8 @@ export class HelperComponent implements OnInit {
     public interval: any;
     public callingInterval: any;
     public durationTimeout: any;
-    public startDurationTime: Date = new Date(0,0,0,0,0,0,0);
+    public startDurationTime: Date = new Date(0, 0, 0, 0, 0, 0, 0);
+    public startConversationTime: Date;
     public duration: string;
 
     constructor(
@@ -43,6 +45,7 @@ export class HelperComponent implements OnInit {
             this.app.communicationState = 'initiatedCalling';
             this.isCallInitiated = true;
             this.startDuration();
+            this.app._helperComponent.startConversationTime = new Date();
             clearInterval(this.callingInterval);
         }
         else {
@@ -81,12 +84,12 @@ export class HelperComponent implements OnInit {
         var m = this.startDurationTime.getMinutes();
         var s = this.startDurationTime.getSeconds();
         this.startDurationTime.setSeconds(s + 1)
-        h = this.checkTime(h);
-        m = this.checkTime(m);
-        s = this.checkTime(s);
+        h = Utils.CheckTime(h);
+        m = Utils.CheckTime(m);
+        s = Utils.CheckTime(s);
 
-        if (h.valueOf() != 0) this.duration = h + ":" + m + ":" + s;
-        else this.duration = m + ":" + s;
+        h.valueOf() != 0 ? this.duration = h + ":" + m + ":" + s :
+                           this.duration = m + ":" + s;
 
         this.durationTimeout = setTimeout(this.startDuration, 1000);
     }
@@ -101,9 +104,4 @@ export class HelperComponent implements OnInit {
         clearInterval(this.callingInterval);
         clearTimeout(this.durationTimeout);
     }
-
-    private checkTime(i) {
-    if (i < 10) i = "0" + i;
-    return i;
-}
 }

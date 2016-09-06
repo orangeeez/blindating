@@ -50,6 +50,7 @@ System.register(['angular2/core', './services/userinfo.service', './pipes/notifi
                         if (!n.IsShown) {
                             n.IsShown = true;
                             this.updateNotifications.push(n);
+                            this.app._profileMenuComponent.bellClass = 'fa fa-bell-o fa-lg';
                         }
                     }
                     if (this.updateNotifications.length > 0)

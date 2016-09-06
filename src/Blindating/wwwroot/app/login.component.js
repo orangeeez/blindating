@@ -77,12 +77,22 @@ System.register(['angular2/core', 'angular2/router', './app.component', './user.
                         if (_this.app.communicationState != 'initiatedCalling') {
                             _this.app.communicationState = 'initiatedCaller';
                             _this.app._helperComponent.startDuration();
+                            _this.app._helperComponent.startConversationTime = new Date();
                         }
                         _this.app._helperComponent.isCallInitiated = true;
                         clearInterval(_this.app._helperComponent.interval);
                     };
                     this.onCallStopped = function (e) {
                         _this.app._helperComponent.isCallDenied = true;
+                        var conversation = {
+                            ID: 0,
+                            UserID: _this.app.user.ID,
+                            JWT: e.senderId == _this.app.user.JWT ? e.peerId : e.senderId,
+                            Start: _this.app._helperComponent.startConversationTime.toLocaleString(),
+                            End: new Date().toLocaleString()
+                        };
+                        _this._userInfoService.AddConversation(conversation)
+                            .subscribe();
                         setTimeout(_this.disappearCall, 2000);
                     };
                     this.onCallDenied = function (e) {

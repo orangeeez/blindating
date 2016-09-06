@@ -22,15 +22,15 @@ namespace ASPAngular2Test.Models
         List<User> GetOnlineUsers();
     }
 
-    public interface IUtils
+    public interface IUtilsRepository
     {
         string GetVKInfo(string code);
         UserUtils.Quote GetRandomQuote(int userID);
         void AddNewQuote(UserUtils.Quote quote);
         List<UserUtils.Photo> GetPhotos(int userID);
         List<UserUtils.Conversation> GetConversations(int userID);
+        bool AddConversation(UserUtils.Conversation conversation);
         List<string> GetCities(string country);
-
         List<UserUtils.Question> GetQuestions(int userID);
         UserUtils.Preference GetPreferences(int userID); 
         bool SetPreference(UserUtils.PreferenceUser preference);

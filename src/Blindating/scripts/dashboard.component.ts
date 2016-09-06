@@ -22,6 +22,8 @@ export class DashboardComponent implements OnInit {
         private _userService: UserService,
         private _router: Router) {
         this.app = app;
+        //this.app._headerComponent.isSearchActive = false;
+        //this.app._headerComponent.isDashboardActive = true;
     }
 
     ngOnInit() {

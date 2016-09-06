@@ -31,47 +31,4 @@ export class SearchComponent implements OnInit {
                 this.app.users = users;
             });
     }
-
-    selectDeselectSearchUser(event: Event) {
-        if (this.app.selectedUser)
-            this.deselectSearchUser();
-        else
-            this.selectSearchUser();
-    }
-
-
-    private selectSearchUser() {
-        let element = event.srcElement;
-
-        while (element.id != 'search-board')
-            element = element.parentElement;
-
-        this._userService.GetUser('JWT', element.lastElementChild.innerHTML)
-            .subscribe(finded => {
-                this.app.selectedUser = finded;
-                if (this.app.selectedUser.Online)
-                    this.enableCalling();
-                else
-                    this.disableCalling();
-
-                this.app.showProfileMenu();
-            });
-    }
-
-    public deselectSearchUser() {
-        this.app.selectedUser = null;
-        this.app.hideProfileMenu();
-    }
-
-    private enableCalling() {
-        this.app.helperPhoneIconPath = "images/app/controls/phone.png";
-        this.app._helperComponent.isPhoneDisabled = false;
-        this.app._helperComponent.isPhoneClassEnabled = true;
-    }
-
-    private disableCalling() {
-        this.app.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
-        this.app._helperComponent.isPhoneDisabled = true;
-        this.app._helperComponent.isPhoneClassEnabled = false;
-    }
 }

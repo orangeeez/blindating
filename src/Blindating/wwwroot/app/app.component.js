@@ -1,4 +1,4 @@
-System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.service', './services/social.service', './services/userinfo.service', './services/savecomponent.service', './services/utils.service', './dashboard.component', './profile.component', './login.component', './search.component', './footer.component', './header.component', './helper.component', './profilemenu.component'], function(exports_1, context_1) {
+System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.service', './services/social.service', './services/userinfo.service', './services/savecomponent.service', './services/utils.service', './services/userdetails.service', './dashboard.component', './profile.component', './login.component', './search.component', './footer.component', './header.component', './helper.component', './profilemenu.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var router_1, http_1, core_1, router_2, user_service_1, social_service_1, userinfo_service_1, savecomponent_service_1, utils_service_1, dashboard_component_1, profile_component_1, login_component_1, search_component_1, footer_component_1, header_component_1, helper_component_1, profilemenu_component_1;
+    var router_1, http_1, core_1, router_2, user_service_1, social_service_1, userinfo_service_1, savecomponent_service_1, utils_service_1, userdetails_service_1, dashboard_component_1, profile_component_1, login_component_1, search_component_1, footer_component_1, header_component_1, helper_component_1, profilemenu_component_1;
     var AppComponent;
     return {
         setters:[
@@ -38,6 +38,9 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
             },
             function (utils_service_1_1) {
                 utils_service_1 = utils_service_1_1;
+            },
+            function (userdetails_service_1_1) {
+                userdetails_service_1 = userdetails_service_1_1;
             },
             function (dashboard_component_1_1) {
                 dashboard_component_1 = dashboard_component_1_1;
@@ -137,21 +140,47 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                     }
                     this.profilemenuIsShow = false;
                 };
+                AppComponent.prototype.selectDeselectUser = function (event) {
+                    if (this.selectedUser)
+                        this.deselectUser();
+                    else
+                        this.selectUser();
+                };
+                AppComponent.prototype.selectUser = function () {
+                    var _this = this;
+                    var element = event.srcElement;
+                    while (element.id != 'search-board')
+                        element = element.parentElement;
+                    this._userService.GetUser('JWT', element.lastElementChild.innerHTML)
+                        .subscribe(function (finded) {
+                        _this.selectedUser = finded;
+                        if (_this.selectedUser.Online)
+                            _this.enableCalling();
+                        else
+                            _this.disableCalling();
+                        _this.showProfileMenu();
+                    });
+                };
+                AppComponent.prototype.deselectUser = function () {
+                    this.selectedUser = null;
+                    this.hideProfileMenu();
+                };
+                AppComponent.prototype.enableCalling = function () {
+                    this.helperPhoneIconPath = "images/app/controls/phone.png";
+                    this._helperComponent.isPhoneDisabled = false;
+                    this._helperComponent.isPhoneClassEnabled = true;
+                };
+                AppComponent.prototype.disableCalling = function () {
+                    this.helperPhoneIconPath = "images/app/controls/phone-inactive.png";
+                    this._helperComponent.isPhoneDisabled = true;
+                    this._helperComponent.isPhoneClassEnabled = false;
+                };
                 AppComponent.prototype.onMouseOutProfileMenu = function (event) {
                     if (this.selectedUser)
                         return;
                     if (event.x < window.innerWidth - this.rightColumn.clientWidth && this.profilemenuIsShow) {
                         this.hideProfileMenu();
                         this.profilemenuIsShow = false;
-                    }
-                };
-                AppComponent.prototype.updateConversationsData = function (conversations) {
-                    for (var _i = 0, conversations_1 = conversations; _i < conversations_1.length; _i++) {
-                        var c = conversations_1[_i];
-                        var start = new Date(Date.parse(c.Start.toString()));
-                        var end = new Date(Date.parse(c.Start.toString()));
-                        c.StartString = start.getFullYear() + '/' + start.getMonth() + '/' + start.getDate() + ' ' + start.getHours() + 'h ' + start.getMinutes() + 'm ' + start.getSeconds() + 's';
-                        c.EndString = end.getFullYear() + '/' + end.getMonth() + '/' + end.getDate() + ' ' + end.getHours() + 'h ' + end.getMinutes() + 'm ' + end.getSeconds() + 's';
                     }
                 };
                 __decorate([
@@ -184,7 +213,7 @@ System.register(['angular2/router', 'angular2/http', 'angular2/core', './user.se
                         templateUrl: 'app/app.component.html',
                         styleUrls: ['app/app.component.css', 'css/styles.css'],
                         directives: [router_1.ROUTER_DIRECTIVES, footer_component_1.FooterComponent, header_component_1.HeaderComponent, helper_component_1.HelperComponent, profilemenu_component_1.ProfileMenuComponent],
-                        providers: [http_1.HTTP_PROVIDERS, router_1.ROUTER_PROVIDERS, http_1.JSONP_PROVIDERS, user_service_1.UserService, social_service_1.SocialService, userinfo_service_1.UserInfoService, savecomponent_service_1.SaveComponentService, utils_service_1.UtilsService]
+                        providers: [http_1.HTTP_PROVIDERS, router_1.ROUTER_PROVIDERS, http_1.JSONP_PROVIDERS, user_service_1.UserService, social_service_1.SocialService, userinfo_service_1.UserInfoService, savecomponent_service_1.SaveComponentService, utils_service_1.UtilsService, userdetails_service_1.UserDetailsService]
                     }),
                     router_1.RouteConfig([
                         { path: '/login', name: 'Login', component: login_component_1.LoginComponent },

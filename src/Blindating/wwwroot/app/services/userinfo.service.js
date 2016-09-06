@@ -43,8 +43,12 @@ System.register(['angular2/http', 'angular2/core', './../mock/utils'], function(
                     return this.http.post(utils_1.API_ADDRESS + this.api + "/getconversations", userID, this.options)
                         .map(function (res) { return res.json(); });
                 };
+                UserInfoService.prototype.AddConversation = function (conversation) {
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/addconversation", JSON.stringify(conversation), this.options)
+                        .map(function (res) { return !!res.text(); });
+                };
                 UserInfoService.prototype.GetCities = function (country) {
-                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getcities", country, this.options)
+                    return this.http.post(utils_1.API_ADDRESS + this.api + "/getcities", "\"" + country + "\"", this.options)
                         .map(function (res) { return res.json(); });
                 };
                 UserInfoService.prototype.GetQuestions = function (userID) {
