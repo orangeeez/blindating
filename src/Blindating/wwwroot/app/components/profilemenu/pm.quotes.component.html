@@ -1,0 +1,85 @@
+﻿<div class="container-fluid" id="quotes">
+    <div class="row">
+        <img class="arrow-back" src="../../../images/app/controls/arrow-left-white.svg"
+             (click)="onBackQuotes()">
+        <img class="plus" src="../../../images/app/controls/plus-white.svg"
+             (click)="onAddQuote()">
+        <div class="header">Quotes</div>
+        <div class="quotes-content">
+            <form #quoteForm="ngForm">
+                <blockquote *ngIf="isAddingQuote" class="quote-decoration"
+                            (keyup)="onQuoteKeyup($event, quoteForm.form.valid)">
+                    <p>
+                        <textarea id="quotearea" focus-directive  placeholder="Your quote here"
+                                  name="quotearea"
+                                  required
+                                  minlength="5"
+                                  #quotearea="ngModel"
+                                  [(ngModel)]="content">
+                        </textarea>
+                    </p>
+                    <div *ngIf="quotearea.errors" class="alert alert-danger"
+                         [hidden]="!quotearea.errors.minlength">
+                        Quote must be at least 5 characters long
+                    </div>
+                    <footer>
+                        <input id="quoteauthor" type="text" placeholder="By Author"
+                               name="quoteauthor"
+                               required
+                               minlength="5"
+                               #quoteauthor="ngModel"
+                               [(ngModel)]="author" />
+                        <div *ngIf="quoteauthor.errors" class="alert alert-danger"
+                             [hidden]="!quoteauthor.errors.minlength">
+                            Author must be at least 5 characters long
+                        </div>
+                    </footer>
+                </blockquote>
+            </form>
+            <blockquote *ngFor="let quote of quotes" class="quote-decoration">
+                <div *ngIf="!quote.isEditing">
+                    <p>{{quote.content}}</p>
+                    <i class="up-counter"
+                       (click)="onUpQuote()">{{quote.up}}</i>
+                    <i class="fa fa-thumbs-o-up thumbs-up"></i>
+                    <i class="fa fa-thumbs-o-down thumbs-down"></i>
+                    <i class="down-counter"
+                       (click)="onDownQuote()">{{quote.down}}</i>
+                    <i class="fa fa-pencil pencil"
+                       (click)="onEditQuote(quote)"></i>
+                    <i class="fa fa-trash trash"
+                       (click)="onRemoveQuote(quote)"></i>
+                    <footer>{{quote.author}}</footer>
+                </div>
+                <form #quoteditForm="ngForm" *ngIf="quote.isEditing">
+                    <div (keyup)="onEditQuoteKeyup($event, quoteditForm.form.valid, quote)">
+                        <p>
+                            <textarea id="quoteditarea" focus-directive placeholder="Your quote here"
+                                      name="quoteditarea"
+                                      required
+                                      minlength="5"
+                                      #quoteditarea="ngModel"
+                                      [(ngModel)]="quote.content"></textarea>
+                        </p>
+                        <div *ngIf="quoteditarea.errors" class="alert alert-danger"
+                             [hidden]="!quoteditarea.errors.minlength">
+                            Quote must be at least 5 characters long
+                        </div>
+                        <footer>
+                            <input id="quoteditauthor" type="text" placeholder="By Author"
+                                   name="quoteditauthor"
+                                   required
+                                   minlength="5"
+                                   #quoteditauthor="ngModel"
+                                   [(ngModel)]="quote.author" />
+                            <div *ngIf="quoteditauthor.errors" class="alert alert-danger"
+                                 [hidden]="!quoteditauthor.errors.minlength">
+                                Author must be at least 5 characters long
+                            </div>
+                        </footer>
+                    </div>
+                </form>
+            </blockquote>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+﻿<div *ngIf="app.isHeaderShow">
+    <a class="navbar-brand navbar-right"
+       [class.navbar-active]="isProfileActive"
+       (click)="app.selectDeselectUser(app.user); 
+                isProfileActive = (isProfileActive == false ? true : false);">
+
+        <img *ngIf="app.user" class="avatar-decoration" 
+             [src]="app.user.image || noavatar">
+    </a>
+    <p class="navbar-text navbar-right navbar-text-decoration"
+       routerLink="/dashboard"
+       [class.navbar-active]="isDashboardActive">Dashboard</p>
+
+    <p *ngIf="app.communicationState == 'initiatedCaller' ||
+              app.communicationState == 'initiatedCalling'"
+       routerLink="/talk"
+       class="navbar-text navbar-right navbar-text-decoration"
+       [class.navbar-active]="isDashboardActive">Talk</p>
+</div>

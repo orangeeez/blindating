@@ -1,0 +1,116 @@
+﻿#quotes {
+    margin-top: 40px;
+}
+.quotes-content {
+    margin-top: 30px;
+    margin-bottom: 29px;
+}
+.header {
+    z-index: 1000;
+    position: fixed;
+    left: 70%;
+    right: 0;
+    color: white;
+    text-align: center;
+    background-color: var(--main-aqua-color);
+    height: 30px;
+    line-height: 30px;
+    font-weight: bold;
+}
+.arrow-back {
+    z-index: 1001;
+    position: fixed;
+    top: 100px;
+    left: 70.2%;
+    cursor: pointer;
+}
+.quote-decoration {
+    font-size: 16px;
+    border-left: 1px solid var(--main-aqua-color);
+    border-bottom: 1px solid var(--main-border-color);
+    margin-bottom: 0;
+}
+.quote-decoration textarea {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--main-border-color);
+    resize: none;
+}
+.quote-decoration textarea:focus {
+    border-bottom: 1px solid var(--focus-border-color);
+}
+.quote-decoration input {
+    width: 50%;
+    border: none;
+    border-bottom: 1px solid var(--main-border-color);
+}
+.quote-decoration input:focus {
+    border-bottom: 1px solid var(--focus-border-color);
+}
+.plus {
+    z-index: 1001;
+    position: fixed;
+    top: 100px;
+    right: 10px;
+    cursor: pointer;
+}
+.pencil:hover {
+    cursor: pointer;
+    color: var(--invalid-color);
+}
+.up-counter {
+    position: absolute;
+    right: 95px;
+    color: var(--valid-color);
+    line-height: 1.2;
+}
+.thumbs-up {
+    position: absolute;
+    right: 75px;
+}
+.thumbs-up:hover {
+    cursor: pointer;
+    color: var(--valid-color);
+}
+.thumbs-down {
+    position: absolute;
+    right: 55px;
+}
+.thumbs-down:hover {
+    cursor: pointer;
+    color: var(--invalid-color);
+}
+.down-counter {
+    position: absolute;
+    right: 42px;
+    color: var(--invalid-color);
+    line-height: 1.2;
+}
+.pencil {
+    position: absolute;
+    right: 22px;
+}
+.pencil:hover {
+    cursor: pointer;
+    color: var(--valid-color);
+}
+.trash {
+    position: absolute;
+    right: 5px;
+}
+.trash:hover {
+    cursor: pointer;
+    color: var(--invalid-color);
+}
+form {
+    margin-bottom: 0;
+}
+.alert {
+    padding: 0;
+    padding-left: 5px;
+    width: 82%;
+    font-size: 13px;
+}
+footer .alert {
+    width: 67% !important;
+}

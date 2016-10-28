@@ -1,109 +1,69 @@
 ﻿<html>
-  <head>
-    <base href=""/>
-    <title>Angular 2 QuickStart</title>
+<head>
+    <base href="/">
+    <title>Blindating</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="css/bootstrap.css" rel="stylesheet" />
-    <link href="css/bootstrap-social.css" rel="stylesheet" />
-    <link href="css/font-awesome.css" rel="stylesheet" />
-    <link href="css/croppie.css" rel="stylesheet" />
-    <link href="css/styles.css" rel="stylesheet" />
-    <link href="css/photoswipe/photoswipe.css" rel="stylesheet" />
-    <link href="css/photoswipe/default-skin.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/fontawesome.css">
+    <link rel="stylesheet" href="css/bootstrap-social.css">
+    <link rel="stylesheet" href="libs/photoswipe/dist/photoswipe.css">
+    <link rel="stylesheet" href="libs/photoswipe/dist/default-skin/default-skin.css">
 
-    <script src="libs/system.src.js"></script>
-    <script src="libs/system-polyfills.js"></script>
-    <script src="libs/es6-shim.min.js"></script>
-    <script src="libs/angular2.dev.js"></script>
-    <script src="libs/angular2-polyfills.js"></script>
-    <script src="libs/Rx.js"></script>
-    <script src="libs/router.dev.js"></script>
-    <script src="libs/http.dev.js"></script>
-    <script src="libs/ng2-bootstrap.min.js"></script> 
-    <script src="libs/moment.js"></script>
-    <script src="libs/croppie.min.js"></script>
-    <script src="libs/photoswipe.min.js"></script>
-    <script src="libs/photoswipe-ui-default.min.js"></script>
-    <script src="libs/jquery.min.js"></script>
-    <script src="libs/webrtc/js/utils.js"></script>
-    <script src="libs/webrtc/js/sc.websocket.js"></script>
-    <script src="libs/webrtc/sdk/dependencies/socket.io.js"></script>
-    <script src="libs/webrtc/sdk/woogeen.sdk.js"></script>
-    <script src="libs/webrtc/sdk/adapter.js"></script>
-
+    <!-- 1. Load libraries -->
+    <!-- Polyfill(s) for older browsers -->
+    <script src="libs/core-js/client/shim.min.js"></script>
+    <script src="libs/zone.js/dist/zone.min.js"></script>
+    <script src="libs/reflect-metadata/reflect.js"></script>
+    <script src="libs/systemjs/dist/system.src.js"></script>
+    <script src="libs/ng2-bootstrap/bundles/ng2-bootstrap.min.js"></script>
+    <script src="libs/photoswipe/dist/photoswipe.min.js"></script>
+    <script src="libs/photoswipe/dist/photoswipe-ui-default.min.js"></script>
+    <!-- 2. Configure SystemJS -->
+    <script src="systemjs.config.js"></script>
     <script>
-      System.config({
-        packages: {        
-          app: {
-            format: 'register',
-            defaultExtension: 'js'
-          }
-        },
-          map: {
-              moment: 'libs/moment.js',
-          }
-      });
-      System.import('app/main')
-            .then(null, console.error.bind(console));
+        System.import('app')
+            .catch(function (err) { console.error(err); });
     </script>
-
-  </head>
-
-  <body>
-    <my-app>Loading...</my-app>
-      <!-- Photoswipe -->
-      <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-          <div class="pswp__bg"></div>
-
-          <div class="pswp__scroll-wrap">
-
-              <div class="pswp__container">
-                  <div class="pswp__item"></div>
-                  <div class="pswp__item"></div>
-                  <div class="pswp__item"></div>
-              </div>
-
-              <div class="pswp__ui pswp__ui--hidden">
-
-                  <div class="pswp__top-bar">
-
-                      <div class="pswp__counter"></div>
-
-                      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                      <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                      <div class="pswp__preloader">
-                          <div class="pswp__preloader__icn">
-                              <div class="pswp__preloader__cut">
-                                  <div class="pswp__preloader__donut"></div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-
-                  <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                      <div class="pswp__share-tooltip"></div>
-                  </div>
-
-                  <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
-
-                  <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
-
-                  <div class="pswp__caption">
-                      <div class="pswp__caption__center"></div>
-                  </div>
-
-              </div>
-
-          </div>
-
-      </div>
-  </body>
-
+</head>
+<!-- 3. Display the application -->
+<body>
+    <blindating>Loading...</blindating>
+    <!-- Photoswipe -->
+    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="pswp__bg"></div>
+        <div class="pswp__scroll-wrap">
+            <div class="pswp__container">
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+            </div>
+            <div class="pswp__ui pswp__ui--hidden">
+                <div class="pswp__top-bar">
+                    <div class="pswp__counter"></div>
+                    <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                    <button class="pswp__button pswp__button--share" title="Share"></button>
+                    <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                    <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                    <div class="pswp__preloader">
+                        <div class="pswp__preloader__icn">
+                            <div class="pswp__preloader__cut">
+                                <div class="pswp__preloader__donut"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                    <div class="pswp__share-tooltip"></div>
+                </div>
+                <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+                <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+                <div class="pswp__caption">
+                    <div class="pswp__caption__center"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 </html>

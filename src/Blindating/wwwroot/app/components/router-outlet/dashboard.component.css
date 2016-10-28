@@ -1,0 +1,30 @@
+﻿.profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    text-align: center;
+}
+.profile .avatar-decoration {
+    height: 60px;
+    -webkit-transition: height 500ms;
+    -moz-transition: height 500ms;
+    -o-transition: height 500ms;
+    transition: height 500ms;
+}
+.profile .avatar-decoration:hover {
+    height: 80px;
+    -webkit-transition: height 500ms;
+    -moz-transition: height 500ms;
+    -o-transition: height 500ms;
+    transition: height 500ms;
+}
+.profile .close-size {
+    font-family: monospace;
+    font-size: 30px;
+}
+.online-decoration {
+    position: absolute;
+    top: 0;
+    left: 20px;
+}

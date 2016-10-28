@@ -1,0 +1,112 @@
+﻿<div id="login">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <tabset>
+            <tab *ngFor="let tab of tabs"
+                 [heading]="tab.title"
+                 [active]="tab.active"
+                 (select)="tab.active = true"
+                 (deselect)="tab.active = false"
+                 [disabled]="tab.disabled">
+                <alert *ngIf="alert.show" closable="true"
+                       [type]="alert.type">
+                       {{alert.reason}}
+                </alert>
+                <form *ngIf="tab.title == 'Login'" #loginForm="ngForm">
+                    <label for="email">Email</label>
+                    <input type="text" class="form-control" id="email" placeholder="Email"
+                           [(ngModel)]="email" name="email"
+                           #emailref="ngModel"
+                           required />
+
+                    <div class="alert alert-danger"
+                         [hidden]="emailref.valid || emailref.pristine">
+                         Email is required
+                    </div>
+
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Password"
+                           [(ngModel)]="password" name="password"
+                           #passwordref="ngModel"
+                           required />
+
+                    <div class="alert alert-danger"
+                         [hidden]="passwordref.valid || passwordref.pristine">
+                         Password is required
+                    </div>
+
+                    <button class="btn btn-default"
+                            (click)="Login()"
+                            [disabled]="!loginForm.form.valid">
+                            Login
+                    </button>
+
+                    <div class="social">
+                        <a scope="public_profile,email" class="btn btn-social-icon btn-facebook"
+                           (click)="AuthSocial($event)">
+                            <span class="fa fa-facebook"></span>
+                        </a>
+
+                        <a class="btn btn-social-icon btn-vk"
+                           (click)="AuthSocial($event)">
+                            <span class="fa fa-vk"></span>
+                        </a>
+                    </div>
+                </form>
+
+                <form *ngIf="tab.title == 'Register'" #registerForm="ngForm">
+                    <label for="firstname">First name</label>
+                    <input type="text" class="form-control" id="firstname" placeholder="First name"
+                           [(ngModel)]="firstname" name="firstname"
+                           #firstnameref="ngModel"
+                           required />
+
+                    <div class="alert alert-danger"
+                         [hidden]="firstnameref.valid || firstnameref.pristine">
+                         First name is required
+                    </div>
+
+                    <label for="lastname">Last name</label>
+                    <input type="text" class="form-control" id="lastname" placeholder="Last name"
+                           [(ngModel)]="lastname" name="lastname"
+                           #lastnameref="ngModel"
+                           required />
+
+                    <div class="alert alert-danger"
+                         [hidden]="lastnameref.valid || lastnameref.pristine">
+                         Lastname is required
+                    </div>
+
+                    <label for="email">Email</label>
+                    <input type="text" class="form-control" id="email" placeholder="Email"
+                           [(ngModel)]="email" name="email"
+                           #emailref="ngModel"
+                           required />
+
+                    <div class="alert alert-danger"
+                         [hidden]="emailref.valid || emailref.pristine">
+                        Email is required
+                    </div>
+
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Password"
+                           [(ngModel)]="password" name="password"
+                           #passwordref="ngModel"
+                           required />
+
+                    <div class="alert alert-danger"
+                         [hidden]="passwordref.valid || passwordref.pristine">
+                        Password is required
+                    </div>
+
+                    <button class="btn btn-default"
+                            (click)="Register()"
+                            [disabled]="!registerForm.form.valid">
+                            Register
+                    </button>
+                </form>
+            </tab>
+        </tabset>
+    </div>
+    <div class="col-md-3"></div>
+</div>

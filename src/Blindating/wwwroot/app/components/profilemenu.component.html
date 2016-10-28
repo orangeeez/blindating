@@ -1,0 +1,17 @@
+﻿<div *ngIf="state == 'selected'" id="profile">
+    <div class="col-md-12">
+        <i class="fa fa-power-off fa-lg power-off"></i>
+        <tabset>
+            <tab *ngFor="let tab of tabs"
+                 [heading]="tab.title"
+                 [active]="tab.active"
+                 (select)="tab.active = true"
+                 (deselect)="tab.active = false"
+                 [disabled]="tab.disabled">
+                <pm-basic-component *ngIf="tab.title == 'Basic'"
+                                    [app]="app">
+                </pm-basic-component>
+            </tab>
+        </tabset>
+    </div>
+</div>

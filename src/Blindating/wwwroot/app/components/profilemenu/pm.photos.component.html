@@ -1,0 +1,49 @@
+﻿<div class="container-fluid" id="photos">
+    <div class="row">
+        <img class="arrow-back" src="../../../images/app/controls/arrow-left-white.svg"
+             (click)="onBackPhotos()">
+        <div class="plus"
+             [style.background]="uploader.queue.length ? checkmark : plus"
+             (click)="uploader.queue.length ? onUploadAll($event) : return">
+            <input type="file" 
+                   ng2FileSelect 
+                   multiple 
+                   #upload
+                   [uploader]="uploader" 
+                   (change)="onChangeUpload(upload)"
+                   (click)="upload.value = null" />
+        </div>
+        <div class="header">Photos</div>   
+        <div class="col-md-12 photos-content">
+            <div *ngFor="let item of uploader.queue; let i = index" class="col-md-3 col">
+                <img [src]="previews[i]">
+
+                <i class="fa fa-upload fa-2x upload"
+                   (click)="onUpload(item, i)"
+                   (mouseover)="closeupload.style.opacity = 1"
+                   (mouseout)="closeupload.style.opacity = 0"></i>
+
+                <i #closeupload class="fa fa-times close"
+                   (click)="onRemoveUpload(item, i)"
+                   (mouseover)="closeupload.style.opacity = 1"
+                   (mouseout)="closeupload.style.opacity = 0"></i>
+
+                <progressbar *ngIf="!item.isUploaded"
+                             [value]="item.progress"></progressbar>
+            </div>
+            <div *ngFor="let photo of photos; let i = index" class="col-md-3 col">
+                <img [src]="photo.path" />
+
+                <i class="fa fa-search-plus fa-2x"
+                   (click)="app.openGallery(photos, i)"
+                   (mouseover)="close.style.opacity = 1"
+                   (mouseout)="close.style.opacity = 0"></i>
+
+                <i #close class="fa fa-times close"
+                   (click)="onRemovePhoto(photo)"
+                   (mouseover)="close.style.opacity = 1"
+                   (mouseout)="close.style.opacity = 0"></i>
+            </div>
+        </div>
+    </div>
+</div>

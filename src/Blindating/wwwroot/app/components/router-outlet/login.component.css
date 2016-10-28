@@ -1,0 +1,16 @@
+﻿input {
+    margin-bottom: 5px;
+}
+label {
+     margin-bottom: 0;
+ }
+.form-control:focus {
+    box-shadow: none;
+    outline: none;
+}
+.alert {
+    padding: 5px;
+}
+.social {
+    float: right;
+}

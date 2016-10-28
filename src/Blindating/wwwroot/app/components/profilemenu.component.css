@@ -1,0 +1,13 @@
+﻿#profile {
+    margin-top: 72px;
+}
+.col-md-12 {
+    padding: 0;
+}
+.power-off {
+    z-index: 1001;
+    position: fixed;
+    top: 67px;
+    right: 10px;
+    cursor: pointer;
+}

@@ -1,0 +1,25 @@
+﻿<nav id="navbar-top" class="navbar navbar-default navbar-fixed-top">
+    <div id="header" class="container-fluid">
+        <header-component [app]="this"></header-component>
+    </div>
+</nav>
+<div id="board" class="container-fluid">
+    <div class="row">
+        <div id="helper" class="col-md-1">
+            <helper-component></helper-component>
+        </div>
+        <div id="router-outlet" class="col-md-10">
+            <router-outlet></router-outlet>
+        </div>
+        <div id="profilemenu" class="col-md-1"
+             [@profilemenuState]="_profilemenu.state">
+            <profilemenu-component
+                                   [app]="this"></profilemenu-component>
+        </div>
+    </div>
+</div>
+<nav id="navbar-bottom" class="navbar navbar-default navbar-fixed-bottom">
+    <div id="footer" class="container-fluid">
+        <footer-component></footer-component>
+    </div>
+</nav>

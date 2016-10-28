@@ -1,0 +1,196 @@
+﻿#basic {
+    margin-top: 40px;
+}
+.avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    text-align: center;
+}
+.avatar-decoration {
+    height: 150px;
+    width: 150px;
+    margin-top: 15px;
+    object-fit: cover;
+}
+.avatar-hover-decoration {
+    left: 50%;
+    transform: translate(-50%, 0);
+    position: absolute;
+    width: 150px;    
+    height: 150px;
+    margin-top: 7px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.5);
+    opacity: 0;
+    line-height: 150px;
+    color: white;
+}
+@-moz-document url-prefix() {
+    .avatar-hover-decoration {
+        margin-top: -68px !important;
+    }
+}
+.avatar-hover-decoration:hover {
+    opacity: 1;
+    -webkit-transition: opacity 500ms;
+    -moz-transition: opacity 500ms;
+    -o-transition: opacity 500ms;
+    transition: opacity 500ms;
+}
+.avatar-hover-decoration input[type=file] {
+    position: absolute;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    width: inherit;
+    height: inherit;
+    cursor: pointer;
+}
+.name-decoration {
+    font-size: 22px;
+    border-color: transparent;
+    border-bottom: 1px solid #e7e7e7;
+    margin-top: 10px;
+    padding-left: 10px;
+}
+.name-decoration:focus {
+    border-bottom-color: #808080;
+}
+.row.social {
+    margin-top: 5px;
+}
+.row.social input {
+    width: 100%;
+    line-height: 1.3;
+    border: none;
+    padding: 0;
+}
+.row:not(.social):not(.talk-decoration) {
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--main-border-color);
+}
+.row blockquote {
+    margin-bottom: 0;
+    font-size: 16px;
+    border-left: 1px solid var(--main-aqua-color);
+}
+.header {
+    width: 100%;
+    height: 24px;
+    font-size: 16px;
+    font-weight: bold;
+    padding-left: 5px;
+    color: white;
+    background: linear-gradient(135deg, var(--main-aqua-color), white 60%);
+    cursor: pointer;
+    line-height: 1.4;
+}
+.dropdown input {
+    font-size: 15px;
+    font-weight: bold;
+    border-color: transparent;
+    border-bottom: 1px solid var(--main-border-color);
+}
+.dropdown input:focus {
+    border-bottom: 1px solid var(--focus-border-color);
+}
+.question-decoration {
+    font-size: 16px;
+    padding-bottom: 5px;
+}
+.question-content-decoration {
+    display: flex;
+    padding-top: 15px;
+}
+.photos-content {
+    padding: 0;
+    padding-right: 1px;
+    padding-top: 1px;
+    max-height: 100px;
+    min-height: 100px;
+    max-width: 100px;
+    min-width: 100px;
+}
+.photos-content img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.photos-content img:hover {
+    cursor: pointer;
+}
+.photos-content .fa {
+    color: white;
+    line-height: 3.5;
+    text-align: center;
+}
+.photos-content i {
+    z-index: 1000;
+    position: absolute;
+    background: rgba(0,0,0,0.5);
+    opacity: 0;
+    top: 0;
+    left: 0;
+    width: 99%;
+    height: 100%;
+}
+.photos-content i:hover {
+    opacity: 1;
+    -webkit-transition: opacity 500ms;
+    -moz-transition: opacity 500ms;
+    -o-transition: opacity 500ms;
+    transition: opacity 500ms;
+    cursor: pointer;
+ }
+.arrow-right-decoration {
+    color: #333;
+    position: absolute;
+    right: 10px;
+    transform: translate(0%, 30%);
+    cursor: pointer;
+}
+.quote-decoration {
+    display: flex;
+    padding-bottom: 0 !important;
+}
+.add-quote-decoration {
+    cursor: pointer;
+    background: linear-gradient(-90deg, var(--main-aqua-color), white 90%);
+    opacity: 1;
+}
+.add-quote-decoration img {
+    position: absolute;
+    right: 5px;
+    top: 40%
+}
+.question-yesno {
+    text-align: center;
+}
+.question-yesno i {
+    cursor: pointer;
+}
+.question-yesno .fa-check-circle-o {
+    color: var(--valid-color);
+}
+.question-yesno .fa-times-circle-o {
+    color: var(--invalid-color);
+}
+.no-content-decoration {
+    height: 100px;
+    line-height: 100px;
+    color: var(--main-border-color);
+    background-color: var(--link-color);
+    text-align: center;
+    font-size: 20px;
+    font-weight: bolder;
+    cursor: pointer;
+}
+.talk-decoration {
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}

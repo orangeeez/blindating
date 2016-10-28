@@ -1,0 +1,16 @@
+﻿<div id="dashboard">
+    <div class="container-fluid">
+        <div class="row">
+            <div *ngFor="let user of app.users" class="col-md-1 profile"
+                 (click)="app.selectDeselectUser(user)">
+                <div>
+                    <img [src]="user.image || noavatar" class="img-circle avatar-decoration" />
+                    <div>{{user.firstname}}</div>
+                    <div>{{user.lastname}}</div>
+                    <img src="../../../images/app/controls/online.png" class="online-decoration"
+                         [hidden]="!user.online" />
+                </div>
+            </div>
+        </div>     
+    </div>
+</div>

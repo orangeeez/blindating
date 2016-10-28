@@ -1,62 +1,52 @@
-﻿using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Hosting;
-using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ASPAngular2Test.Models;
-using Microsoft.Data.Entity;
+using Blindating.Models;
+using Microsoft.EntityFrameworkCore;
+using Blindating.Models.Interfaces;
+using Blindating.Models.Repositories;
+using NetCoreAngular2.Models;
 
-namespace ASPAngular2Test
+namespace Blindating
 {
     public class Startup
     {
-        public IConfigurationRoot Configuration { get; set; }
-
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
-
-            if (env.IsEnvironment("Development"))
-                builder.AddApplicationInsightsSettings(developerMode: true);
-
             Configuration = builder.Build();
         }
-
+        public IConfigurationRoot Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApplicationInsightsTelemetry(Configuration);
+            services.AddDbContext<AppDBContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddSingleton<IUserRepository, UserRepository>();
-            services.AddSingleton<IOnelineUserRepository, UserRepository>();
-            services.AddSingleton<IUtilsRepository, UserRepository>();
-            services.AddSingleton<IDetailsRepository, DetailsRepository>();
-            services.AddCors();
+            services.AddSingleton<IQuoteRepository, QuoteRepository>();
+            services.AddSingleton<IPreferenceRepository, PreferenceRepository>();
+            services.AddSingleton<IQuestionRepository, QuestionRepository>();
+            services.AddSingleton<IPhotoRepository, PhotoRepository>();
             services.AddMvc();
-            services.AddEntityFramework()
-                .AddSqlServer()
-                .AddDbContext<AppDBContext>(options =>
-                    options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"] + "MultipleActiveResultSets=True"));
         }
-
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, AppDBContext _context)
         {
+            //DbInitializer.Initialize(_context);
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseApplicationInsightsRequestTelemetry();
-            app.UseApplicationInsightsExceptionTelemetry();
-
-            app.UseIISPlatformHandler();
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            app.UseCors(builder => builder
-                                   .AllowAnyHeader()
-                                   .AllowAnyMethod()
-                                   .AllowAnyOrigin());
             app.UseMvc();
         }
-
-        public static void Main(string[] args) => WebApplication.Run<Startup>(args);
     }
 }

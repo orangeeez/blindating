@@ -1,163 +1,50 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using Microsoft.AspNet.Mvc;
-using ASPAngular2Test.Models;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Blindating.Models;
+using Blindating.Models.Tables;
+using Blindating.Models.Interfaces;
+using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json.Linq;
 
-namespace ASPAngular2Test.Controllers
+namespace Blindating.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]/[action]")]
     public class UserController : Controller
     {
-        [FromServices]
         public IUserRepository Users { get; set; }
-        [FromServices]
-        public IOnelineUserRepository OnlineUsers { get; set; }
-        [FromServices]
-        public IUtilsRepository Utils { get; set; }
-
-        #region IUserRepository
-        [HttpPost]
-        [ActionName("login")]
-        public User Login([FromBody] User user)
+        public UserController([FromServices] IUserRepository users)
         {
-            return Users.Login(user);
-        }
-
-        [HttpPost]
-        [ActionName("register")]
-        public string Register([FromBody] User user)
-        {
-            return Users.Register(user);
-        }
-
-        [HttpPost]
-        [ActionName("isexistjwt")]
-        public bool IsExistJWT([FromBody] string jwt)
-        {
-            return Users.IsExistJWT(jwt);
-        }
-
-        [HttpPost]
-        [ActionName("isexistemail")]
-        public bool IsExistEmail([FromBody] string email)
-        {
-            return Users.IsExistEmail(email);
-        }
-
-        [HttpPost]
-        [ActionName("getuser")]
-        public User GetUser([FromBody] UserUtils.FindUser find)
-        {
-            return Users.GetUser(find);
-        }
-        [HttpPost]
-        [ActionName("getusers")]
-        public List<User> GetUsers([FromBody] string jwt)
-        {
-            return Users.GetUsers(jwt);
-        }
-        #endregion
-
-        #region IOnlineUserRepository
-        [HttpPost]
-        [ActionName("deleteonlineuser")]
-        public bool DeleteOnlineUser([FromBody] int userID)
-        {
-            return OnlineUsers.DeleteOnlineUser(userID);
+            Users = users;
         }
         [HttpGet]
-        [ActionName("getonlineusers")]
-        public List<User> GetOnlineUsers()
+        [ActionName("getall")]
+        public JsonResult GetAll()
         {
-            return OnlineUsers.GetOnlineUsers();
-        }
-        #endregion
-
-        #region Utils
-        [HttpPost]
-        [ActionName("getvkinfo")]
-        public string GetVKInfo([FromBody] string code)
-        {
-            return Utils.GetVKInfo(code);
+            return new JsonResult(Users.GetAll());
         }
         [HttpPost]
-        [ActionName("getrandomquote")]
-        public UserUtils.Quote GetRandomQuote([FromBody] int userID)
+        [ActionName("update")]
+        public JsonResult Update([FromBody] User user)
         {
-            return Utils.GetRandomQuote(userID);
+            return new JsonResult(Users.Update(user));
         }
         [HttpPost]
-        [ActionName("addnewquote")]
-        public void AddNewQoute([FromBody] UserUtils.Quote quote)
+        [ActionName("register")]
+        public JsonResult Register([FromBody] User user)
         {
-            Utils.AddNewQuote(quote);
+            return new JsonResult(Users.Register(user));
         }
         [HttpPost]
-        [ActionName("getphotos")]
-        public List<UserUtils.Photo> GetPhotos([FromBody] int userID)
+        [ActionName("login")]
+        public JsonResult Login([FromBody] dynamic auth)
         {
-            return Utils.GetPhotos(userID);
+            return new JsonResult(Users.Login(auth));
         }
-        [HttpPost]
-        [ActionName("getconversations")]
-        public List<UserUtils.Conversation> GetConversations([FromBody] int userID)
-        {
-            return Utils.GetConversations(userID);
-        }
-        [HttpPost]
-        [ActionName("getcities")]
-        public List<string> GetCities([FromBody] string country)
-        {
-            return Utils.GetCities(country);
-        }
-        [HttpPost]
-        [ActionName("getquestions")]
-        public List<UserUtils.Question> GetQuestions([FromBody] int userID)
-        {
-            return Utils.GetQuestions(userID);
-        }
-        [HttpPost]
-        [ActionName("getpreferences")]
-        public UserUtils.Preference GetPreferences([FromBody] int userID)
-        {
-            return Utils.GetPreferences(userID);
-        }
-        [HttpPost]
-        [ActionName("setpreference")]
-        public bool SetPreference([FromBody] UserUtils.PreferenceUser preference)
-        {
-            return Utils.SetPreference(preference);
-        }
-        [HttpPost]
-        [ActionName("setanswer")]
-        public bool SetAnswer([FromBody] UserUtils.Answer answer)
-        {
-            return Utils.SetAnswer(answer);
-        }
-        [HttpPost]
-        [ActionName("getnotifications")]
-        public List<string> GetNotifications([FromBody] int userID)
-        {
-            return Utils.GetNotifications(userID);
-        }
-        [HttpPost]
-        [ActionName("addconversation")]
-        public bool AddConversation([FromBody] UserUtils.Conversation conversation)
-        {
-            return Utils.AddConversation(conversation);
-        }
-        [HttpPost]
-        [ActionName("getanswernotification")]
-        public dynamic GetAnswer([FromBody] int answerID)
-        {
-            return Utils.GetAnswerNotification(answerID);
-        }
-        [HttpPost]
-        [ActionName("updatenotifications")]
-        public dynamic UpdateNotifications([FromBody] List<UserUtils.Notification> updateNotifications)
-        {
-            return Utils.UpdateNotifications(updateNotifications);
-        }
-        #endregion
     }
 }

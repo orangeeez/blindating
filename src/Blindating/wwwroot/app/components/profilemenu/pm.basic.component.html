@@ -1,0 +1,271 @@
+﻿<div *ngIf="!isOpenQuotes    &&
+            !isOpenQuestions && 
+            !isOpenPhotos" class="container-fluid" id="basic">
+    <div class="row">
+        <div class="col-md-5 avatar">
+            <span class="avatar-hover-decoration">
+                <input type="file"
+                       ng2FileSelect
+                       #upload
+                       [uploader]="uploader"
+                       (click)="upload.value = null" />
+                <span>Change photo</span>
+            </span>
+            <img class="img-circle avatar-decoration"
+                 [src]="app.selectedUser.image || noavatar" />
+        </div>
+        <div class="col-md-7">
+            <input type="text" id="firstname" class="name-decoration"
+                   [(ngModel)]="app.selectedUser.firstname"
+                   (focusout)="onFocusoutName()" />
+            <input type="text" id="lastname" class="name-decoration"
+                   [(ngModel)]="app.selectedUser.lastname"
+                   (focusout)="onFocusoutName()" />
+            <div class="row social">
+                <div class="col-md-2">
+                    <div style="padding-top: 2px;"><i class="fa fa-vk"></i></div>
+                    <div style="padding-top: 3px;"><i class="fa fa-twitter"></i></div>
+                    <div style="padding-top: 4px;"><i class="fa fa-google"></i></div>
+                    <div style="padding-top: 5px;"><i class="fa fa-facebook"></i></div>
+                </div>
+                <div class="col-md-10">
+                    <input placeholder="vk.com/example"
+                           [type]="'text'" 
+                           [(ngModel)]="preferences.vkontakte"
+                           (focusout)="onFocusoutPreference()" />
+                    <input placeholder="facebook.com/example"
+                           [type]="'text'" 
+                           [(ngModel)]="preferences.facebook"
+                           (focusout)="onFocusoutPreference()" />
+                    <input placeholder="twitter.com/example"
+                           [type]="'text'" 
+                           [(ngModel)]="preferences.twitter"
+                           (focusout)="onFocusoutPreference()" />
+                    <input placeholder="plus.google.com/example"
+                           [type]="'text'" 
+                           [(ngModel)]="preferences.google"
+                           (focusout)="onFocusoutPreference()" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row quote-decoration"
+         (mouseover)="onHeaderMouseoverout('quotes', true)"
+         (mouseout)="onHeaderMouseoverout('quotes', false)">
+        <div class="col-md-10 no-padding">
+            <blockquote style="padding-right: 0">
+                <p>{{quotes[0]?.content || defaultQuote}}</p>
+                <footer>{{quotes[0]?.author || defaultAuthor}}</footer>
+            </blockquote>
+        </div>
+        <div class="col-md-2 no-padding add-quote-decoration"
+             [hidden]="!isQuotesArrowShow"
+             (click)="onOpenQuotes()">
+            <img *ngIf="quotes[0]"  src="../../../images/app/controls/arrow-right-white.svg" />
+            <img *ngIf="!quotes[0]" src="../../../images/app/controls/plus-white.svg" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="header">Blind with</div>
+        <div class="col-md-1">
+            <div style="padding-top: 11px;"><i class="fa fa-angle-right"></i></div>
+            <div style="padding-top: 11px;"><i class="fa fa-angle-right"></i></div>
+            <div style="padding-top: 11px;"><i class="fa fa-angle-right"></i></div>
+        </div>
+        <div class="col-md-5">
+            <div class="blind-dropdowns">
+                <div>
+                    <span dropdown class="dropdown">
+                        <input dropdownToggle size="6" placeholder="Gender" readonly 
+                               [value]="preferences.gender"
+                               [size]="preferences.gender?.length || 6"/>
+                        <ul class="dropdown-menu" dropdownMenu>
+                            <li *ngFor="let gender of genders">
+                                <a id="gender" class="dropdown-item"
+                                   (click)="onSelectPreference($event)">{{gender}}</a>
+                            </li>
+                        </ul>
+                    </span>
+                </div>
+                <div>
+                    <span dropdown class="dropdown">
+                        <span>Aged</span>
+                        <input dropdownToggle size="4" placeholder="From" readonly 
+                               [value]="preferences.from"
+                               [size]="preferences.from?.length || 4" />
+                        <ul class="dropdown-menu" dropdownMenu>
+                            <li *ngFor="let age of ages">
+                                <a id="age-from" class="dropdown-item"
+                                   (click)="onSelectPreference($event)">{{age}}</a>
+                            </li>
+                        </ul>
+                    </span>
+                    <span> to </span>
+                    <span dropdown class="dropdown">
+                        <input dropdownToggle size="2" placeholder="To" readonly 
+                               [value]="preferences.to"
+                               [size]="preferences.to?.length || 2" />
+                        <ul class="dropdown-menu" dropdownMenu>
+                            <li *ngFor="let age of ages">
+                                <a id="age-to" class="dropdown-item"
+                                   (click)="onSelectPreference($event)">{{age}}</a>
+                            </li>
+                        </ul>
+                    </span>
+                </div>
+                <div>
+                    <span dropdown class="dropdown">
+                        <span>In</span>
+                        <input id="country-dropdown" dropdownToggle size="7" placeholder="Country"
+                               [(ngModel)]="preferences.country"
+                               [size]="preferences.country?.length || 7"
+                               (keyup)="onInputDropdown($event)" />
+                        <ul class="dropdown-menu" dropdownMenu>
+                            <li *ngFor="let country of countries">
+                                <a id="country" class="dropdown-item"
+                                   (click)="onSelectPreference($event)">{{country}}</a>
+                            </li>
+                        </ul>
+                    </span>
+                    <span dropdown class="dropdown">
+                        <input id="city-dropdown" dropdownToggle size="4" placeholder="City"
+                               [(ngModel)]="preferences.city"
+                               [size]="preferences.city?.length || 4"
+                               (keyup)="onInputDropdown($event)" />
+                        <ul class="dropdown-menu" dropdownMenu>
+                            <li *ngFor="let city of cities">
+                                <a id="city" class="dropdown-item"
+                                   (click)="onSelectPreference($event)">{{city}}</a>
+                            </li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div style="padding-top: 11px;"><i class="fa fa-angle-right"></i></div>
+            <div style="padding-top: 11px;"><i class="fa fa-angle-right"></i></div>
+            <div style="padding-top: 11px;"><i class="fa fa-angle-right"></i></div>
+        </div>
+        <div class="col-md-5">
+            <div class="blind-dropdowns" style="margin-top: 1px;">
+                <div>
+                    <span dropdown class="dropdown">
+                        <span>With</span>
+                        <input dropdownToggle size="10" placeholder="Hair color" readonly
+                               [value]="preferences.hcolor"
+                               [size]="preferences.hcolor?.length || 10" />
+                        <ul class="dropdown-menu" dropdownMenu>
+                            <li *ngFor="let hcolor of hcolors">
+                                <a id="hcolor" class="dropdown-item"
+                                   (click)="onSelectPreference($event)">{{hcolor}}</a>
+                            </li>
+                        </ul>
+                    </span>
+                    <span [hidden]="!preferences.hcolor">hair</span>
+                </div>
+                <div>
+                    <span dropdown class="dropdown">
+                        <input dropdownToggle size="9" placeholder="Eye color" readonly
+                               [value]="preferences.ecolor"
+                               [size]="preferences.ecolor?.length || 9" />
+                        <ul class="dropdown-menu" dropdownMenu>
+                            <li *ngFor="let ecolor of ecolors">
+                                <a id="ecolor" class="dropdown-item"
+                                   (click)="onSelectPreference($event)">{{ecolor}}</a>
+                            </li>
+                        </ul>
+                    </span>
+                    <span [hidden]="!preferences.ecolor">eyes</span>
+                </div>
+                <div>
+                    <span dropdown class="dropdown">
+                        <span>Who likes</span>
+                        <input dropdownToggle size="5" placeholder="Hobby" readonly
+                               #hobbyinput
+                               [(ngModel)]="preferences.hobby"
+                               [size]="preferences.hobby?.length || 5"
+                               (focusout)="onFocusoutPreference()" />
+                        <ul class="dropdown-menu" dropdownMenu>
+                            <li *ngFor="let hobby of hobbies">
+                                <a id="hobby" class="dropdown-item"
+                                   (click)="onSelectPreference($event, hobbyinput)">{{hobby}}</a>
+                            </li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="header"
+             (mouseover)="onHeaderMouseoverout('questions', true)"
+             (mouseout)="onHeaderMouseoverout('questions', false)"
+             (click)="onOpenQuestions()">
+            Question is
+            <img class="arrow-right-decoration" src="../../../images/app/controls/arrow-right.svg"
+                 [hidden]="!isQuestionsArrowShow"
+                 (mouseover)="onHeaderMouseoverout('questions', true)"
+                 (mouseout)="onHeaderMouseoverout('questions', false)" />
+        </div>
+        <div class="question-content-decoration">
+            <div class="col-md-12 question-decoration">{{questions[0]?.message || defaultQuestion}}</div>
+        </div>
+        <div class="col-md-6 question-yesno no-padding">
+            <i class="fa fa-check-circle-o fa-2x"></i>
+        </div>
+        <div class="col-md-6 question-yesno no-padding">
+            <i class="fa fa-times-circle-o fa-2x"></i>
+        </div>
+    </div>
+    <div class="row no-padding">
+        <div class="header"
+             (mouseover)="onHeaderMouseoverout('photos', true)"
+             (mouseout)="onHeaderMouseoverout('photos', false)"
+             (click)="onOpenPhotos()">
+            Photos
+            <img class="arrow-right-decoration" src="../../../images/app/controls/arrow-right.svg"
+                 [hidden]="!isPhotosArrowShow"
+                 (mouseover)="onHeaderMouseoverout('photos', true)"
+                 (mouseout)="onHeaderMouseoverout('photos', false)" />
+        </div>
+        <div *ngIf="photos.length == 0" class="col-md-12 no-content-decoration">
+            <div>No Photos</div>
+        </div>
+        <div *ngIf="photos.length != 0">
+            <div *ngFor="let photo of photos | slice: 4; let i = index" class="col-md-3 photos-content">
+                <img [src]="photo.path"/>
+                <i class="fa fa-search-plus fa-2x search-plus"
+                   (click)="app.openGallery(photos, i)"></i>
+            </div>
+        </div>
+    </div>
+    <div class="row talk-decoration">
+        <div class="header"
+             (mouseover)="onHeaderMouseoverout('talks', true)"
+             (mouseout)="onHeaderMouseoverout('talks', false)">
+            Talks
+            <img class="arrow-right-decoration" src="../../../images/app/controls/arrow-right.svg"
+                 [hidden]="!isTalksArrowShow"
+                 (mouseover)="onHeaderMouseoverout('talks', true)"
+                 (mouseout)="onHeaderMouseoverout('talks', false)" />
+        </div>
+        <div class="col-md-12 no-content-decoration">
+            <div>No Talks</div>
+        </div>
+    </div>
+</div>
+<pm-quotes-component *ngIf="isOpenQuotes"
+                     [app]="app"
+                     [quotes]="quotes"
+                     (onBack)="onBackQuotes()"></pm-quotes-component>
+
+<pm-questions-component *ngIf="isOpenQuestions"
+                        [app]="app"
+                        [questions]="questions"
+                        (onBack)="onBackQuestions()"></pm-questions-component>
+
+<pm-photos-component *ngIf="isOpenPhotos"
+                     [app]="app"
+                     [photos]="photos"
+                     (onBack)="onBackPhotos()"></pm-photos-component>

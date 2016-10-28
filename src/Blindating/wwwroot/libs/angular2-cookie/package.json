@@ -1,0 +1,94 @@
+{
+  "_args": [
+    [
+      "angular2-cookie@^1.2.4",
+      "E:\\Development\\C#\\ASP.NET\\Blindating\\src\\Blindating"
+    ]
+  ],
+  "_from": "angular2-cookie@>=1.2.4-0 <2.0.0-0",
+  "_id": "angular2-cookie@1.2.4",
+  "_inCache": true,
+  "_location": "/angular2-cookie",
+  "_nodeVersion": "6.2.0",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/angular2-cookie-1.2.4.tgz_1474539129525_0.6129788714461029"
+  },
+  "_npmUser": {
+    "email": "sa.alemdar@hotmail.com",
+    "name": "sa.alemdar"
+  },
+  "_npmVersion": "3.8.9",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "angular2-cookie",
+    "raw": "angular2-cookie@^1.2.4",
+    "rawSpec": "^1.2.4",
+    "scope": null,
+    "spec": ">=1.2.4-0 <2.0.0-0",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/angular2-cookie/-/angular2-cookie-1.2.4.tgz",
+  "_shasum": "2ddc0b93a23700af7b043a59cf12547a742eb739",
+  "_shrinkwrap": null,
+  "_spec": "angular2-cookie@^1.2.4",
+  "_where": "E:\\Development\\C#\\ASP.NET\\Blindating\\src\\Blindating",
+  "author": {
+    "email": "sa.alemdar@hotmail.com",
+    "name": "Samet Alemdar"
+  },
+  "bugs": {
+    "url": "https://github.com/salemdar/angular2-cookie/issues"
+  },
+  "dependencies": {
+    "@angular/common": "^2.0.0",
+    "@angular/compiler": "^2.0.0",
+    "@angular/core": "^2.0.0",
+    "@angular/platform-browser": "^2.0.0",
+    "core-js": "^2.4.0",
+    "reflect-metadata": "^0.1.8",
+    "rxjs": "5.0.0-beta.12",
+    "zone.js": "^0.6.23"
+  },
+  "description": "Implementation of Angular 1.x $cookies service to Angular 2",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "2ddc0b93a23700af7b043a59cf12547a742eb739",
+    "tarball": "https://registry.npmjs.org/angular2-cookie/-/angular2-cookie-1.2.4.tgz"
+  },
+  "engines": {
+    "node": ">=5.0.0"
+  },
+  "homepage": "https://github.com/salemdar/angular2-cookie#readme",
+  "installable": true,
+  "keywords": [
+    "angular",
+    "angular2",
+    "angular2-cookie",
+    "angular2-cookies",
+    "cookie",
+    "cookies",
+    "ng2",
+    "ng2-cookie",
+    "ng2-cookies"
+  ],
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "sa.alemdar",
+      "email": "sa.alemdar@hotmail.com"
+    }
+  ],
+  "name": "angular2-cookie",
+  "optionalDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/salemdar/angular2-cookie.git"
+  },
+  "scripts": {},
+  "version": "1.2.4"
+}

@@ -1,3 +1,4 @@
+
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -27,34 +28,16 @@ export interface BrowserNodeGlobal {
     encodeURI: Function;
 }
 export declare function scheduleMicroTask(fn: Function): void;
-export declare const IS_DART: boolean;
 declare var _global: BrowserNodeGlobal;
 export { _global as global };
-/**
- * Runtime representation a type that a Component or other object is instances of.
- *
- * An example of a `Type` is `MyCustomComponent` class, which in JavaScript is be represented by
- * the `MyCustomComponent` constructor function.
- *
- * @stable
- */
-export declare var Type: FunctionConstructor;
-export interface Type extends Function {
-}
-/**
- * Runtime representation of a type that is constructable (non-abstract).
- */
-export interface ConcreteType<T> extends Type {
-    new (...args: any[]): T;
-}
-export declare function getTypeNameForDebugging(type: Type): string;
+export declare function getTypeNameForDebugging(type: any): string;
 export declare var Math: any;
 export declare var Date: DateConstructor;
 export declare function isPresent(obj: any): boolean;
 export declare function isBlank(obj: any): boolean;
 export declare function isBoolean(obj: any): boolean;
 export declare function isNumber(obj: any): boolean;
-export declare function isString(obj: any): obj is String;
+export declare function isString(obj: any): obj is string;
 export declare function isFunction(obj: any): boolean;
 export declare function isType(obj: any): boolean;
 export declare function isStringMap(obj: any): obj is Object;
@@ -87,40 +70,17 @@ export declare class StringJoiner {
     add(part: string): void;
     toString(): string;
 }
-export declare class NumberParseError extends Error {
-    message: string;
-    name: string;
-    constructor(message: string);
-    toString(): string;
-}
 export declare class NumberWrapper {
     static toFixed(n: number, fractionDigits: number): string;
     static equal(a: number, b: number): boolean;
     static parseIntAutoRadix(text: string): number;
     static parseInt(text: string, radix: number): number;
-    static parseFloat(text: string): number;
     static NaN: number;
     static isNumeric(value: any): boolean;
     static isNaN(value: any): boolean;
     static isInteger(value: any): boolean;
 }
 export declare var RegExp: RegExpConstructor;
-export declare class RegExpWrapper {
-    static create(regExpStr: string, flags?: string): RegExp;
-    static firstMatch(regExp: RegExp, input: string): RegExpExecArray;
-    static test(regExp: RegExp, input: string): boolean;
-    static matcher(regExp: RegExp, input: string): {
-        re: RegExp;
-        input: string;
-    };
-    static replaceAll(regExp: RegExp, input: string, replace: Function): string;
-}
-export declare class RegExpMatcherWrapper {
-    static next(matcher: {
-        re: RegExp;
-        input: string;
-    }): RegExpExecArray;
-}
 export declare class FunctionWrapper {
     static apply(fn: Function, posArgs: any): any;
     static bind(fn: Function, scope: any): Function;
@@ -150,6 +110,6 @@ export declare function evalExpression(sourceUrl: string, expr: string, declarat
     [key: string]: any;
 }): any;
 export declare function isPrimitive(obj: any): boolean;
-export declare function hasConstructor(value: Object, type: Type): boolean;
+export declare function hasConstructor(value: Object, type: any): boolean;
 export declare function escape(s: string): string;
 export declare function escapeRegExp(s: string): string;

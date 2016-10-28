@@ -1,0 +1,26 @@
+﻿.navbar-brand {
+    padding: 0 10px;
+    height: 51px;
+    cursor: pointer;
+}
+.navbar-brand:hover {
+    background-color: #f7f7f7;
+}
+.navbar-brand .avatar-decoration {
+    height: 45px;
+    width: 45px;
+    margin-top: 3px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.navbar-text-decoration {
+    font-size: 21px;
+    padding: 10px 20px;
+    margin: 0 15px;
+    margin-left: 0 !important;
+    cursor: pointer;
+}
+.navbar-active {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid var(--main-aqua-color);
+}

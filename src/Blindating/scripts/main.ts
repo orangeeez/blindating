@@ -1,8 +1,5 @@
-/// <reference path="../typings/browser.d.ts" />
-/// <reference path="../typings/fbsdk.d.ts" />
-
-import {bootstrap}    from 'angular2/platform/browser'
-import {AppComponent} from './app.component'
-import 'rxjs/Rx'
-
-bootstrap(AppComponent);
+﻿///<reference path="./../typings/globals/core-js/index.d.ts"/>
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
+import { AppModule }              from "./app.module";
+const platform = platformBrowserDynamic();
+platform.bootstrapModule(AppModule);

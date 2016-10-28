@@ -1,0 +1,50 @@
+﻿<div class="container-fluid" id="questions">
+    <div class="row">
+        <img class="arrow-back" src="../../../images/app/controls/arrow-left-white.svg"
+             (click)="onBackQuestions()">
+        <img class="plus" src="../../../images/app/controls/plus-white.svg"
+             (click)="onAddQuestion()">
+        <div class="header">Questions</div>
+        <div class="questions-content">
+            <form #questionForm="ngForm"
+                  *ngIf="isAddingQuestion" class="question-decoration"
+                  (keyup)="onQuestionKeyup($event, questionForm.form.valid)">
+                <div>
+                    <textarea id="questionarea" focus-directive placeholder="Your question here"
+                              name="questionarea"
+                              required
+                              minlength="5"
+                              #questionarea="ngModel"
+                              [(ngModel)]="message"></textarea>
+                </div>
+                <div *ngIf="questionarea.errors" class="alert alert-danger"
+                     [hidden]="!questionarea.errors.minlength">
+                    Question must be at least 5 characters long
+                </div>
+            </form>
+            <div *ngFor="let question of questions" class="question-decoration">
+                <div *ngIf="!question.isEditing">
+                    <div>{{question.message}}</div>
+                    <i class="fa fa-pencil pencil"
+                       (click)="onEditQuestion(question)"></i>
+                    <i class="fa fa-trash trash"
+                       (click)="onRemoveQuestion(question)"></i>
+                </div>
+                <form #questioneditForm="ngForm" *ngIf="question.isEditing">
+                    <div (keyup)="onEditQuestionKeyup($event, questioneditForm.form.valid, question)">
+                        <textarea id="questioneditarea" focus-directive placeholder="Your question here"
+                                  name="questioneditarea"
+                                  required
+                                  minlength="5"
+                                  #questioneditarea="ngModel"
+                                  [(ngModel)]="question.message"></textarea>
+                    </div>
+                    <div *ngIf="questioneditarea.errors" class="alert alert-danger"
+                         [hidden]="!questioneditarea.errors.minlength">
+                        Question must be at least 5 characters long
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

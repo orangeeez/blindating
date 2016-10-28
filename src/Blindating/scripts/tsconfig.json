@@ -1,8 +1,8 @@
-{
-  "compileOnSave":  true,
+﻿{
+  "compileOnSave": true,
   "compilerOptions": {
     "target": "es5",
-    "module": "system",
+    "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": false,
     "emitDecoratorMetadata": true,
@@ -11,10 +11,5 @@
     "noImplicitAny": false,
     "rootDir": ".",
     "outDir": "../wwwroot/app/"
-  },
-  "exclude": [
-    "node_modules",
-    "typings/main",
-    "typings/main.d.ts"
-  ]
+  }
 }
