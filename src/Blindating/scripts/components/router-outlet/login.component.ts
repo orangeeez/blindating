@@ -14,7 +14,6 @@ import { AppComponent }  from '../../components/app.component';
     selector:    'login-component',
     templateUrl: 'app/components/router-outlet/login.component.html',
     styleUrls:   ['app/components/router-outlet/login.component.css'],
-    providers:   [UserService, CookieService]
 })
 export class LoginComponent implements OnInit {
     public app:       AppComponent;
@@ -33,9 +32,9 @@ export class LoginComponent implements OnInit {
 
     constructor(
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
-        private _userService: UserService,
+        private _userService:   UserService,
         private _cookieService: CookieService,
-        private _router: Router) {
+        private _router:        Router) {
         this.app = app;
     }
 
@@ -47,6 +46,7 @@ export class LoginComponent implements OnInit {
 
     public Login(): void {
         var auth: any;
+
         if (this.JWT) auth = this.JWT;
         else          auth = JSON.stringify({ email: this.email, password: this.password });
 

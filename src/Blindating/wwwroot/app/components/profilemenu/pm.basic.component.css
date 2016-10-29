@@ -57,18 +57,20 @@
     border-bottom: 1px solid #e7e7e7;
     margin-top: 10px;
     padding-left: 10px;
+    background-color: white;
 }
 .name-decoration:focus {
     border-bottom-color: #808080;
 }
-.row.social {
+.row .social {
     margin-top: 5px;
 }
-.row.social input {
+.row .social input {
     width: 100%;
     line-height: 1.3;
     border: none;
     padding: 0;
+    background-color: white;
 }
 .row:not(.social):not(.talk-decoration) {
     padding-bottom: 10px;
@@ -95,6 +97,7 @@
     font-weight: bold;
     border-color: transparent;
     border-bottom: 1px solid var(--main-border-color);
+    background-color: white;
 }
 .dropdown input:focus {
     border-bottom: 1px solid var(--focus-border-color);

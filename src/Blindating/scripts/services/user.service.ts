@@ -21,4 +21,8 @@ export class UserService extends BaseService {
         return this._http.post(API_ADDRESS + this.api + "/login", JSON.stringify(auth), this.options)
             .map(user => user.json()['result']);
     }
+
+    public Logout(userID: number) {
+        return this._http.post(API_ADDRESS + this.api + "/logout", userID, this.options);
+    }
 }

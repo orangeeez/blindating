@@ -2,7 +2,7 @@
     <div class="row">
         <img class="arrow-back" src="../../../images/app/controls/arrow-left-white.svg"
              (click)="onBackQuotes()">
-        <img class="plus" src="../../../images/app/controls/plus-white.svg"
+        <img *ngIf="app.isSelectedYou" class="plus" src="../../../images/app/controls/plus-white.svg"
              (click)="onAddQuote()">
         <div class="header">Quotes</div>
         <div class="quotes-content">

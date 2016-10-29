@@ -20,6 +20,7 @@ var AppComponent = (function () {
         this.selectedUser = null;
         this.communicationState = 'none';
         this.isHeaderShow = false;
+        this.isSelectedYou = false;
     }
     AppComponent.prototype.selectDeselectUser = function (user) {
         if (this.selectedUser == user) {
@@ -34,6 +35,10 @@ var AppComponent = (function () {
             this.selectedUser = user;
             this._header.isProfileActive = false;
         }
+        if (!this.selectedUser)
+            this.isSelectedYou = false;
+        else
+            this.isSelectedYou = this.user.id == this.selectedUser.id;
     };
     AppComponent.prototype.openGallery = function (photos, number) {
         if (number === void 0) { number = 0; }

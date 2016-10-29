@@ -21,22 +21,28 @@ export class DashboardComponent implements OnInit {
     public app:      AppComponent;
     public noavatar: string = NOAVATAR;
 
-
     constructor(
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
         private _userService:   UserService,
         private _cookieService: CookieService,
         private _router:        Router) {
+
         this.app = app;
+        var id = this.app.user.id;
+        window.onbeforeunload = function (e) {
+            _userService.Logout(id).subscribe();
+        };
     }
 
     ngOnInit() {
         this.app._header.isDashboardActive = true;
         this._userService.GetAll()
             .subscribe(users => {
-                var index = users.indexOf(this.app.user);
-                this.app.users = users;
-                this.app.users = this.app.users.splice(index, 1);
+                this.app.users = users.filter(this.removeCurrentUser);
             });
+    }
+
+    private removeCurrentUser = (user: User): boolean => {
+        return user.id != this.app.user.id;
     }
 }

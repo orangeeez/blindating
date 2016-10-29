@@ -9,10 +9,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
+var core_2 = require('angular2-cookie/core');
 var user_service_1 = require('../services/user.service');
 var ProfilemenuComponent = (function () {
-    function ProfilemenuComponent(_userService) {
+    function ProfilemenuComponent(_userService, _cookieService, _router) {
         this._userService = _userService;
+        this._cookieService = _cookieService;
+        this._router = _router;
         this.state = 'deselected';
         this.tabs = [
             { title: 'Basic', active: true },
@@ -22,6 +26,16 @@ var ProfilemenuComponent = (function () {
         ];
     }
     ProfilemenuComponent.prototype.ngOnInit = function () { };
+    ProfilemenuComponent.prototype.onLogout = function () {
+        this._userService.Logout(this.app.user.id).subscribe();
+        this.app.user = null;
+        this.app.selectedUser = null;
+        this.app.isHeaderShow = false;
+        this.app._profilemenu.ToggleState();
+        this.app._header.DeselectMenus();
+        this._cookieService.remove('JWT');
+        this._router.navigate(['/login']);
+    };
     ProfilemenuComponent.prototype.ToggleState = function () {
         this.state = (this.state === 'selected' ? 'deselected' : 'selected');
     };
@@ -33,7 +47,7 @@ var ProfilemenuComponent = (function () {
             providers: [user_service_1.UserService],
             inputs: ['app']
         }), 
-        __metadata('design:paramtypes', [user_service_1.UserService])
+        __metadata('design:paramtypes', [user_service_1.UserService, core_2.CookieService, router_1.Router])
     ], ProfilemenuComponent);
     return ProfilemenuComponent;
 }());

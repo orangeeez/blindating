@@ -20,6 +20,11 @@ var HeaderComponent = (function () {
         this.isTalkActive = false;
     }
     HeaderComponent.prototype.ngOnInit = function () { };
+    HeaderComponent.prototype.DeselectMenus = function () {
+        this.isProfileActive = false;
+        this.isDashboardActive = false;
+        this.isTalkActive = false;
+    };
     HeaderComponent = __decorate([
         core_1.Component({
             selector: 'header-component',

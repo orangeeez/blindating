@@ -3,7 +3,7 @@
             !isOpenPhotos" class="container-fluid" id="basic">
     <div class="row">
         <div class="col-md-5 avatar">
-            <span class="avatar-hover-decoration">
+            <span *ngIf="app.isSelectedYou" class="avatar-hover-decoration">
                 <input type="file"
                        ng2FileSelect
                        #upload
@@ -17,9 +17,11 @@
         <div class="col-md-7">
             <input type="text" id="firstname" class="name-decoration"
                    [(ngModel)]="app.selectedUser.firstname"
+                   [disabled]="!app.isSelectedYou"
                    (focusout)="onFocusoutName()" />
             <input type="text" id="lastname" class="name-decoration"
                    [(ngModel)]="app.selectedUser.lastname"
+                   [disabled]="!app.isSelectedYou"
                    (focusout)="onFocusoutName()" />
             <div class="row social">
                 <div class="col-md-2">
@@ -30,19 +32,23 @@
                 </div>
                 <div class="col-md-10">
                     <input placeholder="vk.com/example"
-                           [type]="'text'" 
+                           [type]="'text'"
+                           [disabled]="!app.isSelectedYou"
                            [(ngModel)]="preferences.vkontakte"
                            (focusout)="onFocusoutPreference()" />
                     <input placeholder="facebook.com/example"
                            [type]="'text'" 
+                           [disabled]="!app.isSelectedYou"
                            [(ngModel)]="preferences.facebook"
                            (focusout)="onFocusoutPreference()" />
                     <input placeholder="twitter.com/example"
                            [type]="'text'" 
+                           [disabled]="!app.isSelectedYou"
                            [(ngModel)]="preferences.twitter"
                            (focusout)="onFocusoutPreference()" />
                     <input placeholder="plus.google.com/example"
                            [type]="'text'" 
+                           [disabled]="!app.isSelectedYou"
                            [(ngModel)]="preferences.google"
                            (focusout)="onFocusoutPreference()" />
                 </div>
@@ -54,7 +60,8 @@
          (mouseout)="onHeaderMouseoverout('quotes', false)">
         <div class="col-md-10 no-padding">
             <blockquote style="padding-right: 0">
-                <p>{{quotes[0]?.content || defaultQuote}}</p>
+                <p *ngIf="app.isSelectedYou">{{quotes[0]?.content || defaultQuote}}</p>
+                <p *ngIf="!app.isSelectedYou">{{quotes[0]?.content || defaultQuoteNotYou}}</p>
                 <footer>{{quotes[0]?.author || defaultAuthor}}</footer>
             </blockquote>
         </div>
@@ -62,7 +69,7 @@
              [hidden]="!isQuotesArrowShow"
              (click)="onOpenQuotes()">
             <img *ngIf="quotes[0]"  src="../../../images/app/controls/arrow-right-white.svg" />
-            <img *ngIf="!quotes[0]" src="../../../images/app/controls/plus-white.svg" />
+            <img *ngIf="!quotes[0] && app.isSelectedYou" src="../../../images/app/controls/plus-white.svg" />
         </div>
     </div>
     <div class="row">
@@ -78,7 +85,8 @@
                     <span dropdown class="dropdown">
                         <input dropdownToggle size="6" placeholder="Gender" readonly 
                                [value]="preferences.gender"
-                               [size]="preferences.gender?.length || 6"/>
+                               [size]="preferences.gender?.length || 6"
+                               [disabled]="!app.isSelectedYou"/>
                         <ul class="dropdown-menu" dropdownMenu>
                             <li *ngFor="let gender of genders">
                                 <a id="gender" class="dropdown-item"
@@ -92,7 +100,8 @@
                         <span>Aged</span>
                         <input dropdownToggle size="4" placeholder="From" readonly 
                                [value]="preferences.from"
-                               [size]="preferences.from?.length || 4" />
+                               [size]="preferences.from?.length || 4"
+                               [disabled]="!app.isSelectedYou" />
                         <ul class="dropdown-menu" dropdownMenu>
                             <li *ngFor="let age of ages">
                                 <a id="age-from" class="dropdown-item"
@@ -104,7 +113,8 @@
                     <span dropdown class="dropdown">
                         <input dropdownToggle size="2" placeholder="To" readonly 
                                [value]="preferences.to"
-                               [size]="preferences.to?.length || 2" />
+                               [size]="preferences.to?.length || 2"
+                               [disabled]="!app.isSelectedYou" />
                         <ul class="dropdown-menu" dropdownMenu>
                             <li *ngFor="let age of ages">
                                 <a id="age-to" class="dropdown-item"
@@ -119,6 +129,7 @@
                         <input id="country-dropdown" dropdownToggle size="7" placeholder="Country"
                                [(ngModel)]="preferences.country"
                                [size]="preferences.country?.length || 7"
+                               [disabled]="!app.isSelectedYou"
                                (keyup)="onInputDropdown($event)" />
                         <ul class="dropdown-menu" dropdownMenu>
                             <li *ngFor="let country of countries">
@@ -131,6 +142,7 @@
                         <input id="city-dropdown" dropdownToggle size="4" placeholder="City"
                                [(ngModel)]="preferences.city"
                                [size]="preferences.city?.length || 4"
+                               [disabled]="!app.isSelectedYou"
                                (keyup)="onInputDropdown($event)" />
                         <ul class="dropdown-menu" dropdownMenu>
                             <li *ngFor="let city of cities">
@@ -154,7 +166,8 @@
                         <span>With</span>
                         <input dropdownToggle size="10" placeholder="Hair color" readonly
                                [value]="preferences.hcolor"
-                               [size]="preferences.hcolor?.length || 10" />
+                               [size]="preferences.hcolor?.length || 10"
+                               [disabled]="!app.isSelectedYou" />
                         <ul class="dropdown-menu" dropdownMenu>
                             <li *ngFor="let hcolor of hcolors">
                                 <a id="hcolor" class="dropdown-item"
@@ -168,7 +181,8 @@
                     <span dropdown class="dropdown">
                         <input dropdownToggle size="9" placeholder="Eye color" readonly
                                [value]="preferences.ecolor"
-                               [size]="preferences.ecolor?.length || 9" />
+                               [size]="preferences.ecolor?.length || 9"
+                               [disabled]="!app.isSelectedYou" />
                         <ul class="dropdown-menu" dropdownMenu>
                             <li *ngFor="let ecolor of ecolors">
                                 <a id="ecolor" class="dropdown-item"
@@ -185,6 +199,7 @@
                                #hobbyinput
                                [(ngModel)]="preferences.hobby"
                                [size]="preferences.hobby?.length || 5"
+                               [disabled]="!app.isSelectedYou"
                                (focusout)="onFocusoutPreference()" />
                         <ul class="dropdown-menu" dropdownMenu>
                             <li *ngFor="let hobby of hobbies">
@@ -209,12 +224,15 @@
                  (mouseout)="onHeaderMouseoverout('questions', false)" />
         </div>
         <div class="question-content-decoration">
-            <div class="col-md-12 question-decoration">{{questions[0]?.message || defaultQuestion}}</div>
+            <div class="col-md-12 question-decoration">
+                <p *ngIf="app.isSelectedYou">{{questions[0]?.message || defaultQuestion}}</p>
+                <p *ngIf="!app.isSelectedYou">{{questions[0]?.message || defaultQuestionNotYou}}</p>
+            </div>
         </div>
-        <div class="col-md-6 question-yesno no-padding">
+        <div *ngIf="questions[0] && !app.isSelectedYou" class="col-md-6 question-yesno no-padding">
             <i class="fa fa-check-circle-o fa-2x"></i>
         </div>
-        <div class="col-md-6 question-yesno no-padding">
+        <div *ngIf="questions[0] && !app.isSelectedYou" class="col-md-6 question-yesno no-padding">
             <i class="fa fa-times-circle-o fa-2x"></i>
         </div>
     </div>

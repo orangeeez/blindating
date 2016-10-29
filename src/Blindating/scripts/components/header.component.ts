@@ -14,12 +14,18 @@ export class HeaderComponent implements OnInit {
     public app:      AppComponent;
     public noavatar: string = NOAVATAR;
 
-    public isProfileActive: boolean = false;
+    public isProfileActive:   boolean = false;
     public isDashboardActive: boolean = false;
-    public isTalkActive: boolean = false;
+    public isTalkActive:      boolean = false;
 
     constructor(
         private _userService: UserService) { }
 
-    ngOnInit() {}
+    ngOnInit() { }
+
+    public DeselectMenus(): void {
+        this.isProfileActive   = false;
+        this.isDashboardActive = false;
+        this.isTalkActive      = false;
+    }
 }

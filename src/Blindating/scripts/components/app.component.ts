@@ -16,7 +16,6 @@ import { HelperComponent }      from '../components/helper.component';
 import { LoginComponent }       from '../components/router-outlet/login.component';
 import { ProfilemenuComponent } from '../components/profilemenu.component';
 declare var PhotoSwipe, PhotoSwipeUI_Default;
-
 @Component({
     selector:    'blindating',
     templateUrl: 'app/components/app.component.html',
@@ -41,14 +40,15 @@ export class AppComponent {
     @ViewChild(HelperComponent)      public _helper: HelperComponent;
     @ViewChild(ProfilemenuComponent) public _profilemenu: ProfilemenuComponent;
 
-    public user: User;
-    public users: User[];
+    public user:         User;
+    public users:        User[];
     public selectedUser: User = null;
-    public callingUser: User;
-    public callerUser: User;
+    public callingUser:  User;
+    public callerUser:   User;
     public communicationState: string = 'none';
 
-    public isHeaderShow: boolean = false;
+    public isHeaderShow:  boolean = false;
+    public isSelectedYou: boolean = false;
 
     constructor(private _userService: UserService) { }
 
@@ -65,6 +65,11 @@ export class AppComponent {
             this.selectedUser = user;
             this._header.isProfileActive = false;
         }
+
+        if (!this.selectedUser)
+            this.isSelectedYou = false;
+        else
+            this.isSelectedYou = this.user.id == this.selectedUser.id;
     }
 
     public openGallery(photos: Photo[], number: number = 0): void {

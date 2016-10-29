@@ -64,6 +64,7 @@ namespace Blindating.Models.Repositories
                         user = new User();
                         user.Reason = User.AUTHORIZATION_FAILED;
                     }
+                    await _context.SaveChangesAsync();
                     return user;
                 }
                 else
@@ -72,10 +73,25 @@ namespace Blindating.Models.Repositories
                     User user = await _context.Users.Include(u => u.Information)
                         .SingleOrDefaultAsync(u => u.JWT == JWT);
                     user.Online = true;
+                    await _context.SaveChangesAsync();
                     return user;
                 }
             }
         }
+
+        public async Task Logout(int userID)
+        {
+            using (AppDBContext _context = new AppDBContext())
+            {
+                User user = await _context.Users
+                    .Where(u => u.ID == userID)
+                    .SingleOrDefaultAsync();
+
+                user.Online = false;
+                await _context.SaveChangesAsync();
+            }
+        }
+
         private async Task<bool> IsEmailExist(string email)
         {
             using (AppDBContext _context = new AppDBContext())

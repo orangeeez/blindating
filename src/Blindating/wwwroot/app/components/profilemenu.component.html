@@ -1,6 +1,7 @@
 ﻿<div *ngIf="state == 'selected'" id="profile">
     <div class="col-md-12">
-        <i class="fa fa-power-off fa-lg power-off"></i>
+        <i class="fa fa-power-off fa-lg power-off"
+           (click)="onLogout()"></i>
         <tabset>
             <tab *ngFor="let tab of tabs"
                  [heading]="tab.title"
@@ -9,7 +10,8 @@
                  (deselect)="tab.active = false"
                  [disabled]="tab.disabled">
                 <pm-basic-component *ngIf="tab.title == 'Basic'"
-                                    [app]="app">
+                                    [app]="app"
+                                    [selectedUser]="app.selectedUser">
                 </pm-basic-component>
             </tab>
         </tabset>

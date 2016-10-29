@@ -88,7 +88,6 @@ var LoginComponent = (function () {
             selector: 'login-component',
             templateUrl: 'app/components/router-outlet/login.component.html',
             styleUrls: ['app/components/router-outlet/login.component.css'],
-            providers: [user_service_1.UserService, core_2.CookieService]
         }),
         __param(0, core_1.Host()),
         __param(0, core_1.Inject(core_1.forwardRef(function () { return app_component_1.AppComponent; }))), 

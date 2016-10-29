@@ -33,7 +33,9 @@ var PmBasicComponent = (function () {
         this.uploader = new ng2_file_upload_1.FileUploader({ url: URL });
         this.header = { name: 'Uploader', value: 'basic' };
         this.defaultQuote = 'Please add your favorite quote here';
-        this.defaultQuestion = 'Please add your question to others';
+        this.defaultQuoteNotYou = 'User does not add quote yet';
+        this.defaultQuestion = 'Please add your question to others here';
+        this.defaultQuestionNotYou = 'User does not add question to others yet';
         this.defaultAuthor = 'By Author';
         this.quotes = new Array();
         this.questions = new Array();
@@ -62,23 +64,26 @@ var PmBasicComponent = (function () {
         this.uploader.options.removeAfterUpload = true;
         this.uploader.options.headers = [];
         this.uploader.options.headers.push(this.header);
-    }
-    PmBasicComponent.prototype.ngOnInit = function () {
-        var _this = this;
         this.uploader.onAfterAddingFile = function (item) {
             _this.uploader.uploadItem(item);
         };
         this.uploader.onCompleteItem = function (item, response, status, headers) {
             _this.app.user.image = response;
         };
-        this._quoteService.GetAllByID(this.app.selectedUser.id)
-            .subscribe(function (quotes) { return _this.quotes = quotes.reverse(); });
-        //this._preferenceService.GetAllByID(this.app.selectedUser.id)
-        //    .subscribe(preference => this.preferences = preference);
-        this._questionService.GetAllByID(this.app.selectedUser.id)
-            .subscribe(function (questions) { return _this.questions = questions.reverse(); });
-        this._photoService.GetAllByID(this.app.selectedUser.id)
-            .subscribe(function (photos) { return _this.photos = photos.reverse(); });
+    }
+    PmBasicComponent.prototype.ngOnInit = function () { };
+    PmBasicComponent.prototype.ngOnChanges = function (changes) {
+        var _this = this;
+        if (changes['selectedUser']) {
+            this._quoteService.GetAllByID(this.app.selectedUser.id)
+                .subscribe(function (quotes) { return _this.quotes = quotes.reverse(); });
+            this._preferenceService.GetAllByID(this.app.selectedUser.id)
+                .subscribe(function (preference) { return _this.preferences = preference; });
+            this._questionService.GetAllByID(this.app.selectedUser.id)
+                .subscribe(function (questions) { return _this.questions = questions.reverse(); });
+            this._photoService.GetAllByID(this.app.selectedUser.id)
+                .subscribe(function (photos) { return _this.photos = photos.reverse(); });
+        }
     };
     PmBasicComponent.prototype.onFocusoutName = function () {
         var _this = this;
@@ -188,7 +193,7 @@ var PmBasicComponent = (function () {
             selector: 'pm-basic-component',
             templateUrl: 'app/components/profilemenu/pm.basic.component.html',
             styleUrls: ['app/components/profilemenu/pm.basic.component.css'],
-            inputs: ['app']
+            inputs: ['app', 'selectedUser']
         }), 
         __metadata('design:paramtypes', [user_service_1.UserService, quote_service_1.QuoteService, preference_service_1.PreferenceService, question_service_1.QuestionService, photo_service_1.PhotoService, router_1.Router])
     ], PmBasicComponent);

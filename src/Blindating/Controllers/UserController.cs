@@ -46,5 +46,11 @@ namespace Blindating.Controllers
         {
             return new JsonResult(Users.Login(auth));
         }
+        [HttpPost]
+        [ActionName("logout")]
+        public void Logout([FromBody] int userID)
+        {
+            Users.Logout(userID);
+        }
     }
 }

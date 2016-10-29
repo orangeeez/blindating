@@ -1,4 +1,9 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import {
+    Component,
+    OnInit,
+    OnChanges,
+    SimpleChange
+}                            from '@angular/core';
 import { Router }            from '@angular/router';
 import { UserService }       from '../../services/user.service';
 import { QuoteService }      from '../../services/information/quote.service';
@@ -23,17 +28,20 @@ const URL = 'http://localhost:5000/api/user/photo/addbyjwt';
     selector: 'pm-basic-component',
     templateUrl: 'app/components/profilemenu/pm.basic.component.html',
     styleUrls: ['app/components/profilemenu/pm.basic.component.css'],
-    inputs:    ['app']
+    inputs:    ['app', 'selectedUser']
 })
-export class PmBasicComponent implements OnInit {
-    public CITIES:          Array<string>;
-    public app:             AppComponent;
-    public noavatar:        string = NOAVATAR;
-    public uploader:        FileUploader = new FileUploader({ url: URL });
-    public header:          Headers = { name: 'Uploader', value: 'basic' };
-    public defaultQuote:    string = 'Please add your favorite quote here';
-    public defaultQuestion: string = 'Please add your question to others';
-    public defaultAuthor:   string = 'By Author';
+export class PmBasicComponent implements OnInit, OnChanges {
+    public CITIES:                   Array<string>;
+    public app:                      AppComponent;
+    public noavatar:                 string = NOAVATAR;
+    public uploader:                 FileUploader = new FileUploader({ url: URL });
+    public header:                   Headers = { name: 'Uploader', value: 'basic' };
+    public defaultQuote:             string = 'Please add your favorite quote here';
+    public defaultQuoteNotYou:       string = 'User does not add quote yet';
+    public defaultQuestion:          string = 'Please add your question to others here';
+    public defaultQuestionNotYou:    string = 'User does not add question to others yet';
+
+    public defaultAuthor:      string = 'By Author';
 
     public quotes:      Array<Quote>    = new Array<Quote>();
     public questions:   Array<Question> = new Array<Question>();
@@ -69,9 +77,7 @@ export class PmBasicComponent implements OnInit {
         this.uploader.options.removeAfterUpload = true;
         this.uploader.options.headers = [];
         this.uploader.options.headers.push(this.header);
-    }
 
-    ngOnInit() {
         this.uploader.onAfterAddingFile = (item: any) => {
             this.uploader.uploadItem(item);
         }
@@ -79,18 +85,24 @@ export class PmBasicComponent implements OnInit {
         this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
             this.app.user.image = response;
         }
+    }
 
-        this._quoteService.GetAllByID(this.app.selectedUser.id)
-            .subscribe(quotes => this.quotes = quotes.reverse());
+    ngOnInit() { }
 
-        //this._preferenceService.GetAllByID(this.app.selectedUser.id)
-        //    .subscribe(preference => this.preferences = preference);
+    ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
+        if (changes['selectedUser']) {
+            this._quoteService.GetAllByID(this.app.selectedUser.id)
+                .subscribe(quotes => this.quotes = quotes.reverse());
 
-        this._questionService.GetAllByID(this.app.selectedUser.id)
-            .subscribe(questions => this.questions = questions.reverse());
+            this._preferenceService.GetAllByID(this.app.selectedUser.id)
+                .subscribe(preference => this.preferences = preference);
 
-        this._photoService.GetAllByID(this.app.selectedUser.id)
-            .subscribe(photos => this.photos = photos.reverse());
+            this._questionService.GetAllByID(this.app.selectedUser.id)
+                .subscribe(questions => this.questions = questions.reverse());
+
+            this._photoService.GetAllByID(this.app.selectedUser.id)
+                .subscribe(photos => this.photos = photos.reverse());
+        }
     }
 
     public onFocusoutName(): void {

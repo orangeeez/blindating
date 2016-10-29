@@ -23,7 +23,7 @@ namespace Blindating.Models.Tables
         public int UserFK { get; set; }
         [JsonIgnore] public virtual User User { get; set; }
         [JsonIgnore] public virtual List<Quote> Quotes { get; set; }
-        [JsonIgnore]public virtual List<Photo> Photos { get; set; }
+        [JsonIgnore] public virtual List<Photo> Photos { get; set; }
         [JsonIgnore] public virtual List<Conversation> Conversations { get; set; }
         [JsonIgnore] public virtual List<Question> Questions { get; set; }
         [JsonIgnore] public virtual List<Notification> Notifications { get; set; }
