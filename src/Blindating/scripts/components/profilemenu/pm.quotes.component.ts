@@ -2,6 +2,7 @@
     Component,
     OnInit,
     EventEmitter,
+    AfterViewInit
 }                            from '@angular/core';
 import { Quote }             from '../../models/quote';
 import { QuoteService }      from '../../services/information/quote.service';
@@ -14,7 +15,7 @@ import { AppComponent }      from '../../components/app.component';
     outputs:   ['onBack']
 
 })
-export class PmQuotesComponent implements OnInit {
+export class PmQuotesComponent implements OnInit, AfterViewInit {
     public app: AppComponent;
     public onBack = new EventEmitter();
 
@@ -29,6 +30,10 @@ export class PmQuotesComponent implements OnInit {
         private _quoteService: QuoteService) { }
 
     ngOnInit() { }
+
+    ngAfterViewInit() {
+        document.getElementById('profilemenu').scrollTop = 0;
+    }
 
     public onBackQuotes(): void {
         this.onBack.emit([]);

@@ -3,26 +3,28 @@
     OnInit,
     OnChanges,
     SimpleChange
-}                            from '@angular/core';
-import { Router }            from '@angular/router';
-import { UserService }       from '../../services/user.service';
-import { QuoteService }      from '../../services/information/quote.service';
-import { PreferenceService } from '../../services/information/preference.service';
-import { QuestionService }   from '../../services/information/question.service';
-import { PhotoService }      from '../../services/information/photo.service';
-import { User }              from '../../models/user';
-import { Quote }             from '../../models/quote';
-import { Question }          from '../../models/question';
-import { Photo }             from '../../models/photo';
-import { Preference }        from '../../models/preference';
-import { AppComponent }      from '../../components/app.component';
-import { SlicePipe }         from '../../pipes/slice.pipe';
-import { COUNTRIES }         from '../../static/countries';
-import { NOAVATAR }          from '../../static/config'
+}                              from '@angular/core';
+import { Router }              from '@angular/router';
+import { UserService }         from '../../services/user.service';
+import { QuoteService }        from '../../services/information/quote.service';
+import { PreferenceService }   from '../../services/information/preference.service';
+import { QuestionService }     from '../../services/information/question.service';
+import { PhotoService }        from '../../services/information/photo.service';
+import { ConversationService } from '../../services/information/conversation.service';
+import { User }                from '../../models/user';
+import { Quote }               from '../../models/quote';
+import { Question }            from '../../models/question';
+import { Photo }               from '../../models/photo';
+import { Preference }          from '../../models/preference';
+import { Conversation }        from '../../models/conversation';
+import { AppComponent }        from '../../components/app.component';
+import { SlicePipe }           from '../../pipes/slice.pipe';
+import { COUNTRIES }           from '../../static/countries';
+import { NOAVATAR }            from '../../static/config'
 import {
     FileUploader, 
     Headers 
-}                            from 'ng2-file-upload/ng2-file-upload';
+}                              from 'ng2-file-upload/ng2-file-upload';
 const URL = 'http://localhost:5000/api/user/photo/addbyjwt';
 @Component({
     selector: 'pm-basic-component',
@@ -46,7 +48,7 @@ export class PmBasicComponent implements OnInit, OnChanges {
     public quotes:      Array<Quote>    = new Array<Quote>();
     public questions:   Array<Question> = new Array<Question>();
     public photos:      Array<Photo>    = new Array<Photo>();
-    public talks:       Array<any>;
+    public conversations:       Array<any>      = new Array<Conversation>();
     public preferences: Preference      = new Preference();
 
     public genders:       Array<string> = ['Man', 'Woman ', 'Anyway'];
@@ -57,22 +59,24 @@ export class PmBasicComponent implements OnInit, OnChanges {
     public ecolors:       Array<string> = ['Grey', 'Green', 'Blue'];
     public hobbies:       Array<string> = ['Football', 'Basketball', 'Golf', 'Other'];
 
-    public isOpenQuotes:    boolean = false;
-    public isOpenQuestions: boolean = false;
-    public isOpenPhotos:    boolean = false;
+    public isOpenQuotes:        boolean = false;
+    public isOpenQuestions:     boolean = false;
+    public isOpenPhotos:        boolean = false;
+    public isOpenConversations: boolean = false
 
-    public isQuotesArrowShow:    boolean = false;
-    public isPhotosArrowShow:    boolean = false;
-    public isQuestionsArrowShow: boolean = false;
-    public isTalksArrowShow:     boolean = false;
+    public isQuotesArrowShow:        boolean = false;
+    public isPhotosArrowShow:        boolean = false;
+    public isQuestionsArrowShow:     boolean = false;
+    public isConversationsArrowShow: boolean = false;
 
     constructor(
-        private _userService:       UserService,
-        private _quoteService:      QuoteService,
-        private _preferenceService: PreferenceService,
-        private _questionService:   QuestionService,
-        private _photoService:      PhotoService,
-        private _router:            Router) {
+        private _userService:         UserService,
+        private _quoteService:        QuoteService,
+        private _preferenceService:   PreferenceService,
+        private _questionService:     QuestionService,
+        private _photoService:        PhotoService,
+        private _conversationService: ConversationService,
+        private _router:              Router) {
 
         this.uploader.options.removeAfterUpload = true;
         this.uploader.options.headers = [];
@@ -102,6 +106,9 @@ export class PmBasicComponent implements OnInit, OnChanges {
 
             this._photoService.GetAllByID(this.app.selectedUser.id)
                 .subscribe(photos => this.photos = photos.reverse());
+
+            this._conversationService.GetAllByID(this.app.selectedUser.id)
+                .subscribe(conversations => this.conversations = conversations.reverse());
         }
     }
 
@@ -175,13 +182,13 @@ export class PmBasicComponent implements OnInit, OnChanges {
 
     public onHeaderMouseoverout(header: string, value: boolean): void {
         switch (header) {
-            case 'quotes':    this.isQuotesArrowShow = value;
+            case 'quotes':        this.isQuotesArrowShow = value;
                 break;
-            case 'photos':    this.isPhotosArrowShow = value;
+            case 'photos':        this.isPhotosArrowShow = value;
                 break;
-            case 'questions': this.isQuestionsArrowShow = value;
+            case 'questions':     this.isQuestionsArrowShow = value;
                 break;
-            case 'talks':     this.isTalksArrowShow = value;
+            case 'conversations': this.isConversationsArrowShow = value;
                 break;
         }
     }
@@ -201,6 +208,11 @@ export class PmBasicComponent implements OnInit, OnChanges {
         this.isPhotosArrowShow = true;
     }
 
+    public onOpenConversations(): void {
+        this.isOpenConversations        = true;
+        this.isConversationsArrowShow   = true;
+    }
+
     public onBackQuotes(): void {
         this.isOpenQuotes = false;
     }
@@ -211,6 +223,10 @@ export class PmBasicComponent implements OnInit, OnChanges {
 
     public onBackPhotos(): void {
         this.isOpenPhotos = false;
+    }
+
+    public onBackConversations(): void {
+        this.isOpenConversations = false;
     }
 
     private filterInputDropdownCountry = (country: string): boolean => {

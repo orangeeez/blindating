@@ -10,6 +10,7 @@ namespace Blindating.Models.Interfaces
     public interface IUserRepository : IBaseRepository<User> {
         Task<dynamic> Register(User user);
         Task<User> Login(string auth);
+        Task<User> GetBy(dynamic condition);
         Task Logout(int userID);
     }
 }

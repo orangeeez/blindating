@@ -9,8 +9,11 @@
     --link-color: #f7f7f7;
     --main-border-color: #e7e7e7;
     --focus-border-color: #808080;
+    --inactive-text-color:  #C7C7CD;
     --valid-color: #42A948;
     --invalid-color: #a94442;
+    --good-color: aliceblue;
+    --bad-color: antiquewhite;
 }
 html * {
     font-family: Walsheim;    

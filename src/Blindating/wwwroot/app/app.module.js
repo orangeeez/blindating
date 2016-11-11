@@ -19,6 +19,9 @@ var quote_service_1 = require('./services/information/quote.service');
 var preference_service_1 = require('./services/information/preference.service');
 var question_service_1 = require('./services/information/question.service');
 var photo_service_1 = require('./services/information/photo.service');
+var detail_service_1 = require('./services/information/detail.service');
+var feedback_service_1 = require('./services/information/feedback.service');
+var conversation_service_1 = require('./services/information/conversation.service');
 var app_router_1 = require('./app.router');
 var app_component_1 = require('./components/app.component');
 var footer_component_1 = require('./components/footer.component');
@@ -29,12 +32,16 @@ var login_component_1 = require('./components/router-outlet/login.component');
 var dashboard_component_1 = require('./components/router-outlet/dashboard.component');
 var talk_component_1 = require('./components/router-outlet/talk.component');
 var pm_basic_component_1 = require('./components/profilemenu/pm.basic.component');
+var pm_details_component_1 = require('./components/profilemenu/pm.details.component');
 var pm_quotes_component_1 = require('./components/profilemenu/pm.quotes.component');
 var pm_questions_component_1 = require('./components/profilemenu/pm.questions.component');
 var pm_photos_component_1 = require('./components/profilemenu/pm.photos.component');
+var pm_feedbacks_component_1 = require('./components/profilemenu/pm.feedbacks.component');
+var pm_conversations_component_1 = require('./components/profilemenu/pm.conversations.component');
 var focus_directive_1 = require('./directives/focus.directive');
 var ng2_file_upload_1 = require('ng2-file-upload/ng2-file-upload');
 var slice_pipe_1 = require('./pipes/slice.pipe');
+var hasproperty_pipe_1 = require('./pipes/hasproperty.pipe');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -57,12 +64,16 @@ var AppModule = (function () {
                 dashboard_component_1.DashboardComponent,
                 talk_component_1.TalkComponent,
                 pm_basic_component_1.PmBasicComponent,
+                pm_details_component_1.PmDetailsComponent,
                 pm_quotes_component_1.PmQuotesComponent,
                 pm_questions_component_1.PmQuestionsComponent,
                 pm_photos_component_1.PmPhotosComponent,
+                pm_feedbacks_component_1.PmFeedbacksComponent,
+                pm_conversations_component_1.PmConversationsComponent,
                 focus_directive_1.FocusDirective,
                 ng2_file_upload_1.FileSelectDirective,
-                slice_pipe_1.SlicePipe
+                slice_pipe_1.SlicePipe,
+                hasproperty_pipe_1.HasPropertyPipe
             ],
             bootstrap: [app_component_1.AppComponent],
             providers: [
@@ -71,7 +82,10 @@ var AppModule = (function () {
                 quote_service_1.QuoteService,
                 preference_service_1.PreferenceService,
                 question_service_1.QuestionService,
-                photo_service_1.PhotoService
+                photo_service_1.PhotoService,
+                detail_service_1.DetailService,
+                conversation_service_1.ConversationService,
+                feedback_service_1.FeedbackService
             ]
         }), 
         __metadata('design:paramtypes', [])

@@ -2,6 +2,7 @@
     Component,
     OnInit,
     EventEmitter,
+    AfterViewInit
 }                            from '@angular/core';
 import { Question }          from '../../models/question';
 import { QuestionService }      from '../../services/information/question.service';
@@ -14,7 +15,7 @@ import { AppComponent }      from '../../components/app.component';
     outputs:   ['onBack']
 
 })
-export class PmQuestionsComponent implements OnInit {
+export class PmQuestionsComponent implements OnInit, AfterViewInit {
     public app: AppComponent;
     public onBack = new EventEmitter();
 
@@ -28,6 +29,10 @@ export class PmQuestionsComponent implements OnInit {
         private _questionService: QuestionService) { }
 
     ngOnInit() { }
+
+    ngAfterViewInit() {
+        document.getElementById('profilemenu').scrollTop = 0;
+    }
 
     public onBackQuestions(): void {
         this.onBack.emit([]);
@@ -54,6 +59,7 @@ export class PmQuestionsComponent implements OnInit {
 
     public onQuestionKeyup(event: KeyboardEvent, isFormValid: boolean): void {
         var key: number = event.which || event.keyCode;
+        console.log(this.app.selectedUser);
         switch (key) {
             case 13:
                 if (isFormValid) {
@@ -75,7 +81,7 @@ export class PmQuestionsComponent implements OnInit {
                 break;
             case 27:
                 this.isAddingQuestion = false;
-                this.message       = '';
+                this.message          = '';
                 break;
         }
     }

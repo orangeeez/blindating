@@ -1,7 +1,8 @@
 ﻿import {
     Component,
     OnInit,
-    EventEmitter
+    EventEmitter,
+    AfterViewInit
 }                            from '@angular/core';
 import { Photo }             from '../../models/photo';
 import { PhotoService }      from '../../services/information/photo.service';
@@ -20,7 +21,7 @@ const URL = 'http://localhost:5000/api/user/photo/addbyjwt';
     outputs:     ['onBack']
 
 })
-export class PmPhotosComponent implements OnInit {
+export class PmPhotosComponent implements OnInit, AfterViewInit {
     public app: AppComponent;
     public onBack: EventEmitter<{}> = new EventEmitter();
 
@@ -45,6 +46,10 @@ export class PmPhotosComponent implements OnInit {
                     this.photos.unshift(photo);
                 });
         }
+    }
+
+    ngAfterViewInit() {
+        document.getElementById('profilemenu').scrollTop = 0;
     }
 
     public onBackPhotos(): void {

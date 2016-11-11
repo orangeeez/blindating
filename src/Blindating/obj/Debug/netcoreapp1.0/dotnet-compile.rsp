@@ -197,7 +197,7 @@
 --reference:C:\Users\Andrew\.nuget\packages\System.Reflection.TypeExtensions\4.3.0-preview1-24530-04\ref\netstandard1.5\System.Reflection.TypeExtensions.dll
 --reference:C:\Users\Andrew\.nuget\packages\System.Resources.Reader\4.0.0\lib\netstandard1.0\System.Resources.Reader.dll
 --reference:C:\Users\Andrew\.nuget\packages\System.Resources.ResourceManager\4.3.0-preview1-24530-04\ref\netstandard1.0\System.Resources.ResourceManager.dll
---reference:C:\Users\Andrew\.nuget\packages\System.Runtime\4.1.0\ref\netstandard1.5\System.Runtime.dll
+--reference:C:\Users\Andrew\.nuget\packages\System.Runtime\4.3.0-preview1-24530-04\ref\netstandard1.5\System.Runtime.dll
 --reference:C:\Users\Andrew\.nuget\packages\System.Runtime.CompilerServices.Unsafe\4.3.0-preview1-24530-04\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll
 --reference:C:\Users\Andrew\.nuget\packages\System.Runtime.Extensions\4.3.0-preview1-24530-04\ref\netstandard1.5\System.Runtime.Extensions.dll
 --reference:C:\Users\Andrew\.nuget\packages\System.Runtime.Handles\4.3.0-preview1-24530-04\ref\netstandard1.3\System.Runtime.Handles.dll
@@ -233,6 +233,9 @@ E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Startup.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Controllers\UserController.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Controllers\APIs\UserApi.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Controllers\APIs\Classes\VKToken.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Controllers\Information\ConversationController.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Controllers\Information\DetailController.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Controllers\Information\FeedbackController.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Controllers\Information\PhotoController.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Controllers\Information\PreferenceController.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Controllers\Information\QuestionController.cs
@@ -257,6 +260,20 @@ E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\201
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20161014214605_AddColorstoPreferenceTable.Designer.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20161014220232_FixColorstoPreferenceTable.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20161014220232_FixColorstoPreferenceTable.Designer.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20161029120851_MinorBugFixes.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20161029120851_MinorBugFixes.Designer.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20161105103429_AddPositiveFieldToFeedback.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20161105103429_AddPositiveFieldToFeedback.Designer.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20161105131755_RemoveFieldsTFromFeedback.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20161105131755_RemoveFieldsTFromFeedback.Designer.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20161109115304_RemoveFieldsFromFeedback#2.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20161109115304_RemoveFieldsFromFeedback#2.Designer.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20161109184808_FixFieldsInConversation.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20161109184808_FixFieldsInConversation.Designer.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20161110102648_FixFieldsInConversation#2.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20161110102648_FixFieldsInConversation#2.Designer.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20161110130620_FixFieldsInConversation#3.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20161110130620_FixFieldsInConversation#3.Designer.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\AppDBContextModelSnapshot.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\AppDBContext.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\DbInitializer.cs

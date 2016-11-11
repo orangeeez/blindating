@@ -1,0 +1,75 @@
+﻿<div class="container-fluid" id="detail">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="header"> 
+                Basic Information
+            </div>
+            <div *ngFor="let basic of basicInformation; let i = index" class="detail">
+                <div class="col-md-6 icons">
+                    <div class="col-md-2">
+                        <i [ngClass]="basicInformationIcons[i]"></i>
+                    </div>
+                    <div class="col-md-10">
+                        {{basic}}
+                    </div>
+                </div>
+                <div *ngIf="details" class="col-md-6 detail-value">
+                    <span dropdown class="dropdown">
+                        <input dropdownToggle size="10"
+                               [readonly]="basicInformationDrop[i].length > 0"
+                               [disabled]="app.selectedUser != app.user"
+                               [attr.id]="basic"
+                               [value]="details | hasproperty: basic"
+                               (focusin)="onFocusinInput($event, basic)"
+                               (focusout)="onFocusoutInput($event, basic)" />
+                        <ul *ngIf="basicInformationDrop[i].length" class="dropdown-menu" dropdownMenu>
+                            <li *ngFor="let drop of basicInformationDrop[i]">
+                                <a class="dropdown-item"
+                                   (click)="onSelectDropdown($event, basic)">{{drop}}</a>
+                            </li>
+                        </ul>
+                        <datepicker *ngIf="basic == 'Birth Date'" class="datepicker"
+                                    [attr.id]="'date-' + basic"
+                                    [(ngModel)]="dt"
+                                    [showWeeks]="false"
+                                    [hidden]="true"
+                                    (ngModelChange)="onSelectDate(basic, $event)">
+                        </datepicker>
+                    </span>
+                </div>
+            </div>
+            <p></p>
+            <div class="header">
+                Looks
+            </div>
+            <div *ngFor="let look of looks; let i = index" class="detail">
+                <div class="col-md-6 icons">
+                    <div class="col-md-2">
+                        <i [ngClass]="looksIcons[i]"></i>
+                    </div>
+                    <div class="col-md-10">
+                        {{look}}
+                    </div>
+                </div>
+                <div *ngIf="details" class="col-md-6 detail-value">
+                    <span dropdown class="dropdown">
+                        <input dropdownToggle size="10"
+                               [readonly]="looksDrop[i].length > 0"
+                               [disabled]="app.selectedUser != app.user"
+                               [attr.id]="look"
+                               [value]="details | hasproperty: look"
+                               (focusin)="onFocusinInput($event, basic)"
+                               (focusout)="onFocusoutInput($event, look)" />
+                        <ul *ngIf="looksDrop[i].length" class="dropdown-menu" dropdownMenu>
+                            <li *ngFor="let drop of looksDrop[i]">
+                                <a class="dropdown-item"
+                                   (click)="onSelectDropdown($event, look)">{{drop}}</a>
+                            </li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+            <p></p>
+        </div>
+    </div>
+</div>

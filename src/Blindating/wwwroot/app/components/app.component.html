@@ -6,7 +6,8 @@
 <div id="board" class="container-fluid">
     <div class="row">
         <div id="helper" class="col-md-1">
-            <helper-component></helper-component>
+            <helper-component
+                              [app]="this"></helper-component>
         </div>
         <div id="router-outlet" class="col-md-10">
             <router-outlet></router-outlet>

@@ -17,6 +17,9 @@ var PmQuotesComponent = (function () {
         this.isAddingQuote = false;
     }
     PmQuotesComponent.prototype.ngOnInit = function () { };
+    PmQuotesComponent.prototype.ngAfterViewInit = function () {
+        document.getElementById('profilemenu').scrollTop = 0;
+    };
     PmQuotesComponent.prototype.onBackQuotes = function () {
         this.onBack.emit([]);
     };

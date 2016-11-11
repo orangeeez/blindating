@@ -1,0 +1,51 @@
+﻿#conversations {
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+.conversations-content {
+    margin-top: 30px;
+}
+.header {
+    z-index: 1000;
+    position: fixed;
+    left: 70%;
+    right: 0;
+    color: white;
+    text-align: center;
+    background-color: var(--main-aqua-color);
+    height: 30px;
+    line-height: 30px;
+    font-weight: bold;
+}
+.arrow-back {
+    z-index: 1001;
+    position: fixed;
+    top: 100px;
+    left: 70.2%;
+    cursor: pointer;
+}
+#conversations .avatar-decoration {
+    height: 60px;
+    width: 60px;
+    margin-top: 15px;
+}
+#conversations .online-decoration {
+    position: absolute;
+    top: 15px;
+    left: 25px;
+}
+#conversations .profile-decoration {
+    text-align: center;
+    cursor: pointer;
+}
+#conversations .data-decoration {
+    margin-top: 15px;
+}
+#conversations .data-decoration > div {
+    padding-top: 5px;
+}
+.no-conversations {
+    color: var(--inactive-text-color);
+    text-align: center;
+    font-size: 18px;
+}

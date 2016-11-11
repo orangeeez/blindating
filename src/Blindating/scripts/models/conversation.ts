@@ -1,9 +1,11 @@
+import { User } from '../models/user';
 export class Conversation {
-    ID: number;
-    JWT: string;
-    Start: Date;
-    End: Date;
-    DateString: string;
-    TimeString: string;
-    UserID: number;
+    id:           number;
+    start:        string;
+    end:          string;
+    duration:     string;
+    remoteUser:   User;
+    remoteUserID: number;
+    userID:       number;
+    informationConversationFK: number;
 }

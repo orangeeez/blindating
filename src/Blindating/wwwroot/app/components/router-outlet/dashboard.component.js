@@ -16,14 +16,12 @@ var router_1 = require('@angular/router');
 var core_2 = require('angular2-cookie/core');
 var user_service_1 = require('../../services/user.service');
 var app_component_1 = require('../../components/app.component');
-var config_1 = require('../../static/config');
 var DashboardComponent = (function () {
     function DashboardComponent(app, _userService, _cookieService, _router) {
         var _this = this;
         this._userService = _userService;
         this._cookieService = _cookieService;
         this._router = _router;
-        this.noavatar = config_1.NOAVATAR;
         this.removeCurrentUser = function (user) {
             return user.id != _this.app.user.id;
         };
@@ -35,6 +33,7 @@ var DashboardComponent = (function () {
     }
     DashboardComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.app._header.DeselectMenus();
         this.app._header.isDashboardActive = true;
         this._userService.GetAll()
             .subscribe(function (users) {

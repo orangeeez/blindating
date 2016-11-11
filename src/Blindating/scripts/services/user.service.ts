@@ -25,4 +25,9 @@ export class UserService extends BaseService {
     public Logout(userID: number) {
         return this._http.post(API_ADDRESS + this.api + "/logout", userID, this.options);
     }
+
+    public GetBy(field: string, value: string): Observable<User> {
+        return this._http.post(API_ADDRESS + this.api + "/getby", JSON.stringify({ field, value }), this.options)
+            .map(user => user.json()['result']);
+    }
 }

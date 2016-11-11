@@ -7,18 +7,17 @@ using System.Threading.Tasks;
 
 namespace Blindating.Models.Tables
 {
-    public class Conversation
+    public class Conversation : IBaseModel
     {
         public int ID { get; set; }
         public int InformationConversationFK { get; set; }
-        public string JWT { get; set; }
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
+        public int RemoteUserID { get; set; }
+        public string Start { get; set; }
+        public string End { get; set; }
+        public string Duration { get; set; }
         public virtual Information Information { get; set; }
 
-        [NotMapped]
-        public int UserID { get; set; }
-        [NotMapped]
-        public int ConversationID { get; set; }
+        [NotMapped] public int UserID { get; set; }
+        [NotMapped] public User RemoteUser { get; set; }
     }
 }

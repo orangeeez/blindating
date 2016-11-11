@@ -1,4 +1,5 @@
 ﻿using Blindating.Models.Tables;
+using NetCoreAngular2.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Blindating.Models.Interfaces
 {
-    interface IConversationRepository
+    public interface IConversationRepository : IBaseRepository<Conversation>
     {
-        List<Conversation> GetConversations(int userID);
-        bool AddConversation(Conversation conversation);
+        Task<List<Conversation>> GetAllByID(int userID);
     }
 }

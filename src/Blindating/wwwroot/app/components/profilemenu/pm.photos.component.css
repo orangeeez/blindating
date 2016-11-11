@@ -101,4 +101,9 @@
     filter: alpha(opacity=0);
     width: 20px;
 }
+.no-photos {
+    color: var(--inactive-text-color);
+    text-align: center;
+    font-size: 18px;
+}
 

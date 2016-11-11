@@ -25,5 +25,8 @@ export class TalkComponent implements OnInit {
         this.app = app;
     }
 
-    public ngOnInit() {}
+    public ngOnInit() {
+        this.app._header.DeselectMenus();
+        this.app._header.isTalkActive = true;
+    }
 }

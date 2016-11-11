@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Blindating.Models.Tables
 {
-    public class Detail
+    public class Detail : IBaseModel
     {
         public int ID { get; set; }
         public int InformationDetailsFK { get; set; }
@@ -31,6 +31,7 @@ namespace Blindating.Models.Tables
         public string ClothingStyle { get; set; }
         public string MyBestPart { get; set; }
         public string OverallAppearance { get; set; }
+
         public virtual Information Information { get; set; }
 
         [NotMapped]

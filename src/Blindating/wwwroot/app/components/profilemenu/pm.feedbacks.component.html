@@ -1,0 +1,37 @@
+﻿<div class="container-fluid" id="feedback">
+    <div class="row">
+        <div class="col-md-12" style="margin-bottom: 20%;">
+            <div class="feedbacks">
+                <div *ngIf="feedbacks?.length == 0" class="no-wishes">No wishes yet</div>
+                <div *ngFor="let feedback of feedbacks" class="col-md-12">
+                    <blockquote style="padding-right: 0"
+                        [class.good]="feedback.isPositive">
+                        <p>{{feedback.text}}</p>
+                        <footer>
+                            <a (click)="app.selectDeselectUser(feedback?.remoteUser || app.user)">
+                                {{ feedback?.remoteUser?.firstname || app.user.firstname + ' ' }}
+                                {{ feedback?.remoteUser?.lastname || app.user.lastname }}
+                            </a>
+                        </footer>
+                        <i *ngIf="app.isSelectedYou" class="fa fa-trash trash"
+                           (click)="onRemoveFeedback(feedback)"></i>
+                    </blockquote>
+                </div>
+            </div>
+            <div *ngIf="!app.isSelectedYou" class="feedback-field">
+                <div class="col-md-11">
+                    <textarea placeholder="Leave your wish here. To send a wish, please press Alt+Enter"
+                              #textarea
+                              (keyup)="onKeyupArea($event, textarea)"
+                              (keydown)="onKeydownArea($event)"></textarea>
+                </div>
+                <div class="col-md-1">
+                    <i class="fa fa-smile-o fa-lg"></i>
+                    <i class="fa fa-paperclip fa-lg"></i>
+                    <i [ngClass]="isPositiveIcon"
+                       (click)="onClickPositiveIcon()"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -47,7 +47,9 @@ var LoginComponent = (function () {
             }
             else {
                 _this.app.user = user;
+                _this.app.initializeWebRTC();
                 _this._cookieService.put('JWT', user.jwt);
+                _this.app.isHelperShow = true;
                 _this.app.isHeaderShow = true;
                 _this._router.navigate(['/dashboard']);
             }

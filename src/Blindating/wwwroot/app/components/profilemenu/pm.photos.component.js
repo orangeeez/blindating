@@ -36,6 +36,9 @@ var PmPhotosComponent = (function () {
             });
         };
     };
+    PmPhotosComponent.prototype.ngAfterViewInit = function () {
+        document.getElementById('profilemenu').scrollTop = 0;
+    };
     PmPhotosComponent.prototype.onBackPhotos = function () {
         this.onBack.emit([]);
     };

@@ -21,7 +21,6 @@ var HeaderComponent = (function () {
     }
     HeaderComponent.prototype.ngOnInit = function () { };
     HeaderComponent.prototype.DeselectMenus = function () {
-        this.isProfileActive = false;
         this.isDashboardActive = false;
         this.isTalkActive = false;
     };

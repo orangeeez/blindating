@@ -1,1 +1,38 @@
-﻿
+﻿#helper {
+    text-align: center;
+}
+#helper div {
+    padding-top: 5px;
+}
+#helper .row {
+    padding-top: 0;
+}
+#helper .col-md-12 {
+    padding: 0;
+}
+#helper .avatar-decoration {
+    height: 60px;
+    padding-top: 0;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+#helper .element {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+#helper .element:hover {
+    background-color: var(--main-border-color);
+    cursor: pointer;
+}
+.calling {
+    background-color: aqua;
+}
+.initiated {
+    background-color: aqua;
+}
+.denied {
+    background-color: lightcoral;
+}
+.disabled {
+    pointer-events: none;
+}

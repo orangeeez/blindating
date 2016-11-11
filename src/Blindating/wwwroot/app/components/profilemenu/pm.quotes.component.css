@@ -3,7 +3,7 @@
 }
 .quotes-content {
     margin-top: 30px;
-    margin-bottom: 29px;
+    margin-bottom: 29px;    
 }
 .header {
     z-index: 1000;
@@ -26,7 +26,7 @@
 }
 .quote-decoration {
     font-size: 16px;
-    border-left: 1px solid var(--main-aqua-color);
+    border-left: 0;
     border-bottom: 1px solid var(--main-border-color);
     margin-bottom: 0;
 }
@@ -113,4 +113,9 @@ form {
 }
 footer .alert {
     width: 67% !important;
+}
+.no-quotes {
+    color: var(--inactive-text-color);
+    text-align: center;
+    font-size: 18px;
 }

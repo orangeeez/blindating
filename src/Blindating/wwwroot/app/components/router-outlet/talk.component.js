@@ -21,7 +21,10 @@ var TalkComponent = (function () {
         this._router = _router;
         this.app = app;
     }
-    TalkComponent.prototype.ngOnInit = function () { };
+    TalkComponent.prototype.ngOnInit = function () {
+        this.app._header.DeselectMenus();
+        this.app._header.isTalkActive = true;
+    };
     TalkComponent = __decorate([
         core_1.Component({
             selector: 'talk-component',

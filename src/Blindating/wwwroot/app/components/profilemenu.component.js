@@ -44,7 +44,6 @@ var ProfilemenuComponent = (function () {
             selector: 'profilemenu-component',
             templateUrl: 'app/components/profilemenu.component.html',
             styleUrls: ['app/components/profilemenu.component.css'],
-            providers: [user_service_1.UserService],
             inputs: ['app']
         }), 
         __metadata('design:paramtypes', [user_service_1.UserService, core_2.CookieService, router_1.Router])

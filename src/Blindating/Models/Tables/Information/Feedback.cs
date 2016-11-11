@@ -7,21 +7,15 @@ using System.Threading.Tasks;
 
 namespace Blindating.Models.Tables
 {
-    public class Feedback
+    public class Feedback : IBaseModel
     {
         public int ID { get; set; }
         public int InformationFeedbackFK { get; set; }
         public string Text { get; set; }
-        public string Picture { get; set; }
-        public string Audio { get; set; }
-        public string Video { get; set; }
         public int RemoteUserID { get; set; }
-        public string RemoteUserName { get; set; }
-        public string RemoteUserLastname { get; set; }
-        public string RemoteJWT { get; set; }
+        public bool isPositive { get; set; }
         public virtual Information Information { get; set; }
-
-        [NotMapped]
-        public int UserID { get; set; }
+        [NotMapped] public int UserID { get; set; }
+        [NotMapped] public User RemoteUser { get; set; }
     }
 }

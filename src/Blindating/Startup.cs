@@ -31,11 +31,15 @@ namespace Blindating
         {
             services.AddDbContext<AppDBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddSingleton<IUserRepository, UserRepository>();
-            services.AddSingleton<IQuoteRepository, QuoteRepository>();
-            services.AddSingleton<IPreferenceRepository, PreferenceRepository>();
-            services.AddSingleton<IQuestionRepository, QuestionRepository>();
-            services.AddSingleton<IPhotoRepository, PhotoRepository>();
+            services.AddSingleton<IUserRepository,         UserRepository>();
+            services.AddSingleton<IQuoteRepository,        QuoteRepository>();
+            services.AddSingleton<IPreferenceRepository,   PreferenceRepository>();
+            services.AddSingleton<IQuestionRepository,     QuestionRepository>();
+            services.AddSingleton<IPhotoRepository,        PhotoRepository>();
+            services.AddSingleton<IDetailRepository,       DetailRepository>();
+            services.AddSingleton<IFeedbackRepository,     FeedbackRepository>();
+            services.AddSingleton<IConversationRepository, ConversationRepository>();
+
             services.AddMvc();
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, AppDBContext _context)

@@ -53,7 +53,6 @@ namespace Blindating.Models
                 .WithOne(i => i.Information)
                 .HasForeignKey(b => b.InformationConversationFK);
 
-
             modelBuilder.Entity<Information>()
                 .HasOne(p => p.Detail)
                 .WithOne(i => i.Information)

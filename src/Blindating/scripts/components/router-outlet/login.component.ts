@@ -89,7 +89,9 @@ export class LoginComponent implements OnInit {
         }
         else {
             this.app.user = user;
+            this.app.initializeWebRTC();
             this._cookieService.put('JWT', user.jwt);
+            this.app.isHelperShow = true;
             this.app.isHeaderShow = true;
             this._router.navigate(['/dashboard']);
         }

@@ -8,7 +8,6 @@ import { PmBasicComponent }  from '../components/profilemenu/pm.basic.component'
     selector:    'profilemenu-component',
     templateUrl: 'app/components/profilemenu.component.html',
     styleUrls:   ['app/components/profilemenu.component.css'],
-    providers:   [UserService],
     inputs:      ['app']
 })
 export class ProfilemenuComponent implements OnInit {

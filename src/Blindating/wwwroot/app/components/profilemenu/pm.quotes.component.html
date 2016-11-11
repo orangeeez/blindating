@@ -36,6 +36,7 @@
                     </footer>
                 </blockquote>
             </form>
+            <div *ngIf="quotes?.length == 0" class="no-quotes">No quotes yet</div>
             <blockquote *ngFor="let quote of quotes" class="quote-decoration">
                 <div *ngIf="!quote.isEditing">
                     <p>{{quote.content}}</p>

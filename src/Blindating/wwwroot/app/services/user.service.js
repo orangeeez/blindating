@@ -36,6 +36,10 @@ var UserService = (function (_super) {
     UserService.prototype.Logout = function (userID) {
         return this._http.post(config_1.API_ADDRESS + this.api + "/logout", userID, this.options);
     };
+    UserService.prototype.GetBy = function (field, value) {
+        return this._http.post(config_1.API_ADDRESS + this.api + "/getby", JSON.stringify({ field: field, value: value }), this.options)
+            .map(function (user) { return user.json()['result']; });
+    };
     UserService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

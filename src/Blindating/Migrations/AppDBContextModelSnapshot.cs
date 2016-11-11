@@ -39,13 +39,15 @@ namespace Blindating.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("End");
+                    b.Property<string>("Duration");
+
+                    b.Property<string>("End");
 
                     b.Property<int>("InformationConversationFK");
 
-                    b.Property<string>("JWT");
+                    b.Property<int>("RemoteUserID");
 
-                    b.Property<DateTime>("Start");
+                    b.Property<string>("Start");
 
                     b.HasKey("ID");
 
@@ -114,23 +116,13 @@ namespace Blindating.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Audio");
-
                     b.Property<int>("InformationFeedbackFK");
-
-                    b.Property<string>("Picture");
-
-                    b.Property<string>("RemoteJWT");
 
                     b.Property<int>("RemoteUserID");
 
-                    b.Property<string>("RemoteUserLastname");
-
-                    b.Property<string>("RemoteUserName");
-
                     b.Property<string>("Text");
 
-                    b.Property<string>("Video");
+                    b.Property<bool>("isPositive");
 
                     b.HasKey("ID");
 

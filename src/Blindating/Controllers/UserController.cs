@@ -29,6 +29,12 @@ namespace Blindating.Controllers
             return new JsonResult(Users.GetAll());
         }
         [HttpPost]
+        [ActionName("getby")]
+        public JsonResult Update([FromBody] dynamic condition)
+        {
+            return new JsonResult(Users.GetBy(condition));
+        }
+        [HttpPost]
         [ActionName("update")]
         public JsonResult Update([FromBody] User user)
         {

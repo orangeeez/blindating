@@ -17,6 +17,9 @@ var PmQuestionsComponent = (function () {
         this.isAddingQuestion = false;
     }
     PmQuestionsComponent.prototype.ngOnInit = function () { };
+    PmQuestionsComponent.prototype.ngAfterViewInit = function () {
+        document.getElementById('profilemenu').scrollTop = 0;
+    };
     PmQuestionsComponent.prototype.onBackQuestions = function () {
         this.onBack.emit([]);
     };
@@ -40,6 +43,7 @@ var PmQuestionsComponent = (function () {
     PmQuestionsComponent.prototype.onQuestionKeyup = function (event, isFormValid) {
         var _this = this;
         var key = event.which || event.keyCode;
+        console.log(this.app.selectedUser);
         switch (key) {
             case 13:
                 if (isFormValid) {

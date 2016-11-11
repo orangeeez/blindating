@@ -1,0 +1,64 @@
+﻿#feedback {
+    padding-bottom: 30px;
+    margin-top: 40px;
+}
+#feedback .col-md-12 {
+    padding: 0;
+}
+.feedbacks {
+    padding: 5px;
+}
+.feedbacks .col-md-12 {
+    padding-left: 5px;
+}
+.feedbacks .good {
+    border-left-color: var(--main-aqua-color);
+}
+.feedbacks blockquote {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+.feedbacks footer > a {
+    cursor: pointer;
+}
+.feedback-field {
+    position: fixed;
+    width: 30%;
+    bottom: 50px;
+    height: 20%;
+    border-top: 1px solid var(--main-border-color);
+    background-color: white;
+}
+.feedback-field .col-md-11 {
+    padding-right: 0;
+}
+.feedback-field .col-md-1 {
+    height: 100%;
+    padding: 0;
+    text-align: center;
+}
+.feedback-field i {
+    cursor: pointer;
+    padding-top: 5px;
+}
+.feedback-field textarea {
+    height: 100%;
+    width: 100%;
+    border: none;
+    border-right: 1px solid var(--main-border-color);
+    resize: none
+}
+.no-wishes {
+    color: var(--inactive-text-color);
+    text-align: center;
+    font-size: 18px;
+}
+.trash {
+    position: absolute;
+    top: 60%;
+    right: 5px;
+}
+.trash:hover {
+    cursor: pointer;
+    color: var(--invalid-color);
+}

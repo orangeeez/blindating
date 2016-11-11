@@ -2,7 +2,7 @@
 import { UserService }       from '../services/user.service';
 import { User }              from '../models/user';
 import { AppComponent }      from '../components/app.component';
-import { NOAVATAR }          from '../static/config'
+import { NOAVATAR }          from '../static/config';
 @Component({
     selector:    'header-component',
     templateUrl: 'app/components/header.component.html',
@@ -24,7 +24,6 @@ export class HeaderComponent implements OnInit {
     ngOnInit() { }
 
     public DeselectMenus(): void {
-        this.isProfileActive   = false;
         this.isDashboardActive = false;
         this.isTalkActive      = false;
     }

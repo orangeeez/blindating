@@ -33,6 +33,7 @@ namespace Blindating.Models.Repositories
                     user.JWT = Guid.NewGuid().ToString();
                     user.Information = new Information();
                     user.Information.Preference = new Preference();
+                    user.Information.Detail = new Detail();
 
                     _context.Users.Add(user);
                     await _context.SaveChangesAsync();
@@ -111,6 +112,26 @@ namespace Blindating.Models.Repositories
             using (AppDBContext _context = new AppDBContext())
             {
                 return await _context.Users.AnyAsync(u => u.Email == email && u.Password == password);
+            }
+        }
+
+        public async Task<User> GetBy(dynamic condition)
+        {
+            using (AppDBContext _context = new AppDBContext())
+            {
+                string field = condition.field;
+                string value = condition.value;
+                User user = null;
+                switch (field)
+                {
+                    case "JWT":
+                        user = await _context.Users.FirstOrDefaultAsync(u => u.JWT == value);
+                        break;
+                    case "ID":
+                        user = await _context.Users.FirstOrDefaultAsync(u => u.ID == int.Parse(value));
+                        break;
+                }
+                return user;
             }
         }
     }

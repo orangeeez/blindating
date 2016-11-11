@@ -22,6 +22,7 @@
                     Question must be at least 5 characters long
                 </div>
             </form>
+            <div *ngIf="questions?.length == 0" class="no-photos">No questions yet</div>
             <div *ngFor="let question of questions" class="question-decoration">
                 <div *ngIf="!question.isEditing">
                     <div>{{question.message}}</div>

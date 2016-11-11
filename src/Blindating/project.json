@@ -44,7 +44,6 @@
       "version": "1.0.0-preview2-final"
     },
     "Microsoft.EntityFrameworkCore.SqlServer": "1.0.1",
-    "System.Runtime": "4.1.0",
     "CoreCompat.System.Drawing": "1.0.0-beta006",
     "Microsoft.AspNetCore.Http.Extensions": "1.1.0-preview1-final" 
   },

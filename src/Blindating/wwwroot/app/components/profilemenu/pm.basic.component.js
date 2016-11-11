@@ -15,19 +15,21 @@ var quote_service_1 = require('../../services/information/quote.service');
 var preference_service_1 = require('../../services/information/preference.service');
 var question_service_1 = require('../../services/information/question.service');
 var photo_service_1 = require('../../services/information/photo.service');
+var conversation_service_1 = require('../../services/information/conversation.service');
 var preference_1 = require('../../models/preference');
 var countries_1 = require('../../static/countries');
 var config_1 = require('../../static/config');
 var ng2_file_upload_1 = require('ng2-file-upload/ng2-file-upload');
 var URL = 'http://localhost:5000/api/user/photo/addbyjwt';
 var PmBasicComponent = (function () {
-    function PmBasicComponent(_userService, _quoteService, _preferenceService, _questionService, _photoService, _router) {
+    function PmBasicComponent(_userService, _quoteService, _preferenceService, _questionService, _photoService, _conversationService, _router) {
         var _this = this;
         this._userService = _userService;
         this._quoteService = _quoteService;
         this._preferenceService = _preferenceService;
         this._questionService = _questionService;
         this._photoService = _photoService;
+        this._conversationService = _conversationService;
         this._router = _router;
         this.noavatar = config_1.NOAVATAR;
         this.uploader = new ng2_file_upload_1.FileUploader({ url: URL });
@@ -40,6 +42,7 @@ var PmBasicComponent = (function () {
         this.quotes = new Array();
         this.questions = new Array();
         this.photos = new Array();
+        this.conversations = new Array();
         this.preferences = new preference_1.Preference();
         this.genders = ['Man', 'Woman ', 'Anyway'];
         this.ages = Array.from(Array(80).keys()).slice(16, 80);
@@ -51,10 +54,11 @@ var PmBasicComponent = (function () {
         this.isOpenQuotes = false;
         this.isOpenQuestions = false;
         this.isOpenPhotos = false;
+        this.isOpenConversations = false;
         this.isQuotesArrowShow = false;
         this.isPhotosArrowShow = false;
         this.isQuestionsArrowShow = false;
-        this.isTalksArrowShow = false;
+        this.isConversationsArrowShow = false;
         this.filterInputDropdownCountry = function (country) {
             return country.includes(_this.preferences.country);
         };
@@ -83,6 +87,8 @@ var PmBasicComponent = (function () {
                 .subscribe(function (questions) { return _this.questions = questions.reverse(); });
             this._photoService.GetAllByID(this.app.selectedUser.id)
                 .subscribe(function (photos) { return _this.photos = photos.reverse(); });
+            this._conversationService.GetAllByID(this.app.selectedUser.id)
+                .subscribe(function (conversations) { return _this.conversations = conversations.reverse(); });
         }
     };
     PmBasicComponent.prototype.onFocusoutName = function () {
@@ -162,8 +168,8 @@ var PmBasicComponent = (function () {
             case 'questions':
                 this.isQuestionsArrowShow = value;
                 break;
-            case 'talks':
-                this.isTalksArrowShow = value;
+            case 'conversations':
+                this.isConversationsArrowShow = value;
                 break;
         }
     };
@@ -179,6 +185,10 @@ var PmBasicComponent = (function () {
         this.isOpenPhotos = true;
         this.isPhotosArrowShow = true;
     };
+    PmBasicComponent.prototype.onOpenConversations = function () {
+        this.isOpenConversations = true;
+        this.isConversationsArrowShow = true;
+    };
     PmBasicComponent.prototype.onBackQuotes = function () {
         this.isOpenQuotes = false;
     };
@@ -188,6 +198,9 @@ var PmBasicComponent = (function () {
     PmBasicComponent.prototype.onBackPhotos = function () {
         this.isOpenPhotos = false;
     };
+    PmBasicComponent.prototype.onBackConversations = function () {
+        this.isOpenConversations = false;
+    };
     PmBasicComponent = __decorate([
         core_1.Component({
             selector: 'pm-basic-component',
@@ -195,7 +208,7 @@ var PmBasicComponent = (function () {
             styleUrls: ['app/components/profilemenu/pm.basic.component.css'],
             inputs: ['app', 'selectedUser']
         }), 
-        __metadata('design:paramtypes', [user_service_1.UserService, quote_service_1.QuoteService, preference_service_1.PreferenceService, question_service_1.QuestionService, photo_service_1.PhotoService, router_1.Router])
+        __metadata('design:paramtypes', [user_service_1.UserService, quote_service_1.QuoteService, preference_service_1.PreferenceService, question_service_1.QuestionService, photo_service_1.PhotoService, conversation_service_1.ConversationService, router_1.Router])
     ], PmBasicComponent);
     return PmBasicComponent;
 }());

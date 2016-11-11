@@ -19,7 +19,6 @@ import { NOAVATAR }      from '../../static/config'
 })
 export class DashboardComponent implements OnInit {
     public app:      AppComponent;
-    public noavatar: string = NOAVATAR;
 
     constructor(
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
@@ -35,6 +34,7 @@ export class DashboardComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.app._header.DeselectMenus();
         this.app._header.isDashboardActive = true;
         this._userService.GetAll()
             .subscribe(users => {

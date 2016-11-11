@@ -41,7 +41,6 @@ namespace NetCoreAngular2.Models.Repositories
                 return true;
             }
         }
-
         public async Task<bool> Update(T entity)
         {
             using (AppDBContext _context = new AppDBContext())
