@@ -12,11 +12,21 @@ using Microsoft.EntityFrameworkCore;
 using Blindating.Models.Interfaces;
 using Blindating.Models.Repositories;
 using NetCoreAngular2.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using NetCoreAngular2.Controllers.Utils;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Blindating
 {
     public class Startup
     {
+        const string TokenAudience     = "Audience";
+        const string TokenIssuer       = "Issuer";
+        private const string SecretKey = "needtogetthisfromenvironment";
+        private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
+        private TokenAuthOptions tokenOptions;
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -29,6 +39,13 @@ namespace Blindating
         public IConfigurationRoot Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
+            tokenOptions = new TokenAuthOptions()
+            {
+                Audience = TokenAudience,
+                Issuer = TokenIssuer,
+                SigningKey = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256)
+        };
+
             services.AddDbContext<AppDBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddSingleton<IUserRepository,         UserRepository>();
@@ -39,14 +56,47 @@ namespace Blindating
             services.AddSingleton<IDetailRepository,       DetailRepository>();
             services.AddSingleton<IFeedbackRepository,     FeedbackRepository>();
             services.AddSingleton<IConversationRepository, ConversationRepository>();
-
             services.AddMvc();
+
+            services.AddSingleton(tokenOptions);
+
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
+                    .RequireAuthenticatedUser().Build());
+            });
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, AppDBContext _context)
         {
             //DbInitializer.Initialize(_context);
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                // The signing key must match!
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = _signingKey,
+
+                // Validate the JWT Issuer (iss) claim
+                ValidateIssuer = true,
+                ValidIssuer = TokenIssuer,
+
+                // Validate the JWT Audience (aud) claim
+                ValidateAudience = true,
+                ValidAudience = TokenAudience,
+
+                // Validate the token expiry
+                ValidateLifetime = false,
+            };
+
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
+            {
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                TokenValidationParameters = tokenValidationParameters
+            });
 
             app.UseDefaultFiles();
             app.UseStaticFiles();

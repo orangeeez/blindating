@@ -42,6 +42,7 @@ var focus_directive_1 = require('./directives/focus.directive');
 var ng2_file_upload_1 = require('ng2-file-upload/ng2-file-upload');
 var slice_pipe_1 = require('./pipes/slice.pipe');
 var hasproperty_pipe_1 = require('./pipes/hasproperty.pipe');
+var angular2_jwt_1 = require('angular2-jwt');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -77,6 +78,7 @@ var AppModule = (function () {
             ],
             bootstrap: [app_component_1.AppComponent],
             providers: [
+                angular2_jwt_1.AUTH_PROVIDERS,
                 user_service_1.UserService,
                 cookies_service_1.CookieService,
                 quote_service_1.QuoteService,

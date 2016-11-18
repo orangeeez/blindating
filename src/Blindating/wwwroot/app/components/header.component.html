@@ -5,7 +5,7 @@
                 isProfileActive = (isProfileActive == false ? true : false);">
 
         <img *ngIf="app.user" class="avatar-decoration" 
-             [src]="app.user.image || noavatar">
+             [src]="app.user.image">
     </a>
     <p class="navbar-text navbar-right navbar-text-decoration"
        routerLink="/dashboard"

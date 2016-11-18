@@ -10,11 +10,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var user_service_1 = require('../services/user.service');
-var config_1 = require('../static/config');
 var HeaderComponent = (function () {
     function HeaderComponent(_userService) {
         this._userService = _userService;
-        this.noavatar = config_1.NOAVATAR;
         this.isProfileActive = false;
         this.isDashboardActive = false;
         this.isTalkActive = false;

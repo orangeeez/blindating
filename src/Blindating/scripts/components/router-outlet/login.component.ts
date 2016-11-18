@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
     }
 
     public ngOnInit() {
-        this.JWT = this._cookieService.get('JWT');
+        this.JWT = localStorage.getItem('id_token');
 
         if (this.JWT) this.Login();
     }
@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit {
         this.alert.reason = response['Text'];
 
         if (response['Text'] == User.REGISTERED_SUCCESSFULLY) {
-            this._cookieService.put('JWT', response['JWT']);
+            localStorage.setItem('id_token', response['JWT']);
             this.JWT = response['JWT'];
             this.Login();
         }
@@ -90,10 +90,10 @@ export class LoginComponent implements OnInit {
         else {
             this.app.user = user;
             this.app.initializeWebRTC();
-            this._cookieService.put('JWT', user.jwt);
             this.app.isHelperShow = true;
             this.app.isHeaderShow = true;
             this._router.navigate(['/dashboard']);
+            localStorage.setItem('id_token', user.jwt);
         }
     }
 }

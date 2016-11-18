@@ -4,11 +4,13 @@ import { Observable }                              from 'rxjs/Observable';
 import { User }                                    from '../../models/user';
 import { API_ADDRESS }                             from '../../static/config';
 import { BaseService }                             from '../../services/base.service';
+import { AuthHttp }                                from 'angular2-jwt';
 import                                                  'rxjs/add/operator/map';
 import                                                  'rxjs/add/operator/catch';
 @Injectable()
 export class DetailService extends BaseService {
-    constructor(public _http: Http) {
-        super(_http, 'api/user/detail');
+    constructor(public _http: Http,
+                public _authHttp: AuthHttp) {
+        super(_http, _authHttp, 'api/user/detail');
     }
 }

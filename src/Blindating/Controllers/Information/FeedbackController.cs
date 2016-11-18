@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Blindating.Models.Interfaces;
 using Blindating.Models.Tables;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NetCoreAngular2.Controllers
 {
@@ -17,36 +18,42 @@ namespace NetCoreAngular2.Controllers
         {
             Feedbacks = feedbacks;
         }
+        [Authorize("Bearer")]
         [HttpGet]
         [ActionName("getall")]
         public JsonResult GetAll()
         {
             return new JsonResult(Feedbacks.GetAll());
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("getallbyid")]
         public JsonResult GetAllByID([FromBody] int userID)
         {
             return new JsonResult(Feedbacks.GetAllByID(userID));
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("update")]
         public JsonResult Update([FromBody] Feedback feedback)
         {
             return new JsonResult(Feedbacks.Update(feedback));
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("add")]
         public JsonResult Add([FromBody] Feedback feedback)
         {
             return new JsonResult(Feedbacks.Add(feedback));
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("addother")]
         public JsonResult AddOther([FromBody] Feedback feedback)
         {
             return new JsonResult(Feedbacks.AddOther(feedback));
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("remove")]
         public JsonResult Remove([FromBody] Feedback feedback)

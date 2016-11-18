@@ -17,13 +17,15 @@ var http_1 = require('@angular/http');
 var core_1 = require('@angular/core');
 var config_1 = require('../static/config');
 var base_service_1 = require('../services/base.service');
+var angular2_jwt_1 = require('angular2-jwt');
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/catch');
 var UserService = (function (_super) {
     __extends(UserService, _super);
-    function UserService(_http) {
-        _super.call(this, _http, 'api/user');
+    function UserService(_http, _authHttp) {
+        _super.call(this, _http, _authHttp, 'api/user');
         this._http = _http;
+        this._authHttp = _authHttp;
     }
     UserService.prototype.Register = function (user) {
         return this._http.post(config_1.API_ADDRESS + this.api + "/register", JSON.stringify(user), this.options)
@@ -34,15 +36,15 @@ var UserService = (function (_super) {
             .map(function (user) { return user.json()['result']; });
     };
     UserService.prototype.Logout = function (userID) {
-        return this._http.post(config_1.API_ADDRESS + this.api + "/logout", userID, this.options);
+        return this._authHttp.post(config_1.API_ADDRESS + this.api + "/logout", userID, this.options);
     };
     UserService.prototype.GetBy = function (field, value) {
-        return this._http.post(config_1.API_ADDRESS + this.api + "/getby", JSON.stringify({ field: field, value: value }), this.options)
+        return this._authHttp.post(config_1.API_ADDRESS + this.api + "/getby", JSON.stringify({ field: field, value: value }), this.options)
             .map(function (user) { return user.json()['result']; });
     };
     UserService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
+        __metadata('design:paramtypes', [http_1.Http, angular2_jwt_1.AuthHttp])
     ], UserService);
     return UserService;
 }(base_service_1.BaseService));

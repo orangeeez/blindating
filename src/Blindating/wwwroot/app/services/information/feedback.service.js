@@ -17,21 +17,23 @@ var http_1 = require('@angular/http');
 var core_1 = require('@angular/core');
 var config_1 = require('../../static/config');
 var base_service_1 = require('../../services/base.service');
+var angular2_jwt_1 = require('angular2-jwt');
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/catch');
 var FeedbackService = (function (_super) {
     __extends(FeedbackService, _super);
-    function FeedbackService(_http) {
-        _super.call(this, _http, 'api/user/feedback');
+    function FeedbackService(_http, _authHttp) {
+        _super.call(this, _http, _authHttp, 'api/user/feedback');
         this._http = _http;
+        this._authHttp = _authHttp;
     }
     FeedbackService.prototype.AddOther = function (entity) {
-        return this._http.post(config_1.API_ADDRESS + this.api + "/addother", JSON.stringify(entity), this.options)
+        return this._authHttp.post(config_1.API_ADDRESS + this.api + "/addother", JSON.stringify(entity), this.options)
             .map(function (users) { return users.json()['result']; });
     };
     FeedbackService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
+        __metadata('design:paramtypes', [http_1.Http, angular2_jwt_1.AuthHttp])
     ], FeedbackService);
     return FeedbackService;
 }(base_service_1.BaseService));

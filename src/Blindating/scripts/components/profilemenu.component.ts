@@ -35,7 +35,8 @@ export class ProfilemenuComponent implements OnInit {
         this.app.isHeaderShow = false;
         this.app._profilemenu.ToggleState();
         this.app._header.DeselectMenus();
-        this._cookieService.remove('JWT');
+        this.app._header.isProfileActive = false;
+        localStorage.removeItem('id_token');
         this._router.navigate(['/login']);
     }
 

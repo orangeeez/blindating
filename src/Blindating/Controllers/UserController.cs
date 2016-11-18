@@ -10,6 +10,11 @@ using Blindating.Models.Tables;
 using Blindating.Models.Interfaces;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json.Linq;
+using NetCoreAngular2.Controllers.Utils;
+using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Principal;
 
 namespace Blindating.Controllers
 {
@@ -18,23 +23,30 @@ namespace Blindating.Controllers
     public class UserController : Controller
     {
         public IUserRepository Users { get; set; }
-        public UserController([FromServices] IUserRepository users)
+        public TokenAuthOptions TokenOptions { get; set; }
+
+        public UserController([FromServices] IUserRepository users,
+                              [FromServices] TokenAuthOptions tokenOptions)
         {
             Users = users;
+            TokenOptions = tokenOptions;
         }
         [HttpGet]
+        [Authorize("Bearer")]
         [ActionName("getall")]
         public JsonResult GetAll()
         {
             return new JsonResult(Users.GetAll());
         }
         [HttpPost]
+        [Authorize("Bearer")]
         [ActionName("getby")]
-        public JsonResult Update([FromBody] dynamic condition)
+        public JsonResult GetBy([FromBody] dynamic condition)
         {
             return new JsonResult(Users.GetBy(condition));
         }
         [HttpPost]
+        [Authorize("Bearer")]
         [ActionName("update")]
         public JsonResult Update([FromBody] User user)
         {
@@ -44,7 +56,8 @@ namespace Blindating.Controllers
         [ActionName("register")]
         public JsonResult Register([FromBody] User user)
         {
-            return new JsonResult(Users.Register(user));
+            string JWT = TokenAuth.CreateToken(TokenOptions, user.Email);
+            return new JsonResult(Users.Register(user, JWT));
         }
         [HttpPost]
         [ActionName("login")]
@@ -53,6 +66,7 @@ namespace Blindating.Controllers
             return new JsonResult(Users.Login(auth));
         }
         [HttpPost]
+        [Authorize("Bearer")]
         [ActionName("logout")]
         public void Logout([FromBody] int userID)
         {

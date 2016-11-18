@@ -10,7 +10,6 @@ import { CookieService } from 'angular2-cookie/core';
 import { UserService }   from '../../services/user.service';
 import { User }          from '../../models/user';
 import { AppComponent }  from '../../components/app.component';
-import { NOAVATAR }      from '../../static/config'
 @Component({
     selector: 'dashboard-component',
     templateUrl: 'app/components/router-outlet/dashboard.component.html',

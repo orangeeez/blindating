@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.Drawing;
 using System.Threading;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NetCoreAngular2.Controllers
 {
@@ -29,36 +30,42 @@ namespace NetCoreAngular2.Controllers
             Environment = environment;
             Photos = photos;
         }
+        [Authorize("Bearer")]
         [HttpGet]
         [ActionName("getall")]
         public JsonResult GetAll()
         {
             return new JsonResult(Photos.GetAll());
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("getallbyid")]
         public JsonResult GetAllByID([FromBody] int userID)
         {
             return new JsonResult(Photos.GetAllByID(userID));
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("getlast")]
         public JsonResult GetLast([FromBody] int userID)
         {
             return new JsonResult(Photos.GetLast(userID));
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("getlastcount")]
         public JsonResult GetLast([FromBody] dynamic data)
         {
             return new JsonResult(Photos.GetLastCount(data));
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("add")]
         public JsonResult Add([FromBody] Photo photo)
         {
             return new JsonResult(Photos.Add(photo));
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("addbyjwt")]
         public async Task<string> AddByJWT()
@@ -83,12 +90,14 @@ namespace NetCoreAngular2.Controllers
             }
             return null;
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("update")]
         public JsonResult Update([FromBody] Photo photo)
         {
             return new JsonResult(Photos.Update(photo));
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("remove")]
         public JsonResult Remove([FromBody] Photo photo)

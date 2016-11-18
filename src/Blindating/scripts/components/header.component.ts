@@ -2,7 +2,6 @@
 import { UserService }       from '../services/user.service';
 import { User }              from '../models/user';
 import { AppComponent }      from '../components/app.component';
-import { NOAVATAR }          from '../static/config';
 @Component({
     selector:    'header-component',
     templateUrl: 'app/components/header.component.html',
@@ -12,7 +11,6 @@ import { NOAVATAR }          from '../static/config';
 })
 export class HeaderComponent implements OnInit {
     public app:      AppComponent;
-    public noavatar: string = NOAVATAR;
 
     public isProfileActive:   boolean = false;
     public isDashboardActive: boolean = false;

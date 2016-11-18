@@ -1,4 +1,7 @@
 ﻿<div *ngIf="app.isHelperShow" class="container-fluid" id="helper">
+    <audio autoplay
+           [hidden]="true"
+           [srcObject]="app.stream?.mediaStream"></audio>
     <div class="row">
         <div class="col-md-12">
             <div *ngIf="app.communicationState == 'calling'          ||
@@ -21,13 +24,18 @@
                         app.communicationState == 'calling'" class="element"
                  [class.disabled]="isPhoneDisabled"
                  (click)="onInviteAcceptCall()">
-                <img [src]="phoneIcon" />
+                <img [src]="phoneIcon" class="icon" />
             </div>
             <div *ngIf="app.communicationState == 'calling'          ||
                         app.communicationState == 'initiatedCalling' ||
                         app.communicationState == 'initiatedCaller'" class="element"
                  (click)="onDenyCall()">
-                <img [src]="hangupIcon" />
+                <img [src]="hangupIcon" class="icon" />
+            </div>
+            <div *ngIf="app.communicationState == 'initiatedCalling' ||
+                        app.communicationState == 'initiatedCaller'" class="element"
+                 (click)="onEnableVideo()">
+                <img [src]="videoIcon" class="icon" />
             </div>
         </div>
     </div>

@@ -20,7 +20,8 @@ gulp.task('restore', function () {
         'node_modules/moment/moment.js',
         'node_modules/jwt-simple/lib/jwt.js',
         'node_modules/angular2-cookie/**/*',
-        'node_modules/photoswipe/dist/**/*'
+        'node_modules/photoswipe/dist/**/*',
+        'node_modules/angular2-jwt/**/*'
     ],  {
             base: 'node_modules'
         }).pipe(gulp.dest('./wwwroot/libs'));

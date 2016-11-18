@@ -32,7 +32,7 @@ var LoginComponent = (function () {
             _this.alert.show = true;
             _this.alert.reason = response['Text'];
             if (response['Text'] == user_1.User.REGISTERED_SUCCESSFULLY) {
-                _this._cookieService.put('JWT', response['JWT']);
+                localStorage.setItem('id_token', response['JWT']);
                 _this.JWT = response['JWT'];
                 _this.Login();
             }
@@ -48,16 +48,16 @@ var LoginComponent = (function () {
             else {
                 _this.app.user = user;
                 _this.app.initializeWebRTC();
-                _this._cookieService.put('JWT', user.jwt);
                 _this.app.isHelperShow = true;
                 _this.app.isHeaderShow = true;
                 _this._router.navigate(['/dashboard']);
+                localStorage.setItem('id_token', user.jwt);
             }
         };
         this.app = app;
     }
     LoginComponent.prototype.ngOnInit = function () {
-        this.JWT = this._cookieService.get('JWT');
+        this.JWT = localStorage.getItem('id_token');
         if (this.JWT)
             this.Login();
     };

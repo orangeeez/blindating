@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Blindating.Models.Interfaces;
 using Blindating.Models.Tables;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NetCoreAngular2.Controllers
 {
@@ -17,36 +18,42 @@ namespace NetCoreAngular2.Controllers
         {
             Preferences = preferences;
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("getcities")]
         public JsonResult GetCities([FromBody] string country)
         {
             return new JsonResult(Preferences.GetCities(country));
         }
+        [Authorize("Bearer")]
         [HttpGet]
         [ActionName("getall")]
         public JsonResult GetAll()
         {
             return new JsonResult(Preferences.GetAll());
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("getallbyid")]
         public JsonResult GetAllByID([FromBody] int userID)
         {
             return new JsonResult(Preferences.GetAllByID(userID));
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("update")]
         public JsonResult Update([FromBody] Preference preference)
         {
             return new JsonResult(Preferences.Update(preference));
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("add")]
         public JsonResult Add([FromBody] Preference preference)
         {
             return new JsonResult(Preferences.Add(preference));
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("remove")]
         public JsonResult Remove([FromBody] Preference preference)

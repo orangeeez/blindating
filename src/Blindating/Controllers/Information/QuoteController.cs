@@ -12,6 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NetCoreAngular2.Controllers
 {
@@ -24,30 +25,35 @@ namespace NetCoreAngular2.Controllers
         {
             Quotes = quotes;
         }
+        [Authorize("Bearer")]
         [HttpGet]
         [ActionName("getall")]
         public JsonResult GetAll()
         {
             return new JsonResult(Quotes.GetAll());
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("getallbyid")]
         public JsonResult GetAllByID([FromBody] int userID)
         {
             return new JsonResult(Quotes.GetAllByID(userID));
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("add")]
         public JsonResult Add([FromBody] Quote quote)
         {
             return new JsonResult(Quotes.Add(quote));
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("update")]
         public JsonResult Update([FromBody] Quote quote)
         {
             return new JsonResult(Quotes.Update(quote));
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("remove")]
         public JsonResult Remove([FromBody] Quote quote)

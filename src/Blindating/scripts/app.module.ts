@@ -32,6 +32,10 @@ import { FocusDirective }           from './directives/focus.directive';
 import { FileSelectDirective }      from 'ng2-file-upload/ng2-file-upload';
 import { SlicePipe }                from './pipes/slice.pipe';
 import { HasPropertyPipe }          from './pipes/hasproperty.pipe';
+import {
+    AUTH_PROVIDERS,
+    provideAuth
+}                                   from 'angular2-jwt';
 
 @NgModule({
     imports: [
@@ -64,6 +68,7 @@ import { HasPropertyPipe }          from './pipes/hasproperty.pipe';
     ],
     bootstrap: [AppComponent],
     providers: [
+        AUTH_PROVIDERS,
         UserService,
         CookieService,
         QuoteService,

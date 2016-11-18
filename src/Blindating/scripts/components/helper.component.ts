@@ -6,7 +6,9 @@ import {
     HANGUP,
     HANGUP_INACTIVE,
     PHONE,
-    PHONE_INACTIVE
+    PHONE_INACTIVE,
+    VIDEO,
+    VIDEO_INACTIVE
 }                       from '../static/config';
 import { AppComponent } from '../components/app.component';
 import { UserService }  from '../services/user.service';
@@ -21,6 +23,7 @@ export class HelperComponent implements OnInit {
 
     public phoneIcon:  string = PHONE;
     public hangupIcon: string = HANGUP;
+    public videoIcon:  string = VIDEO;
 
     public isCalling:       boolean = true;
     public isCallInitiated: boolean = false;
@@ -59,11 +62,13 @@ export class HelperComponent implements OnInit {
             setTimeout(this.app.disapearCall, 2000);
         }
 
-        if (this.app.communicationState == 'initiatedCalling')
-            this.app.user.peer.stop(this.app.callerUser.jwt);
+        if (this.app.communicationState == 'initiatedCalling') {
+            this.denyCall(this.app.callerUser.jwt);
+        }
 
-        if (this.app.communicationState == 'initiatedCaller')
-            this.app.user.peer.stop(this.app.callingUser.jwt);
+        if (this.app.communicationState == 'initiatedCaller') {
+            this.denyCall(this.app.callingUser.jwt);
+        }
     }
 
     public onCallingBlink = (): void => {
@@ -71,5 +76,10 @@ export class HelperComponent implements OnInit {
             this.isCalling = false;
         else
             this.isCalling = true;
+    }
+
+    private denyCall = (jwt: string) => {
+        this.app.stream.close();
+        this.app.user.peer.stop(jwt);
     }
 }

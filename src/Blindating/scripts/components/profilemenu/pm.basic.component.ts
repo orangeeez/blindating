@@ -20,7 +20,6 @@ import { Conversation }        from '../../models/conversation';
 import { AppComponent }        from '../../components/app.component';
 import { SlicePipe }           from '../../pipes/slice.pipe';
 import { COUNTRIES }           from '../../static/countries';
-import { NOAVATAR }            from '../../static/config'
 import {
     FileUploader, 
     Headers 
@@ -35,21 +34,20 @@ const URL = 'http://localhost:5000/api/user/photo/addbyjwt';
 export class PmBasicComponent implements OnInit, OnChanges {
     public CITIES:                   Array<string>;
     public app:                      AppComponent;
-    public noavatar:                 string = NOAVATAR;
     public uploader:                 FileUploader = new FileUploader({ url: URL });
-    public header:                   Headers = { name: 'Uploader', value: 'basic' };
+    public header:                   Headers      = { name: 'Uploader', value: 'basic' };
     public defaultQuote:             string = 'Please add your favorite quote here';
     public defaultQuoteNotYou:       string = 'User does not add quote yet';
     public defaultQuestion:          string = 'Please add your question to others here';
     public defaultQuestionNotYou:    string = 'User does not add question to others yet';
 
-    public defaultAuthor:      string = 'By Author';
+    public defaultAuthor: string = 'By Author';
 
-    public quotes:      Array<Quote>    = new Array<Quote>();
-    public questions:   Array<Question> = new Array<Question>();
-    public photos:      Array<Photo>    = new Array<Photo>();
-    public conversations:       Array<any>      = new Array<Conversation>();
-    public preferences: Preference      = new Preference();
+    public quotes:        Array<Quote>    = new Array<Quote>();
+    public questions:     Array<Question> = new Array<Question>();
+    public photos:        Array<Photo>    = new Array<Photo>();
+    public conversations: Array<any>      = new Array<Conversation>();
+    public preferences:   Preference      = new Preference();
 
     public genders:       Array<string> = ['Man', 'Woman ', 'Anyway'];
     public ages:          Array<number> = Array.from(Array(80).keys()).slice(16, 80);

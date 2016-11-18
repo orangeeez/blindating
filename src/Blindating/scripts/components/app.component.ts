@@ -53,6 +53,7 @@ export class AppComponent implements OnInit {
 
     public server:   string  = 'http://192.168.0.114:8095';
     public stun:     string  = 'stun:stun.l.google.com:19302';
+    public stream:    any;
 
     public user:         User;
     public users:        User[];
@@ -107,15 +108,19 @@ export class AppComponent implements OnInit {
             host: this.server, token: this.user.jwt
         });
 
-        this.user.peer.on('chat-invited', this.onUserCalling);
+        this.user.peer.on('chat-invited',   this.onUserCalling);
 
-        this.user.peer.on('data-received', this.onDataReceived);
+        this.user.peer.on('data-received',  this.onDataReceived);
 
-        this.user.peer.on('chat-started', this.onCallStarted);
+        this.user.peer.on('chat-started',   this.onCallStarted);
 
-        this.user.peer.on('chat-stopped', this.onCallStopped);
+        this.user.peer.on('chat-stopped',   this.onCallStopped);
 
-        this.user.peer.on('chat-denied', this.onCallDenied);
+        this.user.peer.on('chat-denied',    this.onCallDenied);
+
+        this.user.peer.on('stream-added',   this.onStreamAdded);
+
+        this.user.peer.on('stream-removed', this.onStreamRemoved)
     }
 
     private onUserCalling = (e): void => {
@@ -134,6 +139,10 @@ export class AppComponent implements OnInit {
     private onCallStarted = (e): void => {
         if (this.communicationState == 'caller') {
             this.communicationState = 'initiatedCaller';
+
+            Woogeen.LocalStream.create({
+                audio: true
+            }, this.onCreateStream);
         }
 
         this._router.navigate(['/talk']);
@@ -142,9 +151,18 @@ export class AppComponent implements OnInit {
         clearInterval(this._helper.intervalCalling);
     }
 
+    private onCreateStream = (err, stream) => {
+        this.stream = stream;
+        this.user.peer.publish(this.stream, this.callingUser.jwt);
+    }
+
     private onCallStopped = (e): void => {
         this._helper.isCallInitiated = false;
         this._helper.isCallDenied = true;
+
+        this.stream.close();
+        this.stream = undefined;
+
         setTimeout(this.disapearCall, 2000);
 
         this._conversationService.Add(this.createConversation()).subscribe();
@@ -154,6 +172,12 @@ export class AppComponent implements OnInit {
         this._helper.isCallDenied = true;
         setTimeout(this.disapearCall, 2000);
     }
+
+    private onStreamAdded = (e): void => {
+        this.stream = e.stream;
+    } 
+
+    private onStreamRemoved = (e): void => { }
 
     public disapearCall = (): void => {
         this.callerUser           = null;

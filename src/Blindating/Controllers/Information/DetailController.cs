@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Blindating.Models.Interfaces;
 using Blindating.Models.Tables;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NetCoreAngular2.Controllers
 {
@@ -17,6 +18,7 @@ namespace NetCoreAngular2.Controllers
         {
             Details = details;
         }
+        [Authorize("Bearer")]
         [HttpGet]
         [ActionName("getall")]
         public JsonResult GetAll()
@@ -29,18 +31,21 @@ namespace NetCoreAngular2.Controllers
         {
             return new JsonResult(Details.GetAllByID(userID));
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("update")]
         public JsonResult Update([FromBody] Detail detail)
         {
             return new JsonResult(Details.Update(detail));
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("add")]
         public JsonResult Add([FromBody] Detail detail)
         {
             return new JsonResult(Details.Add(detail));
         }
+        [Authorize("Bearer")]
         [HttpPost]
         [ActionName("remove")]
         public JsonResult Remove([FromBody] Detail detail)

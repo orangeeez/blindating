@@ -12,8 +12,7 @@ import { AppComponent }  from '../../components/app.component';
 @Component({
     selector:    'talk-component',
     templateUrl: 'app/components/router-outlet/talk.component.html',
-    styleUrls: ['app/components/router-outlet/talk.component.css'],
-    providers: [UserService]
+    styleUrls: ['app/components/router-outlet/talk.component.css']
 })
 export class TalkComponent implements OnInit {
     public app: AppComponent;

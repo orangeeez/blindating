@@ -16,17 +16,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var http_1 = require('@angular/http');
 var core_1 = require('@angular/core');
 var base_service_1 = require('../../services/base.service');
+var angular2_jwt_1 = require('angular2-jwt');
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/catch');
 var DetailService = (function (_super) {
     __extends(DetailService, _super);
-    function DetailService(_http) {
-        _super.call(this, _http, 'api/user/detail');
+    function DetailService(_http, _authHttp) {
+        _super.call(this, _http, _authHttp, 'api/user/detail');
         this._http = _http;
+        this._authHttp = _authHttp;
     }
     DetailService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
+        __metadata('design:paramtypes', [http_1.Http, angular2_jwt_1.AuthHttp])
     ], DetailService);
     return DetailService;
 }(base_service_1.BaseService));

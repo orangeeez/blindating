@@ -17,21 +17,23 @@ var http_1 = require('@angular/http');
 var core_1 = require('@angular/core');
 var config_1 = require('../../static/config');
 var base_service_1 = require('../base.service');
+var angular2_jwt_1 = require('angular2-jwt');
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/catch');
 var PreferenceService = (function (_super) {
     __extends(PreferenceService, _super);
-    function PreferenceService(_http) {
-        _super.call(this, _http, 'api/user/preference');
+    function PreferenceService(_http, _authHttp) {
+        _super.call(this, _http, _authHttp, 'api/user/preference');
         this._http = _http;
+        this._authHttp = _authHttp;
     }
     PreferenceService.prototype.GetCities = function (country) {
-        return this._http.post(config_1.API_ADDRESS + this.api + "/getcities", JSON.stringify(country), this.options)
+        return this._authHttp.post(config_1.API_ADDRESS + this.api + "/getcities", JSON.stringify(country), this.options)
             .map(function (result) { return result.json()['result']; });
     };
     PreferenceService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
+        __metadata('design:paramtypes', [http_1.Http, angular2_jwt_1.AuthHttp])
     ], PreferenceService);
     return PreferenceService;
 }(base_service_1.BaseService));

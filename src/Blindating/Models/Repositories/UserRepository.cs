@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using NetCoreAngular2.Models.Repositories;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
+using System.Collections.Generic;   
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,7 +18,7 @@ namespace Blindating.Models.Repositories
         {
             _context = context;
         }
-        public async Task<dynamic> Register(User user)
+        public async Task<dynamic> Register(User user, string JWT)
         {
             using (AppDBContext _context = new AppDBContext())
             {
@@ -30,7 +30,8 @@ namespace Blindating.Models.Repositories
                 }
                 else
                 {
-                    user.JWT = Guid.NewGuid().ToString();
+                    user.JWT = JWT;
+                    user.Image = "images/users/no-avatar.png";
                     user.Information = new Information();
                     user.Information.Preference = new Preference();
                     user.Information.Detail = new Detail();

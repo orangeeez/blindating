@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Blindating.Models.Interfaces
 {
     public interface IUserRepository : IBaseRepository<User> {
-        Task<dynamic> Register(User user);
+        Task<dynamic> Register(User user, string JWT);
         Task<User> Login(string auth);
         Task<User> GetBy(dynamic condition);
         Task Logout(int userID);
