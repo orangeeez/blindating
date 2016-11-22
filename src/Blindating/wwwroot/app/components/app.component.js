@@ -28,6 +28,7 @@ var AppComponent = (function () {
         this.server = 'http://192.168.0.114:8095';
         this.stun = 'stun:stun.l.google.com:19302';
         this.selectedUser = null;
+        this.videoState = 'none';
         this.communicationState = 'none';
         this.isHelperShow = false;
         this.isHeaderShow = false;
@@ -42,28 +43,39 @@ var AppComponent = (function () {
                 _this._helper.intervalCalling = setInterval(_this._helper.onCallingBlink, 500);
             });
         };
-        this.onDataReceived = function () { };
-        this.onCallStarted = function (e) {
-            if (_this.communicationState == 'caller') {
-                _this.communicationState = 'initiatedCaller';
-                Woogeen.LocalStream.create({
-                    audio: true
-                }, _this.onCreateStream);
+        this.onDataReceived = function (e) {
+            if (e.data == utils_1.DataSignals.RequestingVideo) {
+                _this._helper.intervalVideoing = setInterval(_this._helper.onVideoingBlink, 500);
+                _this.videoState = 'videoRequesting';
             }
+            if (e.data == utils_1.DataSignals.DenyingVideo) {
+                _this._helper.denyVideoIcon();
+            }
+        };
+        this.onCallStarted = function (e) {
+            if (_this.communicationState == 'caller')
+                _this.communicationState = 'initiatedCaller';
+            _this.communicationUser = _this.defineCommunicationUser();
+            Woogeen.LocalStream.create({
+                audio: true
+            }, _this.onCreateStream);
             _this._router.navigate(['/talk']);
             _this._helper.isCallInitiated = true;
             _this._helper.startDurationTime = new Date();
+            _this._helper.intervalDuration = setInterval(_this._helper.startDuration, 1000);
             clearInterval(_this._helper.intervalCalling);
         };
         this.onCreateStream = function (err, stream) {
-            _this.stream = stream;
-            _this.user.peer.publish(_this.stream, _this.callingUser.jwt);
+            _this.localStream = stream;
+            _this.user.peer.publish(_this.localStream, _this.communicationUser.jwt);
         };
         this.onCallStopped = function (e) {
             _this._helper.isCallInitiated = false;
             _this._helper.isCallDenied = true;
-            _this.stream.close();
-            _this.stream = undefined;
+            _this.localStream.close();
+            _this.remoteStream.close();
+            _this.localStream = undefined;
+            _this.remoteStream = undefined;
             setTimeout(_this.disapearCall, 2000);
             _this._conversationService.Add(_this.createConversation()).subscribe();
         };
@@ -72,18 +84,29 @@ var AppComponent = (function () {
             setTimeout(_this.disapearCall, 2000);
         };
         this.onStreamAdded = function (e) {
-            _this.stream = e.stream;
+            _this.remoteStream = e.stream;
+            if (_this.videoState == 'videoRequester') {
+                _this.videoState = 'initiatedVideo';
+                _this._helper.onAcceptVideo();
+                _this._helper.cleanVideoIcon();
+                _this._helper.isVideoInitiated = true;
+            }
         };
         this.onStreamRemoved = function (e) { };
         this.disapearCall = function () {
             _this.callerUser = null;
             _this.callingUser = null;
+            _this.videoState = 'none';
             _this.communicationState = 'none';
+            _this._helper.isVideoing = false;
             _this._helper.isCallDenied = false;
             _this._helper.duration = '00:00';
             _this._helper.durationTime = new Date(0, 0, 0, 0, 0, 0, 0);
+            _this._helper.cleanVideoIcon();
             _this._router.navigate(['/dashboard']);
             clearInterval(_this._helper.intervalCalling);
+            clearInterval(_this._helper.intervalDuration);
+            clearInterval(_this._helper.intervalVideoing);
         };
         this.createConversation = function () {
             var conversation = new conversation_1.Conversation();
@@ -95,23 +118,16 @@ var AppComponent = (function () {
             conversation.informationConversationFK = _this.user.information['id'];
             return conversation;
         };
-        this.startDuration = function () {
-            if (_this.communicationState == 'initiatedCaller' || _this.communicationState == 'initiatedCalling') {
-                var h = _this._helper.durationTime.getHours();
-                var m = _this._helper.durationTime.getMinutes();
-                var s = _this._helper.durationTime.getSeconds();
-                _this._helper.durationTime.setSeconds(s + 1);
-                h = utils_1.Utils.CheckTime(h);
-                m = utils_1.Utils.CheckTime(m);
-                s = utils_1.Utils.CheckTime(s);
-                h.valueOf() != 0 ? _this._helper.duration = h + ":" + m + ":" + s :
-                    _this._helper.duration = m + ":" + s;
-            }
+        this.defineCommunicationUser = function () {
+            var user;
+            if (_this.communicationState == 'initiatedCalling')
+                user = _this.callerUser;
+            else if (_this.communicationState == 'initiatedCaller')
+                user = _this.callingUser;
+            return user;
         };
     }
-    AppComponent.prototype.ngOnInit = function () {
-        this._helper.intervalDuration = setInterval(this.startDuration, 1000);
-    };
+    AppComponent.prototype.ngOnInit = function () { };
     AppComponent.prototype.selectDeselectUser = function (user) {
         if (this.selectedUser == user) {
             this.selectedUser = null;

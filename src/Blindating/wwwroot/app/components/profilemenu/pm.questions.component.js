@@ -43,7 +43,6 @@ var PmQuestionsComponent = (function () {
     PmQuestionsComponent.prototype.onQuestionKeyup = function (event, isFormValid) {
         var _this = this;
         var key = event.which || event.keyCode;
-        console.log(this.app.selectedUser);
         switch (key) {
             case 13:
                 if (isFormValid) {

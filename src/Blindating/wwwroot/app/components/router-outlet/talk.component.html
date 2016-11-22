@@ -1,6 +1,13 @@
 ﻿<div id="talk">
-    <div id="video-remote" class="video-remote">
+    <div *ngIf="app.videoState == 'initiatedVideo'" id="video-remote" class="video-remote">
+        <video [autoplay]="app.remoteStream?.hasVideo()"
+               [srcObject]="app.remoteStream?.mediaStream">
+        </video>
         <div id="video-local" class="video-local">
+            <video muted
+                   [autoplay]="app.localStream?.hasVideo()"
+                   [srcObject]="app.localStream?.mediaStream">
+            </video>
         </div>
     </div>
 </div>

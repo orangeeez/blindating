@@ -1,4 +1,4 @@
-﻿export const API_ADDRESS     = 'http://localhost:5000/';
+﻿export const API_ADDRESS     = 'http://localhost:5000/'; //192.168.0.114
 export const HANGUP          = 'images/app/controls/phone-hang-up.svg';
 export const HANGUP_INACTIVE = 'images/app/controls/phone-hang-up-inactive.svg';
 export const PHONE           = 'images/app/controls/phone.svg';

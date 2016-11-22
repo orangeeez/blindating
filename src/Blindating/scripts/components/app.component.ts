@@ -20,7 +20,7 @@ import { ConversationService }  from '../services/information/conversation.servi
 import { User }                 from '../models/user';
 import { Photo }                from '../models/photo';
 import { Conversation }         from '../models/conversation';
-import { Utils }                from '../static/utils';
+import { Utils, DataSignals }   from '../static/utils';
 import { FooterComponent }      from '../components/footer.component';
 import { HeaderComponent }      from '../components/header.component';
 import { HelperComponent }      from '../components/helper.component';
@@ -53,14 +53,18 @@ export class AppComponent implements OnInit {
 
     public server:   string  = 'http://192.168.0.114:8095';
     public stun:     string  = 'stun:stun.l.google.com:19302';
-    public stream:    any;
+    public stream: any;
+    public localStream:  any;
+    public remoteStream: any;
 
     public user:         User;
     public users:        User[];
     public selectedUser: User = null;
     public callingUser:  User;
     public callerUser:   User;
+    public communicationUser: User;
 
+    public videoState:         string = 'none';
     public communicationState: string = 'none';
 
     public isHelperShow:  boolean = false;
@@ -72,9 +76,7 @@ export class AppComponent implements OnInit {
         private _conversationService: ConversationService,
         private _router:      Router) { }
 
-    ngOnInit() {
-        this._helper.intervalDuration = setInterval(this.startDuration, 1000);
-    }
+    ngOnInit() { }
 
     public selectDeselectUser(user: User): void {
         if (this.selectedUser == user) {
@@ -134,34 +136,48 @@ export class AppComponent implements OnInit {
             });
     }
 
-    private onDataReceived = (): void => { }
-
-    private onCallStarted = (e): void => {
-        if (this.communicationState == 'caller') {
-            this.communicationState = 'initiatedCaller';
-
-            Woogeen.LocalStream.create({
-                audio: true
-            }, this.onCreateStream);
+    private onDataReceived = (e): void => {
+        if (e.data == DataSignals.RequestingVideo) {
+            this._helper.intervalVideoing = setInterval(this._helper.onVideoingBlink, 500);
+            this.videoState = 'videoRequesting';
         }
 
+        if (e.data == DataSignals.DenyingVideo) {
+            this._helper.denyVideoIcon();
+        }
+    }
+
+    private onCallStarted = (e): void => {
+        if (this.communicationState == 'caller')
+            this.communicationState = 'initiatedCaller';
+
+        this.communicationUser = this.defineCommunicationUser();
+
+        Woogeen.LocalStream.create({
+            audio: true
+        }, this.onCreateStream);
+
         this._router.navigate(['/talk']);
-        this._helper.isCallInitiated = true;
+        this._helper.isCallInitiated   = true;
         this._helper.startDurationTime = new Date();
+        this._helper.intervalDuration = setInterval(this._helper.startDuration, 1000);
+
         clearInterval(this._helper.intervalCalling);
     }
 
-    private onCreateStream = (err, stream) => {
-        this.stream = stream;
-        this.user.peer.publish(this.stream, this.callingUser.jwt);
+    public onCreateStream = (err, stream) => {
+        this.localStream = stream;
+        this.user.peer.publish(this.localStream, this.communicationUser.jwt);
     }
 
     private onCallStopped = (e): void => {
         this._helper.isCallInitiated = false;
         this._helper.isCallDenied = true;
 
-        this.stream.close();
-        this.stream = undefined;
+        this.localStream.close();
+        this.remoteStream.close();
+        this.localStream  = undefined;
+        this.remoteStream = undefined;
 
         setTimeout(this.disapearCall, 2000);
 
@@ -174,7 +190,14 @@ export class AppComponent implements OnInit {
     }
 
     private onStreamAdded = (e): void => {
-        this.stream = e.stream;
+        this.remoteStream = e.stream;
+
+        if (this.videoState == 'videoRequester') {
+            this.videoState = 'initiatedVideo';
+            this._helper.onAcceptVideo();
+            this._helper.cleanVideoIcon();
+            this._helper.isVideoInitiated = true;
+        }
     } 
 
     private onStreamRemoved = (e): void => { }
@@ -182,14 +205,21 @@ export class AppComponent implements OnInit {
     public disapearCall = (): void => {
         this.callerUser           = null;
         this.callingUser          = null;
+        this.videoState           = 'none';
         this.communicationState   = 'none';
 
-        this._helper.isCallDenied      = false;
+        this._helper.isVideoing   = false;
+        this._helper.isCallDenied = false;
+
         this._helper.duration          = '00:00';
         this._helper.durationTime      = new Date(0, 0, 0, 0, 0, 0, 0);
+        this._helper.cleanVideoIcon();
         this._router.navigate(['/dashboard']);
 
         clearInterval(this._helper.intervalCalling);
+        clearInterval(this._helper.intervalDuration);
+        clearInterval(this._helper.intervalVideoing);
+
     } 
 
     private setHelperElements(): void {
@@ -210,19 +240,15 @@ export class AppComponent implements OnInit {
         return conversation;
     }
 
-    public startDuration = () => {
-        if (this.communicationState == 'initiatedCaller' || this.communicationState == 'initiatedCalling') {
-            var h = this._helper.durationTime.getHours();
-            var m = this._helper.durationTime.getMinutes();
-            var s = this._helper.durationTime.getSeconds();
-            this._helper.durationTime.setSeconds(s + 1)
-            h = Utils.CheckTime(h);
-            m = Utils.CheckTime(m);
-            s = Utils.CheckTime(s);
+    private defineCommunicationUser = (): User => {
+        var user: User;
 
-            h.valueOf() != 0 ? this._helper.duration = h + ":" + m + ":" + s :
-                               this._helper.duration = m + ":" + s;
-        }
+        if (this.communicationState == 'initiatedCalling')
+            user = this.callerUser;
+        else if (this.communicationState == 'initiatedCaller')
+            user = this.callingUser;
+
+        return user;
     }
 
     public openGallery(photos: Photo[], number: number = 0): void {

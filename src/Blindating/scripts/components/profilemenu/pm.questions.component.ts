@@ -59,7 +59,6 @@ export class PmQuestionsComponent implements OnInit, AfterViewInit {
 
     public onQuestionKeyup(event: KeyboardEvent, isFormValid: boolean): void {
         var key: number = event.which || event.keyCode;
-        console.log(this.app.selectedUser);
         switch (key) {
             case 13:
                 if (isFormValid) {

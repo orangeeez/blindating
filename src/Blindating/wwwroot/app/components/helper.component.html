@@ -1,18 +1,21 @@
 ﻿<div *ngIf="app.isHelperShow" class="container-fluid" id="helper">
-    <audio autoplay
+    <audio [autoplay]="!app.remoteStream?.hasVideo()"
            [hidden]="true"
-           [srcObject]="app.stream?.mediaStream"></audio>
+           [srcObject]="app.remoteStream?.mediaStream">
+    </audio>
     <div class="row">
         <div class="col-md-12">
             <div *ngIf="app.communicationState == 'calling'          ||
                         app.communicationState == 'caller'           ||
                         app.communicationState == 'initiatedCalling' ||
                         app.communicationState == 'initiatedCaller'"
-                 [class.calling]="isCalling"
+                 [class.blinking]="isCalling"
                  [class.initiated]="isCallInitiated"
                  [class.denied]="isCallDenied">
                 <img [src]="app?.callingUser?.image || app?.callerUser?.image" class="img-circle avatar-decoration" 
                      (click)="app?.callingUser ? app.selectDeselectUser(app.callingUser) : app.selectDeselectUser(app.callerUser)"/>
+                <div *ngIf="app.communicationState == 'calling'">Calling to you...</div>
+                <div *ngIf="app.communicationState == 'caller'">Calling to...</div>
                 <div *ngIf="app.communicationState == 'initiatedCaller' ||
                             app.communicationState == 'initiatedCalling'">{{duration}}</div>
             </div>
@@ -23,19 +26,33 @@
                         app.communicationState != 'initiatedCaller') ||
                         app.communicationState == 'calling'" class="element"
                  [class.disabled]="isPhoneDisabled"
-                 (click)="onInviteAcceptCall()">
+                 (click)="onInviteAcceptCall(localAudio, remoteAudio)">
                 <img [src]="phoneIcon" class="icon" />
             </div>
             <div *ngIf="app.communicationState == 'calling'          ||
                         app.communicationState == 'initiatedCalling' ||
-                        app.communicationState == 'initiatedCaller'" class="element"
+                        app.communicationState == 'initiatedCaller'" class="element last" 
                  (click)="onDenyCall()">
                 <img [src]="hangupIcon" class="icon" />
             </div>
             <div *ngIf="app.communicationState == 'initiatedCalling' ||
                         app.communicationState == 'initiatedCaller'" class="element"
-                 (click)="onEnableVideo()">
+                 [class.blinking]="isVideoing"
+                 [class.initiated]="isVideoInitiated"
+                 [class.denied]="isVideoDenied"
+                 [class.disabled]="isVideoing || isVideoInitiated"
+                 (click)="onRequestVideo()">
                 <img [src]="videoIcon" class="icon" />
+            </div>
+            <div *ngIf="app.videoState == 'videoRequesting'" style="padding-top: 0;">
+                <div class="col-md-6 element accept-video"
+                     (click)="onAcceptVideo()">
+                    <i class="fa fa-check fa-lg"></i>
+                </div>
+                <div class="col-md-6 element"
+                     (click)="onDenyVideo()">
+                    <i class="fa fa-close fa-lg"></i>
+                </div>
             </div>
         </div>
     </div>

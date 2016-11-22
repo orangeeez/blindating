@@ -14,3 +14,9 @@ var Utils = (function () {
     return Utils;
 }());
 exports.Utils = Utils;
+(function (DataSignals) {
+    DataSignals[DataSignals["RequestingVideo"] = 0] = "RequestingVideo";
+    DataSignals[DataSignals["AcceptingVideo"] = 1] = "AcceptingVideo";
+    DataSignals[DataSignals["DenyingVideo"] = 2] = "DenyingVideo";
+})(exports.DataSignals || (exports.DataSignals = {}));
+var DataSignals = exports.DataSignals;

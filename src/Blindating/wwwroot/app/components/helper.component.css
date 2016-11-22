@@ -24,7 +24,13 @@
     background-color: var(--main-border-color);
     cursor: pointer;
 }
-.calling {
+#helper .last {
+    border-bottom: 1px solid var(--main-border-color);
+}
+#helper .accept-video {
+    border-right: 1px solid var(--main-border-color);
+}
+.blinking {
     background-color: aqua;
 }
 .initiated {

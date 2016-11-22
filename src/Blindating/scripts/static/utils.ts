@@ -8,3 +8,8 @@
         return i;
     }
 }
+export enum DataSignals {
+    RequestingVideo,
+    AcceptingVideo,
+    DenyingVideo
+}

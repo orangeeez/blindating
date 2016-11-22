@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Blindating
 {
@@ -13,7 +14,10 @@ namespace Blindating
         public static void Main(string[] args)
         {
             var host = new WebHostBuilder()
-                .UseKestrel()
+                .UseKestrel(/*options => {
+                    options.UseHttps(new X509Certificate2(Directory.GetCurrentDirectory() + "/blindating.pfx", "f00tBall"));
+                }*/)
+                //.UseUrls("http://192.168.0.114:5000")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
