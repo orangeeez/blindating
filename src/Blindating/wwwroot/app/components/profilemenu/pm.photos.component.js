@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var photo_service_1 = require('../../services/information/photo.service');
 var ng2_file_upload_1 = require('ng2-file-upload/ng2-file-upload');
-var URL = 'http://localhost:5000/api/user/photo/addbyjwt';
+var config_1 = require('../../static/config');
 var PmPhotosComponent = (function () {
     function PmPhotosComponent(_photoService) {
         var _this = this;
@@ -19,7 +19,10 @@ var PmPhotosComponent = (function () {
         this.onBack = new core_1.EventEmitter();
         this.checkmark = 'url("../../../images/app/controls/checkmark-white.svg")';
         this.plus = 'url("../../../images/app/controls/plus-white.svg")';
-        this.uploader = new ng2_file_upload_1.FileUploader({ url: URL });
+        this.uploader = new ng2_file_upload_1.FileUploader({
+            url: config_1.PHOTO_BY_JWT_ADDRESS,
+            authToken: 'Bearer ' + localStorage.getItem('id_token')
+        });
         this.previewUpload = function (event) {
             _this.previews.push(event.target['result']);
         };

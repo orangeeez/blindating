@@ -39,11 +39,15 @@ namespace Blindating.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Direction");
+
                     b.Property<string>("Duration");
 
                     b.Property<string>("End");
 
                     b.Property<int>("InformationConversationFK");
+
+                    b.Property<bool>("IsVideoInitiated");
 
                     b.Property<int>("RemoteUserID");
 
@@ -115,6 +119,8 @@ namespace Blindating.Migrations
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Direction");
 
                     b.Property<int>("InformationFeedbackFK");
 
@@ -313,6 +319,10 @@ namespace Blindating.Migrations
                     b.Property<bool>("Online");
 
                     b.Property<string>("Password");
+
+                    b.Property<string>("Phrase");
+
+                    b.Property<string>("Registered");
 
                     b.HasKey("ID");
 

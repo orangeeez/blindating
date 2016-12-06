@@ -29,12 +29,13 @@ export class HelperComponent implements OnInit {
     public hangupIcon: string = HANGUP;
     public videoIcon:  string = VIDEO;
 
-    public isCalling:        boolean = true;
-    public isCallInitiated:  boolean = false;
-    public isCallDenied:     boolean = false;
-    public isVideoing:       boolean = false;
-    public isVideoInitiated: boolean = false;
-    public isVideoDenied:    boolean = false;
+    public isCalling:         boolean = false;
+    public isCallInitiated:   boolean = false;
+    public isCallDenied:      boolean = false;
+    public isVideoing:        boolean = false;
+    public isVideoInitiated:  boolean = false;
+    public isVideoDenied:     boolean = false;
+    public isSearchInitiated: boolean = false;
 
     public isPhoneDisabled: boolean = false;
 
@@ -156,5 +157,10 @@ export class HelperComponent implements OnInit {
         this.isVideoInitiated = false;
         this.isVideoing       = false;
         clearInterval(this.intervalVideoing);
+    }
+
+    public onSearchShow() {
+        this.isSearchInitiated = !this.isSearchInitiated;
+        this.app._dashboard.searchToggle();
     }
 }

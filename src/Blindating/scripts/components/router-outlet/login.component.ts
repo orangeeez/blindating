@@ -21,7 +21,10 @@ export class LoginComponent implements OnInit {
     public password:  string;
     public firstname: string;
     public lastname:  string;
+    public phrase:    string;
     public JWT:       string;
+
+    public isPhraseFocused: boolean = false;
 
     public alert: any = { show: false, type: 'success', reason: null };
 
@@ -61,11 +64,13 @@ export class LoginComponent implements OnInit {
     public AuthSocial(): void { }
 
     private CreateUser(): User {
-        var user: User = new User();
-        user.email     = this.email;
-        user.firstname = this.firstname;
-        user.lastname  = this.lastname;
-        user.password  = this.password;
+        var user: User  = new User();
+        user.email      = this.email;
+        user.firstname  = this.firstname;
+        user.lastname   = this.lastname;
+        user.password   = this.password;
+        user.phrase     = this.phrase;
+        user.registered = new Date().toLocaleString();
         return user;
     }
 
@@ -95,5 +100,13 @@ export class LoginComponent implements OnInit {
             this._router.navigate(['/dashboard']);
             localStorage.setItem('id_token', user.jwt);
         }
+    }
+
+    public onFocusinPhrase(): void {
+        this.isPhraseFocused = true;
+    } 
+
+    public onFocusoutPhrase(): void {
+        this.isPhraseFocused = false;
     }
 }

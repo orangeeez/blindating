@@ -9,8 +9,10 @@ var User = (function () {
         this.jwt = null;
         this.nickname = null;
         this.image = null;
+        this.phrase = null;
         this.online = false;
-        // not mapped
+        this.registered = null;
+        this.isVideoShared = false;
         this.reason = null;
         this.peer = null;
     }

@@ -31,16 +31,21 @@
                 <progressbar *ngIf="!item.isUploaded"
                              [value]="item.progress"></progressbar>
             </div>
-            <div *ngIf="photos?.length == 0" class="no-photos">No photos yet</div>
+            <div *ngIf="photos?.length == 0 &&
+                        uploader.queue.length == 0" class="no-photos">No photos yet</div>
             <div *ngFor="let photo of photos; let i = index" class="col-md-3 col">
-                <img [src]="photo.path" />
+                <img [src]="photo.path"
+                     [class.blur]="!app.selectedUser.isVideoShared && 
+                                   !app.isSelectedYou" />
 
-                <i class="fa fa-search-plus fa-2x"
+                <i *ngIf="app.selectedUser.isVideoShared ||
+                          app.isSelectedYou" class="fa fa-search-plus fa-2x"
                    (click)="app.openGallery(photos, i)"
                    (mouseover)="close.style.opacity = 1"
                    (mouseout)="close.style.opacity = 0"></i>
 
                 <i #close class="fa fa-times close"
+                   [hidden]="app.isSelectedYou"
                    (click)="onRemovePhoto(photo)"
                    (mouseover)="close.style.opacity = 1"
                    (mouseout)="close.style.opacity = 0"></i>

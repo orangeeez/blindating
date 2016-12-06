@@ -7,11 +7,17 @@ export class User {
     jwt:         string  = null;
     nickname:    string  = null;
     image:       string  = null;
+    phrase:      string  = null;
     online:      boolean = false;
+    registered:  string = null;
     information: any;
+
     // not mapped
-    reason:     string  = null;
-    peer:       any     = null;
+    conversationsCount: number;
+    feedbacksCount:     number;
+    isVideoShared: boolean = false;
+    reason:        string  = null;
+    peer:          any     = null;
 
     static EMAIL_ALREADY_EXIST = "User with current email is already registered.";
     static REGISTERED_SUCCESSFULLY = "Congratulations! You're successfully registered. Please log in.";

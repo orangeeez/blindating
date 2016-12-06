@@ -72,5 +72,26 @@ namespace Blindating.Controllers
         {
             Users.Logout(userID);
         }
+        [HttpPost]
+        [Authorize("Bearer")]
+        [ActionName("getnew")]
+        public JsonResult GetNew([FromBody] int count)
+        {
+            return new JsonResult(Users.GetNew(count, Request.Headers["Authorization"].ToString().Remove(0, 7)));
+        }
+        [HttpPost]
+        [Authorize("Bearer")]
+        [ActionName("getactive")]
+        public JsonResult GetActive([FromBody] int count)
+        {
+            return new JsonResult(Users.GetActive(count, Request.Headers["Authorization"].ToString().Remove(0, 7)));
+        }
+        [HttpPost]
+        [Authorize("Bearer")]
+        [ActionName("getpopular")]
+        public JsonResult GetPopular([FromBody] int count)
+        {
+            return new JsonResult(Users.GetPopular(count, Request.Headers["Authorization"].ToString().Remove(0, 7)));
+        }
     }
 }

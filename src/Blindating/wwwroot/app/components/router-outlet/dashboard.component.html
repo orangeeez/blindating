@@ -1,16 +1,188 @@
-﻿<div id="dashboard">
+﻿<div id="dashboard" #dashboard>
     <div class="container-fluid">
-        <div class="row">
-            <div *ngFor="let user of app.users" class="col-md-1 profile"
-                 (click)="app.selectDeselectUser(user)">
-                <div>
-                    <img [src]="user.image" class="img-circle avatar-decoration" />
-                    <div>{{user.firstname}}</div>
-                    <div>{{user.lastname}}</div>
-                    <img src="../../../images/app/controls/online.png" class="online-decoration"
-                         [hidden]="!user.online" />
+        <div class="row" #dashboardStats
+             style="margin-bottom: 20px">
+            <div class="col-md-4"
+                [style.border-right]="isActiveExpanded ? 'none' : '1px solid #e7e7e7'">
+                <div class="category"
+                     (click)="onExpandPopular()">
+                    Most popular
+                    <i class="fa fa-arrow-right" style="padding-left: 10px"></i>
+                </div>
+                <div *ngFor="let user of popularUsers" class="col-md-3 profile"
+                     [style.justify-content]="isPopularExpanded ? 'flex-start' : 'center'"
+                     [style.align-items]="isPopularExpanded ? 'flex-start' : 'center'"
+                     [style.border-bottom]="isPopularExpanded ? '1px solid #e7e7e7' : 'none'"
+                     [class.col-md-3]="!isPopularExpanded"
+                     [class.col-md-12]="isPopularExpanded"
+                     [class.selected]="user.id == app.selectedUser?.id"
+                     (click)="app.selectDeselectUser(user)">
+                    <div>
+                        <img [src]="user.image" class="img-circle avatar-decoration"
+                             [class.blur]="!user.isVideoShared" />
+                        <div [hidden]="isPopularExpanded">{{user.firstname}}</div>
+                        <div [hidden]="isPopularExpanded">{{user.lastname}}</div>
+                        <img src="../../../images/app/controls/online.png" class="online-decoration"
+                             [hidden]="!user.online" />
+                    </div>
+                    <div *ngIf="isPopularExpanded">
+                        <div class="row row-expanded">
+                            <div class="col-md-12 no-padding"
+                                 [style.font-weight]="'bold'"
+                                 [style.font-size]="'larger'">{{user.firstname + " " + user.lastname}}</div>
+                        </div>
+                        <div class="row row-expanded">
+                            <div class="col-md-12 no-padding">
+                                <div class="col-md-4">
+                                    Talks
+                                    <div class="digit">{{user.conversationsCount}}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    Wishes
+                                    <div class="digit">{{user.feedbacksCount}}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    Answered
+                                    <div class="digit">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>     
+            <div class="col-md-4"
+                 [style.border-left]="isActiveExpanded ? '1px solid #e7e7e7' : 'none'"
+                 [style.border-right]="isActiveExpanded ? '1px solid #e7e7e7' : 'none'">
+                <div class="category"
+                     (click)="onExpandActive()">
+                    Most active
+                    <i class="fa fa-arrow-right" style="padding-left: 10px"></i>
+                </div>
+                <div *ngFor="let user of activeUsers" class="col-md-3 profile"
+                     [style.justify-content]="isActiveExpanded ? 'flex-start' : 'center'"
+                     [style.align-items]="isActiveExpanded ? 'flex-start' : 'center'"
+                     [style.border-bottom]="isActiveExpanded ? '1px solid #e7e7e7' : 'none'"
+                     [class.col-md-3]="!isActiveExpanded"
+                     [class.col-md-12]="isActiveExpanded"
+                     [class.selected]="user.id == app.selectedUser?.id"
+                     (click)="app.selectDeselectUser(user)">
+                    <div>
+                        <img [src]="user.image" class="img-circle avatar-decoration"
+                             [class.blur]="!user.isVideoShared" />
+                        <div [hidden]="isActiveExpanded">{{user.firstname}}</div>
+                        <div [hidden]="isActiveExpanded">{{user.lastname}}</div>
+                        <img src="../../../images/app/controls/online.png" class="online-decoration"
+                             [hidden]="!user.online" />
+                    </div>
+                    <div *ngIf="isActiveExpanded">
+                        <div class="row row-expanded">
+                            <div class="col-md-12 no-padding"
+                                 [style.font-weight]="'bold'"
+                                 [style.font-size]="'larger'">{{user.firstname + " " + user.lastname}}</div>
+                        </div>
+                        <div class="row row-expanded">
+                            <div class="col-md-12 no-padding">
+                                <div class="col-md-4">
+                                    Talks
+                                    <div class="digit">{{user.conversationsCount}}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    Wishes
+                                    <div class="digit">{{user.feedbacksCount}}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    Answered
+                                    <div class="digit">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4"
+                 [style.border-left]="isActiveExpanded ? 'none' : '1px solid #e7e7e7'">
+                <div class="category"
+                     (click)="onExpandNew()">
+                    New
+                    <i class="fa fa-arrow-right" style="padding-left: 10px"></i>
+                </div>
+                <div *ngFor="let user of newUsers" class="col-md-3 profile"
+                     [style.justify-content]="isNewExpanded ? 'flex-start' : 'center'"
+                     [style.align-items]="isNewExpanded ? 'flex-start' : 'center'"
+                     [style.border-bottom]="isNewExpanded ? '1px solid #e7e7e7' : 'none'"
+                     [class.col-md-3]="!isNewExpanded"
+                     [class.col-md-12]="isNewExpanded"
+                     [class.selected]="user.id == app.selectedUser?.id"
+                     (click)="app.selectDeselectUser(user)">
+                    <div>
+                        <img [src]="user.image" class="img-circle avatar-decoration"
+                             [class.blur]="!user.isVideoShared" />
+                        <div [hidden]="isNewExpanded">{{user.firstname}}</div>
+                        <div [hidden]="isNewExpanded">{{user.lastname}}</div>
+                        <img src="../../../images/app/controls/online.png" class="online-decoration"
+                             [hidden]="!user.online" />
+                    </div>
+                    <div *ngIf="isNewExpanded">
+                        <div class="row row-expanded">
+                            <div class="col-md-12 no-padding"
+                                 [style.font-weight]="'bold'"
+                                 [style.font-size]="'larger'">{{user.firstname + " " + user.lastname}}</div>
+                        </div>
+                        <div class="row row-expanded">
+                            <div class="col-md-12 no-padding">
+                                <span [style.font-size]="'13px'">Phrase:</span>
+                                <span [style.color]="'#93e6ff'"
+                                      [style.font-weight]="'bold'">{{user.phrase}}</span>
+                            </div>
+                            <div class="col-md-12 no-padding">
+                                <span [style.font-size]="'13px'">Joined:</span>
+                                <span [style.font-weight]="'bold'">{{user.registered | date: 'fullDate'}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div [hidden]="isNewExpanded    ||
+                       isActiveExpanded ||
+                       isPopularExpanded">
+            <div class="row">
+                <div class="col-md-1 header">
+                    Board
+                </div>
+            </div>
+            <div class="row" #board>
+                <div *ngFor="let user of app.users" class="col-md-1 profile"
+                     [class.selected]="user.id == app.selectedUser?.id"
+                     (click)="app.selectDeselectUser(user)">
+                    <div>
+                        <img [src]="user.image" class="img-circle avatar-decoration avatar-dashboard"
+                             [class.blur]="!user.isVideoShared" />
+                        <div class="name-dashboard">{{user.firstname}}</div>
+                        <img src="../../../images/app/controls/online.png" class="online-decoration"
+                             [hidden]="!user.online" />
+                    </div>
+                </div>
+                <div class="search-form"
+                     [@searchState]="searchState">
+                    <div *ngIf="app._helper.isSearchInitiated" class="row">
+                        <div class="col-md-3 no-padding">
+                            <div class="header">BASIC</div>
+                            <div><input type="text" placeholder="e.g Andrew Ryzhkov"></div>
+                            <div>
+                                <span><input type="radio" name="gender" autocomplete="off" />Male</span>
+                                <span><input type="radio" name="gender" autocomplete="off" />Female</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 no-padding">
+                            <div class="header">DETAILS</div>
+                        </div>
+                        <div class="col-md-3 no-padding">
+                            <div class="header">OTHERS</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

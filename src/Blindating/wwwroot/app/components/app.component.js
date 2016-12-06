@@ -19,13 +19,14 @@ var footer_component_1 = require('../components/footer.component');
 var header_component_1 = require('../components/header.component');
 var helper_component_1 = require('../components/helper.component');
 var profilemenu_component_1 = require('../components/profilemenu.component');
+var dashboard_component_1 = require('../components/router-outlet/dashboard.component');
 var AppComponent = (function () {
     function AppComponent(_userService, _conversationService, _router) {
         var _this = this;
         this._userService = _userService;
         this._conversationService = _conversationService;
         this._router = _router;
-        this.server = 'http://192.168.0.114:8095';
+        this.server = 'https://192.168.0.114:8096';
         this.stun = 'stun:stun.l.google.com:19302';
         this.selectedUser = null;
         this.videoState = 'none';
@@ -115,6 +116,8 @@ var AppComponent = (function () {
             conversation.start = _this._helper.startDurationTime.toLocaleString();
             conversation.end = new Date().toLocaleString();
             conversation.duration = _this._helper.duration;
+            conversation.isVideoInitiated = _this._helper.isVideoInitiated;
+            conversation.direction = _this.communicationState;
             conversation.informationConversationFK = _this.user.information['id'];
             return conversation;
         };
@@ -169,6 +172,8 @@ var AppComponent = (function () {
             this._helper.phoneIcon = config_1.PHONE_INACTIVE;
             this._helper.isPhoneDisabled = true;
         }
+        if (this._helper.isSearchInitiated)
+            this._helper.onSearchShow();
     };
     AppComponent.prototype.openGallery = function (photos, number) {
         if (number === void 0) { number = 0; }
@@ -208,6 +213,10 @@ var AppComponent = (function () {
         __metadata('design:type', helper_component_1.HelperComponent)
     ], AppComponent.prototype, "_helper", void 0);
     __decorate([
+        core_1.ViewChild(dashboard_component_1.DashboardComponent), 
+        __metadata('design:type', dashboard_component_1.DashboardComponent)
+    ], AppComponent.prototype, "_dashboard", void 0);
+    __decorate([
         core_1.ViewChild(profilemenu_component_1.ProfilemenuComponent), 
         __metadata('design:type', profilemenu_component_1.ProfilemenuComponent)
     ], AppComponent.prototype, "_profilemenu", void 0);
@@ -224,8 +233,8 @@ var AppComponent = (function () {
                     core_1.state('selected', core_1.style({
                         width: '30%'
                     })),
-                    core_1.transition('deselected => selected', core_1.animate('100ms ease-in')),
-                    core_1.transition('selected => deselected', core_1.animate('100ms ease-out'))
+                    core_1.transition('deselected => selected', core_1.animate('200ms ease-in')),
+                    core_1.transition('selected => deselected', core_1.animate('200ms ease-out'))
                 ])
             ]
         }), 

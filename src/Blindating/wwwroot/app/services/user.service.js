@@ -42,6 +42,18 @@ var UserService = (function (_super) {
         return this._authHttp.post(config_1.API_ADDRESS + this.api + "/getby", JSON.stringify({ field: field, value: value }), this.options)
             .map(function (user) { return user.json()['result']; });
     };
+    UserService.prototype.GetNew = function (count) {
+        return this._authHttp.post(config_1.API_ADDRESS + this.api + "/getnew", count, this.options)
+            .map(function (users) { return users.json()['result']; });
+    };
+    UserService.prototype.GetActive = function (count) {
+        return this._authHttp.post(config_1.API_ADDRESS + this.api + "/getactive", count, this.options)
+            .map(function (users) { return users.json()['result']; });
+    };
+    UserService.prototype.GetPopular = function (count) {
+        return this._authHttp.post(config_1.API_ADDRESS + this.api + "/getpopular", count, this.options)
+            .map(function (users) { return users.json()['result']; });
+    };
     UserService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http, angular2_jwt_1.AuthHttp])

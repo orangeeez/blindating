@@ -99,6 +99,25 @@
                         Password is required
                     </div>
 
+                    <label for="phrase">Phrase</label>
+                    <input type="text" class="form-control" id="phrase" placeholder="Knowing of you begin with this phrase"
+                           name="phrase"
+                           maxlength="25"
+                           #phraseref="ngModel"
+                           [(ngModel)]="phrase"
+                           (focusin)="onFocusinPhrase()"
+                           (focusout)="onFocusoutPhrase()"
+                           required />
+
+                    <div class="alert alert-danger"
+                         [hidden]="phraseref.valid || phraseref.pristine">
+                        Phrase will tell a lot about you to others 
+                    </div>
+
+                    <div *ngIf="isPhraseFocused" class="alert alert-info">
+                        Phrase must be maximum 25 characters long
+                    </div>
+
                     <button class="btn btn-default"
                             (click)="Register()"
                             [disabled]="!registerForm.form.valid">

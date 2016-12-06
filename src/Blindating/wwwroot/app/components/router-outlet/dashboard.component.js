@@ -22,6 +22,11 @@ var DashboardComponent = (function () {
         this._userService = _userService;
         this._cookieService = _cookieService;
         this._router = _router;
+        this.searchState = 'deselected';
+        this.isSearchStateDone = false;
+        this.isActiveExpanded = false;
+        this.isNewExpanded = false;
+        this.isPopularExpanded = false;
         this.removeCurrentUser = function (user) {
             return user.id != _this.app.user.id;
         };
@@ -33,6 +38,7 @@ var DashboardComponent = (function () {
     }
     DashboardComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.app._dashboard = this;
         this.app._header.DeselectMenus();
         this.app._header.isDashboardActive = true;
         this._userService.GetAll()
@@ -40,12 +46,103 @@ var DashboardComponent = (function () {
             _this.app.users = users.filter(_this.removeCurrentUser);
         });
     };
+    DashboardComponent.prototype.ngAfterViewInit = function () {
+        var _this = this;
+        this.profileBoardHeight = 110;
+        this.profileStatsHeight = 105;
+        this.profileStatsHeightExpanded = 75;
+        this.dashboardWidth = this.dashboard.nativeElement.clientWidth;
+        this.dashboardHeight = this.dashboard.nativeElement.clientHeight;
+        this.dashboardStatsHeight = this.dashboardStats.nativeElement.clientHeight;
+        this.maxUsersColumns = this.dashboardWidth / Math.round((this.dashboardWidth * 8.3) / 100);
+        this.maxUsersStatsColumns = this.dashboardWidth / Math.round((this.dashboardWidth * 25) / 100);
+        this.maxUsersRows = (this.dashboardHeight - (this.dashboardStatsHeight + this.profileStatsHeight)) / this.profileBoardHeight;
+        this._userService.GetNew(Math.round(this.maxUsersStatsColumns))
+            .subscribe(function (users) {
+            _this.newUsers = users; //.filter(this.removeCurrentUser);
+        });
+        this._userService.GetActive(Math.round(this.maxUsersStatsColumns))
+            .subscribe(function (users) {
+            _this.activeUsers = users; //.filter(this.removeCurrentUser);
+        });
+        this._userService.GetPopular(Math.round(this.maxUsersStatsColumns))
+            .subscribe(function (users) {
+            _this.popularUsers = users; //.filter(this.removeCurrentUser);
+        });
+    };
+    DashboardComponent.prototype.onExpandNew = function () {
+        var _this = this;
+        this.isNewExpanded = !this.isNewExpanded;
+        if (this.isNewExpanded)
+            this._userService.GetNew(Math.round(this.maxUsersStatsColumns + this.getUsersCountForExpand()))
+                .subscribe(function (users) {
+                _this.newUsers = users; //.filter(this.removeCurrentUser);
+            });
+        if (!this.isNewExpanded)
+            this._userService.GetNew(Math.round(this.maxUsersStatsColumns))
+                .subscribe(function (users) {
+                _this.newUsers = users; //.filter(this.removeCurrentUser);
+            });
+    };
+    DashboardComponent.prototype.onExpandActive = function () {
+        var _this = this;
+        this.isActiveExpanded = !this.isActiveExpanded;
+        if (this.isActiveExpanded)
+            this._userService.GetActive(Math.round(this.maxUsersStatsColumns + this.getUsersCountForExpand()))
+                .subscribe(function (users) {
+                _this.activeUsers = users; //.filter(this.removeCurrentUser);
+            });
+        if (!this.isActiveExpanded)
+            this._userService.GetActive(Math.round(this.maxUsersStatsColumns))
+                .subscribe(function (users) {
+                _this.activeUsers = users; //.filter(this.removeCurrentUser);
+            });
+    };
+    DashboardComponent.prototype.onExpandPopular = function () {
+        var _this = this;
+        this.isPopularExpanded = !this.isPopularExpanded;
+        if (this.isPopularExpanded)
+            this._userService.GetPopular(Math.round(this.maxUsersStatsColumns + this.getUsersCountForExpand()))
+                .subscribe(function (users) {
+                _this.popularUsers = users; //.filter(this.removeCurrentUser);
+            });
+        if (!this.isPopularExpanded)
+            this._userService.GetPopular(Math.round(this.maxUsersStatsColumns))
+                .subscribe(function (users) {
+                _this.popularUsers = users; //.filter(this.removeCurrentUser);
+            });
+    };
+    DashboardComponent.prototype.getUsersCountForExpand = function () {
+        return Math.floor((this.dashboardHeight - (Math.round(this.maxUsersStatsColumns) * this.profileStatsHeightExpanded)) / this.profileStatsHeightExpanded);
+    };
+    DashboardComponent.prototype.searchToggle = function () {
+        this.searchState = (this.searchState === 'selected' ? 'deselected' : 'selected');
+    };
+    __decorate([
+        core_1.ViewChild('dashboard'), 
+        __metadata('design:type', core_1.ElementRef)
+    ], DashboardComponent.prototype, "dashboard", void 0);
+    __decorate([
+        core_1.ViewChild('dashboardStats'), 
+        __metadata('design:type', core_1.ElementRef)
+    ], DashboardComponent.prototype, "dashboardStats", void 0);
     DashboardComponent = __decorate([
         core_1.Component({
             selector: 'dashboard-component',
             templateUrl: 'app/components/router-outlet/dashboard.component.html',
             styleUrls: ['app/components/router-outlet/dashboard.component.css'],
-            providers: [user_service_1.UserService, core_2.CookieService]
+            animations: [
+                core_1.trigger('searchState', [
+                    core_1.state('deselected', core_1.style({
+                        height: '0'
+                    })),
+                    core_1.state('selected', core_1.style({
+                        height: '30%'
+                    })),
+                    core_1.transition('deselected => selected', core_1.animate('500ms ease-in')),
+                    core_1.transition('selected => deselected', core_1.animate('500ms ease-out'))
+                ])
+            ]
         }),
         __param(0, core_1.Host()),
         __param(0, core_1.Inject(core_1.forwardRef(function () { return app_component_1.AppComponent; }))), 

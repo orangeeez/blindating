@@ -13,7 +13,9 @@
                 <span>Change photo</span>
             </span>
             <img class="img-circle avatar-decoration"
-                 [src]="app.selectedUser.image" />
+                 [src]="app.selectedUser.image"
+                 [class.blur]="!app.selectedUser.isVideoShared && 
+                               !app.isSelectedYou" />
         </div>
         <div class="col-md-7">
             <input type="text" id="firstname" class="name-decoration"
@@ -33,22 +35,30 @@
                 </div>
                 <div class="col-md-10">
                     <input placeholder="vk.com/example"
-                           [type]="'text'"
+                           [type]="!app.selectedUser.isVideoShared &&
+                                   !app.isSelectedYou &&
+                                    preferences.vkontakte?.length != 0 ? 'password' : 'text'"
                            [disabled]="!app.isSelectedYou"
                            [(ngModel)]="preferences.vkontakte"
                            (focusout)="onFocusoutPreference()" />
                     <input placeholder="facebook.com/example"
-                           [type]="'text'" 
+                           [type]="!app.selectedUser.isVideoShared &&
+                                   !app.isSelectedYou &&
+                                    preferences.facebook?.length != 0 ? 'password' : 'text'" 
                            [disabled]="!app.isSelectedYou"
                            [(ngModel)]="preferences.facebook"
                            (focusout)="onFocusoutPreference()" />
                     <input placeholder="twitter.com/example"
-                           [type]="'text'" 
+                           [type]="!app.selectedUser.isVideoShared &&
+                                   !app.isSelectedYou &&
+                                    preferences.twitter?.length != 0 ? 'password' : 'text'" 
                            [disabled]="!app.isSelectedYou"
                            [(ngModel)]="preferences.twitter"
                            (focusout)="onFocusoutPreference()" />
                     <input placeholder="plus.google.com/example"
-                           [type]="'text'" 
+                           [type]="!app.selectedUser.isVideoShared &&
+                                   !app.isSelectedYou &&
+                                    preferences.google?.length != 0 ? 'password' : 'text'" 
                            [disabled]="!app.isSelectedYou"
                            [(ngModel)]="preferences.google"
                            (focusout)="onFocusoutPreference()" />
@@ -218,7 +228,7 @@
              (mouseover)="onHeaderMouseoverout('questions', true)"
              (mouseout)="onHeaderMouseoverout('questions', false)"
              (click)="onOpenQuestions()">
-            Question is
+            Question
             <img class="arrow-right-decoration" src="../../../images/app/controls/arrow-right.svg"
                  [hidden]="!isQuestionsArrowShow"
                  (mouseover)="onHeaderMouseoverout('questions', true)"
@@ -248,13 +258,19 @@
                  (mouseover)="onHeaderMouseoverout('photos', true)"
                  (mouseout)="onHeaderMouseoverout('photos', false)" />
         </div>
-        <div *ngIf="photos.length == 0" class="col-md-12 no-content-decoration">
+        <div *ngIf="photos.length == 0" class="col-md-12 no-content-decoration"
+             (click)="onOpenPhotos()">
             <div>No Photos</div>
         </div>
         <div *ngIf="photos.length != 0">
             <div *ngFor="let photo of photos | slice: 4; let i = index" class="col-md-3 photos-content">
-                <img [src]="photo.path"/>
-                <i class="fa fa-search-plus fa-2x search-plus"
+                <img [src]="photo.path"
+                     [style.padding]="!app.selectedUser.isVideoShared &&
+                                      !app.isSelectedYou ? '3px' : '0px'"
+                     [class.blur]="!app.selectedUser.isVideoShared &&
+                                   !app.isSelectedYou" />
+                <i *ngIf="app.selectedUser.isVideoShared ||
+                          app.isSelectedYou" class="fa fa-search-plus fa-2x search-plus"
                    (click)="app.openGallery(photos, i)"></i>
             </div>
         </div>
@@ -270,14 +286,17 @@
                  (mouseover)="onHeaderMouseoverout('conversations', true)"
                  (mouseout)="onHeaderMouseoverout('conversations', false)" />
         </div>
-        <div *ngIf="conversations.length == 0" class="col-md-12 no-content-decoration">
+        <div *ngIf="conversations.length == 0" class="col-md-12 no-content-decoration"
+             (click)="onOpenConversations()">
             <div>No Talks</div>
         </div>
         <div *ngIf="conversations.length != 0" class="col-md-12 no-padding">
             <div *ngFor="let conversation of conversations | slice: 2" class="col-md-6 no-padding">
                 <div class="col-md-5 no-padding profile-decoration"
                      (click)="app.selectDeselectUser(conversation.remoteUser)">
-                    <img [src]="conversation.remoteUser.image" class="img-circle avatar-decoration" />
+                    <img [src]="conversation.remoteUser.image"
+                         [class.blur]="!app.selectedUser.isVideoShared &&
+                                       !app.isSelectedYou" class="img-circle avatar-decoration" />
                     <div>{{conversation.remoteUser.firstname}}</div>
                     <img src="../../../images/app/controls/online.png" class="online-decoration"
                          [hidden]="!conversation.remoteUser.online" />

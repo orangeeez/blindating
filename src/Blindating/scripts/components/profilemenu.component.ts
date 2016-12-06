@@ -1,4 +1,7 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import {
+    Component,
+    OnInit
+}                            from '@angular/core';
 import { Router }            from '@angular/router';
 import { CookieService }     from 'angular2-cookie/core';
 import { UserService }       from '../services/user.service';
@@ -28,7 +31,7 @@ export class ProfilemenuComponent implements OnInit {
 
     public ngOnInit() { }
 
-    public onLogout() {
+    public onLogout(): void {
         this._userService.Logout(this.app.user.id).subscribe();
         this.app.user = null;
         this.app.selectedUser = null;
@@ -40,7 +43,11 @@ export class ProfilemenuComponent implements OnInit {
         this._router.navigate(['/login']);
     }
 
-    public ToggleState() {
+    public onHidePm(): void {
+        this.app.selectDeselectUser(this.app.selectedUser);
+    }
+
+    public ToggleState(): void {
         this.state = (this.state === 'selected' ? 'deselected' : 'selected');
     }
 }

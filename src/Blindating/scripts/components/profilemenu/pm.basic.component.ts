@@ -3,28 +3,28 @@
     OnInit,
     OnChanges,
     SimpleChange
-}                              from '@angular/core';
-import { Router }              from '@angular/router';
-import { UserService }         from '../../services/user.service';
-import { QuoteService }        from '../../services/information/quote.service';
-import { PreferenceService }   from '../../services/information/preference.service';
-import { QuestionService }     from '../../services/information/question.service';
-import { PhotoService }        from '../../services/information/photo.service';
-import { ConversationService } from '../../services/information/conversation.service';
-import { User }                from '../../models/user';
-import { Quote }               from '../../models/quote';
-import { Question }            from '../../models/question';
-import { Photo }               from '../../models/photo';
-import { Preference }          from '../../models/preference';
-import { Conversation }        from '../../models/conversation';
-import { AppComponent }        from '../../components/app.component';
-import { SlicePipe }           from '../../pipes/slice.pipe';
-import { COUNTRIES }           from '../../static/countries';
+}                               from '@angular/core';
+import { Router }               from '@angular/router';
+import { UserService }          from '../../services/user.service';
+import { QuoteService }         from '../../services/information/quote.service';
+import { PreferenceService }    from '../../services/information/preference.service';
+import { QuestionService }      from '../../services/information/question.service';
+import { PhotoService }         from '../../services/information/photo.service';
+import { ConversationService }  from '../../services/information/conversation.service';
+import { User }                 from '../../models/user';
+import { Quote }                from '../../models/quote';
+import { Question }             from '../../models/question';
+import { Photo }                from '../../models/photo';
+import { Preference }           from '../../models/preference';
+import { Conversation }         from '../../models/conversation';
+import { AppComponent }         from '../../components/app.component';
+import { SlicePipe }            from '../../pipes/slice.pipe';
+import { COUNTRIES }            from '../../static/countries';
+import { PHOTO_BY_JWT_ADDRESS } from '../../static/config';
 import {
     FileUploader, 
     Headers 
 }                              from 'ng2-file-upload/ng2-file-upload';
-const URL = 'http://localhost:5000/api/user/photo/addbyjwt';
 @Component({
     selector: 'pm-basic-component',
     templateUrl: 'app/components/profilemenu/pm.basic.component.html',
@@ -34,7 +34,10 @@ const URL = 'http://localhost:5000/api/user/photo/addbyjwt';
 export class PmBasicComponent implements OnInit, OnChanges {
     public CITIES:                   Array<string>;
     public app:                      AppComponent;
-    public uploader:                 FileUploader = new FileUploader({ url: URL });
+    public uploader: FileUploader = new FileUploader({
+        url: PHOTO_BY_JWT_ADDRESS,
+        authToken: 'Bearer ' + localStorage.getItem('id_token')
+    });
     public header:                   Headers      = { name: 'Uploader', value: 'basic' };
     public defaultQuote:             string = 'Please add your favorite quote here';
     public defaultQuoteNotYou:       string = 'User does not add quote yet';

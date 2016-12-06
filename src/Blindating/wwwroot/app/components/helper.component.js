@@ -20,12 +20,13 @@ var HelperComponent = (function () {
         this.phoneIcon = config_1.PHONE;
         this.hangupIcon = config_1.HANGUP;
         this.videoIcon = config_1.VIDEO;
-        this.isCalling = true;
+        this.isCalling = false;
         this.isCallInitiated = false;
         this.isCallDenied = false;
         this.isVideoing = false;
         this.isVideoInitiated = false;
         this.isVideoDenied = false;
+        this.isSearchInitiated = false;
         this.isPhoneDisabled = false;
         this.durationTime = new Date(0, 0, 0, 0, 0, 0, 0);
         this.onCallingBlink = function () {
@@ -120,6 +121,10 @@ var HelperComponent = (function () {
         }
         else
             this.denyCall(this.app.communicationUser.jwt);
+    };
+    HelperComponent.prototype.onSearchShow = function () {
+        this.isSearchInitiated = !this.isSearchInitiated;
+        this.app._dashboard.searchToggle();
     };
     HelperComponent = __decorate([
         core_1.Component({

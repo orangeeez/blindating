@@ -1,23 +1,77 @@
-﻿.profile {
+﻿#dashboard {
+    height: 100%;
+}
+#dashboard .search-form {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 0;
+    background-color: var(--main-aqua-color);
+    color: #777;
+}
+#dashboard .search-form div {
+    margin-top: 5px;
+    margin-left: 5px;
+}
+#dashboard .search-form input {
+    padding-left: 5px;
+    background-color: var(--main-aqua-color);
+    border: none;
+    border-bottom: 1px solid #777;
+}
+#dashboard .search-form .header {
+    font-size: 18px;
+    font-weight: bold;
+}
+#dashboard .header {
+    color: var(--focus-border-color);
+    font-weight: bold; 
+    font-size: 18px; 
+    margin-bottom: 10px;
+    background-color: var(--main-aqua-color);
+}
+#dashboard .category {
+    width: inherit;
+    border-bottom: 1px solid var(--main-aqua-color);
+    padding-left: 5px;
+    color: var(--focus-border-color);
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+#dashboard .category:hover {
+    background-color: var(--main-aqua-color);
+    color: white;
+    cursor: pointer;
+}
+.profile {
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     text-align: center;
+    color: var(--focus-border-color);
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.profile:hover {
+    background-color: var(--main-border-color);
+}
+.selected {
+    background-color: var(--main-aqua-color) !important;
 }
 .profile .avatar-decoration {
     height: 60px;
-    -webkit-transition: height 500ms;
-    -moz-transition: height 500ms;
-    -o-transition: height 500ms;
-    transition: height 500ms;
+    width: 60px;
+    object-fit: cover;
 }
-.profile .avatar-decoration:hover {
+.profile .avatar-dashboard {
     height: 80px;
-    -webkit-transition: height 500ms;
-    -moz-transition: height 500ms;
-    -o-transition: height 500ms;
-    transition: height 500ms;
+    width: 80px;
+}
+.profile .name-dashboard {
+    color: var(--focus-border-color);
+    font-weight: bold;
+    font-size: large;
 }
 .profile .close-size {
     font-family: monospace;
@@ -27,4 +81,14 @@
     position: absolute;
     top: 0;
     left: 20px;
+}
+.row-expanded {
+    padding-left: 20px;
+}
+.row-expanded .digit {
+    font-size: 20px;
+    font-weight: bold;
+}
+::-webkit-input-placeholder {
+  color: #777;
 }

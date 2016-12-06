@@ -3,16 +3,16 @@
     OnInit,
     EventEmitter,
     AfterViewInit
-}                            from '@angular/core';
-import { Photo }             from '../../models/photo';
-import { PhotoService }      from '../../services/information/photo.service';
-import { AppComponent }      from '../../components/app.component';
+}                              from '@angular/core';
+import { Photo }               from '../../models/photo';
+import { PhotoService }        from '../../services/information/photo.service';
+import { AppComponent }        from '../../components/app.component';
 import {
     FileUploader,
     Headers,
     FileUploaderOptions
-}                            from 'ng2-file-upload/ng2-file-upload';
-const URL = 'http://localhost:5000/api/user/photo/addbyjwt';
+}                               from 'ng2-file-upload/ng2-file-upload';
+import { PHOTO_BY_JWT_ADDRESS } from '../../static/config';
 @Component({
     selector: 'pm-photos-component',
     templateUrl: 'app/components/profilemenu/pm.photos.component.html',
@@ -28,7 +28,10 @@ export class PmPhotosComponent implements OnInit, AfterViewInit {
     public index:     number;
     public checkmark: string = 'url("../../../images/app/controls/checkmark-white.svg")';
     public plus:      string = 'url("../../../images/app/controls/plus-white.svg")';
-    public uploader:  FileUploader = new FileUploader({ url: URL });
+    public uploader: FileUploader = new FileUploader({
+        url: PHOTO_BY_JWT_ADDRESS,
+        authToken: 'Bearer ' + localStorage.getItem('id_token')
+    });
     public previews:  Array<any>;
     public photos:    Array<Photo>;
 

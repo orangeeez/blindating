@@ -32,4 +32,16 @@ export class UserService extends BaseService {
         return this._authHttp.post(API_ADDRESS + this.api + "/getby", JSON.stringify({ field, value }), this.options)
             .map(user => user.json()['result']);
     }
+    public GetNew(count: number): Observable<Array<User>> {
+        return this._authHttp.post(API_ADDRESS + this.api + "/getnew", count, this.options)
+            .map(users => users.json()['result']);
+    }
+    public GetActive(count: number): Observable<Array<User>> {
+        return this._authHttp.post(API_ADDRESS + this.api + "/getactive", count, this.options)
+            .map(users => users.json()['result']);
+    }
+    public GetPopular(count: number): Observable<Array<User>> {
+        return this._authHttp.post(API_ADDRESS + this.api + "/getpopular", count, this.options)
+            .map(users => users.json()['result']);
+    }
 }

@@ -1,7 +1,11 @@
 ﻿<div *ngIf="state == 'selected'" id="profile">
     <div class="col-md-12">
         <i *ngIf="app.isSelectedYou" class="fa fa-power-off fa-lg power-off"
-           (click)="onLogout()"></i>
+           (click)="onLogout()">
+        </i>
+        <i *ngIf="!app.isSelectedYou" class="fa fa-angle-double-right fa-lg power-off"
+           (click)="onHidePm()">
+        </i>
         <tabset>
             <tab *ngFor="let tab of tabs"
                  [heading]="tab.title"

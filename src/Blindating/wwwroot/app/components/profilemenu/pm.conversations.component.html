@@ -4,12 +4,14 @@
              (click)="onBackConversations()">
         <div class="header">Talks</div>
         <div class="conversations-content">
-            <div *ngIf="conversations?.length == 0" class="no-conversations">No conversations yet</div>
+            <div *ngIf="conversations?.length == 0" class="no-conversations">No talks yet</div>
             <div *ngIf="conversations.length != 0" class="col-md-12 no-padding">
                 <div *ngFor="let conversation of conversations" class="col-md-12 no-padding">
                     <div class="col-md-3 no-padding profile-decoration"
                          (click)="app.selectDeselectUser(conversation.remoteUser)">
-                        <img [src]="conversation.remoteUser.image" class="img-circle avatar-decoration" />
+                        <img [src]="conversation.remoteUser.image"
+                             [class.blur]="!app.selectedUser.isVideoShared &&
+                                           !app.isSelectedYou" class="img-circle avatar-decoration" />
                         <div>{{conversation.remoteUser.firstname}}</div>
                         <img src="../../../images/app/controls/online.png" class="online-decoration"
                              [hidden]="!conversation.remoteUser.online" />

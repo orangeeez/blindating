@@ -20,10 +20,15 @@ namespace Blindating.Models.Tables
         public string Nickname { get; set; }
         public string Image { get; set; }
         public bool Online { get; set; } = false;
+        public string Phrase { get; set; }
+        public string Registered { get; set; }
         public virtual Information Information { get; set; }
 
         [NotMapped] public dynamic Peer { get; set; }
         [NotMapped] public string Reason { get; set; }
+        [NotMapped] public bool IsVideoShared { get; set; }
+        [NotMapped] public int ConversationsCount { get; set; }
+        [NotMapped] public int FeedbacksCount { get; set; }
 
         public static string EMAIL_ALREADY_EXIST = "User with current email is already registered.";
         public static string REGISTERED_SUCCESSFULLY = "Congratulations! You're successfully registered. Please log in.";

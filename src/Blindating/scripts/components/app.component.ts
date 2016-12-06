@@ -26,6 +26,8 @@ import { HeaderComponent }      from '../components/header.component';
 import { HelperComponent }      from '../components/helper.component';
 import { LoginComponent }       from '../components/router-outlet/login.component';
 import { ProfilemenuComponent } from '../components/profilemenu.component';
+import { DashboardComponent }   from '../components/router-outlet/dashboard.component';
+
 declare var PhotoSwipe, PhotoSwipeUI_Default;
 declare var Woogeen: any;
 @Component({
@@ -40,8 +42,8 @@ declare var Woogeen: any;
             state('selected', style({
                 width: '30%'
             })),
-            transition('deselected => selected', animate('100ms ease-in')),
-            transition('selected => deselected', animate('100ms ease-out'))
+            transition('deselected => selected', animate('200ms ease-in')),
+            transition('selected => deselected', animate('200ms ease-out'))
         ])
     ]
 })
@@ -49,9 +51,10 @@ export class AppComponent implements OnInit {
     @ViewChild(FooterComponent)      public _footer: FooterComponent;
     @ViewChild(HeaderComponent)      public _header: HeaderComponent;
     @ViewChild(HelperComponent)      public _helper: HelperComponent;
+    @ViewChild(DashboardComponent)   public _dashboard: DashboardComponent;
     @ViewChild(ProfilemenuComponent) public _profilemenu: ProfilemenuComponent;
 
-    public server:   string  = 'http://192.168.0.114:8095';
+    public server:   string  = 'https://192.168.0.114:8096';
     public stun:     string  = 'stun:stun.l.google.com:19302';
     public stream: any;
     public localStream:  any;
@@ -227,15 +230,20 @@ export class AppComponent implements OnInit {
             this._helper.phoneIcon = PHONE_INACTIVE;
             this._helper.isPhoneDisabled = true;
         }
+
+        if (this._helper.isSearchInitiated)
+            this._helper.onSearchShow();
     }
 
     private createConversation = (): Conversation => {
-        var conversation          = new Conversation();
-        conversation.userID       = this.user.id;
-        conversation.remoteUserID = this.callerUser ? this.callerUser.id : this.callingUser.id;
-        conversation.start        = this._helper.startDurationTime.toLocaleString();
-        conversation.end          = new Date().toLocaleString();
-        conversation.duration     = this._helper.duration;
+        var conversation              = new Conversation();
+        conversation.userID           = this.user.id;
+        conversation.remoteUserID     = this.callerUser ? this.callerUser.id : this.callingUser.id;
+        conversation.start            = this._helper.startDurationTime.toLocaleString();
+        conversation.end              = new Date().toLocaleString();
+        conversation.duration         = this._helper.duration;
+        conversation.isVideoInitiated = this._helper.isVideoInitiated;
+        conversation.direction        = this.communicationState;
         conversation.informationConversationFK = this.user.information['id'];
         return conversation;
     }

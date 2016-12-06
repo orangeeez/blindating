@@ -1,5 +1,5 @@
 ﻿<div *ngIf="app.isHelperShow" class="container-fluid" id="helper">
-    <audio [autoplay]="!app.remoteStream?.hasVideo()"
+    <audio autoplay muted
            [hidden]="true"
            [srcObject]="app.remoteStream?.mediaStream">
     </audio>
@@ -14,8 +14,6 @@
                  [class.denied]="isCallDenied">
                 <img [src]="app?.callingUser?.image || app?.callerUser?.image" class="img-circle avatar-decoration" 
                      (click)="app?.callingUser ? app.selectDeselectUser(app.callingUser) : app.selectDeselectUser(app.callerUser)"/>
-                <div *ngIf="app.communicationState == 'calling'">Calling to you...</div>
-                <div *ngIf="app.communicationState == 'caller'">Calling to...</div>
                 <div *ngIf="app.communicationState == 'initiatedCaller' ||
                             app.communicationState == 'initiatedCalling'">{{duration}}</div>
             </div>
@@ -53,6 +51,12 @@
                      (click)="onDenyVideo()">
                     <i class="fa fa-close fa-lg"></i>
                 </div>
+            </div>
+            <div *ngIf="app._header.isDashboardActive" class="element search"
+                 [style.width]="isSearchInitiated ? '101%' : 'inherit'"
+                 [class.initiated]="isSearchInitiated"
+                 (click)="onSearchShow(search)">
+                <i class="fa fa-search fa-2x"></i>
             </div>
         </div>
     </div>

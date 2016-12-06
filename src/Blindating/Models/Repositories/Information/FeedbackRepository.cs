@@ -16,20 +16,28 @@ namespace Blindating.Models.Repositories
         {
             _context = context;
         }
-
         public async Task<int> AddOther(Feedback feedback)
         {
             using (AppDBContext _context = new AppDBContext())
             {
-                User user = await _context.Users.Include(u => u.Information)
+                Feedback remoteFeedback = new Feedback(feedback);
+
+                User remoteUser = await _context.Users.Include(u => u.Information)
                     .Where(u => u.ID == feedback.UserID)
                     .SingleOrDefaultAsync();
 
-                feedback.InformationFeedbackFK = user.Information.ID;
+                User user = await _context.Users.Include(u => u.Information)
+                    .Where(u => u.ID == feedback.RemoteUserID)
+                    .SingleOrDefaultAsync();
+
+                remoteFeedback.Direction = "Leaved";
+                remoteFeedback.InformationFeedbackFK = user.Information.ID;
+
+                feedback.InformationFeedbackFK = remoteUser.Information.ID;
+                await Add(remoteFeedback);
                 return await Add(feedback);
             }
         }
-
         public async Task<IEnumerable<Feedback>> GetAllByID(int userID)
         {
             using (AppDBContext _context = new AppDBContext())
@@ -44,7 +52,7 @@ namespace Blindating.Models.Repositories
                         .Where(u => feedback.RemoteUserID == u.ID)
                         .SingleOrDefaultAsync();
                 }
-                return user.Information.Feedbacks;
+                return user.Information.Feedbacks.Where(f => f.Direction == null);
             }
         }
     }

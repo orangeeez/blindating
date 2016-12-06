@@ -19,6 +19,7 @@
     margin: 0 15px;
     margin-left: 0 !important;
     cursor: pointer;
+    color: var(--focus-border-color);
 }
 .navbar-active {
     background-color: #f7f7f7;

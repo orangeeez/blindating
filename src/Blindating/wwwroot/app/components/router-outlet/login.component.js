@@ -23,6 +23,7 @@ var LoginComponent = (function () {
         this._userService = _userService;
         this._cookieService = _cookieService;
         this._router = _router;
+        this.isPhraseFocused = false;
         this.alert = { show: false, type: 'success', reason: null };
         this.tabs = [
             { title: 'Login', active: true },
@@ -83,7 +84,15 @@ var LoginComponent = (function () {
         user.firstname = this.firstname;
         user.lastname = this.lastname;
         user.password = this.password;
+        user.phrase = this.phrase;
+        user.registered = new Date().toLocaleString();
         return user;
+    };
+    LoginComponent.prototype.onFocusinPhrase = function () {
+        this.isPhraseFocused = true;
+    };
+    LoginComponent.prototype.onFocusoutPhrase = function () {
+        this.isPhraseFocused = false;
     };
     LoginComponent = __decorate([
         core_1.Component({

@@ -37,6 +37,9 @@ var ProfilemenuComponent = (function () {
         localStorage.removeItem('id_token');
         this._router.navigate(['/login']);
     };
+    ProfilemenuComponent.prototype.onHidePm = function () {
+        this.app.selectDeselectUser(this.app.selectedUser);
+    };
     ProfilemenuComponent.prototype.ToggleState = function () {
         this.state = (this.state === 'selected' ? 'deselected' : 'selected');
     };

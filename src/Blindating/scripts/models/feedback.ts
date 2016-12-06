@@ -9,4 +9,5 @@ export class Feedback {
     remoteUser:            User;
     remoteUserID:          number;
     isPositive:            boolean;
+    Direction:             string;
 }

@@ -18,8 +18,8 @@ var photo_service_1 = require('../../services/information/photo.service');
 var conversation_service_1 = require('../../services/information/conversation.service');
 var preference_1 = require('../../models/preference');
 var countries_1 = require('../../static/countries');
+var config_1 = require('../../static/config');
 var ng2_file_upload_1 = require('ng2-file-upload/ng2-file-upload');
-var URL = 'http://localhost:5000/api/user/photo/addbyjwt';
 var PmBasicComponent = (function () {
     function PmBasicComponent(_userService, _quoteService, _preferenceService, _questionService, _photoService, _conversationService, _router) {
         var _this = this;
@@ -30,7 +30,10 @@ var PmBasicComponent = (function () {
         this._photoService = _photoService;
         this._conversationService = _conversationService;
         this._router = _router;
-        this.uploader = new ng2_file_upload_1.FileUploader({ url: URL });
+        this.uploader = new ng2_file_upload_1.FileUploader({
+            url: config_1.PHOTO_BY_JWT_ADDRESS,
+            authToken: 'Bearer ' + localStorage.getItem('id_token')
+        });
         this.header = { name: 'Uploader', value: 'basic' };
         this.defaultQuote = 'Please add your favorite quote here';
         this.defaultQuoteNotYou = 'User does not add quote yet';

@@ -14,10 +14,11 @@ namespace Blindating
         public static void Main(string[] args)
         {
             var host = new WebHostBuilder()
-                .UseKestrel(/*options => {
+                .UseKestrel(options =>
+                {
                     options.UseHttps(new X509Certificate2(Directory.GetCurrentDirectory() + "/blindating.pfx", "f00tBall"));
-                }*/)
-                //.UseUrls("http://192.168.0.114:5000")
+                })
+                .UseUrls("https://localhost:5000")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()

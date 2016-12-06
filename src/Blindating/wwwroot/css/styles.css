@@ -95,3 +95,6 @@ textarea:focus, input:focus{
 .no-padding {
     padding: 0 !important;
 }
+.blur {
+    filter: blur(2px);
+}

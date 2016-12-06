@@ -115,7 +115,6 @@ namespace Blindating.Models.Repositories
                 return await _context.Users.AnyAsync(u => u.Email == email && u.Password == password);
             }
         }
-
         public async Task<User> GetBy(dynamic condition)
         {
             using (AppDBContext _context = new AppDBContext())
@@ -126,14 +125,117 @@ namespace Blindating.Models.Repositories
                 switch (field)
                 {
                     case "JWT":
-                        user = await _context.Users.FirstOrDefaultAsync(u => u.JWT == value);
+                        user = await _context.Users.Include(u => u.Information).FirstOrDefaultAsync(u => u.JWT == value);
                         break;
                     case "ID":
-                        user = await _context.Users.FirstOrDefaultAsync(u => u.ID == int.Parse(value));
+                        user = await _context.Users.Include(u => u.Information).FirstOrDefaultAsync(u => u.ID == int.Parse(value));
+                        break;
+                    case "InformationID":
+                        user = await _context.Users.Include(u => u.Information).ThenInclude(i => i.Conversations).FirstOrDefaultAsync(u => u.Information.ID == int.Parse(value));
                         break;
                 }
                 return user;
             }
+        }
+        public async Task<List<User>> GetNew(int count, string JWT)
+        {
+            using (AppDBContext _context = new AppDBContext())
+            {
+                var user = await GetBy(new { field = "JWT", value = JWT, });
+                var users = await _context.Users.Include(u => u.Information).ThenInclude(i => i.Conversations).ToListAsync();
+                users.Reverse();
+                users = users.Take(count).ToList();
+                return GetVideoInitiatedUsers(users, user);
+            }
+        }
+        public async Task<List<User>> GetActive(int count, string JWT)
+        {
+            using (AppDBContext _context = new AppDBContext())
+            {
+                var user = await GetBy(new { field = "JWT", value = JWT, });
+                var activeUsers = new List<User>();
+                var tempActiveUsers = new List<dynamic>();
+
+                var compositeActiveUsers = from information in _context.Informations
+                                           join conversation in _context.Conversations on information.ID equals conversation.InformationConversationFK
+                                           into conversations
+                                           join feedback in _context.Feedbacks on information.ID equals feedback.InformationFeedbackFK
+                                           into feedbacks
+                                           select new { InformationID = information.ID, Conversations = conversations, Feedbacks = feedbacks };
+
+                foreach (var cau in compositeActiveUsers)
+                {
+                    var u = await GetBy(new { field = "InformationID", value = cau.InformationID.ToString() });
+                    var conversationsCount = cau.Conversations.Where(c => c.Direction == "initiatedCaller").Count();
+                    var feedbacksCount = cau.Feedbacks.Where(c => c.Direction == "Leaved").Count();
+                    tempActiveUsers.Add(new
+                    {
+                        User = u,
+                        ConversationsCount = conversationsCount,
+                        FeedbacksCount = feedbacksCount,
+                        Sum = conversationsCount + feedbacksCount
+                    });
+                }
+
+                var tempOrdereActiveIsers = tempActiveUsers.OrderByDescending(d => d.Sum).Take(count);
+
+                foreach (var u in tempOrdereActiveIsers)
+                {
+                    u.User.ConversationsCount = u.ConversationsCount;
+                    u.User.FeedbacksCount = u.FeedbacksCount;
+                    activeUsers.Add(u.User);
+                }
+
+                return GetVideoInitiatedUsers(activeUsers, user);
+            }
+        }
+        public async Task<List<User>> GetPopular(int count, string JWT)
+        {
+            using (AppDBContext _context = new AppDBContext())
+            {
+                var user = await GetBy(new { field = "JWT", value = JWT, });
+                var popularUsers = new List<User>();
+                var tempPopularUsers = new List<dynamic>();
+
+                var compositePopularUsers = from information in _context.Informations
+                                            join conversation in _context.Conversations on information.ID equals conversation.InformationConversationFK
+                                            into conversations
+                                            join feedback in _context.Feedbacks on information.ID equals feedback.InformationFeedbackFK
+                                            into feedbacks
+                                            select new { InformationID = information.ID, Conversations = conversations, Feedbacks = feedbacks };
+
+                foreach (var cpu in compositePopularUsers)
+                {
+                    var u = await GetBy(new { field = "InformationID", value = cpu.InformationID.ToString() });
+                    var conversationsCount = cpu.Conversations.Where(c => c.Direction == "initiatedCalling").Count();
+                    var feedbacksCount = cpu.Feedbacks.Where(c => c.Direction == null).Count();
+                    tempPopularUsers.Add(new {
+                        User = u,
+                        ConversationsCount = conversationsCount,
+                        FeedbacksCount = feedbacksCount,
+                        Sum = conversationsCount + feedbacksCount
+                    });
+                }
+
+                var tempOrderedPopularUsers = tempPopularUsers.OrderByDescending(d => d.Sum).Take(count);
+
+                foreach (var u in tempOrderedPopularUsers)
+                {
+                    u.User.ConversationsCount = u.ConversationsCount;
+                    u.User.FeedbacksCount = u.FeedbacksCount;
+                    popularUsers.Add(u.User);
+                }
+
+                return GetVideoInitiatedUsers(popularUsers, user);
+            }
+        }
+        private List<User> GetVideoInitiatedUsers(List<User> users, User user)
+        {
+            foreach (var u in users)
+               foreach (var c in u.Information.Conversations)
+                    if (c.RemoteUserID == user.ID && c.IsVideoInitiated || u.ID == user.ID)
+                        u.IsVideoShared = true;
+            return users;
         }
     }
 }

@@ -15,6 +15,8 @@ namespace Blindating.Models.Tables
         public string Start { get; set; }
         public string End { get; set; }
         public string Duration { get; set; }
+        public bool IsVideoInitiated { get; set; }
+        public string Direction { get; set; }
         public virtual Information Information { get; set; }
 
         [NotMapped] public int UserID { get; set; }

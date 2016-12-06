@@ -72,7 +72,8 @@ namespace NetCoreAngular2.Controllers
         {
             Image image;
             var uploader = Request.Headers["Uploader"].ToString();
-            var JWT = Request.Cookies["JWT"];
+            
+            var JWT = Request.Headers["Authorization"].ToString().Remove(0, 7);
             var relatedPath = "images/users/";
             var filename = Path.GetRandomFileName() + ".jpg";
             var upload = Path.Combine(Environment.WebRootPath, relatedPath);
