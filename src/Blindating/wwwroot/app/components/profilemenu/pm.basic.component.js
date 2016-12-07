@@ -40,6 +40,7 @@ var PmBasicComponent = (function () {
         this.defaultQuestion = 'Please add your question to others here';
         this.defaultQuestionNotYou = 'User does not add question to others yet';
         this.defaultAuthor = 'By Author';
+        this.questionIndex = 0;
         this.quotes = new Array();
         this.questions = new Array();
         this.photos = new Array();
@@ -201,6 +202,22 @@ var PmBasicComponent = (function () {
     };
     PmBasicComponent.prototype.onBackConversations = function () {
         this.isOpenConversations = false;
+    };
+    PmBasicComponent.prototype.onAcceptAnswer = function () {
+        var answer = {
+            id: 0,
+            result: true,
+            userID: this.app.selectedUser.id,
+            remoteUserID: this.app.user.id,
+            message: this.questions[this.questionIndex].message,
+            informationFK: this.questions[this.questionIndex]['information'].id,
+            user: this.app.user
+        };
+        if (this.questionIndex <= this.questions.length)
+            this.questionIndex++;
+        this._questionService.SetAnswer(answer).subscribe();
+    };
+    PmBasicComponent.prototype.onDeclineAnswer = function () {
     };
     PmBasicComponent = __decorate([
         core_1.Component({

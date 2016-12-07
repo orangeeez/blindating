@@ -58,5 +58,12 @@ namespace NetCoreAngular2.Controllers
         {
             return new JsonResult(Questions.Remove(question));
         }
+        [Authorize("Bearer")]
+        [HttpPost]
+        [ActionName("setanswer")]
+        public JsonResult SetAnswer([FromBody] Answer answer)
+        {
+            return new JsonResult(Questions.SetAnswer(answer));
+        }
     }
 }

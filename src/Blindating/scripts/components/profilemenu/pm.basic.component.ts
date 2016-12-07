@@ -16,6 +16,7 @@ import { Quote }                from '../../models/quote';
 import { Question }             from '../../models/question';
 import { Photo }                from '../../models/photo';
 import { Preference }           from '../../models/preference';
+import { Answer }               from '../../models/answer';
 import { Conversation }         from '../../models/conversation';
 import { AppComponent }         from '../../components/app.component';
 import { SlicePipe }            from '../../pipes/slice.pipe';
@@ -45,6 +46,7 @@ export class PmBasicComponent implements OnInit, OnChanges {
     public defaultQuestionNotYou:    string = 'User does not add question to others yet';
 
     public defaultAuthor: string = 'By Author';
+    public questionIndex: number = 0;
 
     public quotes:        Array<Quote>    = new Array<Quote>();
     public questions:     Array<Question> = new Array<Question>();
@@ -228,6 +230,27 @@ export class PmBasicComponent implements OnInit, OnChanges {
 
     public onBackConversations(): void {
         this.isOpenConversations = false;
+    }
+
+    public onAcceptAnswer(): void {
+        let answer: Answer = {
+            id: 0,
+            result: true,
+            userID: this.app.selectedUser.id,
+            remoteUserID: this.app.user.id,
+            message: this.questions[this.questionIndex].message,
+            informationFK: this.questions[this.questionIndex]['information'].id,
+            user: this.app.user
+        }
+
+        if (this.questionIndex <= this.questions.length)
+            this.questionIndex++;
+
+        this._questionService.SetAnswer(answer).subscribe();
+    }
+
+    public onDeclineAnswer(): void {
+
     }
 
     private filterInputDropdownCountry = (country: string): boolean => {

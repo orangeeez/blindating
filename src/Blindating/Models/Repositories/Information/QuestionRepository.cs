@@ -27,5 +27,29 @@ namespace Blindating.Models.Repositories
                 return user.Information.Questions;
             }
         }
+
+        public async Task<bool> SetAnswer(Answer answer)
+        {
+            Answer remoteAnswer = new Answer(answer);
+            var questionFK = (from q in _context.Questions
+                              where q.InformationQuestionFK == answer.InformationFK && q.Message == answer.Message
+                              select q.ID).SingleOrDefault();
+
+            var remoteQuestionFK = (from q in _context.Questions
+                                  where q.InformationQuestionFK == answer.User.Information.ID
+                                  select q.ID).SingleOrDefault();
+
+            remoteAnswer.Direction = "Leaved";
+            remoteAnswer.QuestionAnswerFK = remoteQuestionFK;
+
+            answer.QuestionAnswerFK = questionFK;
+
+            _context.Answers.Add(answer);
+            _context.Answers.Add(remoteAnswer);
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

@@ -236,14 +236,16 @@
         </div>
         <div class="question-content-decoration">
             <div class="col-md-12 question-decoration">
-                <p *ngIf="app.isSelectedYou">{{questions[0]?.message || defaultQuestion}}</p>
-                <p *ngIf="!app.isSelectedYou">{{questions[0]?.message || defaultQuestionNotYou}}</p>
+                <p *ngIf="app.isSelectedYou">{{questions[questionIndex]?.message || defaultQuestion}}</p>
+                <p *ngIf="!app.isSelectedYou">{{questions[questionIndex]?.message || defaultQuestionNotYou}}</p>
             </div>
         </div>
-        <div *ngIf="questions[0] && !app.isSelectedYou" class="col-md-6 question-yesno no-padding">
+        <div *ngIf="questions[questionIndex] && !app.isSelectedYou" class="col-md-6 question-yesno no-padding"
+             (click)="onAcceptAnswer()">
             <i class="fa fa-check-circle-o fa-2x"></i>
         </div>
-        <div *ngIf="questions[0] && !app.isSelectedYou" class="col-md-6 question-yesno no-padding">
+        <div *ngIf="questions[questionIndex] && !app.isSelectedYou" class="col-md-6 question-yesno no-padding"
+             (click)="onDeclineAnswer()">
             <i class="fa fa-times-circle-o fa-2x"></i>
         </div>
     </div>

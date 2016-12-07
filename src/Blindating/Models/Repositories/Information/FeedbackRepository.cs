@@ -22,18 +22,10 @@ namespace Blindating.Models.Repositories
             {
                 Feedback remoteFeedback = new Feedback(feedback);
 
-                User remoteUser = await _context.Users.Include(u => u.Information)
-                    .Where(u => u.ID == feedback.UserID)
-                    .SingleOrDefaultAsync();
-
-                User user = await _context.Users.Include(u => u.Information)
-                    .Where(u => u.ID == feedback.RemoteUserID)
-                    .SingleOrDefaultAsync();
-
                 remoteFeedback.Direction = "Leaved";
-                remoteFeedback.InformationFeedbackFK = user.Information.ID;
+                remoteFeedback.InformationFeedbackFK = feedback.RemoteUser.Information.ID;
 
-                feedback.InformationFeedbackFK = remoteUser.Information.ID;
+                feedback.InformationFeedbackFK = feedback.User.Information.ID;
                 await Add(remoteFeedback);
                 return await Add(feedback);
             }

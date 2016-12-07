@@ -6,8 +6,9 @@ export class Feedback {
     video:                 string;
     audio:                 string;
     userID:                number;
-    remoteUser:            User;
     remoteUserID:          number;
     isPositive:            boolean;
     Direction:             string;
+    user:                  User;
+    remoteUser:            User;
 }

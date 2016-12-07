@@ -1,7 +1,11 @@
+import { User } from './user';
 export class Answer {
-    ID: number;
-    Result: boolean;
-    UserID: number;
-    RemoteUserID: number;
-    Message: string;
+    id:            number;
+    result:        boolean;
+    userID:        number;
+    remoteUserID:  number;
+    message:       string;
+    informationFK: number;
+
+    user: User;
 }

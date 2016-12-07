@@ -24,6 +24,7 @@ namespace Blindating.Models.Tables
         public string Direction { get; set; }
         public virtual Information Information { get; set; }
         [NotMapped] public int UserID { get; set; }
+        [NotMapped] public User User { get; set; }
         [NotMapped] public User RemoteUser { get; set; }
     }
 }

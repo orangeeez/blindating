@@ -15,6 +15,7 @@ export class User {
     // not mapped
     conversationsCount: number;
     feedbacksCount:     number;
+    answersCount:       number;
     isVideoShared: boolean = false;
     reason:        string  = null;
     peer:          any     = null;

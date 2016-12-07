@@ -9,19 +9,22 @@ namespace Blindating.Models.Tables
 {
     public class Answer
     {
+        public Answer() { }
+        public Answer(Answer answer)
+        {
+            Result = answer.Result;
+            RemoteUserID = answer.RemoteUserID;
+        }
         public int ID { get; set; }
         public int QuestionAnswerFK { get; set; }
         public int RemoteUserID { get; set; }
         public bool Result { get; set; }
+        public string Direction { get; set; }
         public virtual Question Question { get; set; }
 
-        [NotMapped]
-        public int UserID { get; set; }
-        [NotMapped]
-        public int AnswerID { get; set; }
-
-        // TODO Necessity of this field
-        [NotMapped]
-        public string Message { get; set; }
+        [NotMapped] public int UserID { get; set; }
+        [NotMapped] public string Message { get; set; }
+        [NotMapped] public int InformationFK { get; set; }
+        [NotMapped] public User User { get; set; }
     }
 }

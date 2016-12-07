@@ -161,19 +161,26 @@ namespace Blindating.Models.Repositories
                                            into conversations
                                            join feedback in _context.Feedbacks on information.ID equals feedback.InformationFeedbackFK
                                            into feedbacks
-                                           select new { InformationID = information.ID, Conversations = conversations, Feedbacks = feedbacks };
+                                           join question in _context.Questions.Include(q => q.Answers) on information.ID equals question.InformationQuestionFK
+                                           into questions
+                                           select new { InformationID = information.ID, Conversations = conversations, Feedbacks = feedbacks, Questions = questions };
 
                 foreach (var cau in compositeActiveUsers)
                 {
                     var u = await GetBy(new { field = "InformationID", value = cau.InformationID.ToString() });
                     var conversationsCount = cau.Conversations.Where(c => c.Direction == "initiatedCaller").Count();
                     var feedbacksCount = cau.Feedbacks.Where(c => c.Direction == "Leaved").Count();
+                    var answersCount = (from q in cau.Questions
+                                        from a in q.Answers
+                                        where a.Direction == "Leaved"
+                                        select a).ToList().Count;
                     tempActiveUsers.Add(new
                     {
                         User = u,
                         ConversationsCount = conversationsCount,
                         FeedbacksCount = feedbacksCount,
-                        Sum = conversationsCount + feedbacksCount
+                        AnswersCount = answersCount,
+                        Sum = conversationsCount + feedbacksCount + answersCount
                     });
                 }
 
@@ -183,6 +190,7 @@ namespace Blindating.Models.Repositories
                 {
                     u.User.ConversationsCount = u.ConversationsCount;
                     u.User.FeedbacksCount = u.FeedbacksCount;
+                    u.User.AnswersCount = u.AnswersCount;
                     activeUsers.Add(u.User);
                 }
 
@@ -202,18 +210,26 @@ namespace Blindating.Models.Repositories
                                             into conversations
                                             join feedback in _context.Feedbacks on information.ID equals feedback.InformationFeedbackFK
                                             into feedbacks
-                                            select new { InformationID = information.ID, Conversations = conversations, Feedbacks = feedbacks };
+                                            join question in _context.Questions.Include(q => q.Answers) on information.ID equals question.InformationQuestionFK
+                                            into questions
+                                            select new { InformationID = information.ID, Conversations = conversations, Feedbacks = feedbacks, Questions = questions };
 
                 foreach (var cpu in compositePopularUsers)
                 {
                     var u = await GetBy(new { field = "InformationID", value = cpu.InformationID.ToString() });
                     var conversationsCount = cpu.Conversations.Where(c => c.Direction == "initiatedCalling").Count();
                     var feedbacksCount = cpu.Feedbacks.Where(c => c.Direction == null).Count();
+                    var answersCount = (from q in cpu.Questions
+                                        from a in q.Answers
+                                        where a.Direction == null
+                                        select a).ToList().Count;
+
                     tempPopularUsers.Add(new {
                         User = u,
                         ConversationsCount = conversationsCount,
                         FeedbacksCount = feedbacksCount,
-                        Sum = conversationsCount + feedbacksCount
+                        AnswersCount = answersCount,
+                        Sum = conversationsCount + feedbacksCount + answersCount,
                     });
                 }
 
@@ -223,6 +239,7 @@ namespace Blindating.Models.Repositories
                 {
                     u.User.ConversationsCount = u.ConversationsCount;
                     u.User.FeedbacksCount = u.FeedbacksCount;
+                    u.User.AnswersCount = u.AnswersCount;
                     popularUsers.Add(u.User);
                 }
 

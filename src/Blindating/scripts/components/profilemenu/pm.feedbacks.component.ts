@@ -78,6 +78,8 @@ export class PmFeedbacksComponent implements OnInit, OnChanges {
         feedback.remoteUserID          = this.app.user.id;
         feedback.isPositive            = this.isPositive();
         feedback.text                  = text;
+        feedback.user                  = this.app.selectedUser;
+        feedback.remoteUser            = this.app.user;
         return feedback;
     }
 }
