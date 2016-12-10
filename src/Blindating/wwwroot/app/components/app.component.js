@@ -34,6 +34,7 @@ var AppComponent = (function () {
         this.isHelperShow = false;
         this.isHeaderShow = false;
         this.isSelectedYou = false;
+        this.isLoginShow = true;
         this.onUserCalling = function (e) {
             _this._userService.GetBy("JWT", e.senderId)
                 .subscribe(function (caller) {
@@ -130,7 +131,9 @@ var AppComponent = (function () {
             return user;
         };
     }
-    AppComponent.prototype.ngOnInit = function () { };
+    AppComponent.prototype.ngOnInit = function () {
+        this.isLoginShow = !Boolean(localStorage.getItem('id_token'));
+    };
     AppComponent.prototype.selectDeselectUser = function (user) {
         if (this.selectedUser == user) {
             this.selectedUser = null;
@@ -148,6 +151,8 @@ var AppComponent = (function () {
             this.isSelectedYou = false;
         else
             this.isSelectedYou = this.user.id == this.selectedUser.id;
+        if (this.user.id == user.id)
+            this._header.isProfileActive = !this._header.isProfileActive;
         this.setHelperElements();
     };
     AppComponent.prototype.initializeWebRTC = function () {

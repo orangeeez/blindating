@@ -23,16 +23,17 @@
                 </div>
             </form>
             <div *ngIf="questions?.length == 0" class="no-questions">No questions yet</div>
-            <div *ngFor="let question of questions" class="question-decoration">
+            <div *ngFor="let question of questions" class="question-decoration"
+                 [style.border-right]="question.answered ? '5px solid #42A948' : '5px solid #a94442'">
                 <div *ngIf="!question.isEditing">
                     <div>{{question.message}}</div>
-                    <i class="fa fa-pencil pencil"
+                    <i *ngIf="app.isSelectedYou" class="fa fa-pencil pencil"
                        (click)="onEditQuestion(question)"></i>
-                    <i class="fa fa-trash trash"
+                    <i *ngIf="app.isSelectedYou" class="fa fa-trash trash"
                        (click)="onRemoveQuestion(question)"></i>
                 </div>
                 <form #questioneditForm="ngForm" *ngIf="question.isEditing">
-                    <div (keyup)="onEditQuestionKeyup($event, questioneditForm.form.valid, question)">
+                    <div (keydown)="onEditQuestionKeydown($event, questioneditForm.form.valid, question)">
                         <textarea id="questioneditarea" focus-directive placeholder="Your question here"
                                   name="questioneditarea"
                                   required

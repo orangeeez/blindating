@@ -16,6 +16,7 @@ var preference_service_1 = require('../../services/information/preference.servic
 var question_service_1 = require('../../services/information/question.service');
 var photo_service_1 = require('../../services/information/photo.service');
 var conversation_service_1 = require('../../services/information/conversation.service');
+var question_1 = require('../../models/question');
 var preference_1 = require('../../models/preference');
 var countries_1 = require('../../static/countries');
 var config_1 = require('../../static/config');
@@ -37,8 +38,6 @@ var PmBasicComponent = (function () {
         this.header = { name: 'Uploader', value: 'basic' };
         this.defaultQuote = 'Please add your favorite quote here';
         this.defaultQuoteNotYou = 'User does not add quote yet';
-        this.defaultQuestion = 'Please add your question to others here';
-        this.defaultQuestionNotYou = 'User does not add question to others yet';
         this.defaultAuthor = 'By Author';
         this.questionIndex = 0;
         this.quotes = new Array();
@@ -85,7 +84,7 @@ var PmBasicComponent = (function () {
                 .subscribe(function (quotes) { return _this.quotes = quotes.reverse(); });
             this._preferenceService.GetAllByID(this.app.selectedUser.id)
                 .subscribe(function (preference) { return _this.preferences = preference; });
-            this._questionService.GetAllByID(this.app.selectedUser.id)
+            this._questionService.GetNotAnsweredByID(this.app.selectedUser.id)
                 .subscribe(function (questions) { return _this.questions = questions.reverse(); });
             this._photoService.GetAllByID(this.app.selectedUser.id)
                 .subscribe(function (photos) { return _this.photos = photos.reverse(); });
@@ -207,17 +206,42 @@ var PmBasicComponent = (function () {
         var answer = {
             id: 0,
             result: true,
-            userID: this.app.selectedUser.id,
-            remoteUserID: this.app.user.id,
+            userID: this.app.user.id,
+            remoteUserID: this.app.selectedUser.id,
             message: this.questions[this.questionIndex].message,
             informationFK: this.questions[this.questionIndex]['information'].id,
             user: this.app.user
         };
-        if (this.questionIndex <= this.questions.length)
+        if (this.questionIndex < this.questions.length - 1)
             this.questionIndex++;
+        else {
+            var q = new question_1.Question();
+            q.message = "You answered on all questions";
+            this.questions = [];
+            this.questionIndex = 0;
+            this.questions.push(q);
+        }
         this._questionService.SetAnswer(answer).subscribe();
     };
     PmBasicComponent.prototype.onDeclineAnswer = function () {
+        var answer = {
+            id: 0,
+            result: false,
+            userID: this.app.user.id,
+            remoteUserID: this.app.selectedUser.id,
+            message: this.questions[this.questionIndex].message,
+            informationFK: this.questions[this.questionIndex]['information'].id,
+            user: this.app.user
+        };
+        if (this.questionIndex < this.questions.length - 1)
+            this.questionIndex++;
+        else {
+            var q = new question_1.Question();
+            q.message = "You answered on all questions";
+            this.questions = [];
+            this.questionIndex = 0;
+            this.questions.push(q);
+        }
     };
     PmBasicComponent = __decorate([
         core_1.Component({

@@ -9,7 +9,7 @@
     --link-color: #f7f7f7;
     --main-border-color: #e7e7e7;
     --focus-border-color: #808080;
-    --inactive-text-color:  #C7C7CD;
+    --inactive-text-color: #C7C7CD;
     --valid-color: #42A948;
     --invalid-color: #a94442;
     --good-color: aliceblue;
@@ -97,4 +97,12 @@ textarea:focus, input:focus{
 }
 .blur {
     filter: blur(2px);
+}
+.image-loading {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }

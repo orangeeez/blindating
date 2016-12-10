@@ -28,7 +28,10 @@ export class PmQuestionsComponent implements OnInit, AfterViewInit {
     constructor(
         private _questionService: QuestionService) { }
 
-    ngOnInit() { }
+    ngOnInit() {
+        this._questionService.GetAllByID(this.app.selectedUser.id)
+            .subscribe(questions => this.questions = questions);
+    }
 
     ngAfterViewInit() {
         document.getElementById('profilemenu').scrollTop = 0;
@@ -67,7 +70,8 @@ export class PmQuestionsComponent implements OnInit, AfterViewInit {
                         message:               this.message,
                         informationQuestionFK: this.app.selectedUser.information['id'],
                         userid:                this.app.selectedUser.id,
-                        isEditing:             false
+                        isEditing:             false,
+                        answered:              null
                     };
                     this.isAddingQuestion = false;
                     this.message       = '';
@@ -84,10 +88,11 @@ export class PmQuestionsComponent implements OnInit, AfterViewInit {
                 break;
         }
     }
-    public onEditQuestionKeyup(event: KeyboardEvent, isFormValid: boolean, question: Question): void {
+    public onEditQuestionKeydown(event: KeyboardEvent, isFormValid: boolean, question: Question): void {
         var key: number = event.which || event.keyCode;
         switch (key) {
             case 13:
+                event.preventDefault();
                 if (isFormValid) {
                     this._questionService.Update(question)
                         .subscribe(usupdated => {

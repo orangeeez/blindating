@@ -52,6 +52,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     public isNewExpanded:     boolean = false;
     public isPopularExpanded: boolean = false;
 
+    public isUsersLoaded:        boolean = false;
+    public isNewUsersLoaded:     boolean = false;
+    public isPopularUsersLoaded: boolean = false;
+    public isActiveUsersLoaded:  boolean = false;
+
     public profileStatsHeightExpanded: number;
     public profileBoardHeight:         number;
     public profileStatsHeight:         number;
@@ -83,6 +88,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this._userService.GetAll()
             .subscribe(users => {
                 this.app.users = users.filter(this.removeCurrentUser);
+                this.isUsersLoaded = true;
             });
     }
 
@@ -100,16 +106,19 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this._userService.GetNew(Math.round(this.maxUsersStatsColumns))
             .subscribe(users => {
                 this.newUsers = users;//.filter(this.removeCurrentUser);
+                this.isPopularUsersLoaded = true;
             });
 
         this._userService.GetActive(Math.round(this.maxUsersStatsColumns))
             .subscribe(users => {
                 this.activeUsers = users;//.filter(this.removeCurrentUser);
+                this.isActiveUsersLoaded = true;
             });
 
         this._userService.GetPopular(Math.round(this.maxUsersStatsColumns))
             .subscribe(users => {
                 this.popularUsers = users;//.filter(this.removeCurrentUser);
+                this.isNewUsersLoaded = true;
             });
     }
 
@@ -117,7 +126,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.isNewExpanded = !this.isNewExpanded;
 
         if (this.isNewExpanded)
-            this._userService.GetNew(Math.round(this.maxUsersStatsColumns + this.getUsersCountForExpand()))
+            this._userService.GetNew(Math.floor(this.maxUsersStatsColumns + this.getUsersCountForExpand()))
                 .subscribe(users => {
                     this.newUsers = users;//.filter(this.removeCurrentUser);
                 });
@@ -133,7 +142,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.isActiveExpanded = !this.isActiveExpanded;
 
         if (this.isActiveExpanded)
-            this._userService.GetActive(Math.round(this.maxUsersStatsColumns + this.getUsersCountForExpand()))
+            this._userService.GetActive(Math.floor(this.maxUsersStatsColumns + this.getUsersCountForExpand()))
                 .subscribe(users => {
                     this.activeUsers = users;//.filter(this.removeCurrentUser);
                 });
@@ -149,7 +158,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.isPopularExpanded = !this.isPopularExpanded;
 
         if (this.isPopularExpanded)
-            this._userService.GetPopular(Math.round(this.maxUsersStatsColumns + this.getUsersCountForExpand()))
+            this._userService.GetPopular(Math.floor(this.maxUsersStatsColumns + this.getUsersCountForExpand()))
                 .subscribe(users => {
                     this.popularUsers = users;//.filter(this.removeCurrentUser);
                 });

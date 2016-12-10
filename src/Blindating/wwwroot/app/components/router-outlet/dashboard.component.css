@@ -43,6 +43,9 @@
     color: white;
     cursor: pointer;
 }
+#dashboard .image-stats-loading {
+    height: 40px;
+}
 .profile {
     display: flex;
     justify-content: center;

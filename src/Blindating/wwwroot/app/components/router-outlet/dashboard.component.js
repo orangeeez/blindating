@@ -27,6 +27,10 @@ var DashboardComponent = (function () {
         this.isActiveExpanded = false;
         this.isNewExpanded = false;
         this.isPopularExpanded = false;
+        this.isUsersLoaded = false;
+        this.isNewUsersLoaded = false;
+        this.isPopularUsersLoaded = false;
+        this.isActiveUsersLoaded = false;
         this.removeCurrentUser = function (user) {
             return user.id != _this.app.user.id;
         };
@@ -44,6 +48,7 @@ var DashboardComponent = (function () {
         this._userService.GetAll()
             .subscribe(function (users) {
             _this.app.users = users.filter(_this.removeCurrentUser);
+            _this.isUsersLoaded = true;
         });
     };
     DashboardComponent.prototype.ngAfterViewInit = function () {
@@ -60,21 +65,24 @@ var DashboardComponent = (function () {
         this._userService.GetNew(Math.round(this.maxUsersStatsColumns))
             .subscribe(function (users) {
             _this.newUsers = users; //.filter(this.removeCurrentUser);
+            _this.isPopularUsersLoaded = true;
         });
         this._userService.GetActive(Math.round(this.maxUsersStatsColumns))
             .subscribe(function (users) {
             _this.activeUsers = users; //.filter(this.removeCurrentUser);
+            _this.isActiveUsersLoaded = true;
         });
         this._userService.GetPopular(Math.round(this.maxUsersStatsColumns))
             .subscribe(function (users) {
             _this.popularUsers = users; //.filter(this.removeCurrentUser);
+            _this.isNewUsersLoaded = true;
         });
     };
     DashboardComponent.prototype.onExpandNew = function () {
         var _this = this;
         this.isNewExpanded = !this.isNewExpanded;
         if (this.isNewExpanded)
-            this._userService.GetNew(Math.round(this.maxUsersStatsColumns + this.getUsersCountForExpand()))
+            this._userService.GetNew(Math.floor(this.maxUsersStatsColumns + this.getUsersCountForExpand()))
                 .subscribe(function (users) {
                 _this.newUsers = users; //.filter(this.removeCurrentUser);
             });
@@ -88,7 +96,7 @@ var DashboardComponent = (function () {
         var _this = this;
         this.isActiveExpanded = !this.isActiveExpanded;
         if (this.isActiveExpanded)
-            this._userService.GetActive(Math.round(this.maxUsersStatsColumns + this.getUsersCountForExpand()))
+            this._userService.GetActive(Math.floor(this.maxUsersStatsColumns + this.getUsersCountForExpand()))
                 .subscribe(function (users) {
                 _this.activeUsers = users; //.filter(this.removeCurrentUser);
             });
@@ -102,7 +110,7 @@ var DashboardComponent = (function () {
         var _this = this;
         this.isPopularExpanded = !this.isPopularExpanded;
         if (this.isPopularExpanded)
-            this._userService.GetPopular(Math.round(this.maxUsersStatsColumns + this.getUsersCountForExpand()))
+            this._userService.GetPopular(Math.floor(this.maxUsersStatsColumns + this.getUsersCountForExpand()))
                 .subscribe(function (users) {
                 _this.popularUsers = users; //.filter(this.removeCurrentUser);
             });

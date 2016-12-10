@@ -73,13 +73,16 @@ export class AppComponent implements OnInit {
     public isHelperShow:  boolean = false;
     public isHeaderShow:  boolean = false;
     public isSelectedYou: boolean = false;
+    public isLoginShow:   boolean = true;
 
     constructor(
         private _userService:         UserService,
         private _conversationService: ConversationService,
         private _router:      Router) { }
 
-    ngOnInit() { }
+    ngOnInit() {
+        this.isLoginShow = !Boolean(localStorage.getItem('id_token'));
+    }
 
     public selectDeselectUser(user: User): void {
         if (this.selectedUser == user) {
@@ -99,6 +102,9 @@ export class AppComponent implements OnInit {
             this.isSelectedYou = false;
         else
             this.isSelectedYou = this.user.id == this.selectedUser.id;
+
+        if (this.user.id == user.id)
+            this._header.isProfileActive = !this._header.isProfileActive;
 
         this.setHelperElements();
     }

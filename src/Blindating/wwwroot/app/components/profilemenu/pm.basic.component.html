@@ -236,17 +236,30 @@
         </div>
         <div class="question-content-decoration">
             <div class="col-md-12 question-decoration">
-                <p *ngIf="app.isSelectedYou">{{questions[questionIndex]?.message || defaultQuestion}}</p>
-                <p *ngIf="!app.isSelectedYou">{{questions[questionIndex]?.message || defaultQuestionNotYou}}</p>
+                <p *ngIf="app.isSelectedYou">{{questions[questionIndex]?.message}}</p>
+                <p *ngIf="!app.isSelectedYou">{{questions[questionIndex]?.message}}</p>
             </div>
         </div>
-        <div *ngIf="questions[questionIndex] && !app.isSelectedYou" class="col-md-6 question-yesno no-padding"
+        <div *ngIf="questionIndex < questions.length &&
+                    questions[questionIndex]?.message != 'User does not add question to others yet' && 
+                    questions[questionIndex]?.message != 'You answered on all questions'            &&
+                    !app.isSelectedYou" class="col-md-6 question-yesno no-padding"
              (click)="onAcceptAnswer()">
             <i class="fa fa-check-circle-o fa-2x"></i>
         </div>
-        <div *ngIf="questions[questionIndex] && !app.isSelectedYou" class="col-md-6 question-yesno no-padding"
+        <div *ngIf="questionIndex < questions.length &&
+                    questions[questionIndex]?.message != 'User does not add question to others yet' &&
+                    questions[questionIndex]?.message != 'You answered on all questions'            &&
+                    !app.isSelectedYou" class="col-md-6 question-yesno no-padding"
              (click)="onDeclineAnswer()">
             <i class="fa fa-times-circle-o fa-2x"></i>
+        </div>
+        <div *ngIf="questions[0]?.message == 'You answered on all questions'"
+             [style.text-align]="'center'">
+            <button class="btn btn-default"
+                    (click)="onOpenQuestions()">
+                Show answers
+            </button>
         </div>
     </div>
     <div class="row no-padding">

@@ -20,4 +20,8 @@ export class QuestionService extends BaseService {
         return this._authHttp.post(API_ADDRESS + this.api + "/setanswer", JSON.stringify(answer), this.options)
             .map(res => !!res.text());
     }
+
+    public GetNotAnsweredByID(userID: number): Observable<Array<any>> {
+        return this._authHttp.post(API_ADDRESS + this.api + "/getnotansweredbyid", JSON.stringify(userID), this.options)
+            .map(user => user.json()['result']);
 }

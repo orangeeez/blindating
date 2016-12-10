@@ -18,6 +18,7 @@ var ProfilemenuComponent = (function () {
         this._cookieService = _cookieService;
         this._router = _router;
         this.state = 'deselected';
+        this.isShow = false;
         this.tabs = [
             { title: 'Basic', active: true },
             { title: 'Details' },
@@ -30,6 +31,7 @@ var ProfilemenuComponent = (function () {
         this._userService.Logout(this.app.user.id).subscribe();
         this.app.user = null;
         this.app.selectedUser = null;
+        this.app.isLoginShow = true;
         this.app.isHeaderShow = false;
         this.app._profilemenu.ToggleState();
         this.app._header.DeselectMenus();

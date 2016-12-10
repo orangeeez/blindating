@@ -31,6 +31,10 @@ var QuestionService = (function (_super) {
         return this._authHttp.post(config_1.API_ADDRESS + this.api + "/setanswer", JSON.stringify(answer), this.options)
             .map(function (res) { return !!res.text(); });
     };
+    QuestionService.prototype.GetNotAnsweredByID = function (userID) {
+        return this._authHttp.post(config_1.API_ADDRESS + this.api + "/getnotansweredbyid", JSON.stringify(userID), this.options)
+            .map(function (user) { return user.json()['result']; });
+    };
     QuestionService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http, angular2_jwt_1.AuthHttp])

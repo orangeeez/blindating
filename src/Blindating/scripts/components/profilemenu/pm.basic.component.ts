@@ -39,11 +39,9 @@ export class PmBasicComponent implements OnInit, OnChanges {
         url: PHOTO_BY_JWT_ADDRESS,
         authToken: 'Bearer ' + localStorage.getItem('id_token')
     });
-    public header:                   Headers      = { name: 'Uploader', value: 'basic' };
-    public defaultQuote:             string = 'Please add your favorite quote here';
-    public defaultQuoteNotYou:       string = 'User does not add quote yet';
-    public defaultQuestion:          string = 'Please add your question to others here';
-    public defaultQuestionNotYou:    string = 'User does not add question to others yet';
+    public header:                   Headers = { name: 'Uploader', value: 'basic' };
+    public defaultQuote:             string  = 'Please add your favorite quote here';
+    public defaultQuoteNotYou:       string  = 'User does not add quote yet';
 
     public defaultAuthor: string = 'By Author';
     public questionIndex: number = 0;
@@ -104,7 +102,7 @@ export class PmBasicComponent implements OnInit, OnChanges {
             this._preferenceService.GetAllByID(this.app.selectedUser.id)
                 .subscribe(preference => this.preferences = preference);
 
-            this._questionService.GetAllByID(this.app.selectedUser.id)
+            this._questionService.GetNotAnsweredByID(this.app.selectedUser.id)
                 .subscribe(questions => this.questions = questions.reverse());
 
             this._photoService.GetAllByID(this.app.selectedUser.id)
@@ -236,21 +234,46 @@ export class PmBasicComponent implements OnInit, OnChanges {
         let answer: Answer = {
             id: 0,
             result: true,
-            userID: this.app.selectedUser.id,
-            remoteUserID: this.app.user.id,
+            userID: this.app.user.id,
+            remoteUserID: this.app.selectedUser.id,
             message: this.questions[this.questionIndex].message,
             informationFK: this.questions[this.questionIndex]['information'].id,
             user: this.app.user
         }
 
-        if (this.questionIndex <= this.questions.length)
+        if (this.questionIndex < this.questions.length - 1)
             this.questionIndex++;
+        else {
+            var q = new Question();
+            q.message = "You answered on all questions";
+            this.questions = [];
+            this.questionIndex = 0;
+            this.questions.push(q);
+        }
+        
 
         this._questionService.SetAnswer(answer).subscribe();
     }
 
     public onDeclineAnswer(): void {
+        let answer: Answer = {
+            id: 0,
+            result: false,
+            userID: this.app.user.id,
+            remoteUserID: this.app.selectedUser.id,
+            message: this.questions[this.questionIndex].message,
+            informationFK: this.questions[this.questionIndex]['information'].id,
+            user: this.app.user
+        }
 
+        if (this.questionIndex < this.questions.length - 1)
+            this.questionIndex++;
+        else {
+            var q = new Question();
+            q.message = "You answered on all questions";
+            this.questions = [];
+            this.questionIndex = 0;
+            this.questions.push(q);
     }
 
     private filterInputDropdownCountry = (country: string): boolean => {

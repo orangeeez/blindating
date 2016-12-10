@@ -9,7 +9,8 @@ namespace Blindating.Models.Interfaces
 {
     public interface IQuestionRepository : IBaseRepository<Question>
     {
-        Task<IEnumerable<Question>> GetAllByID(int userID);
+        Task<IEnumerable<Question>> GetAllByID(string JWT, int userID);
+        Task<IEnumerable<Question>> GetNotAnsweredByID(string JWT, int userID); 
         Task<bool> SetAnswer(Answer answer);
     }
 }

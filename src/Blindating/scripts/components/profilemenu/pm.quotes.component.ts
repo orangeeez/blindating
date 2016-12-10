@@ -68,6 +68,7 @@ export class PmQuotesComponent implements OnInit, AfterViewInit {
         var key: number = event.which || event.keyCode;
         switch (key) {
             case 13:
+                event.preventDefault();
                 if (isFormValid) {
                     var quote: Quote = {
                         id:                 0,
@@ -97,10 +98,11 @@ export class PmQuotesComponent implements OnInit, AfterViewInit {
         }
     }
 
-    public onEditQuoteKeyup(event: KeyboardEvent, isFormValid: boolean, quote: Quote): void {
+    public onEditQuoteKeydown(event: KeyboardEvent, isFormValid: boolean, quote: Quote): void {
         var key: number = event.which || event.keyCode;
         switch (key) {
             case 13:
+                event.preventDefault();
                 if (isFormValid) {
                     this._quoteService.Update(quote)
                         .subscribe(isupdated => {

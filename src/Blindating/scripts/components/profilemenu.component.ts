@@ -14,8 +14,9 @@ import { PmBasicComponent }  from '../components/profilemenu/pm.basic.component'
     inputs:      ['app']
 })
 export class ProfilemenuComponent implements OnInit {
-    public app:   AppComponent;
-    public state: string = 'deselected';
+    public app:  AppComponent;
+    public state:  string  = 'deselected';
+    public isShow: boolean = false;
 
     public tabs: Array<any> = [
         { title: 'Basic', active: true },
@@ -33,8 +34,9 @@ export class ProfilemenuComponent implements OnInit {
 
     public onLogout(): void {
         this._userService.Logout(this.app.user.id).subscribe();
-        this.app.user = null;
+        this.app.user         = null;
         this.app.selectedUser = null;
+        this.app.isLoginShow  = true;
         this.app.isHeaderShow = false;
         this.app._profilemenu.ToggleState();
         this.app._header.DeselectMenus();

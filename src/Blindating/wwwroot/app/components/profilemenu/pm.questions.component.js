@@ -16,7 +16,11 @@ var PmQuestionsComponent = (function () {
         this.onBack = new core_1.EventEmitter();
         this.isAddingQuestion = false;
     }
-    PmQuestionsComponent.prototype.ngOnInit = function () { };
+    PmQuestionsComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this._questionService.GetAllByID(this.app.selectedUser.id)
+            .subscribe(function (questions) { return _this.questions = questions; });
+    };
     PmQuestionsComponent.prototype.ngAfterViewInit = function () {
         document.getElementById('profilemenu').scrollTop = 0;
     };
@@ -51,7 +55,8 @@ var PmQuestionsComponent = (function () {
                         message: this.message,
                         informationQuestionFK: this.app.selectedUser.information['id'],
                         userid: this.app.selectedUser.id,
-                        isEditing: false
+                        isEditing: false,
+                        answered: null
                     };
                     this.isAddingQuestion = false;
                     this.message = '';
@@ -68,11 +73,12 @@ var PmQuestionsComponent = (function () {
                 break;
         }
     };
-    PmQuestionsComponent.prototype.onEditQuestionKeyup = function (event, isFormValid, question) {
+    PmQuestionsComponent.prototype.onEditQuestionKeydown = function (event, isFormValid, question) {
         var _this = this;
         var key = event.which || event.keyCode;
         switch (key) {
             case 13:
+                event.preventDefault();
                 if (isFormValid) {
                     this._questionService.Update(question)
                         .subscribe(function (usupdated) {

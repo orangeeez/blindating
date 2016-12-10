@@ -1,8 +1,7 @@
 ﻿<div *ngIf="app.isHeaderShow">
     <a class="navbar-brand navbar-right"
        [class.navbar-active]="isProfileActive"
-       (click)="app.selectDeselectUser(app.user); 
-                isProfileActive = (isProfileActive == false ? true : false);">
+       (click)="app.selectDeselectUser(app.user);">
 
         <img *ngIf="app.user" class="avatar-decoration" 
              [src]="app.user.image">

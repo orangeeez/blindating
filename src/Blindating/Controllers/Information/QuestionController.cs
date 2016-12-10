@@ -35,7 +35,16 @@ namespace NetCoreAngular2.Controllers
         [ActionName("getallbyid")]
         public JsonResult GetAllByID([FromBody] int userID)
         {
-            return new JsonResult(Questions.GetAllByID(userID));
+            var JWT = Request.Headers["Authorization"].ToString().Remove(0, 7);
+            return new JsonResult(Questions.GetAllByID(JWT, userID));
+        }
+        [Authorize("Bearer")]
+        [HttpPost]
+        [ActionName("getnotansweredbyid")]
+        public JsonResult GetNotAnsweredByID([FromBody] int userID)
+        {
+            var JWT = Request.Headers["Authorization"].ToString().Remove(0, 7);
+            return new JsonResult(Questions.GetNotAnsweredByID(JWT, userID));
         }
         [Authorize("Bearer")]
         [HttpPost]

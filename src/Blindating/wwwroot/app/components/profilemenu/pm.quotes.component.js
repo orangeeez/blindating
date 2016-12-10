@@ -49,6 +49,7 @@ var PmQuotesComponent = (function () {
         var key = event.which || event.keyCode;
         switch (key) {
             case 13:
+                event.preventDefault();
                 if (isFormValid) {
                     var quote = {
                         id: 0,
@@ -77,11 +78,12 @@ var PmQuotesComponent = (function () {
                 break;
         }
     };
-    PmQuotesComponent.prototype.onEditQuoteKeyup = function (event, isFormValid, quote) {
+    PmQuotesComponent.prototype.onEditQuoteKeydown = function (event, isFormValid, quote) {
         var _this = this;
         var key = event.which || event.keyCode;
         switch (key) {
             case 13:
+                event.preventDefault();
                 if (isFormValid) {
                     this._quoteService.Update(quote)
                         .subscribe(function (isupdated) {

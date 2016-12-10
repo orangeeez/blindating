@@ -48,7 +48,7 @@
 }
 .pencil {
     position: absolute;
-    right: 22px;
+    right: 27px;
     line-height: 0;
 }
 .pencil:hover {
@@ -57,7 +57,7 @@
 }
 .trash {
     position: absolute;
-    right: 5px;
+    right: 10px;
     line-height: 0;
 }
 .trash:hover {

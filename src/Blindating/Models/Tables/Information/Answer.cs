@@ -14,16 +14,17 @@ namespace Blindating.Models.Tables
         {
             Result = answer.Result;
             RemoteUserID = answer.RemoteUserID;
+            Message = answer.Message;
         }
         public int ID { get; set; }
         public int QuestionAnswerFK { get; set; }
         public int RemoteUserID { get; set; }
         public bool Result { get; set; }
         public string Direction { get; set; }
+        public string Message { get; set; }
         public virtual Question Question { get; set; }
 
         [NotMapped] public int UserID { get; set; }
-        [NotMapped] public string Message { get; set; }
         [NotMapped] public int InformationFK { get; set; }
         [NotMapped] public User User { get; set; }
     }

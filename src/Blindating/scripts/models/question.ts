@@ -4,4 +4,7 @@ export class Question {
     informationQuestionFK: number;
     userid:                number;
     isEditing:             boolean;
+
+    //not mapped
+    answered: boolean;
 }
