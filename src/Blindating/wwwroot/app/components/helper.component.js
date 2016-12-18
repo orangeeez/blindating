@@ -124,7 +124,7 @@ var HelperComponent = (function () {
     };
     HelperComponent.prototype.onSearchShow = function () {
         this.isSearchInitiated = !this.isSearchInitiated;
-        this.app._dashboard.searchToggle();
+        this.app._footer.searchToggle();
     };
     HelperComponent = __decorate([
         core_1.Component({

@@ -20,16 +20,16 @@ namespace Blindating.Models.Repositories
             using (AppDBContext _context = new AppDBContext())
             {
                 User authUser = await _context.Users.Include(u => u.Information)
-                    .ThenInclude(i => i.Questions)
-                    .ThenInclude(q => q.Answers)
                         .Where(u => u.JWT == JWT)
                         .SingleOrDefaultAsync();
 
-                User user = await _context.Users.Include(u => u.Information).ThenInclude(i => i.Questions)
+                User user = await _context.Users.Include(u => u.Information)
+                                                .ThenInclude(i => i.Questions)
+                                                .ThenInclude(q => q.Answers)
                     .Where(u => u.ID == userID)
                     .SingleOrDefaultAsync();
 
-                return GetAllAnsweredQuestions(authUser.Information.Questions[0].Answers, user.Information.Questions);
+                return GetAllAnsweredQuestions(authUser.ID, user.Information.Questions);
             }
         }
         public async Task<IEnumerable<Question>> GetNotAnsweredByID(string JWT, int userID)
@@ -37,16 +37,16 @@ namespace Blindating.Models.Repositories
             using (AppDBContext _context = new AppDBContext())
             {
                 User authUser = await _context.Users.Include(u => u.Information)
-                    .ThenInclude(i => i.Questions)
-                    .ThenInclude(q => q.Answers)
-                        .Where(u => u.JWT == JWT)
-                        .SingleOrDefaultAsync();
+                    .Where(u => u.JWT == JWT)
+                    .SingleOrDefaultAsync();
 
-                User user = await _context.Users.Include(u => u.Information).ThenInclude(i => i.Questions)
+                User user = await _context.Users.Include(u => u.Information)
+                                                .ThenInclude(i => i.Questions)
+                                                .ThenInclude(q => q.Answers)
                     .Where(u => u.ID == userID)
                     .SingleOrDefaultAsync();
 
-                return GetNotAnsweredQuestions(authUser.Information.Questions[0].Answers, user.Information.Questions);
+                return GetNotAnsweredQuestions(authUser.ID, user.Information.Questions);
             }
         }
 
@@ -54,43 +54,35 @@ namespace Blindating.Models.Repositories
         {
             using (AppDBContext _context = new AppDBContext())
             {
-                Answer remoteAnswer = new Answer(answer);
                 var questionFK = (from q in _context.Questions
                                   where q.InformationQuestionFK == answer.InformationFK && q.Message == answer.Message
                                   select q.ID).SingleOrDefault();
 
-                var remoteQuestionFK = (from q in _context.Questions
-                                        where q.InformationQuestionFK == answer.User.Information.ID
-                                        select q.ID).SingleOrDefault();
-
-                remoteAnswer.Direction = "Leaved";
-                remoteAnswer.QuestionAnswerFK = remoteQuestionFK;
-
+                answer.Direction = "Leaved";
                 answer.QuestionAnswerFK = questionFK;
 
                 _context.Answers.Add(answer);
-                _context.Answers.Add(remoteAnswer);
-
                 await _context.SaveChangesAsync();
 
                 return true;
             }
         }
 
-        private List<Question> GetAllAnsweredQuestions(List<Answer> answers, List<Question> questions)
+        private List<Question> GetAllAnsweredQuestions(int ID, List<Question> questions)
         {
             List<Question> answeredQuestions = new List<Question>(questions);
 
             foreach (Question q in questions)
             {
-                foreach (Answer a in answers)
-                    if (q.Message == a.Message)
+                foreach (Answer a in q.Answers)
+                    if (q.Message == a.Message && 
+                        a.RemoteUserID == ID)
                         q.Answered = a.Result;
             }
             return answeredQuestions;
         }
 
-        private List<Question> GetNotAnsweredQuestions(List<Answer> answers, List<Question> questions)
+        private List<Question> GetNotAnsweredQuestions(int ID, List<Question> questions)
         {
             List<Question> notAnsweredQuestions = new List<Question>(questions);
             Question question = new Question();
@@ -103,8 +95,8 @@ namespace Blindating.Models.Repositories
 
             foreach (Question q in questions)
             {
-                foreach (Answer a in answers)
-                    if (q.Message == a.Message)
+                foreach (Answer a in q.Answers)
+                    if (q.Message == a.Message && a.RemoteUserID == ID)
                         notAnsweredQuestions.Remove(q);
 
                 if (notAnsweredQuestions.Count == 0)

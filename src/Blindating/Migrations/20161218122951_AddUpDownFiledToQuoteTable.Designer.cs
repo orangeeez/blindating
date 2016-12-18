@@ -8,9 +8,10 @@ using Blindating.Models;
 namespace Blindating.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20161218122951_AddUpDownFiledToQuoteTable")]
+    partial class AddUpDownFiledToQuoteTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")

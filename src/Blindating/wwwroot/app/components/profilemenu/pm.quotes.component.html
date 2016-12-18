@@ -40,16 +40,30 @@
             <blockquote *ngFor="let quote of quotes" class="quote-decoration">
                 <div *ngIf="!quote.isEditing">
                     <p>{{quote.content}}</p>
-                    <i *ngIf="!app.isSelectedYou" class="up-counter"
-                       (click)="onUpQuote()">{{quote.up}}</i>
-                    <i *ngIf="!app.isSelectedYou" class="fa fa-thumbs-o-up thumbs-up"></i>
-                    <i *ngIf="!app.isSelectedYou" class="fa fa-thumbs-o-down thumbs-down"></i>
-                    <i *ngIf="!app.isSelectedYou" class="down-counter"
-                       (click)="onDownQuote()">{{quote.down}}</i>
-                    <i *ngIf="app.isSelectedYou" class="fa fa-pencil pencil"
-                       (click)="onEditQuote(quote)"></i>
-                    <i *ngIf="app.isSelectedYou" class="fa fa-trash trash"
-                       (click)="onRemoveQuote(quote)"></i>
+                    <div class="quote-menu">
+                        <i *ngIf="!app.isSelectedYou" class="up-counter">
+                            {{quote.up}}
+                        </i>
+                        <i *ngIf="!app.isSelectedYou" class="fa thumbs-up"
+                           [class.fa-thumbs-o-up]="!quote.isLike"
+                           [class.fa-thumbs-up]="quote.isLike"
+                           [class.disabled]="quote.isAnswered"
+                           [style.color]="quote.isLike ? '#42A948' : '#333'"
+                           (click)="onUpQuote(quote)"></i>
+                        <i *ngIf="!app.isSelectedYou" class="fa thumbs-down"
+                           [class.fa-thumbs-o-down]="!quote.isDislike"
+                           [class.fa-thumbs-down]="quote.isDislike"
+                           [class.disabled]="quote.isAnswered"
+                           [style.color]="quote.isDislike ? '#a94442' : '#333'"
+                           (click)="onDownQuote(quote)"></i>
+                        <i *ngIf="!app.isSelectedYou" class="down-counter">
+                            {{quote.down}}
+                        </i>
+                        <i *ngIf="app.isSelectedYou" class="fa fa-pencil pencil"
+                           (click)="onEditQuote(quote)"></i>
+                        <i *ngIf="app.isSelectedYou" class="fa fa-trash trash"
+                           (click)="onRemoveQuote(quote)"></i>
+                    </div>
                     <footer>{{quote.author}}</footer>
                 </div>
                 <form #quoteditForm="ngForm" *ngIf="quote.isEditing">

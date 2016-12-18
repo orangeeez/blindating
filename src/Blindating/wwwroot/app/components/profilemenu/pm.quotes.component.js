@@ -41,8 +41,34 @@ var PmQuotesComponent = (function () {
         });
     };
     PmQuotesComponent.prototype.onUpQuote = function (quote) {
+        quote.isAnswered = true;
+        quote.isLike = true;
+        quote.up++;
+        var qlike = {
+            id: 0,
+            result: true,
+            userID: this.app.selectedUser.id,
+            remoteUserID: this.app.user.id,
+            message: this.quotes.find(function (q) { return q.id == quote.id; }).content,
+            informationFK: this.quotes.find(function (q) { return q.id == quote.id; })['information'].id,
+            updateQuote: quote
+        };
+        this._quoteService.SetLike(qlike).subscribe();
     };
     PmQuotesComponent.prototype.onDownQuote = function (quote) {
+        quote.isAnswered = true;
+        quote.isDislike = true;
+        quote.down++;
+        var qlike = {
+            id: 0,
+            result: false,
+            userID: this.app.selectedUser.id,
+            remoteUserID: this.app.user.id,
+            message: this.quotes.find(function (q) { return q.id == quote.id; }).content,
+            informationFK: this.quotes.find(function (q) { return q.id == quote.id; })['information'].id,
+            updateQuote: quote
+        };
+        this._quoteService.SetLike(qlike).subscribe();
     };
     PmQuotesComponent.prototype.onQuoteKeyup = function (event, isFormValid, isEditing) {
         var _this = this;
@@ -55,11 +81,12 @@ var PmQuotesComponent = (function () {
                         id: 0,
                         content: this.content,
                         author: this.author,
-                        informationQuoteFK: this.app.selectedUser.information['id'],
                         up: 0,
                         down: 0,
+                        informationQuoteFK: this.app.selectedUser.information['id'],
                         userid: this.app.selectedUser.id,
-                        isEditing: false
+                        isEditing: false,
+                        isAnswered: false
                     };
                     this.isAddingQuote = false;
                     this.content = '';

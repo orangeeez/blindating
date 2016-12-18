@@ -7,6 +7,8 @@
 import { Quote }             from '../../models/quote';
 import { QuoteService }      from '../../services/information/quote.service';
 import { AppComponent }      from '../../components/app.component';
+import { QuoteLike }         from '../../models/quotelike';
+
 @Component({
     selector: 'pm-quotes-component',
     templateUrl: 'app/components/profilemenu/pm.quotes.component.html',
@@ -58,10 +60,40 @@ export class PmQuotesComponent implements OnInit, AfterViewInit {
             })
     }
 
-    public onUpQuote(quote: Quote) {
+    public onUpQuote(quote: Quote): void {
+        quote.isAnswered = true;
+        quote.isLike     = true;
+
+        quote.up++;
+        let qlike: QuoteLike = {
+            id: 0,
+            result: true,
+            userID: this.app.selectedUser.id,
+            remoteUserID:  this.app.user.id,
+            message: this.quotes.find(function (q) { return q.id == quote.id }).content,
+            informationFK: this.quotes.find(function (q) { return q.id == quote.id })['information'].id,
+            updateQuote: quote
+        }
+
+        this._quoteService.SetLike(qlike).subscribe();
     }
 
-    public onDownQuote(quote: Quote) {
+    public onDownQuote(quote: Quote): void {
+        quote.isAnswered = true;
+        quote.isDislike  = true;
+
+        quote.down++;
+        let qlike: QuoteLike = {
+            id: 0,
+            result: false,
+            userID: this.app.selectedUser.id,
+            remoteUserID: this.app.user.id,
+            message: this.quotes.find(function (q) { return q.id == quote.id }).content,
+            informationFK: this.quotes.find(function (q) { return q.id == quote.id })['information'].id,
+            updateQuote: quote
+        }
+
+        this._quoteService.SetLike(qlike).subscribe();
     }
 
     public onQuoteKeyup(event: KeyboardEvent, isFormValid: boolean, isEditing: boolean): void {
@@ -74,11 +106,12 @@ export class PmQuotesComponent implements OnInit, AfterViewInit {
                         id:                 0,
                         content:            this.content,
                         author:             this.author,
-                        informationQuoteFK: this.app.selectedUser.information['id'],
                         up:                 0,
                         down:               0,
+                        informationQuoteFK: this.app.selectedUser.information['id'],
                         userid:             this.app.selectedUser.id,
-                        isEditing:          false
+                        isEditing:          false,
+                        isAnswered:         false
                     };
                     this.isAddingQuote = false;
                     this.content = '';

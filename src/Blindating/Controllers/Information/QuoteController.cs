@@ -37,7 +37,8 @@ namespace NetCoreAngular2.Controllers
         [ActionName("getallbyid")]
         public JsonResult GetAllByID([FromBody] int userID)
         {
-            return new JsonResult(Quotes.GetAllByID(userID));
+            var JWT = Request.Headers["Authorization"].ToString().Remove(0, 7);
+            return new JsonResult(Quotes.GetAllByID(JWT, userID));
         }
         [Authorize("Bearer")]
         [HttpPost]
@@ -59,6 +60,13 @@ namespace NetCoreAngular2.Controllers
         public JsonResult Remove([FromBody] Quote quote)
         {
             return new JsonResult(Quotes.Remove(quote));
+        }
+        [Authorize("Bearer")]
+        [HttpPost]
+        [ActionName("setlike")]
+        public JsonResult SetLike([FromBody] QuoteLike qlike)
+        {
+            return new JsonResult(Quotes.SetLike(qlike));
         }
     }
 }

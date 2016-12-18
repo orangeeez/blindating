@@ -21,9 +21,9 @@ var ProfilemenuComponent = (function () {
         this.isShow = false;
         this.tabs = [
             { title: 'Basic', active: true },
-            { title: 'Details' },
-            { title: 'Wishes' },
-            { title: 'Notifications' }
+            { title: 'Details', active: false },
+            { title: 'Wishes', active: false },
+            { title: 'Notifications', active: false }
         ];
     }
     ProfilemenuComponent.prototype.ngOnInit = function () { };
@@ -39,11 +39,20 @@ var ProfilemenuComponent = (function () {
         localStorage.removeItem('id_token');
         this._router.navigate(['/login']);
     };
-    ProfilemenuComponent.prototype.onHidePm = function () {
+    ProfilemenuComponent.prototype.onHide = function () {
         this.app.selectDeselectUser(this.app.selectedUser);
     };
     ProfilemenuComponent.prototype.ToggleState = function () {
         this.state = (this.state === 'selected' ? 'deselected' : 'selected');
+    };
+    ProfilemenuComponent.prototype.setBasicTabActive = function () {
+        for (var _i = 0, _a = this.tabs; _i < _a.length; _i++) {
+            var t = _a[_i];
+            if (t.title != 'Basic')
+                t.active = false;
+            else
+                t.active = true;
+        }
     };
     ProfilemenuComponent = __decorate([
         core_1.Component({

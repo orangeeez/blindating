@@ -30,7 +30,7 @@ import {
     selector: 'pm-basic-component',
     templateUrl: 'app/components/profilemenu/pm.basic.component.html',
     styleUrls: ['app/components/profilemenu/pm.basic.component.css'],
-    inputs:    ['app', 'selectedUser']
+    inputs:    ['app', 'selectedUser', 'isOpenQuotes']
 })
 export class PmBasicComponent implements OnInit, OnChanges {
     public CITIES:                   Array<string>;
@@ -43,8 +43,8 @@ export class PmBasicComponent implements OnInit, OnChanges {
     public defaultQuote:             string  = 'Please add your favorite quote here';
     public defaultQuoteNotYou:       string  = 'User does not add quote yet';
 
-    public defaultAuthor: string = 'By Author';
-    public questionIndex: number = 0;
+    public defaultAuthor:   string = 'By Author';
+    public questionIndex:   number = 0;
 
     public quotes:        Array<Quote>    = new Array<Quote>();
     public questions:     Array<Question> = new Array<Question>();
@@ -69,6 +69,12 @@ export class PmBasicComponent implements OnInit, OnChanges {
     public isPhotosArrowShow:        boolean = false;
     public isQuestionsArrowShow:     boolean = false;
     public isConversationsArrowShow: boolean = false;
+
+    public isQuotesLoaded:        boolean = false;
+    public isPreferenceLoaded:    boolean = false;
+    public isQuestionsLoaded:     boolean = false;
+    public isPhotosLoaded:        boolean = false;
+    public isConversationsLoaded: boolean = false;
 
     constructor(
         private _userService:         UserService,
@@ -96,20 +102,37 @@ export class PmBasicComponent implements OnInit, OnChanges {
 
     ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
         if (changes['selectedUser']) {
+            this.changeProfileLoading();
+
             this._quoteService.GetAllByID(this.app.selectedUser.id)
-                .subscribe(quotes => this.quotes = quotes.reverse());
+                .subscribe(quotes => {
+                    this.quotes = quotes.reverse();
+                    this.isQuotesLoaded = true;
+                });
 
             this._preferenceService.GetAllByID(this.app.selectedUser.id)
-                .subscribe(preference => this.preferences = preference);
+                .subscribe(preference => {
+                    this.preferences = preference;
+                    this.isPreferenceLoaded = true;
+                });
 
             this._questionService.GetNotAnsweredByID(this.app.selectedUser.id)
-                .subscribe(questions => this.questions = questions.reverse());
+                .subscribe(questions => {
+                    this.questions = questions.reverse();
+                    this.isQuestionsLoaded = true;
+                });
 
             this._photoService.GetAllByID(this.app.selectedUser.id)
-                .subscribe(photos => this.photos = photos.reverse());
+                .subscribe(photos => {
+                    this.photos = photos.reverse();
+                    this.isPhotosLoaded = true;
+                });
 
             this._conversationService.GetAllByID(this.app.selectedUser.id)
-                .subscribe(conversations => this.conversations = conversations.reverse());
+                .subscribe(conversations => {
+                    this.conversations = conversations.reverse();
+                    this.isConversationsLoaded = true;
+                });
         }
     }
 
@@ -162,12 +185,10 @@ export class PmBasicComponent implements OnInit, OnChanges {
                     input.focus();
                     return;
                 }
-                else
-                    this.preferences.hobby = element['innerHTML'];
+                else this.preferences.hobby = element['innerHTML'];
                 break;
         }
-        this._preferenceService.Update(this.preferences)
-            .subscribe(isupdated => { });
+        this._preferenceService.Update(this.preferences).subscribe();
     }
 
     public onInputDropdown(event: KeyboardEvent): void {
@@ -234,8 +255,8 @@ export class PmBasicComponent implements OnInit, OnChanges {
         let answer: Answer = {
             id: 0,
             result: true,
-            userID: this.app.user.id,
-            remoteUserID: this.app.selectedUser.id,
+            userID: this.app.selectedUser.id,
+            remoteUserID: this.app.user.id,
             message: this.questions[this.questionIndex].message,
             informationFK: this.questions[this.questionIndex]['information'].id,
             user: this.app.user
@@ -274,6 +295,14 @@ export class PmBasicComponent implements OnInit, OnChanges {
             this.questions = [];
             this.questionIndex = 0;
             this.questions.push(q);
+        }
+    }
+
+    public setBasicComponentShow(): void {
+        this.isOpenQuotes        = false;
+        this.isOpenQuestions     = false;
+        this.isOpenPhotos        = false;
+        this.isOpenConversations = false;
     }
 
     private filterInputDropdownCountry = (country: string): boolean => {
@@ -282,5 +311,18 @@ export class PmBasicComponent implements OnInit, OnChanges {
 
     private filterInputDropdownCity = (city: string): boolean => {
         return city.includes(this.preferences.city);
+    }
+
+    private changeProfileLoading(): void {
+        this.isQuotesLoaded        = false;
+        this.isPreferenceLoaded    = false;
+        this.isQuestionsLoaded     = false;
+        this.isPhotosLoaded        = false;
+        this.isConversationsLoaded = false;
+
+        this.isOpenQuotes        = false;
+        this.isOpenQuestions     = false;
+        this.isOpenPhotos        = false;
+        this.isOpenConversations = false;
     }
 }

@@ -51,7 +51,7 @@
     height: 15px;
     line-height: 1;
     margin-top: 1px;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0);
 }
 .photos-content .close:hover {
     opacity: 1;

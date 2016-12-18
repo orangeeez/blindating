@@ -170,9 +170,9 @@ namespace Blindating.Models.Repositories
                     var u = await GetBy(new { field = "InformationID", value = cau.InformationID.ToString() });
                     var conversationsCount = cau.Conversations.Where(c => c.Direction == "initiatedCaller").Count();
                     var feedbacksCount = cau.Feedbacks.Where(c => c.Direction == "Leaved").Count();
-                    var answersCount = (from q in cau.Questions
+                    var answersCount = (from q in _context.Questions.Include(q => q.Answers)
                                         from a in q.Answers
-                                        where a.Direction == "Leaved"
+                                        where a.RemoteUserID == u.ID
                                         select a).ToList().Count;
                     tempActiveUsers.Add(new
                     {
@@ -184,9 +184,9 @@ namespace Blindating.Models.Repositories
                     });
                 }
 
-                var tempOrdereActiveIsers = tempActiveUsers.OrderByDescending(d => d.Sum).Take(count);
+                var tempOrderedActiveIsers = tempActiveUsers.OrderByDescending(d => d.Sum).Take(count);
 
-                foreach (var u in tempOrdereActiveIsers)
+                foreach (var u in tempOrderedActiveIsers)
                 {
                     u.User.ConversationsCount = u.ConversationsCount;
                     u.User.FeedbacksCount = u.FeedbacksCount;
@@ -244,6 +244,20 @@ namespace Blindating.Models.Repositories
                 }
 
                 return GetVideoInitiatedUsers(popularUsers, user);
+            }
+        }
+        public async Task<List<User>> GetRandom(int count, string JWT)
+        {
+            using (AppDBContext _context = new AppDBContext())
+            {
+                Random random = new Random();
+                var user = await GetBy(new { field = "JWT", value = JWT, });
+                var users = await _context.Users.Include(u => u.Information).
+                                                 ThenInclude(i => i.Conversations)
+                                                 .OrderBy(u => random.Next())
+                                                 .Take(count)
+                                                 .ToListAsync();
+                return GetVideoInitiatedUsers(users, user);
             }
         }
         private List<User> GetVideoInitiatedUsers(List<User> users, User user)

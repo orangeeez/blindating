@@ -154,6 +154,7 @@ var AppComponent = (function () {
         if (this.user.id == user.id)
             this._header.isProfileActive = !this._header.isProfileActive;
         this.setHelperElements();
+        this._profilemenu.setBasicTabActive();
     };
     AppComponent.prototype.initializeWebRTC = function () {
         this.user.peer = new Woogeen.PeerClient({

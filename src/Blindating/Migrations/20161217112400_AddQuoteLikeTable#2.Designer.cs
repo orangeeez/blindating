@@ -8,9 +8,10 @@ using Blindating.Models;
 namespace Blindating.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20161217112400_AddQuoteLikeTable#2")]
+    partial class AddQuoteLikeTable2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -290,11 +291,7 @@ namespace Blindating.Migrations
 
                     b.Property<string>("Content");
 
-                    b.Property<int>("Down");
-
                     b.Property<int>("InformationQuoteFK");
-
-                    b.Property<int>("Up");
 
                     b.HasKey("ID");
 

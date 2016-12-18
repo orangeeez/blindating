@@ -1,7 +1,21 @@
-﻿<div *ngIf="!isOpenQuotes    &&
+﻿<div [hidden]="isQuotesLoaded     &&
+               isPreferenceLoaded &&
+               isQuestionsLoaded  &&
+               isPhotosLoaded     &&
+               isConversationsLoaded"
+     [style.height]="'90%'">
+    <img [src]="'images/app/controls/loading.gif?6'"
+         class="image-loading">
+</div>
+<div *ngIf="!isOpenQuotes    &&
             !isOpenQuestions && 
             !isOpenPhotos    &&
-            !isOpenConversations" class="container-fluid" id="basic">
+            !isOpenConversations" class="container-fluid" id="basic"
+     [hidden]="!isQuotesLoaded     ||
+               !isPreferenceLoaded ||
+               !isQuestionsLoaded  ||
+               !isPhotosLoaded     ||
+               !isConversationsLoaded">
     <div class="row">
         <div class="col-md-5 avatar">
             <span *ngIf="app.isSelectedYou" class="avatar-hover-decoration">

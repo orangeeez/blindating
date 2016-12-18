@@ -60,6 +60,11 @@ var PmBasicComponent = (function () {
         this.isPhotosArrowShow = false;
         this.isQuestionsArrowShow = false;
         this.isConversationsArrowShow = false;
+        this.isQuotesLoaded = false;
+        this.isPreferenceLoaded = false;
+        this.isQuestionsLoaded = false;
+        this.isPhotosLoaded = false;
+        this.isConversationsLoaded = false;
         this.filterInputDropdownCountry = function (country) {
             return country.includes(_this.preferences.country);
         };
@@ -80,16 +85,32 @@ var PmBasicComponent = (function () {
     PmBasicComponent.prototype.ngOnChanges = function (changes) {
         var _this = this;
         if (changes['selectedUser']) {
+            this.changeProfileLoading();
             this._quoteService.GetAllByID(this.app.selectedUser.id)
-                .subscribe(function (quotes) { return _this.quotes = quotes.reverse(); });
+                .subscribe(function (quotes) {
+                _this.quotes = quotes.reverse();
+                _this.isQuotesLoaded = true;
+            });
             this._preferenceService.GetAllByID(this.app.selectedUser.id)
-                .subscribe(function (preference) { return _this.preferences = preference; });
+                .subscribe(function (preference) {
+                _this.preferences = preference;
+                _this.isPreferenceLoaded = true;
+            });
             this._questionService.GetNotAnsweredByID(this.app.selectedUser.id)
-                .subscribe(function (questions) { return _this.questions = questions.reverse(); });
+                .subscribe(function (questions) {
+                _this.questions = questions.reverse();
+                _this.isQuestionsLoaded = true;
+            });
             this._photoService.GetAllByID(this.app.selectedUser.id)
-                .subscribe(function (photos) { return _this.photos = photos.reverse(); });
+                .subscribe(function (photos) {
+                _this.photos = photos.reverse();
+                _this.isPhotosLoaded = true;
+            });
             this._conversationService.GetAllByID(this.app.selectedUser.id)
-                .subscribe(function (conversations) { return _this.conversations = conversations.reverse(); });
+                .subscribe(function (conversations) {
+                _this.conversations = conversations.reverse();
+                _this.isConversationsLoaded = true;
+            });
         }
     };
     PmBasicComponent.prototype.onFocusoutName = function () {
@@ -145,8 +166,7 @@ var PmBasicComponent = (function () {
                     this.preferences.hobby = element['innerHTML'];
                 break;
         }
-        this._preferenceService.Update(this.preferences)
-            .subscribe(function (isupdated) { });
+        this._preferenceService.Update(this.preferences).subscribe();
     };
     PmBasicComponent.prototype.onInputDropdown = function (event) {
         switch (event.target['id']) {
@@ -206,8 +226,8 @@ var PmBasicComponent = (function () {
         var answer = {
             id: 0,
             result: true,
-            userID: this.app.user.id,
-            remoteUserID: this.app.selectedUser.id,
+            userID: this.app.selectedUser.id,
+            remoteUserID: this.app.user.id,
             message: this.questions[this.questionIndex].message,
             informationFK: this.questions[this.questionIndex]['information'].id,
             user: this.app.user
@@ -243,12 +263,29 @@ var PmBasicComponent = (function () {
             this.questions.push(q);
         }
     };
+    PmBasicComponent.prototype.setBasicComponentShow = function () {
+        this.isOpenQuotes = false;
+        this.isOpenQuestions = false;
+        this.isOpenPhotos = false;
+        this.isOpenConversations = false;
+    };
+    PmBasicComponent.prototype.changeProfileLoading = function () {
+        this.isQuotesLoaded = false;
+        this.isPreferenceLoaded = false;
+        this.isQuestionsLoaded = false;
+        this.isPhotosLoaded = false;
+        this.isConversationsLoaded = false;
+        this.isOpenQuotes = false;
+        this.isOpenQuestions = false;
+        this.isOpenPhotos = false;
+        this.isOpenConversations = false;
+    };
     PmBasicComponent = __decorate([
         core_1.Component({
             selector: 'pm-basic-component',
             templateUrl: 'app/components/profilemenu/pm.basic.component.html',
             styleUrls: ['app/components/profilemenu/pm.basic.component.css'],
-            inputs: ['app', 'selectedUser']
+            inputs: ['app', 'selectedUser', 'isOpenQuotes']
         }), 
         __metadata('design:paramtypes', [user_service_1.UserService, quote_service_1.QuoteService, preference_service_1.PreferenceService, question_service_1.QuestionService, photo_service_1.PhotoService, conversation_service_1.ConversationService, router_1.Router])
     ], PmBasicComponent);

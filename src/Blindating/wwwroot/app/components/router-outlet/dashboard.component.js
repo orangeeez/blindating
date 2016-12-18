@@ -22,8 +22,6 @@ var DashboardComponent = (function () {
         this._userService = _userService;
         this._cookieService = _cookieService;
         this._router = _router;
-        this.searchState = 'deselected';
-        this.isSearchStateDone = false;
         this.isActiveExpanded = false;
         this.isNewExpanded = false;
         this.isPopularExpanded = false;
@@ -77,6 +75,13 @@ var DashboardComponent = (function () {
             _this.popularUsers = users; //.filter(this.removeCurrentUser);
             _this.isNewUsersLoaded = true;
         });
+        if (Math.floor(this.maxUsersRows) == 0)
+            this.maxUsersRows = 1;
+        this._userService.GetRandom(Math.floor(this.maxUsersColumns) * Math.floor(this.maxUsersRows))
+            .subscribe(function (users) {
+            _this.app.users = users; //.filter(this.removeCurrentUser);
+            _this.isUsersLoaded = true;
+        });
     };
     DashboardComponent.prototype.onExpandNew = function () {
         var _this = this;
@@ -123,9 +128,6 @@ var DashboardComponent = (function () {
     DashboardComponent.prototype.getUsersCountForExpand = function () {
         return Math.floor((this.dashboardHeight - (Math.round(this.maxUsersStatsColumns) * this.profileStatsHeightExpanded)) / this.profileStatsHeightExpanded);
     };
-    DashboardComponent.prototype.searchToggle = function () {
-        this.searchState = (this.searchState === 'selected' ? 'deselected' : 'selected');
-    };
     __decorate([
         core_1.ViewChild('dashboard'), 
         __metadata('design:type', core_1.ElementRef)
@@ -138,19 +140,7 @@ var DashboardComponent = (function () {
         core_1.Component({
             selector: 'dashboard-component',
             templateUrl: 'app/components/router-outlet/dashboard.component.html',
-            styleUrls: ['app/components/router-outlet/dashboard.component.css'],
-            animations: [
-                core_1.trigger('searchState', [
-                    core_1.state('deselected', core_1.style({
-                        height: '0'
-                    })),
-                    core_1.state('selected', core_1.style({
-                        height: '30%'
-                    })),
-                    core_1.transition('deselected => selected', core_1.animate('500ms ease-in')),
-                    core_1.transition('selected => deselected', core_1.animate('500ms ease-out'))
-                ])
-            ]
+            styleUrls: ['app/components/router-outlet/dashboard.component.css']
         }),
         __param(0, core_1.Host()),
         __param(0, core_1.Inject(core_1.forwardRef(function () { return app_component_1.AppComponent; }))), 

@@ -25,6 +25,8 @@ namespace Blindating.Models
         public DbSet<Conversation> Conversations { get; set; }
         public DbSet<Detail> Details { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<QuoteLike> QuoteLikes { get; set; }
+
         #region Determine Relationships
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -77,6 +79,11 @@ namespace Blindating.Models
                 .HasMany(p => p.Answers)
                 .WithOne(i => i.Question)
                 .HasForeignKey(b => b.QuestionAnswerFK);
+
+            modelBuilder.Entity<Quote>()
+                .HasMany(p => p.QuoteLikes)
+                .WithOne(i => i.Quote)
+                .HasForeignKey(b => b.QuoteLikeFK);
         }
         #endregion
         protected override void OnConfiguring(DbContextOptionsBuilder options)

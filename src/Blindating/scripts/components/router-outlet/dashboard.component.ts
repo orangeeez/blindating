@@ -6,12 +6,7 @@
     AfterViewInit,
     ViewChild,
     ElementRef,
-    forwardRef,
-    trigger,
-    state,
-    style,
-    transition,
-    animate
+    forwardRef
 }                        from '@angular/core';
 import { Router }        from '@angular/router';
 import { CookieService } from 'angular2-cookie/core';
@@ -19,21 +14,9 @@ import { UserService }   from '../../services/user.service';
 import { User }          from '../../models/user';
 import { AppComponent }  from '../../components/app.component';
 @Component({
-    selector: 'dashboard-component',
+    selector:    'dashboard-component',
     templateUrl: 'app/components/router-outlet/dashboard.component.html',
-    styleUrls: ['app/components/router-outlet/dashboard.component.css'],
-    animations: [
-        trigger('searchState', [
-            state('deselected', style({
-                height: '0'
-            })),
-            state('selected', style({
-                height: '30%'
-            })),
-            transition('deselected => selected', animate('500ms ease-in')),
-            transition('selected => deselected', animate('500ms ease-out'))
-        ])
-    ]
+    styleUrls:  ['app/components/router-outlet/dashboard.component.css']
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
     @ViewChild('dashboard') dashboard: ElementRef;
@@ -43,10 +26,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     public newUsers:     User[];
     public popularUsers: User[];
     public activeUsers:  User[];
-
-    public searchState: string = 'deselected';
-
-    public isSearchStateDone: boolean = false;
+    public activities:   any[];
 
     public isActiveExpanded:  boolean = false;
     public isNewExpanded:     boolean = false;
@@ -120,6 +100,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
                 this.popularUsers = users;//.filter(this.removeCurrentUser);
                 this.isNewUsersLoaded = true;
             });
+
+        if (Math.floor(this.maxUsersRows) == 0) this.maxUsersRows = 1;
+        this._userService.GetRandom(Math.floor(this.maxUsersColumns) * Math.floor(this.maxUsersRows))
+            .subscribe(users => {
+                this.app.users = users;//.filter(this.removeCurrentUser);
+                this.isUsersLoaded = true;
+            });
     }
 
     public onExpandNew(): void {
@@ -177,9 +164,5 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     private getUsersCountForExpand(): number {
         return Math.floor((this.dashboardHeight - (Math.round(this.maxUsersStatsColumns) * this.profileStatsHeightExpanded)) / this.profileStatsHeightExpanded);
-    }
-
-    public searchToggle() {
-        this.searchState = (this.searchState === 'selected' ? 'deselected' : 'selected');
     }
 }

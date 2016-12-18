@@ -107,6 +107,7 @@ export class AppComponent implements OnInit {
             this._header.isProfileActive = !this._header.isProfileActive;
 
         this.setHelperElements();
+        this._profilemenu.setBasicTabActive();
     }
 
     public initializeWebRTC() {

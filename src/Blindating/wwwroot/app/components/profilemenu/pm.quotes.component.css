@@ -58,45 +58,27 @@
     cursor: pointer;
     color: var(--invalid-color);
 }
-.up-counter {
+.quote-menu {
     position: absolute;
-    right: 95px;
-    color: var(--valid-color);
-    line-height: 1.2;
+    right: 10px;
 }
-.thumbs-up {
-    position: absolute;
-    right: 75px;
+.up-counter {
+    color: var(--valid-color);
+}
+.down-counter {
+    color: var(--invalid-color);
 }
 .thumbs-up:hover {
     cursor: pointer;
-    color: var(--valid-color);
-}
-.thumbs-down {
-    position: absolute;
-    right: 55px;
+    color: var(--valid-color) !important;
 }
 .thumbs-down:hover {
     cursor: pointer;
-    color: var(--invalid-color);
-}
-.down-counter {
-    position: absolute;
-    right: 42px;
-    color: var(--invalid-color);
-    line-height: 1.2;
-}
-.pencil {
-    position: absolute;
-    right: 22px;
+    color: var(--invalid-color) !important;
 }
 .pencil:hover {
     cursor: pointer;
     color: var(--valid-color);
-}
-.trash {
-    position: absolute;
-    right: 5px;
 }
 .trash:hover {
     cursor: pointer;

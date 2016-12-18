@@ -38,17 +38,21 @@
                      [class.blur]="!app.selectedUser.isVideoShared && 
                                    !app.isSelectedYou" />
 
-                <i *ngIf="app.selectedUser.isVideoShared ||
-                          app.isSelectedYou" class="fa fa-search-plus fa-2x"
+                <i #search  class="fa fa-search-plus fa-2x"
+                   [style.display]="(app.selectedUser.isVideoShared || 
+                                     app.isSelectedYou) ? 'inline-block' : 'none'"
                    (click)="app.openGallery(photos, i)"
-                   (mouseover)="close.style.opacity = 1"
-                   (mouseout)="close.style.opacity = 0"></i>
+                   (mouseover)="close.style.opacity  = 1;
+                                search.style.opacity = 1"
+                   (mouseout)="close.style.opacity  = 0;
+                               search.style.opacity = 0"></i>
 
                 <i #close class="fa fa-times close"
-                   [hidden]="app.isSelectedYou"
+                   [style.display]="app.isSelectedYou ? 'inline-block' : 'none'"
                    (click)="onRemovePhoto(photo)"
-                   (mouseover)="close.style.opacity = 1"
-                   (mouseout)="close.style.opacity = 0"></i>
+                   (mouseover)="close.style.opacity  = 1;
+                                search.style.opacity = 1"
+                   (mouseout)="close.style.opacity  = 0"></i>
             </div>
         </div>
     </div>

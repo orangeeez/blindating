@@ -161,6 +161,6 @@ export class HelperComponent implements OnInit {
 
     public onSearchShow() {
         this.isSearchInitiated = !this.isSearchInitiated;
-        this.app._dashboard.searchToggle();
+        this.app._footer.searchToggle();
     }
 }

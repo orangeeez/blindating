@@ -9,6 +9,7 @@ namespace Blindating.Models.Interfaces
 {
     public interface IQuoteRepository : IBaseRepository<Quote>
     {
-        Task<IEnumerable<Quote>> GetAllByID(int userID);
+        Task<IEnumerable<Quote>> GetAllByID(string JWT, int userID);
+        Task<bool> SetLike(QuoteLike qlike);
     }
 }

@@ -54,6 +54,10 @@ var UserService = (function (_super) {
         return this._authHttp.post(config_1.API_ADDRESS + this.api + "/getpopular", count, this.options)
             .map(function (users) { return users.json()['result']; });
     };
+    UserService.prototype.GetRandom = function (count) {
+        return this._authHttp.post(config_1.API_ADDRESS + this.api + "/getrandom", count, this.options)
+            .map(function (users) { return users.json()['result']; });
+    };
     UserService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http, angular2_jwt_1.AuthHttp])

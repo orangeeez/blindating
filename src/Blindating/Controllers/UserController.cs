@@ -93,5 +93,12 @@ namespace Blindating.Controllers
         {
             return new JsonResult(Users.GetPopular(count, Request.Headers["Authorization"].ToString().Remove(0, 7)));
         }
+        [HttpPost]
+        [Authorize("Bearer")]
+        [ActionName("getrandom")]
+        public JsonResult GetRandom([FromBody] int count)
+        {
+            return new JsonResult(Users.GetRandom(count, Request.Headers["Authorization"].ToString().Remove(0, 7)));
+        }
     }
 }

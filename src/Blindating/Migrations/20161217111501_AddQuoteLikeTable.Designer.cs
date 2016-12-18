@@ -8,9 +8,10 @@ using Blindating.Models;
 namespace Blindating.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20161217111501_AddQuoteLikeTable")]
+    partial class AddQuoteLikeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -303,28 +304,6 @@ namespace Blindating.Migrations
                     b.ToTable("Quotes");
                 });
 
-            modelBuilder.Entity("Blindating.Models.Tables.QuoteLike", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Direction");
-
-                    b.Property<string>("Message");
-
-                    b.Property<int>("QuoteLikeFK");
-
-                    b.Property<int>("RemoteUserID");
-
-                    b.Property<bool>("Result");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("QuoteLikeFK");
-
-                    b.ToTable("QuoteLikes");
-                });
-
             modelBuilder.Entity("Blindating.Models.Tables.User", b =>
                 {
                     b.Property<int>("ID")
@@ -432,14 +411,6 @@ namespace Blindating.Migrations
                     b.HasOne("Blindating.Models.Tables.Information", "Information")
                         .WithMany("Quotes")
                         .HasForeignKey("InformationQuoteFK")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Blindating.Models.Tables.QuoteLike", b =>
-                {
-                    b.HasOne("Blindating.Models.Tables.Quote", "Quote")
-                        .WithMany("QuoteLikes")
-                        .HasForeignKey("QuoteLikeFK")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

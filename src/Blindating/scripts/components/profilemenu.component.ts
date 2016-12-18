@@ -19,10 +19,10 @@ export class ProfilemenuComponent implements OnInit {
     public isShow: boolean = false;
 
     public tabs: Array<any> = [
-        { title: 'Basic', active: true },
-        { title: 'Details' },
-        { title: 'Wishes' },
-        { title: 'Notifications'}
+        { title: 'Basic',         active: true  },
+        { title: 'Details',       active: false },
+        { title: 'Wishes',        active: false },
+        { title: 'Notifications', active: false }
     ];
 
     constructor(
@@ -45,11 +45,20 @@ export class ProfilemenuComponent implements OnInit {
         this._router.navigate(['/login']);
     }
 
-    public onHidePm(): void {
+    public onHide(): void {
         this.app.selectDeselectUser(this.app.selectedUser);
     }
 
     public ToggleState(): void {
         this.state = (this.state === 'selected' ? 'deselected' : 'selected');
     }
+
+    public setBasicTabActive() {
+        for (var t of this.tabs)
+            if (t.title != 'Basic')
+                t.active = false;
+            else
+                t.active = true;
+    }
 }
+

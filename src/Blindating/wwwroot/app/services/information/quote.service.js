@@ -15,6 +15,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var http_1 = require('@angular/http');
 var core_1 = require('@angular/core');
+var config_1 = require('../../static/config');
 var base_service_1 = require('../base.service');
 var angular2_jwt_1 = require('angular2-jwt');
 require('rxjs/add/operator/map');
@@ -26,6 +27,10 @@ var QuoteService = (function (_super) {
         this._http = _http;
         this._authHttp = _authHttp;
     }
+    QuoteService.prototype.SetLike = function (qlike) {
+        return this._authHttp.post(config_1.API_ADDRESS + this.api + "/setlike", JSON.stringify(qlike), this.options)
+            .map(function (res) { return !!res.text(); });
+    };
     QuoteService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http, angular2_jwt_1.AuthHttp])

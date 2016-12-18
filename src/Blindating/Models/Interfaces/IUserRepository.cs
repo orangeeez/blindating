@@ -14,6 +14,7 @@ namespace Blindating.Models.Interfaces
         Task<List<User>> GetNew(int count, string JWT);
         Task<List<User>> GetActive(int count, string JWT);
         Task<List<User>> GetPopular(int count, string JWT);
+        Task<List<User>> GetRandom(int count, string JWT);
         Task Logout(int userID);
     }
 }

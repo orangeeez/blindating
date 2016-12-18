@@ -44,4 +44,8 @@ export class UserService extends BaseService {
         return this._authHttp.post(API_ADDRESS + this.api + "/getpopular", count, this.options)
             .map(users => users.json()['result']);
     }
+    public GetRandom(count: number): Observable<Array<User>> {
+        return this._authHttp.post(API_ADDRESS + this.api + "/getrandom", count, this.options)
+            .map(users => users.json()['result']);
+    }
 }
