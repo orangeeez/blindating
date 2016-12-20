@@ -23,7 +23,7 @@ namespace NetCoreAngular2.Controllers.Search
         [ActionName("searchusers")]
         public JsonResult SearchUsers([FromBody]SearchData searchData)
         {
-            return new JsonResult(Search.SearchUsers(searchData));
+            return new JsonResult(Search.SearchUsers(Request.Headers["Authorization"].ToString().Remove(0, 7), searchData));
         }
     }
 }

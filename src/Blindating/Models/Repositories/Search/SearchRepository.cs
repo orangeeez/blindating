@@ -17,11 +17,13 @@ namespace NetCoreAngular2.Models.Repositories.Search
         {
             _context = context;
         }
-        public async Task<IEnumerable<User>> SearchUsers(SearchData searchData)
+        public async Task<IEnumerable<User>> SearchUsers(string JWT, SearchData searchData)
         {
             using (AppDBContext _context = new AppDBContext())
             {
+                User authUser = await _context.Users.Where(u => u.JWT == JWT).SingleOrDefaultAsync();
                 var users = await _context.Users.Include(u => u.Information)
+                                                .ThenInclude(i => i.Conversations)
                     .Where(u => (u.Firstname + " " + u.Lastname).Contains(searchData.Name) ||
                                 (u.Lastname + " " + u.Firstname).Contains(searchData.Name))
                     .ToListAsync();
@@ -29,8 +31,16 @@ namespace NetCoreAngular2.Models.Repositories.Search
                 foreach (var search in searchData.Users)
                     users.RemoveAll(user => user.JWT == search.JWT);
 
-                return users;
+                return GetVideoInitiatedUsers(users, authUser);
             }
+        }
+        private List<User> GetVideoInitiatedUsers(List<User> users, User user)
+        {
+            foreach (var u in users)
+                foreach (var c in u.Information.Conversations)
+                    if (c.RemoteUserID == user.ID && c.IsVideoInitiated || u.ID == user.ID)
+                        u.IsVideoShared = true;
+            return users;
         }
     }
 }

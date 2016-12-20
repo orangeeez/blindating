@@ -35,9 +35,7 @@ var FSearchComponent = (function () {
         else
             this.app._dashboard.isSearchShow = false;
         var key = event.which || event.keyCode;
-        if (key == 8)
-            this.app._dashboard.searchUsers = this.app.users.filter(this.isContainName);
-        else if (key >= 65 && key <= 90) {
+        if (key >= 65 && key <= 90 || key == 8) {
             this.app._dashboard.searchUsers = this.app.users.filter(this.isContainName);
             this.searchData.count - this.app._dashboard.searchUsers.length;
             this.searchData.users = this.app.users;
