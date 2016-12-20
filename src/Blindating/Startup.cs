@@ -17,6 +17,7 @@ using System.Text;
 using NetCoreAngular2.Controllers.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using NetCoreAngular2.Models.Repositories.Search;
 
 namespace Blindating
 {
@@ -56,6 +57,8 @@ namespace Blindating
             services.AddSingleton<IDetailRepository,       DetailRepository>();
             services.AddSingleton<IFeedbackRepository,     FeedbackRepository>();
             services.AddSingleton<IConversationRepository, ConversationRepository>();
+            services.AddSingleton<ISearchRepository,       SearchRepository>();
+
             services.AddMvc();
 
             services.AddSingleton(tokenOptions);

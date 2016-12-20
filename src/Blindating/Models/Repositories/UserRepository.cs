@@ -251,7 +251,7 @@ namespace Blindating.Models.Repositories
             using (AppDBContext _context = new AppDBContext())
             {
                 Random random = new Random();
-                var user = await GetBy(new { field = "JWT", value = JWT, });
+                var user = await GetBy(new { field = "JWT", value = JWT });
                 var users = await _context.Users.Include(u => u.Information).
                                                  ThenInclude(i => i.Conversations)
                                                  .OrderBy(u => random.Next())

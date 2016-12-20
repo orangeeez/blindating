@@ -181,15 +181,19 @@
                        isActiveExpanded ||
                        isPopularExpanded">
             <div class="row">
-                <div class="col-md-1 header">
+                <div class="col-md-1 header"
+                     style="width: inherit">
                     Board
+                    <i class="fa fa-refresh refresh"
+                       (click)="onRefreshUsers()"></i>
                 </div>
             </div>
             <div *ngIf="!isUsersLoaded">
                 <img src="images/app/controls/loading.gif?4"
                      class="image-loading">
             </div>
-            <div *ngIf="isUsersLoaded" class="row">
+            <div *ngIf="isUsersLoaded &&
+                        !isSearchShow" class="row">
                 <div *ngFor="let user of app.users" class="col-md-1 profile"
                      [class.selected]="user.id == app.selectedUser?.id"
                      (click)="app.selectDeselectUser(user)">
@@ -201,6 +205,18 @@
                              [hidden]="!user.online" />
                     </div>
                 </div>
+            </div>
+            <div *ngIf="isSearchShow" class="row">
+                <div *ngFor="let user of searchUsers" class="col-md-1 profile"
+                     [class.selected]="user.id == app.selectedUser?.id"
+                     (click)="app.selectDeselectUser(user)">
+                    <div>
+                        <img [src]="user.image" class="img-circle avatar-decoration avatar-dashboard"
+                             [class.blur]="!user.isVideoShared" />
+                        <div class="name-dashboard">{{user.firstname}}</div>
+                        <img src="../../../images/app/controls/online.png" class="online-decoration"
+                             [hidden]="!user.online" />
+                    </div>
             </div>
         </div>
     </div>

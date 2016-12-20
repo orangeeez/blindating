@@ -29,6 +29,7 @@ var DashboardComponent = (function () {
         this.isNewUsersLoaded = false;
         this.isPopularUsersLoaded = false;
         this.isActiveUsersLoaded = false;
+        this.isSearchShow = false;
         this.removeCurrentUser = function (user) {
             return user.id != _this.app.user.id;
         };
@@ -60,6 +61,7 @@ var DashboardComponent = (function () {
         this.maxUsersColumns = this.dashboardWidth / Math.round((this.dashboardWidth * 8.3) / 100);
         this.maxUsersStatsColumns = this.dashboardWidth / Math.round((this.dashboardWidth * 25) / 100);
         this.maxUsersRows = (this.dashboardHeight - (this.dashboardStatsHeight + this.profileStatsHeight)) / this.profileBoardHeight;
+        this.maxUsers = Math.floor(this.maxUsersColumns) * Math.floor(this.maxUsersRows);
         this._userService.GetNew(Math.round(this.maxUsersStatsColumns))
             .subscribe(function (users) {
             _this.newUsers = users; //.filter(this.removeCurrentUser);
@@ -124,6 +126,11 @@ var DashboardComponent = (function () {
                 .subscribe(function (users) {
                 _this.popularUsers = users; //.filter(this.removeCurrentUser);
             });
+    };
+    DashboardComponent.prototype.onRefreshUsers = function () {
+        var _this = this;
+        this._userService.GetRandom(Math.floor(this.maxUsersColumns) * Math.floor(this.maxUsersRows))
+            .subscribe(function (users) { _this.app.users = users; });
     };
     DashboardComponent.prototype.getUsersCountForExpand = function () {
         return Math.floor((this.dashboardHeight - (Math.round(this.maxUsersStatsColumns) * this.profileStatsHeightExpanded)) / this.profileStatsHeightExpanded);

@@ -20,3 +20,9 @@ exports.Utils = Utils;
     DataSignals[DataSignals["DenyingVideo"] = 2] = "DenyingVideo";
 })(exports.DataSignals || (exports.DataSignals = {}));
 var DataSignals = exports.DataSignals;
+var SearchData = (function () {
+    function SearchData() {
+    }
+    return SearchData;
+}());
+exports.SearchData = SearchData;

@@ -13,3 +13,8 @@ export enum DataSignals {
     AcceptingVideo,
     DenyingVideo
 }
+export class SearchData {
+    name: string;
+    count: number;
+    users: User[];
+}

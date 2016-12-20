@@ -23,19 +23,7 @@ var FooterComponent = (function () {
             selector: 'footer-component',
             templateUrl: 'app/components/footer.component.html',
             styleUrls: ['app/components/footer.component.css'],
-            inputs: ['app'],
-            animations: [
-                core_1.trigger('searchState', [
-                    core_1.state('deselected', core_1.style({
-                        top: '50px'
-                    })),
-                    core_1.state('selected', core_1.style({
-                        top: '15px'
-                    })),
-                    core_1.transition('deselected => selected', core_1.animate('300ms ease-in')),
-                    core_1.transition('selected => deselected', core_1.animate('300ms ease-out'))
-                ])
-            ]
+            inputs: ['app']
         }), 
         __metadata('design:paramtypes', [user_service_1.UserService])
     ], FooterComponent);

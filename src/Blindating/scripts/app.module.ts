@@ -12,6 +12,7 @@ import { PhotoService }             from './services/information/photo.service';
 import { DetailService }            from './services/information/detail.service';
 import { FeedbackService }          from './services/information/feedback.service';
 import { ConversationService }      from './services/information/conversation.service';
+import { SearchService }            from './services/search/search.service';
 import { routing }                  from './app.router';
 import { AppComponent }             from './components/app.component';
 import { FooterComponent }          from './components/footer.component';
@@ -28,6 +29,7 @@ import { PmQuestionsComponent }     from './components/profilemenu/pm.questions.
 import { PmPhotosComponent }        from './components/profilemenu/pm.photos.component';
 import { PmFeedbacksComponent }     from './components/profilemenu/pm.feedbacks.component';
 import { PmConversationsComponent } from './components/profilemenu/pm.conversations.component';
+import { FSearchComponent }         from './components/footer/f.search.component';
 import { FocusDirective }           from './directives/focus.directive';
 import { FileSelectDirective }      from 'ng2-file-upload/ng2-file-upload';
 import { SlicePipe }                from './pipes/slice.pipe';
@@ -61,6 +63,7 @@ import {
         PmPhotosComponent,
         PmFeedbacksComponent,
         PmConversationsComponent,
+        FSearchComponent,
         FocusDirective,
         FileSelectDirective,
         SlicePipe,
@@ -77,6 +80,7 @@ import {
         PhotoService,
         DetailService,
         ConversationService,
+        SearchService,
         FeedbackService
     ]
 })

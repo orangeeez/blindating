@@ -1,0 +1,10 @@
+<div class="search-form"
+     [@searchState]="searchState">
+    <div class="row">
+        <div class="col-md-1">
+            <span><input type="text" placeholder="Type name"
+                         [(ngModel)]="searchData.name"
+                         (keyup)="onSearchUsers($event)" /></span>
+        </div>
+    </div>
+</div>

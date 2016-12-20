@@ -12,19 +12,7 @@ import { UserService }  from '../services/user.service';
     selector:    'footer-component',
     templateUrl: 'app/components/footer.component.html',
     styleUrls:   ['app/components/footer.component.css'],
-    inputs:      ['app'],
-    animations:  [
-        trigger('searchState', [
-            state('deselected', style({
-                top: '50px'
-            })),
-            state('selected', style({
-                top: '15px'
-            })),
-            transition('deselected => selected', animate('300ms ease-in')),
-            transition('selected => deselected', animate('300ms ease-out'))
-        ])
-    ]
+    inputs:      ['app']
 })
 export class FooterComponent {
     public app:         AppComponent;

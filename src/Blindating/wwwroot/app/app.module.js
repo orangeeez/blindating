@@ -22,6 +22,7 @@ var photo_service_1 = require('./services/information/photo.service');
 var detail_service_1 = require('./services/information/detail.service');
 var feedback_service_1 = require('./services/information/feedback.service');
 var conversation_service_1 = require('./services/information/conversation.service');
+var search_service_1 = require('./services/search/search.service');
 var app_router_1 = require('./app.router');
 var app_component_1 = require('./components/app.component');
 var footer_component_1 = require('./components/footer.component');
@@ -38,6 +39,7 @@ var pm_questions_component_1 = require('./components/profilemenu/pm.questions.co
 var pm_photos_component_1 = require('./components/profilemenu/pm.photos.component');
 var pm_feedbacks_component_1 = require('./components/profilemenu/pm.feedbacks.component');
 var pm_conversations_component_1 = require('./components/profilemenu/pm.conversations.component');
+var f_search_component_1 = require('./components/footer/f.search.component');
 var focus_directive_1 = require('./directives/focus.directive');
 var ng2_file_upload_1 = require('ng2-file-upload/ng2-file-upload');
 var slice_pipe_1 = require('./pipes/slice.pipe');
@@ -71,6 +73,7 @@ var AppModule = (function () {
                 pm_photos_component_1.PmPhotosComponent,
                 pm_feedbacks_component_1.PmFeedbacksComponent,
                 pm_conversations_component_1.PmConversationsComponent,
+                f_search_component_1.FSearchComponent,
                 focus_directive_1.FocusDirective,
                 ng2_file_upload_1.FileSelectDirective,
                 slice_pipe_1.SlicePipe,
@@ -87,6 +90,7 @@ var AppModule = (function () {
                 photo_service_1.PhotoService,
                 detail_service_1.DetailService,
                 conversation_service_1.ConversationService,
+                search_service_1.SearchService,
                 feedback_service_1.FeedbackService
             ]
         }), 

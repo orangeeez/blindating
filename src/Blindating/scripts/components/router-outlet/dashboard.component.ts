@@ -26,7 +26,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     public newUsers:     User[];
     public popularUsers: User[];
     public activeUsers:  User[];
+    public searchUsers:  User[];
     public activities:   any[];
+    
 
     public isActiveExpanded:  boolean = false;
     public isNewExpanded:     boolean = false;
@@ -37,6 +39,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     public isPopularUsersLoaded: boolean = false;
     public isActiveUsersLoaded:  boolean = false;
 
+    public isSearchShow: boolean = false;
+
     public profileStatsHeightExpanded: number;
     public profileBoardHeight:         number;
     public profileStatsHeight:         number;
@@ -46,6 +50,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     public maxUsersColumns:            number;
     public maxUsersStatsColumns:       number;
     public maxUsersRows:               number;
+    public maxUsers:                   number;
 
     constructor(
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
@@ -82,6 +87,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.maxUsersColumns = this.dashboardWidth / Math.round((this.dashboardWidth * 8.3) / 100);
         this.maxUsersStatsColumns = this.dashboardWidth / Math.round((this.dashboardWidth * 25) / 100);
         this.maxUsersRows = (this.dashboardHeight - (this.dashboardStatsHeight + this.profileStatsHeight)) / this.profileBoardHeight;
+        this.maxUsers = Math.floor(this.maxUsersColumns) * Math.floor(this.maxUsersRows);
 
         this._userService.GetNew(Math.round(this.maxUsersStatsColumns))
             .subscribe(users => {
@@ -156,7 +162,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
                     this.popularUsers = users;//.filter(this.removeCurrentUser);
                 });
     }
-        
+
+    public onRefreshUsers(): void {
+        this._userService.GetRandom(Math.floor(this.maxUsersColumns) * Math.floor(this.maxUsersRows))
+            .subscribe(users => { this.app.users = users; })
+    }
 
     private removeCurrentUser = (user: User): boolean => {
         return user.id != this.app.user.id;
