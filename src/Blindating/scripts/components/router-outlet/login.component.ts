@@ -45,23 +45,97 @@ export class LoginComponent implements OnInit {
         this.JWT = localStorage.getItem('id_token');
 
         if (this.JWT) this.Login();
+        else {
+            window.fbAsyncInit = function () {
+                FB.init({
+                    appId: '1557510837900819',
+                    cookie: true,
+                    xfbml: true,
+                    version: 'v2.5'
+                });
+            };
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "https://connect.facebook.net/en_US/all.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            } (document, 'script', 'facebook-jssdk'));
+        }
     }
 
-    public Login(): void {
+    public Login(response?: Object): void {
         var auth: any;
 
         if (this.JWT) auth = this.JWT;
         else          auth = JSON.stringify({ email: this.email, password: this.password });
 
         this._userService.Login(auth)
-            .subscribe(user => this.HandleLoginResponse(user));    
+            .subscribe(user => {
+                if (user.jwt)
+                    this.HandleLoginResponse(user);
+                else if (user.reason == User.REGISTER_SOCIAL) {
+                    this.alert.reason   = user.reason;
+                    this.alert.show     = true;
+                    this.tabs[0].active = false;
+                    this.tabs[1].active = true;
+                    this.firstname = response['first_name'];
+                    this.lastname  = response['last_name'];
+                    this.email     = response['email'];
+                    this.password  = "";
+                }
+            });    
     }
 
     public Register(): void {
         this._userService.Register(this.CreateUser())
             .subscribe(response => this.HandleRegisterResponse(response));
     }
-    public AuthSocial(): void { }
+    public onAuthSocial(): void {
+        if (event.srcElement.className == 'fa fa-facebook')
+            this.getFacebookInfoAPI();
+        //else
+        //    this.getVKInfoAPI();
+    }
+
+    private getFacebookInfoAPI = () => {
+        var self = this;
+
+        setInterval(this.checkFBLoginInterval, 1000)
+
+        FB.getLoginStatus(function (response) { statusChangeCallback(response); });
+
+        function statusChangeCallback(response) {
+            if (response.status === 'connected')
+                FB.api('/me', { fields: 'email, first_name, last_name' }, self.setFacebookInfoAPI);
+            else
+                FB.login(function (response) { statusChangeCallback(response); });
+        }
+    }
+
+    private checkFBLoginInterval = () => {
+        if (this.app.user) 
+            this._router.navigate(['/dashboard']);
+    }
+
+    private setFacebookInfoAPI = (response: Object) => {
+        this.email = response['email'];
+        this.password = this._cookieService.get('fbsr_1557510837900819'); //'social';
+        this.Login(response);
+        //console.log(response['email']);
+        //this._userService.IsExistEmail(response['email'])
+            //.subscribe(isexist => {
+            //    if (isexist) {
+            //        this.user = this.createUser(undefined, undefined, undefined, response['email'], undefined, undefined, undefined, undefined, 'social');
+            //        this._userService.Login(this.user)
+            //            .subscribe(logged => {
+            //                if (logged)
+            //                    this.loginViaForm(logged);
+            //            });
+            //    }
+            //});
+    }
+
 
     private CreateUser(): User {
         var user: User  = new User();

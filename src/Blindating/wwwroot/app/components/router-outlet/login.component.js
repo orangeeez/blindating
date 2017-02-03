@@ -29,6 +29,38 @@ var LoginComponent = (function () {
             { title: 'Login', active: true },
             { title: 'Register' }
         ];
+        this.getFacebookInfoAPI = function () {
+            var self = _this;
+            setInterval(_this.checkFBLoginInterval, 1000);
+            FB.getLoginStatus(function (response) { statusChangeCallback(response); });
+            function statusChangeCallback(response) {
+                if (response.status === 'connected')
+                    FB.api('/me', { fields: 'email, first_name, last_name' }, self.setFacebookInfoAPI);
+                else
+                    FB.login(function (response) { statusChangeCallback(response); });
+            }
+        };
+        this.checkFBLoginInterval = function () {
+            if (_this.app.user)
+                _this._router.navigate(['/dashboard']);
+        };
+        this.setFacebookInfoAPI = function (response) {
+            _this.email = response['email'];
+            _this.password = _this._cookieService.get('fbsr_1557510837900819'); //'social';
+            _this.Login(response);
+            //console.log(response['email']);
+            //this._userService.IsExistEmail(response['email'])
+            //.subscribe(isexist => {
+            //    if (isexist) {
+            //        this.user = this.createUser(undefined, undefined, undefined, response['email'], undefined, undefined, undefined, undefined, 'social');
+            //        this._userService.Login(this.user)
+            //            .subscribe(logged => {
+            //                if (logged)
+            //                    this.loginViaForm(logged);
+            //            });
+            //    }
+            //});
+        };
         this.HandleRegisterResponse = function (response) {
             _this.alert.show = true;
             _this.alert.reason = response['Text'];
@@ -61,8 +93,27 @@ var LoginComponent = (function () {
         this.JWT = localStorage.getItem('id_token');
         if (this.JWT)
             this.Login();
+        else {
+            window.fbAsyncInit = function () {
+                FB.init({
+                    appId: '1557510837900819',
+                    cookie: true,
+                    xfbml: true,
+                    version: 'v2.5'
+                });
+            };
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id))
+                    return;
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "https://connect.facebook.net/en_US/all.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+        }
     };
-    LoginComponent.prototype.Login = function () {
+    LoginComponent.prototype.Login = function (response) {
         var _this = this;
         var auth;
         if (this.JWT)
@@ -70,14 +121,32 @@ var LoginComponent = (function () {
         else
             auth = JSON.stringify({ email: this.email, password: this.password });
         this._userService.Login(auth)
-            .subscribe(function (user) { return _this.HandleLoginResponse(user); });
+            .subscribe(function (user) {
+            if (user.jwt)
+                _this.HandleLoginResponse(user);
+            else if (user.reason == user_1.User.REGISTER_SOCIAL) {
+                _this.alert.reason = user.reason;
+                _this.alert.show = true;
+                _this.tabs[0].active = false;
+                _this.tabs[1].active = true;
+                _this.firstname = response['first_name'];
+                _this.lastname = response['last_name'];
+                _this.email = response['email'];
+                _this.password = "";
+            }
+        });
     };
     LoginComponent.prototype.Register = function () {
         var _this = this;
         this._userService.Register(this.CreateUser())
             .subscribe(function (response) { return _this.HandleRegisterResponse(response); });
     };
-    LoginComponent.prototype.AuthSocial = function () { };
+    LoginComponent.prototype.onAuthSocial = function () {
+        if (event.srcElement.className == 'fa fa-facebook')
+            this.getFacebookInfoAPI();
+        //else
+        //    this.getVKInfoAPI();
+    };
     LoginComponent.prototype.CreateUser = function () {
         var user = new user_1.User();
         user.email = this.email;

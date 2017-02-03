@@ -54,7 +54,7 @@ export class AppComponent implements OnInit {
     @ViewChild(DashboardComponent)   public _dashboard: DashboardComponent;
     @ViewChild(ProfilemenuComponent) public _profilemenu: ProfilemenuComponent;
 
-    public server:   string  = 'https://192.168.0.114:8096';
+    public server:   string  = 'https://192.168.0.114:8002';
     public stun:     string  = 'stun:stun.l.google.com:19302';
     public stream: any;
     public localStream:  any;

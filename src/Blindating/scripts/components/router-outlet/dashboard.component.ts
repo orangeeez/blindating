@@ -107,8 +107,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
                 this.isNewUsersLoaded = true;
             });
 
-        if (Math.floor(this.maxUsersRows) == 0) this.maxUsersRows = 1;
-        this._userService.GetRandom(Math.floor(this.maxUsersColumns) * Math.floor(this.maxUsersRows))
+        if (Math.floor(this.maxUsersRows) <= 0) this.maxUsers = 1;
+        this._userService.GetRandom(this.maxUsers)
             .subscribe(users => {
                 this.app.users = users;//.filter(this.removeCurrentUser);
                 this.isUsersLoaded = true;
@@ -164,7 +164,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     }
 
     public onRefreshUsers(): void {
-        this._userService.GetRandom(Math.floor(this.maxUsersColumns) * Math.floor(this.maxUsersRows))
+        this._userService.GetRandom(this.maxUsers)
             .subscribe(users => { this.app.users = users; })
     }
 

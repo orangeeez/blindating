@@ -12,7 +12,7 @@ import                                                  'rxjs/add/operator/catch
 @Injectable()
 export class QuestionService extends BaseService {
     constructor(public _http: Http,
-                public _authHttp: AuthHttp) {
+        public _authHttp: AuthHttp) {
         super(_http, _authHttp, 'api/user/question');
     }
 
@@ -24,4 +24,5 @@ export class QuestionService extends BaseService {
     public GetNotAnsweredByID(userID: number): Observable<Array<any>> {
         return this._authHttp.post(API_ADDRESS + this.api + "/getnotansweredbyid", JSON.stringify(userID), this.options)
             .map(user => user.json()['result']);
+    }
 }

@@ -77,9 +77,9 @@ var DashboardComponent = (function () {
             _this.popularUsers = users; //.filter(this.removeCurrentUser);
             _this.isNewUsersLoaded = true;
         });
-        if (Math.floor(this.maxUsersRows) == 0)
-            this.maxUsersRows = 1;
-        this._userService.GetRandom(Math.floor(this.maxUsersColumns) * Math.floor(this.maxUsersRows))
+        if (Math.floor(this.maxUsersRows) <= 0)
+            this.maxUsers = 1;
+        this._userService.GetRandom(this.maxUsers)
             .subscribe(function (users) {
             _this.app.users = users; //.filter(this.removeCurrentUser);
             _this.isUsersLoaded = true;
@@ -129,7 +129,7 @@ var DashboardComponent = (function () {
     };
     DashboardComponent.prototype.onRefreshUsers = function () {
         var _this = this;
-        this._userService.GetRandom(Math.floor(this.maxUsersColumns) * Math.floor(this.maxUsersRows))
+        this._userService.GetRandom(this.maxUsers)
             .subscribe(function (users) { _this.app.users = users; });
     };
     DashboardComponent.prototype.getUsersCountForExpand = function () {

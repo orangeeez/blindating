@@ -1,0 +1,10 @@
+{
+  "port": {
+    "plain": 8001,
+    "secured": 8002
+  },
+  "log": {
+    "enabled": true,
+    "level": 1
+  }
+}

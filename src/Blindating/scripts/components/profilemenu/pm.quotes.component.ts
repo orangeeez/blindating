@@ -111,7 +111,9 @@ export class PmQuotesComponent implements OnInit, AfterViewInit {
                         informationQuoteFK: this.app.selectedUser.information['id'],
                         userid:             this.app.selectedUser.id,
                         isEditing:          false,
-                        isAnswered:         false
+                        isAnswered:         false,
+                        isLike:             null,
+                        isDislike:          null
                     };
                     this.isAddingQuote = false;
                     this.content = '';

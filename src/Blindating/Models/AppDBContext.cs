@@ -88,7 +88,7 @@ namespace Blindating.Models
         #endregion
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlServer("Server=ORANGEEEZPC\\SQLEXPRESS;Database=master;Trusted_Connection=True;MultipleActiveResultSets=true;");
+            options.UseSqlServer("Data Source=localhost\\SQLEXPRESS;Initial Catalog=blindating;Integrated Security=True;MultipleActiveResultSets=true;");
         }
     }
 }

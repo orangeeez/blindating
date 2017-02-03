@@ -48,7 +48,7 @@ export class HelperComponent implements OnInit {
     public startDurationTime: Date;
 
     constructor(private _userService: UserService,
-                private _ref: ChangeDetectorRef) { }
+                private _ref:         ChangeDetectorRef) { }
 
     ngOnInit() { }
 

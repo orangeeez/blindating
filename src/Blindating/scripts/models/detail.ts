@@ -2,7 +2,7 @@ export class Detail {
     id: number;
     firstname: string;
     gender: string;
-    birthDate: Date;
+    birthDate: any;
     city: string;
     prefferdLanguage: string;
     alsoSpeak: string;

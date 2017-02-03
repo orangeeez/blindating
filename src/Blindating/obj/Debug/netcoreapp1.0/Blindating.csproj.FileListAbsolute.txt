@@ -1,0 +1,4 @@
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\bin\Debug\netcoreapp1.0\Blindating.deps.json
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\bin\Debug\netcoreapp1.0\Blindating.runtimeconfig.json
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\bin\Debug\netcoreapp1.0\Blindating.runtimeconfig.dev.json
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\obj\Debug\netcoreapp1.0\Blindating.csprojResolveAssemblyReference.cache

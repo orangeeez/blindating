@@ -22,7 +22,7 @@ export class BaseService {
         return this._authHttp.get(API_ADDRESS + this.api + "/getall", this.options)
             .map(users => users.json()['result']);
     }
-    public GetAllByID(userID: number): Observable<Array<any>> {
+    public GetAllByID(userID: number): Observable<any> {
         return this._authHttp.post(API_ADDRESS + this.api + "/getallbyid", JSON.stringify(userID), this.options)
             .map(user => user.json()['result']);
     }

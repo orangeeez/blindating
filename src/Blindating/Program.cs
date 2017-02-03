@@ -18,7 +18,7 @@ namespace Blindating
                 {
                     options.UseHttps(new X509Certificate2(Directory.GetCurrentDirectory() + "/blindating.pfx", "f00tBall"));
                 })
-                .UseUrls("https://192.168.0.114:5000")
+                .UseUrls("https://localhost:8000")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
