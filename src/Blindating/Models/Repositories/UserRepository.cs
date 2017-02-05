@@ -20,6 +20,7 @@ namespace Blindating.Models.Repositories
         {
             _context = context;
         }
+        // TODO Make refactoring
         public async Task<dynamic> Register(User user, string JWT)
         {
             using (AppDBContext _context = new AppDBContext())
@@ -47,6 +48,7 @@ namespace Blindating.Models.Repositories
                 }
             }
         }
+        // TODO Make refactoring
         public async Task<User> Login(string auth)
         {
             using (AppDBContext _context = new AppDBContext())
@@ -60,18 +62,8 @@ namespace Blindating.Models.Repositories
                     if (await isAuthExist(email, password))
                     {
                         user = await _context.Users.Include(u => u.Information)
-                            .SingleOrDefaultAsync(u => u.Email == email && u.Password == password); // || (u.Email == email && password == "social")
+                            .SingleOrDefaultAsync(u => u.Email == email && u.Password == password);
                         user.Online = true;
-                    }
-                    else if (await IsEmailExist(email) && IsBase64UrlEncoded(password.Split('.')[0]))
-                    {
-                        var a = password.Split('.');
-                        return user = new User();
-                    }
-                    else if (!await IsEmailExist(email) && password == "social") //IsBase64UrlEncoded(password.Split('.')[0])
-                    {
-                        user = new User();
-                        user.Reason = User.REGISTER_SOCIAL;
                     }
                     else
                     {
@@ -124,7 +116,7 @@ namespace Blindating.Models.Repositories
         {
             using (AppDBContext _context = new AppDBContext())
             {
-                return await _context.Users.AnyAsync(u => u.Email == email && u.Password == password); // || u.Email == email && password == "social")
+                return await _context.Users.AnyAsync(u => u.Email == email && u.Password == password);
             }
         }
         public async Task<User> GetBy(dynamic condition)
@@ -275,26 +267,13 @@ namespace Blindating.Models.Repositories
         private List<User> GetVideoInitiatedUsers(List<User> users, User user)
         {
             foreach (var u in users)
-               foreach (var c in u.Information.Conversations)
-                    if (c.RemoteUserID == user.ID && c.IsVideoInitiated || u.ID == user.ID)
+            {
+                if (u.ID == user.ID) u.IsVideoShared = true;
+                foreach (var c in u.Information.Conversations)
+                    if (c.RemoteUserID == user.ID && c.IsVideoInitiated)
                         u.IsVideoShared = true;
+            }
             return users;
-        }
-        private bool IsBase64UrlEncoded(string str)
-        {
-            try
-            {
-                //var encodedStr = Base64UrlEncoder.Decode(str);
-                byte[] toEncodeAsBytes = System.Text.ASCIIEncoding.ASCII.GetBytes("StringToEncode");
-                string returnValue = System.Convert.ToBase64String(toEncodeAsBytes);
-                //var a = Base64UrlEncoder.Decode(encodedStr);
-                //byte[] data = Convert.FromBase64String(str);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
         }
     }
 }

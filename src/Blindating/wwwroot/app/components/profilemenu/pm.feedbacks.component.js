@@ -15,7 +15,7 @@ var PmFeedbacksComponent = (function () {
     function PmFeedbacksComponent(_feedbackService) {
         this._feedbackService = _feedbackService;
         this.keydown = {};
-        this.isPositiveIcon = 'fa fa-thumbs-o-up fa-lg';
+        this.isNegativeIcon = 'fa fa-thumbs-o-down fa-lg';
     }
     PmFeedbacksComponent.prototype.ngOnInit = function () { };
     PmFeedbacksComponent.prototype.ngOnChanges = function (changes) {
@@ -37,11 +37,11 @@ var PmFeedbacksComponent = (function () {
     PmFeedbacksComponent.prototype.onKeydownArea = function (event) {
         this.keydown[event.which] = true;
     };
-    PmFeedbacksComponent.prototype.onClickPositiveIcon = function () {
-        if (this.isPositiveIcon == 'fa fa-thumbs-o-up fa-lg')
-            this.isPositiveIcon = 'fa fa-thumbs-up fa-lg';
+    PmFeedbacksComponent.prototype.onClickNegativeIcon = function () {
+        if (this.isNegativeIcon == 'fa fa-thumbs-o-down fa-lg')
+            this.isNegativeIcon = 'fa fa-thumbs-down fa-lg';
         else
-            this.isPositiveIcon = 'fa fa-thumbs-o-up fa-lg';
+            this.isNegativeIcon = 'fa fa-thumbs-o-down fa-lg';
     };
     PmFeedbacksComponent.prototype.onRemoveFeedback = function (feedback) {
         var _this = this;
@@ -53,8 +53,8 @@ var PmFeedbacksComponent = (function () {
             }
         });
     };
-    PmFeedbacksComponent.prototype.isPositive = function () {
-        if (this.isPositiveIcon == 'fa fa-thumbs-o-up fa-lg')
+    PmFeedbacksComponent.prototype.isNegative = function () {
+        if (this.isNegativeIcon == 'fa fa-thumbs-o-down fa-lg')
             return false;
         else
             return true;
@@ -63,7 +63,7 @@ var PmFeedbacksComponent = (function () {
         var feedback = new feedback_1.Feedback();
         feedback.userID = this.app.selectedUser.id;
         feedback.remoteUserID = this.app.user.id;
-        feedback.isPositive = this.isPositive();
+        feedback.isNegative = this.isNegative();
         feedback.text = text;
         feedback.user = this.app.selectedUser;
         feedback.remoteUser = this.app.user;

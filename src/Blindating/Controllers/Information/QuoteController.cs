@@ -25,44 +25,44 @@ namespace NetCoreAngular2.Controllers
         {
             Quotes = quotes;
         }
-        [Authorize("Bearer")]
         [HttpGet]
+        [Authorize("Bearer")]
         [ActionName("getall")]
         public JsonResult GetAll()
         {
             return new JsonResult(Quotes.GetAll());
         }
-        [Authorize("Bearer")]
         [HttpPost]
+        [Authorize("Bearer")]
         [ActionName("getallbyid")]
         public JsonResult GetAllByID([FromBody] int userID)
         {
             var JWT = Request.Headers["Authorization"].ToString().Remove(0, 7);
             return new JsonResult(Quotes.GetAllByID(JWT, userID));
         }
-        [Authorize("Bearer")]
         [HttpPost]
+        [Authorize("Bearer")]
         [ActionName("add")]
         public JsonResult Add([FromBody] Quote quote)
         {
             return new JsonResult(Quotes.Add(quote));
         }
-        [Authorize("Bearer")]
         [HttpPost]
+        [Authorize("Bearer")]
         [ActionName("update")]
         public JsonResult Update([FromBody] Quote quote)
         {
             return new JsonResult(Quotes.Update(quote));
         }
-        [Authorize("Bearer")]
         [HttpPost]
+        [Authorize("Bearer")]
         [ActionName("remove")]
         public JsonResult Remove([FromBody] Quote quote)
         {
             return new JsonResult(Quotes.Remove(quote));
         }
-        [Authorize("Bearer")]
         [HttpPost]
+        [Authorize("Bearer")]
         [ActionName("setlike")]
         public JsonResult SetLike([FromBody] QuoteLike qlike)
         {

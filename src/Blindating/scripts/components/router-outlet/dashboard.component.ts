@@ -81,13 +81,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.profileBoardHeight = 110;
         this.profileStatsHeight = 105;
         this.profileStatsHeightExpanded = 75;
-        this.dashboardWidth = this.dashboard.nativeElement.clientWidth;
-        this.dashboardHeight = this.dashboard.nativeElement.clientHeight;
+        this.dashboardWidth       = this.dashboard.nativeElement.clientWidth;
+        this.dashboardHeight      = this.dashboard.nativeElement.clientHeight;
         this.dashboardStatsHeight = this.dashboardStats.nativeElement.clientHeight;
-        this.maxUsersColumns = this.dashboardWidth / Math.round((this.dashboardWidth * 8.3) / 100);
+        this.maxUsersColumns      = this.dashboardWidth / Math.round((this.dashboardWidth * 8.3) / 100);
         this.maxUsersStatsColumns = this.dashboardWidth / Math.round((this.dashboardWidth * 25) / 100);
-        this.maxUsersRows = (this.dashboardHeight - (this.dashboardStatsHeight + this.profileStatsHeight)) / this.profileBoardHeight;
-        this.maxUsers = Math.floor(this.maxUsersColumns) * Math.floor(this.maxUsersRows);
+        this.maxUsersRows         = (this.dashboardHeight - (this.dashboardStatsHeight + this.profileStatsHeight)) / this.profileBoardHeight;
+        this.maxUsers             = Math.floor(this.maxUsersColumns) * Math.floor(this.maxUsersRows);
 
         this._userService.GetNew(Math.round(this.maxUsersStatsColumns))
             .subscribe(users => {

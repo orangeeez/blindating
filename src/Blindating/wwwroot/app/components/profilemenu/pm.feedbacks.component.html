@@ -5,7 +5,8 @@
                 <div *ngIf="feedbacks?.length == 0" class="no-wishes">No wishes yet</div>
                 <div *ngFor="let feedback of feedbacks" class="col-md-12">
                     <blockquote style="padding-right: 0"
-                        [class.good]="feedback.isPositive">
+                        [class.good]="!feedback.isNegative"
+                        [class.bad]="feedback.isNegative">
                         <p>{{feedback.text}}</p>
                         <footer>
                             <a (click)="app.selectDeselectUser(feedback?.remoteUser || app.user)">
@@ -26,10 +27,8 @@
                               (keydown)="onKeydownArea($event)"></textarea>
                 </div>
                 <div class="col-md-1">
-                    <i class="fa fa-smile-o fa-lg"></i>
-                    <i class="fa fa-paperclip fa-lg"></i>
-                    <i [ngClass]="isPositiveIcon"
-                       (click)="onClickPositiveIcon()"></i>
+                    <i [ngClass]="isNegativeIcon"
+                       (click)="onClickNegativeIcon()"></i>
                 </div>
             </div>
         </div>

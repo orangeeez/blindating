@@ -7,7 +7,7 @@ export class Feedback {
     audio:                 string;
     userID:                number;
     remoteUserID:          number;
-    isPositive:            boolean;
+    isNegative:            boolean;
     Direction:             string;
     user:                  User;
     remoteUser:            User;

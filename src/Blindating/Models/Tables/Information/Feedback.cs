@@ -14,13 +14,13 @@ namespace Blindating.Models.Tables
         {
             Text         = feedback.Text;
             RemoteUserID = feedback.RemoteUserID;
-            IsPositive   = feedback.IsPositive;
+            IsNegative   = feedback.IsNegative;
         }
         public int ID { get; set; }
         public int InformationFeedbackFK { get; set; }
         public string Text { get; set; }
         public int RemoteUserID { get; set; }
-        public bool IsPositive { get; set; }
+        public bool IsNegative { get; set; }
         public string Direction { get; set; }
         public virtual Information Information { get; set; }
         [NotMapped] public int UserID { get; set; }

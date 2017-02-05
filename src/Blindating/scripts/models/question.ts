@@ -2,7 +2,7 @@ export class Question {
     id:                    number;
     message:               string;
     informationQuestionFK: number;
-    userid:                number;
+    userID:                number;
     isEditing:             boolean;
 
     //not mapped

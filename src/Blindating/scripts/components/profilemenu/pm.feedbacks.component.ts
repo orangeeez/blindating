@@ -19,7 +19,7 @@ export class PmFeedbacksComponent implements OnInit, OnChanges {
     public feedbacks: Feedback[];
 
     public keydown =         {};
-    public isPositiveIcon = 'fa fa-thumbs-o-up fa-lg';
+    public isNegativeIcon = 'fa fa-thumbs-o-down fa-lg';
 
     constructor(
         private _feedbackService: FeedbackService) {
@@ -48,11 +48,11 @@ export class PmFeedbacksComponent implements OnInit, OnChanges {
         this.keydown[event.which] = true;
     }
 
-    public onClickPositiveIcon(): void {
-        if (this.isPositiveIcon == 'fa fa-thumbs-o-up fa-lg')
-            this.isPositiveIcon = 'fa fa-thumbs-up fa-lg';
+    public onClickNegativeIcon(): void {
+        if (this.isNegativeIcon == 'fa fa-thumbs-o-down fa-lg')
+            this.isNegativeIcon = 'fa fa-thumbs-down fa-lg';
         else
-            this.isPositiveIcon = 'fa fa-thumbs-o-up fa-lg';
+            this.isNegativeIcon = 'fa fa-thumbs-o-down fa-lg';
     }
 
     public onRemoveFeedback(feedback: Feedback): void {
@@ -65,8 +65,8 @@ export class PmFeedbacksComponent implements OnInit, OnChanges {
             });
     }
 
-    private isPositive(): boolean {
-        if (this.isPositiveIcon == 'fa fa-thumbs-o-up fa-lg')
+    private isNegative(): boolean {
+        if (this.isNegativeIcon == 'fa fa-thumbs-o-down fa-lg')
             return false;
         else
             return true;
@@ -76,7 +76,7 @@ export class PmFeedbacksComponent implements OnInit, OnChanges {
         var feedback                   = new Feedback();
         feedback.userID                = this.app.selectedUser.id;
         feedback.remoteUserID          = this.app.user.id;
-        feedback.isPositive            = this.isPositive();
+        feedback.isNegative            = this.isNegative();
         feedback.text                  = text;
         feedback.user                  = this.app.selectedUser;
         feedback.remoteUser            = this.app.user;

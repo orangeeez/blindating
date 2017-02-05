@@ -305,6 +305,8 @@ E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\201
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20161217112400_AddQuoteLikeTable#2.Designer.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20161218122951_AddUpDownFiledToQuoteTable.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20161218122951_AddUpDownFiledToQuoteTable.Designer.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20170205124932_FixFieldInFeedbackTable.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20170205124932_FixFieldInFeedbackTable.Designer.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\AppDBContextModelSnapshot.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\AppDBContext.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\DbInitializer.cs

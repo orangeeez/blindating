@@ -5,8 +5,7 @@ export class Quote {
     up:                 number;
     down:               number;
     informationQuoteFK: number;
-
-    userid:             number;
+    userID:             number;
     isEditing:          boolean;
     isAnswered:         boolean;
     isLike:             boolean;

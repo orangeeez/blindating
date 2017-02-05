@@ -69,9 +69,9 @@ export class PmQuestionsComponent implements OnInit, AfterViewInit {
                         id:                    0,
                         message:               this.message,
                         informationQuestionFK: this.app.selectedUser.information['id'],
-                        userid:                this.app.selectedUser.id,
+                        userID:                this.app.selectedUser.id,
                         isEditing:             false,
-                        answered:              null
+                        answered:              false
                     };
                     this.isAddingQuestion = false;
                     this.message       = '';

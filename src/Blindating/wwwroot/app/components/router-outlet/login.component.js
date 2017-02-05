@@ -29,24 +29,24 @@ var LoginComponent = (function () {
             { title: 'Login', active: true },
             { title: 'Register' }
         ];
-        this.getFacebookInfoAPI = function () {
+        this.GetFacebookInfoAPI = function () {
             var self = _this;
-            setInterval(_this.checkFBLoginInterval, 1000);
+            setInterval(_this.CheckFBLoginInterval, 1000);
             FB.getLoginStatus(function (response) { statusChangeCallback(response); });
             function statusChangeCallback(response) {
                 if (response.status === 'connected')
-                    FB.api('/me', { fields: 'email, first_name, last_name' }, self.setFacebookInfoAPI);
+                    FB.api('/me', { fields: 'email, first_name, last_name' }, self.SetFacebookInfoAPI);
                 else
                     FB.login(function (response) { statusChangeCallback(response); });
             }
         };
-        this.checkFBLoginInterval = function () {
+        this.CheckFBLoginInterval = function () {
             if (_this.app.user)
                 _this._router.navigate(['/dashboard']);
         };
-        this.setFacebookInfoAPI = function (response) {
+        this.SetFacebookInfoAPI = function (response) {
             _this.email = response['email'];
-            _this.password = _this._cookieService.get('fbsr_1557510837900819'); //'social';
+            _this.password = _this._cookieService.get('fbsr_1557510837900819');
             _this.Login(response);
             //console.log(response['email']);
             //this._userService.IsExistEmail(response['email'])
@@ -76,7 +76,7 @@ var LoginComponent = (function () {
             if (user.reason == user_1.User.AUTHORIZATION_FAILED) {
                 _this.alert.type = 'danger';
                 _this.alert.show = true;
-                _this.alert.reason = user_1.User.AUTHORIZATION_FAILED;
+                _this.alert.reason = user.reason;
             }
             else {
                 _this.app.user = user;
@@ -122,9 +122,7 @@ var LoginComponent = (function () {
             auth = JSON.stringify({ email: this.email, password: this.password });
         this._userService.Login(auth)
             .subscribe(function (user) {
-            if (user.jwt)
-                _this.HandleLoginResponse(user);
-            else if (user.reason == user_1.User.REGISTER_SOCIAL) {
+            if (user.reason == user_1.User.REGISTER_SOCIAL) {
                 _this.alert.reason = user.reason;
                 _this.alert.show = true;
                 _this.tabs[0].active = false;
@@ -134,6 +132,8 @@ var LoginComponent = (function () {
                 _this.email = response['email'];
                 _this.password = "";
             }
+            else
+                _this.HandleLoginResponse(user);
         });
     };
     LoginComponent.prototype.Register = function () {
@@ -143,7 +143,7 @@ var LoginComponent = (function () {
     };
     LoginComponent.prototype.onAuthSocial = function () {
         if (event.srcElement.className == 'fa fa-facebook')
-            this.getFacebookInfoAPI();
+            this.GetFacebookInfoAPI();
         //else
         //    this.getVKInfoAPI();
     };

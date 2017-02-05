@@ -72,9 +72,7 @@ export class LoginComponent implements OnInit {
 
         this._userService.Login(auth)
             .subscribe(user => {
-                if (user.jwt)
-                    this.HandleLoginResponse(user);
-                else if (user.reason == User.REGISTER_SOCIAL) {
+                if (user.reason == User.REGISTER_SOCIAL) {
                     this.alert.reason   = user.reason;
                     this.alert.show     = true;
                     this.tabs[0].active = false;
@@ -83,7 +81,8 @@ export class LoginComponent implements OnInit {
                     this.lastname  = response['last_name'];
                     this.email     = response['email'];
                     this.password  = "";
-                }
+                }   
+                else this.HandleLoginResponse(user);
             });    
     }
 
@@ -93,34 +92,34 @@ export class LoginComponent implements OnInit {
     }
     public onAuthSocial(): void {
         if (event.srcElement.className == 'fa fa-facebook')
-            this.getFacebookInfoAPI();
+            this.GetFacebookInfoAPI();
         //else
         //    this.getVKInfoAPI();
     }
 
-    private getFacebookInfoAPI = () => {
+    private GetFacebookInfoAPI = () => {
         var self = this;
 
-        setInterval(this.checkFBLoginInterval, 1000)
+        setInterval(this.CheckFBLoginInterval, 1000)
 
         FB.getLoginStatus(function (response) { statusChangeCallback(response); });
 
         function statusChangeCallback(response) {
             if (response.status === 'connected')
-                FB.api('/me', { fields: 'email, first_name, last_name' }, self.setFacebookInfoAPI);
+                FB.api('/me', { fields: 'email, first_name, last_name' }, self.SetFacebookInfoAPI);
             else
                 FB.login(function (response) { statusChangeCallback(response); });
         }
     }
 
-    private checkFBLoginInterval = () => {
+    private CheckFBLoginInterval = () => {
         if (this.app.user) 
             this._router.navigate(['/dashboard']);
     }
 
-    private setFacebookInfoAPI = (response: Object) => {
+    private SetFacebookInfoAPI = (response: Object) => {
         this.email = response['email'];
-        this.password = this._cookieService.get('fbsr_1557510837900819'); //'social';
+        this.password = this._cookieService.get('fbsr_1557510837900819');
         this.Login(response);
         //console.log(response['email']);
         //this._userService.IsExistEmail(response['email'])
@@ -164,7 +163,7 @@ export class LoginComponent implements OnInit {
         if (user.reason == User.AUTHORIZATION_FAILED) {
             this.alert.type = 'danger';
             this.alert.show = true;
-            this.alert.reason = User.AUTHORIZATION_FAILED;
+            this.alert.reason = user.reason;
         }
         else {
             this.app.user = user;
