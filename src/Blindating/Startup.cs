@@ -61,6 +61,9 @@ namespace Blindating
 
             services.AddMvc();
 
+            // TODO Cors fo testing
+            services.AddCors();
+
             services.AddSingleton(tokenOptions);
 
             services.AddAuthorization(auth =>
@@ -93,6 +96,13 @@ namespace Blindating
                 // Validate the token expiry
                 ValidateLifetime = false,
             };
+
+            // TODO Cors fo testing
+            app.UseCors(builder =>
+                builder.AllowAnyOrigin()
+                       .AllowAnyHeader()
+                       .AllowAnyMethod()
+                       .AllowCredentials());
 
             app.UseJwtBearerAuthentication(new JwtBearerOptions
             {
