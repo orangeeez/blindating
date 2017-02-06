@@ -1,15 +1,16 @@
 {
     "version": "0.2.0",
     "configurations": [
+        
         {
-            "name": "Launch",
+            "name": "Lite Server",
             "type": "node",
             "request": "launch",
             "program": "${workspaceRoot}/src/Blindating/node_modules/lite-server/bin/lite-server",
             "stopOnEntry": false,
             "args": [],
             "cwd": "${workspaceRoot}/src/Blindating/wwwroot",
-            "preLaunchTask": null,
+            "preLaunchTask": "tsc",
             "runtimeExecutable": null,
             "runtimeArgs": [
                 "--nolazy"
@@ -19,6 +20,47 @@
             },
             "console": "internalConsole",
             "sourceMaps": false
+        },
+        {
+            "name": ".NET Core Launch (console)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceRoot}/src/Blindating/bin/Debug/netcoreapp1.1/Blindating.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/src/Blindating",
+            "stopAtEntry": false,
+            "externalConsole": false
+        },
+        {
+            "name": ".NET Core Launch (web)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceRoot}/src/Blindating/bin/Debug/netcoreapp1.1/Blindating.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/src/Blindating",
+            "stopAtEntry": false,
+            "launchBrowser": {
+                "enabled": true,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceRoot}/Views"
+            }
         }
     ]
 }

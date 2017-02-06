@@ -13,23 +13,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var http_1 = require('@angular/http');
-var core_1 = require('@angular/core');
-var base_service_1 = require('../../services/base.service');
-var angular2_jwt_1 = require('angular2-jwt');
-require('rxjs/add/operator/map');
-require('rxjs/add/operator/catch');
+var http_1 = require("@angular/http");
+var core_1 = require("@angular/core");
+var base_service_1 = require("../../services/base.service");
+var angular2_jwt_1 = require("angular2-jwt");
+require("rxjs/add/operator/map");
+require("rxjs/add/operator/catch");
 var DetailService = (function (_super) {
     __extends(DetailService, _super);
     function DetailService(_http, _authHttp) {
-        _super.call(this, _http, _authHttp, 'api/user/detail');
-        this._http = _http;
-        this._authHttp = _authHttp;
+        var _this = _super.call(this, _http, _authHttp, 'api/user/detail') || this;
+        _this._http = _http;
+        _this._authHttp = _authHttp;
+        return _this;
     }
-    DetailService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http, angular2_jwt_1.AuthHttp])
-    ], DetailService);
     return DetailService;
 }(base_service_1.BaseService));
+DetailService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [http_1.Http,
+        angular2_jwt_1.AuthHttp])
+], DetailService);
 exports.DetailService = DetailService;

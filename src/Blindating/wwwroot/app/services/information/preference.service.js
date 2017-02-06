@@ -13,28 +13,30 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var http_1 = require('@angular/http');
-var core_1 = require('@angular/core');
-var config_1 = require('../../static/config');
-var base_service_1 = require('../base.service');
-var angular2_jwt_1 = require('angular2-jwt');
-require('rxjs/add/operator/map');
-require('rxjs/add/operator/catch');
+var http_1 = require("@angular/http");
+var core_1 = require("@angular/core");
+var config_1 = require("../../static/config");
+var base_service_1 = require("../base.service");
+var angular2_jwt_1 = require("angular2-jwt");
+require("rxjs/add/operator/map");
+require("rxjs/add/operator/catch");
 var PreferenceService = (function (_super) {
     __extends(PreferenceService, _super);
     function PreferenceService(_http, _authHttp) {
-        _super.call(this, _http, _authHttp, 'api/user/preference');
-        this._http = _http;
-        this._authHttp = _authHttp;
+        var _this = _super.call(this, _http, _authHttp, 'api/user/preference') || this;
+        _this._http = _http;
+        _this._authHttp = _authHttp;
+        return _this;
     }
     PreferenceService.prototype.GetCities = function (country) {
         return this._authHttp.post(config_1.API_ADDRESS + this.api + "/getcities", JSON.stringify(country), this.options)
             .map(function (result) { return result.json()['result']; });
     };
-    PreferenceService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http, angular2_jwt_1.AuthHttp])
-    ], PreferenceService);
     return PreferenceService;
 }(base_service_1.BaseService));
+PreferenceService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [http_1.Http,
+        angular2_jwt_1.AuthHttp])
+], PreferenceService);
 exports.PreferenceService = PreferenceService;

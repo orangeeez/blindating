@@ -1,16 +1,21 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
     "version": "0.1.0",
-    "command": "dotnet",
-    "isShellCommand": true,
-    "args": [],
+    "showOutput": "silent",
     "tasks": [
         {
-            "taskName": "build",
-            "args": [ ],
+            "command": "tsc",
+            "taskName": "tsc",
+            "args": ["-p", "./src/Blindating/scripts"],
             "isBuildCommand": true,
-            "showOutput": "silent",
+            "isShellCommand": true,            
+            "problemMatcher": "$tsc"
+        },
+        {
+            "command": "dotnet",
+            "taskName": "build",
+            "args": ["build", "src/Blindating/project.json"],
+            "isBuildCommand": true,
+            "isShellCommand": true,                        
             "problemMatcher": "$msCompile"
         }
     ]

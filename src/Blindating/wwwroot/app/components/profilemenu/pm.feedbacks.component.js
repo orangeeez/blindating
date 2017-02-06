@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var feedback_1 = require('../../models/feedback');
-var feedback_service_1 = require('../../services/information/feedback.service');
+var core_1 = require("@angular/core");
+var feedback_1 = require("../../models/feedback");
+var feedback_service_1 = require("../../services/information/feedback.service");
 var PmFeedbacksComponent = (function () {
     function PmFeedbacksComponent(_feedbackService) {
         this._feedbackService = _feedbackService;
@@ -69,15 +69,15 @@ var PmFeedbacksComponent = (function () {
         feedback.remoteUser = this.app.user;
         return feedback;
     };
-    PmFeedbacksComponent = __decorate([
-        core_1.Component({
-            selector: 'pm-feedbacks-component',
-            templateUrl: 'app/components/profilemenu/pm.feedbacks.component.html',
-            styleUrls: ['app/components/profilemenu/pm.feedbacks.component.css'],
-            inputs: ['app', 'selectedUser'],
-        }), 
-        __metadata('design:paramtypes', [feedback_service_1.FeedbackService])
-    ], PmFeedbacksComponent);
     return PmFeedbacksComponent;
 }());
+PmFeedbacksComponent = __decorate([
+    core_1.Component({
+        selector: 'pm-feedbacks-component',
+        templateUrl: 'app/components/profilemenu/pm.feedbacks.component.html',
+        styleUrls: ['app/components/profilemenu/pm.feedbacks.component.css'],
+        inputs: ['app', 'selectedUser'],
+    }),
+    __metadata("design:paramtypes", [feedback_service_1.FeedbackService])
+], PmFeedbacksComponent);
 exports.PmFeedbacksComponent = PmFeedbacksComponent;

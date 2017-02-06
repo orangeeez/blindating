@@ -8,11 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var detail_service_1 = require('../../services/information/detail.service');
-var utils_1 = require('../../static/utils');
-var moment = require('moment');
-var details_1 = require('../../static/details');
+var core_1 = require("@angular/core");
+var detail_service_1 = require("../../services/information/detail.service");
+var utils_1 = require("../../static/utils");
+var moment = require("moment");
+var details_1 = require("../../static/details");
 var PmDetailsComponent = (function () {
     function PmDetailsComponent(_detailService) {
         this._detailService = _detailService;
@@ -71,15 +71,15 @@ var PmDetailsComponent = (function () {
         this.details[p] = value;
         this._detailService.Update(this.details).subscribe();
     };
-    PmDetailsComponent = __decorate([
-        core_1.Component({
-            selector: 'pm-details-component',
-            templateUrl: 'app/components/profilemenu/pm.details.component.html',
-            styleUrls: ['app/components/profilemenu/pm.details.component.css'],
-            inputs: ['app', 'selectedUser'],
-        }), 
-        __metadata('design:paramtypes', [detail_service_1.DetailService])
-    ], PmDetailsComponent);
     return PmDetailsComponent;
 }());
+PmDetailsComponent = __decorate([
+    core_1.Component({
+        selector: 'pm-details-component',
+        templateUrl: 'app/components/profilemenu/pm.details.component.html',
+        styleUrls: ['app/components/profilemenu/pm.details.component.css'],
+        inputs: ['app', 'selectedUser'],
+    }),
+    __metadata("design:paramtypes", [detail_service_1.DetailService])
+], PmDetailsComponent);
 exports.PmDetailsComponent = PmDetailsComponent;

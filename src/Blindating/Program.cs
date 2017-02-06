@@ -16,7 +16,7 @@ namespace Blindating
             var host = new WebHostBuilder()
                 .UseKestrel(options =>
                 {
-                    options.UseHttps(new X509Certificate2(Directory.GetCurrentDirectory() + "/blindating.pfx", "f00tBall"));
+                    // options.UseHttps(new X509Certificate2(Directory.GetCurrentDirectory() + "/blindating.pfx", "f00tBall"));
                 })
                 .UseUrls("http://localhost:8000")
                 .UseContentRoot(Directory.GetCurrentDirectory())

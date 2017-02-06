@@ -8,10 +8,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var photo_service_1 = require('../../services/information/photo.service');
-var ng2_file_upload_1 = require('ng2-file-upload/ng2-file-upload');
-var config_1 = require('../../static/config');
+var core_1 = require("@angular/core");
+var photo_service_1 = require("../../services/information/photo.service");
+var ng2_file_upload_1 = require("ng2-file-upload/ng2-file-upload");
+var config_1 = require("../../static/config");
 var PmPhotosComponent = (function () {
     function PmPhotosComponent(_photoService) {
         var _this = this;
@@ -74,16 +74,16 @@ var PmPhotosComponent = (function () {
         this.uploader.removeFromQueue(item);
         this.previews.splice(index, 1);
     };
-    PmPhotosComponent = __decorate([
-        core_1.Component({
-            selector: 'pm-photos-component',
-            templateUrl: 'app/components/profilemenu/pm.photos.component.html',
-            styleUrls: ['app/components/profilemenu/pm.photos.component.css'],
-            inputs: ['app', 'photos'],
-            outputs: ['onBack']
-        }), 
-        __metadata('design:paramtypes', [photo_service_1.PhotoService])
-    ], PmPhotosComponent);
     return PmPhotosComponent;
 }());
+PmPhotosComponent = __decorate([
+    core_1.Component({
+        selector: 'pm-photos-component',
+        templateUrl: 'app/components/profilemenu/pm.photos.component.html',
+        styleUrls: ['app/components/profilemenu/pm.photos.component.css'],
+        inputs: ['app', 'photos'],
+        outputs: ['onBack']
+    }),
+    __metadata("design:paramtypes", [photo_service_1.PhotoService])
+], PmPhotosComponent);
 exports.PmPhotosComponent = PmPhotosComponent;

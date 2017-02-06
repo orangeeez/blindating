@@ -13,28 +13,30 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var http_1 = require('@angular/http');
-var core_1 = require('@angular/core');
-var config_1 = require('../../static/config');
-var base_service_1 = require('../base.service');
-var angular2_jwt_1 = require('angular2-jwt');
-require('rxjs/add/operator/map');
-require('rxjs/add/operator/catch');
+var http_1 = require("@angular/http");
+var core_1 = require("@angular/core");
+var config_1 = require("../../static/config");
+var base_service_1 = require("../base.service");
+var angular2_jwt_1 = require("angular2-jwt");
+require("rxjs/add/operator/map");
+require("rxjs/add/operator/catch");
 var PhotoService = (function (_super) {
     __extends(PhotoService, _super);
     function PhotoService(_http, _authHttp) {
-        _super.call(this, _http, _authHttp, 'api/user/photo');
-        this._http = _http;
-        this._authHttp = _authHttp;
+        var _this = _super.call(this, _http, _authHttp, 'api/user/photo') || this;
+        _this._http = _http;
+        _this._authHttp = _authHttp;
+        return _this;
     }
     PhotoService.prototype.GetLastCount = function (userID, count) {
         return this._authHttp.post(config_1.API_ADDRESS + this.api + "/getlastcount", JSON.stringify({ userID: userID, count: count }), this.options)
             .map(function (user) { return user.json()['result']; });
     };
-    PhotoService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http, angular2_jwt_1.AuthHttp])
-    ], PhotoService);
     return PhotoService;
 }(base_service_1.BaseService));
+PhotoService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [http_1.Http,
+        angular2_jwt_1.AuthHttp])
+], PhotoService);
 exports.PhotoService = PhotoService;

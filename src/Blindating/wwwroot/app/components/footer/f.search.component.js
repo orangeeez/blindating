@@ -8,10 +8,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var utils_1 = require('../../static/utils');
-var user_service_1 = require('../../services/user.service');
-var search_service_1 = require('../../services/search/search.service');
+var core_1 = require("@angular/core");
+var utils_1 = require("../../static/utils");
+var user_service_1 = require("../../services/user.service");
+var search_service_1 = require("../../services/search/search.service");
 var FSearchComponent = (function () {
     function FSearchComponent(_userService, _searchService) {
         var _this = this;
@@ -47,27 +47,28 @@ var FSearchComponent = (function () {
             this.searchData.count + this.app._dashboard.searchUsers.length;
         }
     };
-    FSearchComponent = __decorate([
-        core_1.Component({
-            selector: 'f-search-component',
-            templateUrl: 'app/components/footer/f.search.component.html',
-            styleUrls: ['app/components/footer/f.search.component.css'],
-            inputs: ['app', 'searchState', ''],
-            animations: [
-                core_1.trigger('searchState', [
-                    core_1.state('deselected', core_1.style({
-                        top: '50px'
-                    })),
-                    core_1.state('selected', core_1.style({
-                        top: '15px'
-                    })),
-                    core_1.transition('deselected => selected', core_1.animate('300ms ease-in')),
-                    core_1.transition('selected => deselected', core_1.animate('300ms ease-out'))
-                ])
-            ]
-        }), 
-        __metadata('design:paramtypes', [user_service_1.UserService, search_service_1.SearchService])
-    ], FSearchComponent);
     return FSearchComponent;
 }());
+FSearchComponent = __decorate([
+    core_1.Component({
+        selector: 'f-search-component',
+        templateUrl: 'app/components/footer/f.search.component.html',
+        styleUrls: ['app/components/footer/f.search.component.css'],
+        inputs: ['app', 'searchState', ''],
+        animations: [
+            core_1.trigger('searchState', [
+                core_1.state('deselected', core_1.style({
+                    top: '50px'
+                })),
+                core_1.state('selected', core_1.style({
+                    top: '15px'
+                })),
+                core_1.transition('deselected => selected', core_1.animate('300ms ease-in')),
+                core_1.transition('selected => deselected', core_1.animate('300ms ease-out'))
+            ])
+        ]
+    }),
+    __metadata("design:paramtypes", [user_service_1.UserService,
+        search_service_1.SearchService])
+], FSearchComponent);
 exports.FSearchComponent = FSearchComponent;

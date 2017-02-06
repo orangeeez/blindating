@@ -6,7 +6,7 @@ import { TalkComponent }        from './components/router-outlet/talk.component'
 const appRoutes: Routes = [
     {
         path:       '',
-        redirectTo: '/talk',
+        redirectTo: '/login',
         pathMatch:  'full'
     },
     {

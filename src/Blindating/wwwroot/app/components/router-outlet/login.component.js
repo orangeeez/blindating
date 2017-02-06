@@ -11,12 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
-var core_2 = require('angular2-cookie/core');
-var user_service_1 = require('../../services/user.service');
-var user_1 = require('../../models/user');
-var app_component_1 = require('../../components/app.component');
+var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
+var core_2 = require("angular2-cookie/core");
+var user_service_1 = require("../../services/user.service");
+var user_1 = require("../../models/user");
+var app_component_1 = require("../../components/app.component");
 var LoginComponent = (function () {
     function LoginComponent(app, _userService, _cookieService, _router) {
         var _this = this;
@@ -163,16 +163,18 @@ var LoginComponent = (function () {
     LoginComponent.prototype.onFocusoutPhrase = function () {
         this.isPhraseFocused = false;
     };
-    LoginComponent = __decorate([
-        core_1.Component({
-            selector: 'login-component',
-            templateUrl: 'app/components/router-outlet/login.component.html',
-            styleUrls: ['app/components/router-outlet/login.component.css'],
-        }),
-        __param(0, core_1.Host()),
-        __param(0, core_1.Inject(core_1.forwardRef(function () { return app_component_1.AppComponent; }))), 
-        __metadata('design:paramtypes', [app_component_1.AppComponent, user_service_1.UserService, core_2.CookieService, router_1.Router])
-    ], LoginComponent);
     return LoginComponent;
 }());
+LoginComponent = __decorate([
+    core_1.Component({
+        selector: 'login-component',
+        templateUrl: 'app/components/router-outlet/login.component.html',
+        styleUrls: ['app/components/router-outlet/login.component.css'],
+    }),
+    __param(0, core_1.Host()), __param(0, core_1.Inject(core_1.forwardRef(function () { return app_component_1.AppComponent; }))),
+    __metadata("design:paramtypes", [app_component_1.AppComponent,
+        user_service_1.UserService,
+        core_2.CookieService,
+        router_1.Router])
+], LoginComponent);
 exports.LoginComponent = LoginComponent;

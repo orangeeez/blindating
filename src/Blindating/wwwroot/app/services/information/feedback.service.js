@@ -13,28 +13,30 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var http_1 = require('@angular/http');
-var core_1 = require('@angular/core');
-var config_1 = require('../../static/config');
-var base_service_1 = require('../../services/base.service');
-var angular2_jwt_1 = require('angular2-jwt');
-require('rxjs/add/operator/map');
-require('rxjs/add/operator/catch');
+var http_1 = require("@angular/http");
+var core_1 = require("@angular/core");
+var config_1 = require("../../static/config");
+var base_service_1 = require("../../services/base.service");
+var angular2_jwt_1 = require("angular2-jwt");
+require("rxjs/add/operator/map");
+require("rxjs/add/operator/catch");
 var FeedbackService = (function (_super) {
     __extends(FeedbackService, _super);
     function FeedbackService(_http, _authHttp) {
-        _super.call(this, _http, _authHttp, 'api/user/feedback');
-        this._http = _http;
-        this._authHttp = _authHttp;
+        var _this = _super.call(this, _http, _authHttp, 'api/user/feedback') || this;
+        _this._http = _http;
+        _this._authHttp = _authHttp;
+        return _this;
     }
     FeedbackService.prototype.AddOther = function (entity) {
         return this._authHttp.post(config_1.API_ADDRESS + this.api + "/addother", JSON.stringify(entity), this.options)
             .map(function (users) { return users.json()['result']; });
     };
-    FeedbackService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http, angular2_jwt_1.AuthHttp])
-    ], FeedbackService);
     return FeedbackService;
 }(base_service_1.BaseService));
+FeedbackService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [http_1.Http,
+        angular2_jwt_1.AuthHttp])
+], FeedbackService);
 exports.FeedbackService = FeedbackService;

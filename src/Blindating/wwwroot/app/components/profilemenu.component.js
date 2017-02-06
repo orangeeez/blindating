@@ -8,10 +8,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
-var core_2 = require('angular2-cookie/core');
-var user_service_1 = require('../services/user.service');
+var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
+var core_2 = require("angular2-cookie/core");
+var user_service_1 = require("../services/user.service");
 var ProfilemenuComponent = (function () {
     function ProfilemenuComponent(_userService, _cookieService, _router) {
         this._userService = _userService;
@@ -54,15 +54,17 @@ var ProfilemenuComponent = (function () {
                 t.active = true;
         }
     };
-    ProfilemenuComponent = __decorate([
-        core_1.Component({
-            selector: 'profilemenu-component',
-            templateUrl: 'app/components/profilemenu.component.html',
-            styleUrls: ['app/components/profilemenu.component.css'],
-            inputs: ['app']
-        }), 
-        __metadata('design:paramtypes', [user_service_1.UserService, core_2.CookieService, router_1.Router])
-    ], ProfilemenuComponent);
     return ProfilemenuComponent;
 }());
+ProfilemenuComponent = __decorate([
+    core_1.Component({
+        selector: 'profilemenu-component',
+        templateUrl: 'app/components/profilemenu.component.html',
+        styleUrls: ['app/components/profilemenu.component.css'],
+        inputs: ['app']
+    }),
+    __metadata("design:paramtypes", [user_service_1.UserService,
+        core_2.CookieService,
+        router_1.Router])
+], ProfilemenuComponent);
 exports.ProfilemenuComponent = ProfilemenuComponent;

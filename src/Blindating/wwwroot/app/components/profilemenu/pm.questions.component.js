@@ -8,8 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var question_service_1 = require('../../services/information/question.service');
+var core_1 = require("@angular/core");
+var question_service_1 = require("../../services/information/question.service");
 var PmQuestionsComponent = (function () {
     function PmQuestionsComponent(_questionService) {
         this._questionService = _questionService;
@@ -92,16 +92,16 @@ var PmQuestionsComponent = (function () {
                 break;
         }
     };
-    PmQuestionsComponent = __decorate([
-        core_1.Component({
-            selector: 'pm-questions-component',
-            templateUrl: 'app/components/profilemenu/pm.questions.component.html',
-            styleUrls: ['app/components/profilemenu/pm.questions.component.css'],
-            inputs: ['app', 'questions'],
-            outputs: ['onBack']
-        }), 
-        __metadata('design:paramtypes', [question_service_1.QuestionService])
-    ], PmQuestionsComponent);
     return PmQuestionsComponent;
 }());
+PmQuestionsComponent = __decorate([
+    core_1.Component({
+        selector: 'pm-questions-component',
+        templateUrl: 'app/components/profilemenu/pm.questions.component.html',
+        styleUrls: ['app/components/profilemenu/pm.questions.component.css'],
+        inputs: ['app', 'questions'],
+        outputs: ['onBack']
+    }),
+    __metadata("design:paramtypes", [question_service_1.QuestionService])
+], PmQuestionsComponent);
 exports.PmQuestionsComponent = PmQuestionsComponent;

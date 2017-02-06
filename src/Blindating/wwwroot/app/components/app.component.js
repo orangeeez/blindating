@@ -8,18 +8,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var config_1 = require('../static/config');
-var router_1 = require('@angular/router');
-var user_service_1 = require('../services/user.service');
-var conversation_service_1 = require('../services/information/conversation.service');
-var conversation_1 = require('../models/conversation');
-var utils_1 = require('../static/utils');
-var footer_component_1 = require('../components/footer.component');
-var header_component_1 = require('../components/header.component');
-var helper_component_1 = require('../components/helper.component');
-var profilemenu_component_1 = require('../components/profilemenu.component');
-var dashboard_component_1 = require('../components/router-outlet/dashboard.component');
+var core_1 = require("@angular/core");
+var config_1 = require("../static/config");
+var router_1 = require("@angular/router");
+var user_service_1 = require("../services/user.service");
+var conversation_service_1 = require("../services/information/conversation.service");
+var conversation_1 = require("../models/conversation");
+var utils_1 = require("../static/utils");
+var footer_component_1 = require("../components/footer.component");
+var header_component_1 = require("../components/header.component");
+var helper_component_1 = require("../components/helper.component");
+var profilemenu_component_1 = require("../components/profilemenu.component");
+var dashboard_component_1 = require("../components/router-outlet/dashboard.component");
 var AppComponent = (function () {
     function AppComponent(_userService, _conversationService, _router) {
         var _this = this;
@@ -206,46 +206,48 @@ var AppComponent = (function () {
         }
         return items;
     };
-    __decorate([
-        core_1.ViewChild(footer_component_1.FooterComponent), 
-        __metadata('design:type', footer_component_1.FooterComponent)
-    ], AppComponent.prototype, "_footer", void 0);
-    __decorate([
-        core_1.ViewChild(header_component_1.HeaderComponent), 
-        __metadata('design:type', header_component_1.HeaderComponent)
-    ], AppComponent.prototype, "_header", void 0);
-    __decorate([
-        core_1.ViewChild(helper_component_1.HelperComponent), 
-        __metadata('design:type', helper_component_1.HelperComponent)
-    ], AppComponent.prototype, "_helper", void 0);
-    __decorate([
-        core_1.ViewChild(dashboard_component_1.DashboardComponent), 
-        __metadata('design:type', dashboard_component_1.DashboardComponent)
-    ], AppComponent.prototype, "_dashboard", void 0);
-    __decorate([
-        core_1.ViewChild(profilemenu_component_1.ProfilemenuComponent), 
-        __metadata('design:type', profilemenu_component_1.ProfilemenuComponent)
-    ], AppComponent.prototype, "_profilemenu", void 0);
-    AppComponent = __decorate([
-        core_1.Component({
-            selector: 'blindating',
-            templateUrl: 'app/components/app.component.html',
-            styleUrls: ['app/components/app.component.css'],
-            animations: [
-                core_1.trigger('profilemenuState', [
-                    core_1.state('deselected', core_1.style({
-                        width: '8.3%'
-                    })),
-                    core_1.state('selected', core_1.style({
-                        width: '30%'
-                    })),
-                    core_1.transition('deselected => selected', core_1.animate('200ms ease-in')),
-                    core_1.transition('selected => deselected', core_1.animate('200ms ease-out'))
-                ])
-            ]
-        }), 
-        __metadata('design:paramtypes', [user_service_1.UserService, conversation_service_1.ConversationService, router_1.Router])
-    ], AppComponent);
     return AppComponent;
 }());
+__decorate([
+    core_1.ViewChild(footer_component_1.FooterComponent),
+    __metadata("design:type", footer_component_1.FooterComponent)
+], AppComponent.prototype, "_footer", void 0);
+__decorate([
+    core_1.ViewChild(header_component_1.HeaderComponent),
+    __metadata("design:type", header_component_1.HeaderComponent)
+], AppComponent.prototype, "_header", void 0);
+__decorate([
+    core_1.ViewChild(helper_component_1.HelperComponent),
+    __metadata("design:type", helper_component_1.HelperComponent)
+], AppComponent.prototype, "_helper", void 0);
+__decorate([
+    core_1.ViewChild(dashboard_component_1.DashboardComponent),
+    __metadata("design:type", dashboard_component_1.DashboardComponent)
+], AppComponent.prototype, "_dashboard", void 0);
+__decorate([
+    core_1.ViewChild(profilemenu_component_1.ProfilemenuComponent),
+    __metadata("design:type", profilemenu_component_1.ProfilemenuComponent)
+], AppComponent.prototype, "_profilemenu", void 0);
+AppComponent = __decorate([
+    core_1.Component({
+        selector: 'blindating',
+        templateUrl: 'app/components/app.component.html',
+        styleUrls: ['app/components/app.component.css'],
+        animations: [
+            core_1.trigger('profilemenuState', [
+                core_1.state('deselected', core_1.style({
+                    width: '8.3%'
+                })),
+                core_1.state('selected', core_1.style({
+                    width: '30%'
+                })),
+                core_1.transition('deselected => selected', core_1.animate('200ms ease-in')),
+                core_1.transition('selected => deselected', core_1.animate('200ms ease-out'))
+            ])
+        ]
+    }),
+    __metadata("design:paramtypes", [user_service_1.UserService,
+        conversation_service_1.ConversationService,
+        router_1.Router])
+], AppComponent);
 exports.AppComponent = AppComponent;
