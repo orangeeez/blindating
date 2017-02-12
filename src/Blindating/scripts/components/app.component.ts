@@ -2,6 +2,7 @@
     OnInit,
     Component,
     ViewChild,
+    NgZone,
     trigger,
     state,
     style,
@@ -20,6 +21,7 @@ import { ConversationService }  from '../services/information/conversation.servi
 import { User }                 from '../models/user';
 import { Photo }                from '../models/photo';
 import { Conversation }         from '../models/conversation';
+import { Message }              from '../models/message';
 import { Utils, DataSignals }   from '../static/utils';
 import { FooterComponent }      from '../components/footer.component';
 import { HeaderComponent }      from '../components/header.component';
@@ -27,6 +29,7 @@ import { HelperComponent }      from '../components/helper.component';
 import { LoginComponent }       from '../components/router-outlet/login.component';
 import { ProfilemenuComponent } from '../components/profilemenu.component';
 import { DashboardComponent }   from '../components/router-outlet/dashboard.component';
+import { TalkComponent }        from '../components/router-outlet/talk.component';
 
 declare var PhotoSwipe, PhotoSwipeUI_Default;
 declare var Woogeen: any;
@@ -52,9 +55,10 @@ export class AppComponent implements OnInit {
     @ViewChild(HeaderComponent)      public _header: HeaderComponent;
     @ViewChild(HelperComponent)      public _helper: HelperComponent;
     @ViewChild(DashboardComponent)   public _dashboard: DashboardComponent;
+    @ViewChild(TalkComponent)        public _talk: TalkComponent;    
     @ViewChild(ProfilemenuComponent) public _profilemenu: ProfilemenuComponent;
 
-    public server:   string  = 'https://192.168.0.114:8002';
+    public server:   string  = 'http://192.168.0.114:8001';
     public stun:     string  = 'stun:stun.l.google.com:19302';
     public stream: any;
     public localStream:  any;
@@ -78,7 +82,8 @@ export class AppComponent implements OnInit {
     constructor(
         private _userService:         UserService,
         private _conversationService: ConversationService,
-        private _router:      Router) { }
+        private _router:              Router,
+        private _zone:                NgZone) { }
 
     ngOnInit() {
         this.isLoginShow = !Boolean(localStorage.getItem('id_token'));
@@ -154,6 +159,16 @@ export class AppComponent implements OnInit {
 
         if (e.data == DataSignals.DenyingVideo) {
             this._helper.denyVideoIcon();
+        }
+
+        if (Utils.IsJSON(e.data)) {
+            console.log(e.data);
+            if (e.data.includes('"type":"message"')) {
+                var message = <Message>JSON.parse(e.data);
+                message.whose = 'message-you';
+                // this._talk.messages.push(message);
+                this._zone.run(() => this._talk.messages.push(message));
+            }
         }
     }
 

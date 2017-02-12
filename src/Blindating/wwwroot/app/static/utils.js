@@ -11,6 +11,15 @@ var Utils = (function () {
             i = "0" + i;
         return i;
     };
+    Utils.IsJSON = function (string) {
+        try {
+            JSON.parse(string);
+        }
+        catch (e) {
+            return false;
+        }
+        return true;
+    };
     return Utils;
 }());
 exports.Utils = Utils;

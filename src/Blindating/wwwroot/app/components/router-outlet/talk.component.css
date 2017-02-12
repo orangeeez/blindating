@@ -1,17 +1,45 @@
 ﻿#talk .video-remote {
     position: absolute;
-    top: 5px;
-    left: 5px;
+    bottom: 5px;
+    right: 5px;
     width: 300px;
     height: 225px;
     border: 1px solid var(--main-border-color);
+}
+#talk .video-remote .expand {
+    z-index: 1000;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    cursor: pointer;
+}
+#talk .video-remote .minimize-video {
+    z-index: 1000;
+    position: absolute;
+    top: 5px;
+    left: 20px;
+    cursor: pointer;
+}
+#talk .maximize-video {
+    visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--main-aqua-color);
+    z-index: 1000;
+    position: absolute;
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+    bottom: 0;
+    right: 0;
 }
 #talk .video-local {
     position: absolute;
     bottom: 5px;
     right: 5px;
-    width: calc(100% - 65%);
-    height: calc(100% - 65%);
+    width: 120px;
+    height: 90px;
     border: 1px solid var(--main-border-color);
 }
 #talk .video-local > video {
@@ -21,4 +49,136 @@
 #talk .video-remote > video {
     width: 100%;
     height: 100%;
+}
+.video-remote .no-remote-video {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    color: var(--main-border-color);
+}
+.video-remote .no-local-video {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 11px;
+    color: var(--main-border-color);
+}
+.arrow-back-show {
+    position: absolute;
+    padding-top: 7px;
+    padding-left: 5px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    background-color: var(--main-aqua-color);
+}
+#talk .dialog {
+    height: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    border-right: 1px solid var(--main-border-color);
+}
+.dialog .header {
+    border-bottom: 1px solid var(--main-border-color);
+    position: absolute;
+    width: 100%;
+}
+.dialog .header .arrow-back {
+    text-align: left;
+    padding-left: 5px;
+    padding-top: 7px;
+    height: 30px;
+    cursor: pointer;
+}
+.dialog .header .name {
+    text-align: center;
+    font-weight: bold;
+    line-height: 2;
+    height: 30px;    
+}
+.dialog .header .avatar {
+    text-align: right;
+    padding-right: 5px;
+    cursor: pointer;
+    float: right;
+}
+.dialog .header .avatar > img {
+    height: 30px;
+    width: 30px;
+    object-fit: cover;
+    padding: 3px;
+}
+.dialog .body {
+    margin-top: 30px;
+    height: calc(100% - 72px);
+    overflow: auto;
+    padding-bottom: 5px;
+}
+.body .row {
+    margin-left: 0;
+    margin-right: 0;
+}
+.body .row img {
+    cursor: pointer;
+}
+.body .message-you {
+    margin-top: 5px;
+    padding-left: 0;
+    min-height: 30px;
+    word-wrap: break-word;
+}
+.body .message-me {
+    margin-top: 5px;    
+    padding-right: 0;
+    min-height: 30px;
+    word-wrap: break-word;
+    direction: rtl;
+}
+.body .message-you > img {
+    height: 50px;
+}
+.body .message-me > img {
+    height: 50px;
+}
+.body .avatar > img {
+    height: 30px;
+    width: 30px;
+    object-fit: cover;    
+    margin-top: 5px;
+}
+.dialog .footer {
+    border-top: 1px solid var(--main-border-color);
+    background-color: white;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+.footer textarea {
+    height: 100%;
+    width: 100%;
+    border: none;
+    border-right: 1px solid var(--main-border-color);
+    border-left: 1px solid var(--main-border-color);    
+    resize: none;
+    padding-left: 10px;
+}
+.footer .message {
+    padding-right: 0;
+}
+.footer .smile > i {
+    padding-top: 5px;
+    cursor: pointer;
+}
+.footer .send > button {
+    width: 100%;
+    height: 100%;
+    border: none;
+    line-height: 2.2;
 }

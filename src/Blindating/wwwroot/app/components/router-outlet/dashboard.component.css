@@ -1,5 +1,6 @@
 ﻿#dashboard {
     height: 100%;
+    padding-top: 10px;
 }
 #dashboard .header {
     color: var(--focus-border-color);

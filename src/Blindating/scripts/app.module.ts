@@ -30,6 +30,7 @@ import { PmPhotosComponent }        from './components/profilemenu/pm.photos.com
 import { PmFeedbacksComponent }     from './components/profilemenu/pm.feedbacks.component';
 import { PmConversationsComponent } from './components/profilemenu/pm.conversations.component';
 import { FSearchComponent }         from './components/footer/f.search.component';
+import { FSmileyComponent }         from './components/footer/f.smiley.component';
 import { FocusDirective }           from './directives/focus.directive';
 import { FileSelectDirective }      from 'ng2-file-upload/ng2-file-upload';
 import { SlicePipe }                from './pipes/slice.pipe';
@@ -64,6 +65,7 @@ import {
         PmFeedbacksComponent,
         PmConversationsComponent,
         FSearchComponent,
+        FSmileyComponent,
         FocusDirective,
         FileSelectDirective,
         SlicePipe,

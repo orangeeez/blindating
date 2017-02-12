@@ -37,6 +37,7 @@ var pm_photos_component_1 = require("./components/profilemenu/pm.photos.componen
 var pm_feedbacks_component_1 = require("./components/profilemenu/pm.feedbacks.component");
 var pm_conversations_component_1 = require("./components/profilemenu/pm.conversations.component");
 var f_search_component_1 = require("./components/footer/f.search.component");
+var f_smiley_component_1 = require("./components/footer/f.smiley.component");
 var focus_directive_1 = require("./directives/focus.directive");
 var ng2_file_upload_1 = require("ng2-file-upload/ng2-file-upload");
 var slice_pipe_1 = require("./pipes/slice.pipe");
@@ -73,6 +74,7 @@ AppModule = __decorate([
             pm_feedbacks_component_1.PmFeedbacksComponent,
             pm_conversations_component_1.PmConversationsComponent,
             f_search_component_1.FSearchComponent,
+            f_smiley_component_1.FSmileyComponent,
             focus_directive_1.FocusDirective,
             ng2_file_upload_1.FileSelectDirective,
             slice_pipe_1.SlicePipe,

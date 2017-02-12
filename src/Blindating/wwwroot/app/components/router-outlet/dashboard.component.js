@@ -77,11 +77,11 @@ var DashboardComponent = (function () {
             _this.popularUsers = users; //.filter(this.removeCurrentUser);
             _this.isNewUsersLoaded = true;
         });
-        if (Math.floor(this.maxUsersRows) <= 0)
+        if (Math.round(this.maxUsersRows) <= 0)
             this.maxUsers = 1;
         this._userService.GetRandom(this.maxUsers)
             .subscribe(function (users) {
-            _this.app.users = users; //.filter(this.removeCurrentUser);
+            _this.app.users = users.filter(_this.removeCurrentUser);
             _this.isUsersLoaded = true;
         });
     };

@@ -20,13 +20,15 @@ var header_component_1 = require("../components/header.component");
 var helper_component_1 = require("../components/helper.component");
 var profilemenu_component_1 = require("../components/profilemenu.component");
 var dashboard_component_1 = require("../components/router-outlet/dashboard.component");
+var talk_component_1 = require("../components/router-outlet/talk.component");
 var AppComponent = (function () {
-    function AppComponent(_userService, _conversationService, _router) {
+    function AppComponent(_userService, _conversationService, _router, _zone) {
         var _this = this;
         this._userService = _userService;
         this._conversationService = _conversationService;
         this._router = _router;
-        this.server = 'https://192.168.0.114:8002';
+        this._zone = _zone;
+        this.server = 'http://192.168.0.114:8001';
         this.stun = 'stun:stun.l.google.com:19302';
         this.selectedUser = null;
         this.videoState = 'none';
@@ -52,6 +54,15 @@ var AppComponent = (function () {
             }
             if (e.data == utils_1.DataSignals.DenyingVideo) {
                 _this._helper.denyVideoIcon();
+            }
+            if (utils_1.Utils.IsJSON(e.data)) {
+                console.log(e.data);
+                if (e.data.includes('"type":"message"')) {
+                    var message = JSON.parse(e.data);
+                    message.whose = 'message-you';
+                    // this._talk.messages.push(message);
+                    _this._zone.run(function () { return _this._talk.messages.push(message); });
+                }
             }
         };
         this.onCallStarted = function (e) {
@@ -225,6 +236,10 @@ __decorate([
     __metadata("design:type", dashboard_component_1.DashboardComponent)
 ], AppComponent.prototype, "_dashboard", void 0);
 __decorate([
+    core_1.ViewChild(talk_component_1.TalkComponent),
+    __metadata("design:type", talk_component_1.TalkComponent)
+], AppComponent.prototype, "_talk", void 0);
+__decorate([
     core_1.ViewChild(profilemenu_component_1.ProfilemenuComponent),
     __metadata("design:type", profilemenu_component_1.ProfilemenuComponent)
 ], AppComponent.prototype, "_profilemenu", void 0);
@@ -248,6 +263,7 @@ AppComponent = __decorate([
     }),
     __metadata("design:paramtypes", [user_service_1.UserService,
         conversation_service_1.ConversationService,
-        router_1.Router])
+        router_1.Router,
+        core_1.NgZone])
 ], AppComponent);
 exports.AppComponent = AppComponent;

@@ -1,0 +1,8 @@
+<div *ngIf="app?._talk?.isSmileActive" id="smiles">
+    <div>
+        <div *ngFor="let smile of smiles" class="col-md-2 smile no-padding">
+            <img [src]="smile"
+                (click)="onAddSmile(smile)">
+        </div>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+#smiles {
+    margin-left: calc(8.333% - 15px);
+    width: 28.5%;
+    text-align: center;
+}
+.smile img {
+    cursor: pointer;
+    height: 49px;
+}

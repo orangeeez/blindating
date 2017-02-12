@@ -8,6 +8,11 @@ export class Utils {
         if (i < 10) i = "0" + i;
         return i;
     }
+    public static IsJSON(string) {
+    try       { JSON.parse(string); }
+    catch (e) { return false; }
+    return true;
+}
 }
 export enum DataSignals {
     RequestingVideo,

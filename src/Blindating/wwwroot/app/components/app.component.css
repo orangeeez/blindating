@@ -15,6 +15,7 @@
     pointer-events: all;
 }
 #profilemenu {
+    z-index: 1001;
     position: absolute;
     top: -20px;
     right: 0px;
@@ -34,7 +35,6 @@
 }
 #router-outlet {
     overflow: auto;
-    padding-top: 10px !important;
     padding-left: 0;
     padding-right: 0;
     height: 100%;

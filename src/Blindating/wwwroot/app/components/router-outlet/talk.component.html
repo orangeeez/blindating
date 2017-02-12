@@ -1,13 +1,79 @@
 ﻿<div id="talk">
-    <div *ngIf="app.videoState == 'initiatedVideo'" id="video-remote" class="video-remote">
-        <video autoplay muted
-               [srcObject]="app.remoteStream?.mediaStream">
-        </video>
+    <div #videoRemote *ngIf="true || app.videoState == 'initiatedVideo'" id="video-remote" class="video-remote">
+        <div #expandIcon class="expand"
+            (click)="onExpandNarrowVideo()">
+            <i class="fa fa-arrows-alt"></i>
+        </div>
+        <div #minimizeVideo class="minimize-video"
+            (click)="onMinimizeVideo()">
+            <i class="fa fa-window-minimize"></i>
+        </div>
+        <div *ngIf="app.videoState != 'initiatedVideo'" class="no-remote-video">User's video not provided</div>
+        <video autoplay muted [srcObject]="app.remoteStream?.mediaStream"></video>
         <div id="video-local" class="video-local">
-            <video muted
-                   autoplay
-                   [srcObject]="app.localStream?.mediaStream">
-            </video>
+            <div *ngIf="app.videoState != 'initiatedVideo'" class="no-local-video">Your video not provided</div>
+            <video muted autoplay [srcObject]="app.localStream?.mediaStream"></video>
+        </div>
+    </div>
+    <div #maximizeVideo class="maximize-video"
+        (click)="onMaximizeVideo()">
+        <i class="fa fa-window-maximize fa-lg"></i>
+    </div>
+    <div #arrowShow class="arrow-back-show" hidden 
+        (click)="dialogToggle()">
+        <img src="images/app/controls/arrow-right.svg">
+    </div>
+    <div #dialog class="col-md-4 dialog" 
+        [@dialogState]="dialogState" 
+        (@dialogState.done)="dialogToggleDone($event, dialog, arrowShow)">
+        <div class="header">
+            <div class="col-md-4 arrow-back" 
+                (click)="dialogToggle()">
+                <img src="images/app/controls/arrow-left.svg">
+            </div>
+            <div class="col-md-4 name no-padding">{{app.communicationUser.firstname + ' ' + app.communicationUser.lastname}}</div>
+            <div class="col-md-4 avatar">
+                <img [src]="app.communicationUser.image" class="img-circle"
+                    (click)="app.selectDeselectUser(app.communicationUser)">
+            </div>
+        </div>
+        <div #dialogBody class="body" 
+            [scrollTop]="dialogBody.scrollHeight">
+            <div *ngFor="let message of messages; let i = index">
+                <div class="row">
+                    <div *ngIf="message.whose == 'message-you'" class="col-md-2 avatar">
+                        <img [src]="app.communicationUser.image" class="img-circle"
+                            [hidden]="messages[i-1]?.whose == message.whose"
+                            (click)="app.selectDeselectUser(app.communicationUser)">
+                    </div>
+                    <div *ngIf="message.text.slice(-4) == '.svg'" 
+                        [ngClass]="message.whose" class="col-md-10">
+                        <img [src]="message.text">
+                    </div>
+                    <div *ngIf="message.text.slice(-4) != '.svg'" 
+                        [ngClass]="message.whose" class="col-md-10">
+                        {{message.text}}
+                    </div>
+                    <div *ngIf="message.whose == 'message-me'" class="col-md-2 avatar">
+                        <img [src]="app.user.image" class="img-circle" 
+                            [hidden]="messages[i-1]?.whose == message.whose"
+                            (click)="app.selectDeselectUser(app.user)">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="col-md-1 smile">
+                <i class="fa fa-smile-o fa-lg" 
+                    (click)="onSmileClick()"></i>
+                <i class="fa fa-paperclip fa-lg"></i>
+            </div>
+            <div class="col-md-9 message">
+                <textarea #textareaMessage placeholder="Write a message..." (keypress)="onEnterSendMessage($event, textareaMessage)"></textarea>
+            </div>
+            <div class="col-md-2 send no-padding">
+                <button class="btn btn-default" (click)="onSendMessage(textareaMessage)">Send</button>
+            </div>
         </div>
     </div>
 </div>
