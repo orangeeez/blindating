@@ -83,6 +83,15 @@
     font-size: 16px;
     border-left: 0;
 }
+.row blockquote .quote {
+    color: inherit;
+}
+.row blockquote .default-quote {
+    color: darkgray;
+}
+.row blockquote .default-quote-not-you {
+    color: darkgray;
+}
 .header {
     width: 100%;
     height: 18px;
@@ -107,6 +116,9 @@
 .question-decoration {
     font-size: 16px;
     padding-bottom: 5px;
+}
+.question-decoration > p {
+    color: darkgray;
 }
 .question-content-decoration {
     display: flex;

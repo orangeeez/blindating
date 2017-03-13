@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var config_1 = require("../static/config");
 var router_1 = require("@angular/router");
@@ -22,13 +23,13 @@ var profilemenu_component_1 = require("../components/profilemenu.component");
 var dashboard_component_1 = require("../components/router-outlet/dashboard.component");
 var talk_component_1 = require("../components/router-outlet/talk.component");
 var AppComponent = (function () {
-    function AppComponent(_userService, _conversationService, _router, _zone) {
+    function AppComponent(_userService, _conversationService, _zone, _router) {
         var _this = this;
         this._userService = _userService;
         this._conversationService = _conversationService;
-        this._router = _router;
         this._zone = _zone;
-        this.server = 'http://192.168.0.114:8001';
+        this._router = _router;
+        this.server = 'https://localhost:8002';
         this.stun = 'stun:stun.l.google.com:19302';
         this.selectedUser = null;
         this.videoState = 'none';
@@ -38,7 +39,7 @@ var AppComponent = (function () {
         this.isSelectedYou = false;
         this.isLoginShow = true;
         this.onUserCalling = function (e) {
-            _this._userService.GetBy("JWT", e.senderId)
+            _this._userService.GetCalling(e.senderId)
                 .subscribe(function (caller) {
                 _this.callerUser = caller;
                 _this.communicationState = 'calling';
@@ -56,11 +57,9 @@ var AppComponent = (function () {
                 _this._helper.denyVideoIcon();
             }
             if (utils_1.Utils.IsJSON(e.data)) {
-                console.log(e.data);
                 if (e.data.includes('"type":"message"')) {
                     var message = JSON.parse(e.data);
                     message.whose = 'message-you';
-                    // this._talk.messages.push(message);
                     _this._zone.run(function () { return _this._talk.messages.push(message); });
                 }
             }
@@ -236,13 +235,13 @@ __decorate([
     __metadata("design:type", dashboard_component_1.DashboardComponent)
 ], AppComponent.prototype, "_dashboard", void 0);
 __decorate([
-    core_1.ViewChild(talk_component_1.TalkComponent),
-    __metadata("design:type", talk_component_1.TalkComponent)
-], AppComponent.prototype, "_talk", void 0);
-__decorate([
     core_1.ViewChild(profilemenu_component_1.ProfilemenuComponent),
     __metadata("design:type", profilemenu_component_1.ProfilemenuComponent)
 ], AppComponent.prototype, "_profilemenu", void 0);
+__decorate([
+    core_1.ViewChild(talk_component_1.TalkComponent),
+    __metadata("design:type", talk_component_1.TalkComponent)
+], AppComponent.prototype, "_talk", void 0);
 AppComponent = __decorate([
     core_1.Component({
         selector: 'blindating',
@@ -263,7 +262,7 @@ AppComponent = __decorate([
     }),
     __metadata("design:paramtypes", [user_service_1.UserService,
         conversation_service_1.ConversationService,
-        router_1.Router,
-        core_1.NgZone])
+        core_1.NgZone,
+        router_1.Router])
 ], AppComponent);
 exports.AppComponent = AppComponent;

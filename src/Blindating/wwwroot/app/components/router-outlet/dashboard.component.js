@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var core_2 = require("angular2-cookie/core");
@@ -64,17 +65,17 @@ var DashboardComponent = (function () {
         this.maxUsers = Math.floor(this.maxUsersColumns) * Math.floor(this.maxUsersRows);
         this._userService.GetNew(Math.round(this.maxUsersStatsColumns))
             .subscribe(function (users) {
-            _this.newUsers = users; //.filter(this.removeCurrentUser);
+            _this.newUsers = users;
             _this.isPopularUsersLoaded = true;
         });
         this._userService.GetActive(Math.round(this.maxUsersStatsColumns))
             .subscribe(function (users) {
-            _this.activeUsers = users; //.filter(this.removeCurrentUser);
+            _this.activeUsers = users;
             _this.isActiveUsersLoaded = true;
         });
         this._userService.GetPopular(Math.round(this.maxUsersStatsColumns))
             .subscribe(function (users) {
-            _this.popularUsers = users; //.filter(this.removeCurrentUser);
+            _this.popularUsers = users;
             _this.isNewUsersLoaded = true;
         });
         if (Math.round(this.maxUsersRows) <= 0)
@@ -91,12 +92,12 @@ var DashboardComponent = (function () {
         if (this.isNewExpanded)
             this._userService.GetNew(Math.floor(this.maxUsersStatsColumns + this.getUsersCountForExpand()))
                 .subscribe(function (users) {
-                _this.newUsers = users; //.filter(this.removeCurrentUser);
+                _this.newUsers = users;
             });
         if (!this.isNewExpanded)
             this._userService.GetNew(Math.round(this.maxUsersStatsColumns))
                 .subscribe(function (users) {
-                _this.newUsers = users; //.filter(this.removeCurrentUser);
+                _this.newUsers = users;
             });
     };
     DashboardComponent.prototype.onExpandActive = function () {
@@ -105,12 +106,12 @@ var DashboardComponent = (function () {
         if (this.isActiveExpanded)
             this._userService.GetActive(Math.floor(this.maxUsersStatsColumns + this.getUsersCountForExpand()))
                 .subscribe(function (users) {
-                _this.activeUsers = users; //.filter(this.removeCurrentUser);
+                _this.activeUsers = users;
             });
         if (!this.isActiveExpanded)
             this._userService.GetActive(Math.round(this.maxUsersStatsColumns))
                 .subscribe(function (users) {
-                _this.activeUsers = users; //.filter(this.removeCurrentUser);
+                _this.activeUsers = users;
             });
     };
     DashboardComponent.prototype.onExpandPopular = function () {
@@ -119,18 +120,20 @@ var DashboardComponent = (function () {
         if (this.isPopularExpanded)
             this._userService.GetPopular(Math.floor(this.maxUsersStatsColumns + this.getUsersCountForExpand()))
                 .subscribe(function (users) {
-                _this.popularUsers = users; //.filter(this.removeCurrentUser);
+                _this.popularUsers = users;
             });
         if (!this.isPopularExpanded)
             this._userService.GetPopular(Math.round(this.maxUsersStatsColumns))
                 .subscribe(function (users) {
-                _this.popularUsers = users; //.filter(this.removeCurrentUser);
+                _this.popularUsers = users;
             });
     };
     DashboardComponent.prototype.onRefreshUsers = function () {
         var _this = this;
         this._userService.GetRandom(this.maxUsers)
-            .subscribe(function (users) { _this.app.users = users; });
+            .subscribe(function (users) {
+            _this.app.users = users.filter(_this.removeCurrentUser);
+        });
     };
     DashboardComponent.prototype.getUsersCountForExpand = function () {
         return Math.floor((this.dashboardHeight - (Math.round(this.maxUsersStatsColumns) * this.profileStatsHeightExpanded)) / this.profileStatsHeightExpanded);

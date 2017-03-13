@@ -13,6 +13,7 @@ import { DetailService }            from './services/information/detail.service'
 import { FeedbackService }          from './services/information/feedback.service';
 import { ConversationService }      from './services/information/conversation.service';
 import { SearchService }            from './services/search/search.service';
+import { SocialService }            from './services/social.service';
 import { routing }                  from './app.router';
 import { AppComponent }             from './components/app.component';
 import { FooterComponent }          from './components/footer.component';
@@ -83,7 +84,8 @@ import {
         DetailService,
         ConversationService,
         SearchService,
-        FeedbackService
+        FeedbackService,
+        SocialService
     ]
 })
 export class AppModule { }

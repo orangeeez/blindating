@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Blindating.Controllers.APIs.Classes
 {
@@ -21,30 +22,31 @@ namespace Blindating.Controllers.APIs.Classes
         public static VKToken GetToken(string appID, string appSecret, string code)
         {
             var url = GetAccessTokenUrl(appID, appSecret, code);
-            var responseStr = GetRequest(url);
+            var responseStr = GetRequest(url).Result;
             return JsonConvert.DeserializeObject<VKToken>(responseStr);
         }
 
-        public static string GetRequest(string url)
+        public async static Task<string> GetRequest(string url)
         {
-            // TODO Implement GetRequest WebRequest
-            return "";
-            //WebRequest wr = WebRequest.Create(url);
+            WebRequest wr = WebRequest.Create(url);
 
-            //Stream objStream = wr.GetResponse.GetResponseStream();
+            Stream objStream = ((WebResponse) await wr.GetResponseAsync()).GetResponseStream();
 
-            //StreamReader objReader = new StreamReader(objStream);
+            StreamReader objReader = new StreamReader(objStream);
 
-            //StringBuilder sb = new StringBuilder();
-            //string line = "";
-            //while (true)
-            //{
-            //    line = objReader.ReadLine();
-            //    if (line != null)
-            //        sb.Append(line);
-            //    else
-            //        return sb.ToString();
-            //}
+            StringBuilder sb = new StringBuilder();
+            string line = "";
+            while (true)
+            {
+                line = objReader.ReadLine();
+                if (line != null) sb.Append(line);
+
+                else
+                {
+
+                    return sb.ToString();
+                }
+            }
         }
         public static string GetLoginUrl(this string appID, VkAuthSettingsBuilder scope, string backUrl, VkDisplay display, VkResponseType code = VkResponseType.code)
         {
@@ -52,13 +54,13 @@ namespace Blindating.Controllers.APIs.Classes
         }
         public static string GetAccessTokenUrl(string appID, string appSecret, string code)
         {
-            return string.Format(@"https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&code={2}&redirect_uri=http://192.168.0.114:59993/utils/blank.html", appID, appSecret, code);
+            return string.Format(@"https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&code={2}&redirect_uri=https://localhost:8000/blank.html", appID, appSecret, code);
         }
-        //public static string GetApiUrl(string app_id, string method, string sig, )
-        //{
+        // public static string GetApiUrl(string app_id, string method, string sig, )
+        // {
 
         //    return String.Format(@"http://api.vk.com/api.php?api_id={0}&method={1}&sig={2}&v={3}&format=json&sid={4}"
-        //}
+        // }
     }
     public enum VkResponseType
     {

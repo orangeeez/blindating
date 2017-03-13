@@ -20,8 +20,8 @@ import { UserService }          from '../services/user.service';
 import { ConversationService }  from '../services/information/conversation.service';
 import { User }                 from '../models/user';
 import { Photo }                from '../models/photo';
-import { Conversation }         from '../models/conversation';
 import { Message }              from '../models/message';
+import { Conversation }         from '../models/conversation';
 import { Utils, DataSignals }   from '../static/utils';
 import { FooterComponent }      from '../components/footer.component';
 import { HeaderComponent }      from '../components/header.component';
@@ -55,12 +55,12 @@ export class AppComponent implements OnInit {
     @ViewChild(HeaderComponent)      public _header: HeaderComponent;
     @ViewChild(HelperComponent)      public _helper: HelperComponent;
     @ViewChild(DashboardComponent)   public _dashboard: DashboardComponent;
-    @ViewChild(TalkComponent)        public _talk: TalkComponent;    
     @ViewChild(ProfilemenuComponent) public _profilemenu: ProfilemenuComponent;
+    @ViewChild(TalkComponent)        public _talk: TalkComponent;
 
-    public server:   string  = 'http://192.168.0.114:8001';
-    public stun:     string  = 'stun:stun.l.google.com:19302';
-    public stream: any;
+    public server:       string  = 'https://localhost:8002';
+    public stun:         string  = 'stun:stun.l.google.com:19302';
+    public stream:       any;
     public localStream:  any;
     public remoteStream: any;
 
@@ -82,8 +82,8 @@ export class AppComponent implements OnInit {
     constructor(
         private _userService:         UserService,
         private _conversationService: ConversationService,
-        private _router:              Router,
-        private _zone:                NgZone) { }
+        private _zone:                NgZone,
+        private _router:              Router) { }
 
     ngOnInit() {
         this.isLoginShow = !Boolean(localStorage.getItem('id_token'));
@@ -141,7 +141,7 @@ export class AppComponent implements OnInit {
     }
 
     private onUserCalling = (e): void => {
-        this._userService.GetBy("JWT", e.senderId)
+        this._userService.GetCalling(e.senderId)
             .subscribe(caller => {
                 this.callerUser              = caller;
                 this.communicationState      = 'calling';
@@ -162,11 +162,9 @@ export class AppComponent implements OnInit {
         }
 
         if (Utils.IsJSON(e.data)) {
-            console.log(e.data);
             if (e.data.includes('"type":"message"')) {
                 var message = <Message>JSON.parse(e.data);
                 message.whose = 'message-you';
-                // this._talk.messages.push(message);
                 this._zone.run(() => this._talk.messages.push(message));
             }
         }

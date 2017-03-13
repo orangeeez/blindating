@@ -11,17 +11,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var core_2 = require("angular2-cookie/core");
 var user_service_1 = require("../../services/user.service");
+var social_service_1 = require("../../services/social.service");
 var user_1 = require("../../models/user");
 var app_component_1 = require("../../components/app.component");
 var LoginComponent = (function () {
-    function LoginComponent(app, _userService, _cookieService, _router) {
+    function LoginComponent(app, _userService, _cookieService, _socialService, _router) {
         var _this = this;
         this._userService = _userService;
         this._cookieService = _cookieService;
+        this._socialService = _socialService;
         this._router = _router;
         this.isPhraseFocused = false;
         this.alert = { show: false, type: 'success', reason: null };
@@ -29,6 +32,22 @@ var LoginComponent = (function () {
             { title: 'Login', active: true },
             { title: 'Register' }
         ];
+        this.GetVKInfoAPI = function () {
+            var self = _this;
+            VK.Auth.login(function (response) {
+                if (response.session) {
+                    self.SetVKInfoAPI(response.session);
+                    /* User is authorized successfully */
+                    if (response.settings) {
+                        /* Selected user access settings, if they were requested */
+                    }
+                }
+                else {
+                    console.log('VK canceled');
+                    /* User clicked Cancel button in the authorization window */
+                }
+            });
+        };
         this.GetFacebookInfoAPI = function () {
             var self = _this;
             setInterval(_this.CheckFBLoginInterval, 1000);
@@ -44,22 +63,25 @@ var LoginComponent = (function () {
             if (_this.app.user)
                 _this._router.navigate(['/dashboard']);
         };
+        this.SetVKInfoAPI = function (session) {
+            var url = 'https://oauth.vk.com/authorize?client_id=5549517&display=popup&redirect_uri=https://localhost:8000/blank.html&response_type=code&scope=email';
+            _this.windowVKAuth = _this.PopupCenter(url, '', 660, 370);
+            _this.setCodeInterval = setInterval(_this.setAccessTokenInterval, 1000, session);
+        };
         this.SetFacebookInfoAPI = function (response) {
             _this.email = response['email'];
-            _this.password = _this._cookieService.get('fbsr_1557510837900819');
-            _this.Login(response);
-            //console.log(response['email']);
-            //this._userService.IsExistEmail(response['email'])
-            //.subscribe(isexist => {
-            //    if (isexist) {
-            //        this.user = this.createUser(undefined, undefined, undefined, response['email'], undefined, undefined, undefined, undefined, 'social');
-            //        this._userService.Login(this.user)
-            //            .subscribe(logged => {
-            //                if (logged)
-            //                    this.loginViaForm(logged);
-            //            });
-            //    }
-            //});
+            _this.facebook = _this._cookieService.get('fbsr_1557510837900819');
+            _this._userService.IsEmailExist(response['email'])
+                .subscribe(function (isexist) {
+                if (isexist)
+                    _this.Login(response);
+                else {
+                    _this.firstname = response["first_name"];
+                    _this.lastname = response["last_name"];
+                    _this.tabs[0].active = false;
+                    _this.tabs[1].active = true;
+                }
+            });
         };
         this.HandleRegisterResponse = function (response) {
             _this.alert.show = true;
@@ -87,6 +109,35 @@ var LoginComponent = (function () {
                 localStorage.setItem('id_token', user.jwt);
             }
         };
+        this.setAccessTokenInterval = function (session) {
+            try {
+                if (_this.windowVKAuth.location.href.includes('code=')) {
+                    clearInterval(_this.setCodeInterval);
+                    var href = _this.windowVKAuth.location.href;
+                    var index = href.indexOf('=');
+                    var code = href.substring(index + 1, href.length);
+                    _this.windowVKAuth.close();
+                    _this._socialService.GetVKInfo(code)
+                        .subscribe(function (email) {
+                        _this.email = email;
+                        _this.vk = "vk";
+                        _this._userService.IsEmailExist(email)
+                            .subscribe(function (isexist) {
+                            if (isexist) {
+                                _this.Login(session);
+                            }
+                            else {
+                                _this.firstname = session.user.first_name;
+                                _this.lastname = session.user.last_name;
+                                _this.tabs[0].active = false;
+                                _this.tabs[1].active = true;
+                            }
+                        });
+                    });
+                }
+            }
+            catch (error) { }
+        };
         this.app = app;
     }
     LoginComponent.prototype.ngOnInit = function () {
@@ -94,6 +145,16 @@ var LoginComponent = (function () {
         if (this.JWT)
             this.Login();
         else {
+            VK.init({
+                apiId: 5549517
+            });
+            setTimeout(function () {
+                var el = document.createElement("script");
+                el.type = "text/javascript";
+                el.src = "//vk.com/js/api/openapi.js";
+                el.async = true;
+                document.getElementById("vk_api_transport").appendChild(el);
+            }, 0);
             window.fbAsyncInit = function () {
                 FB.init({
                     appId: '1557510837900819',
@@ -117,23 +178,16 @@ var LoginComponent = (function () {
         var _this = this;
         var auth;
         if (this.JWT)
-            auth = this.JWT;
-        else
+            auth = JSON.stringify({ jwt: this.JWT });
+        else if (this.password)
             auth = JSON.stringify({ email: this.email, password: this.password });
+        else if (this.facebook)
+            auth = JSON.stringify({ email: this.email, facebook: this.facebook });
+        else if (this.vk)
+            auth = JSON.stringify({ email: this.email, vk: this.vk });
         this._userService.Login(auth)
             .subscribe(function (user) {
-            if (user.reason == user_1.User.REGISTER_SOCIAL) {
-                _this.alert.reason = user.reason;
-                _this.alert.show = true;
-                _this.tabs[0].active = false;
-                _this.tabs[1].active = true;
-                _this.firstname = response['first_name'];
-                _this.lastname = response['last_name'];
-                _this.email = response['email'];
-                _this.password = "";
-            }
-            else
-                _this.HandleLoginResponse(user);
+            _this.HandleLoginResponse(user);
         });
     };
     LoginComponent.prototype.Register = function () {
@@ -144,8 +198,8 @@ var LoginComponent = (function () {
     LoginComponent.prototype.onAuthSocial = function () {
         if (event.srcElement.className == 'fa fa-facebook')
             this.GetFacebookInfoAPI();
-        //else
-        //    this.getVKInfoAPI();
+        else
+            this.GetVKInfoAPI();
     };
     LoginComponent.prototype.CreateUser = function () {
         var user = new user_1.User();
@@ -163,6 +217,18 @@ var LoginComponent = (function () {
     LoginComponent.prototype.onFocusoutPhrase = function () {
         this.isPhraseFocused = false;
     };
+    LoginComponent.prototype.PopupCenter = function (url, title, w, h) {
+        var dualScreenLeft = window.screenLeft;
+        var dualScreenTop = window.screenTop;
+        var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+        var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+        var left = ((width / 2) - (w / 2)) + dualScreenLeft;
+        var top = ((height / 2) - (h / 2)) + dualScreenTop;
+        var newWindow = window.open(url, title, 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+        if (window.focus)
+            newWindow.focus();
+        return newWindow;
+    };
     return LoginComponent;
 }());
 LoginComponent = __decorate([
@@ -175,6 +241,7 @@ LoginComponent = __decorate([
     __metadata("design:paramtypes", [app_component_1.AppComponent,
         user_service_1.UserService,
         core_2.CookieService,
+        social_service_1.SocialService,
         router_1.Router])
 ], LoginComponent);
 exports.LoginComponent = LoginComponent;

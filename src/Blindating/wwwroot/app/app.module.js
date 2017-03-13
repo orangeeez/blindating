@@ -5,6 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var platform_browser_1 = require("@angular/platform-browser");
 var forms_1 = require("@angular/forms");
@@ -20,6 +21,7 @@ var detail_service_1 = require("./services/information/detail.service");
 var feedback_service_1 = require("./services/information/feedback.service");
 var conversation_service_1 = require("./services/information/conversation.service");
 var search_service_1 = require("./services/search/search.service");
+var social_service_1 = require("./services/social.service");
 var app_router_1 = require("./app.router");
 var app_component_1 = require("./components/app.component");
 var footer_component_1 = require("./components/footer.component");
@@ -92,7 +94,8 @@ AppModule = __decorate([
             detail_service_1.DetailService,
             conversation_service_1.ConversationService,
             search_service_1.SearchService,
-            feedback_service_1.FeedbackService
+            feedback_service_1.FeedbackService,
+            social_service_1.SocialService
         ]
     })
 ], AppModule);

@@ -8,17 +8,26 @@
 import { Router }        from '@angular/router';
 import { CookieService } from 'angular2-cookie/core';
 import { UserService }   from '../../services/user.service';
+import { SocialService }   from '../../services/social.service';
+
 import { User }          from '../../models/user';
 import { AppComponent }  from '../../components/app.component';
+
+declare var VK: any;
 @Component({
     selector:    'login-component',
     templateUrl: 'app/components/router-outlet/login.component.html',
     styleUrls:   ['app/components/router-outlet/login.component.css'],
 })
 export class LoginComponent implements OnInit {
+    public windowVKAuth: Window;
+    public setCodeInterval: any;
+
     public app:       AppComponent;
     public email:     string;
     public password:  string;
+    public facebook:  string;
+    public vk      :  string;
     public firstname: string;
     public lastname:  string;
     public phrase:    string;
@@ -37,6 +46,7 @@ export class LoginComponent implements OnInit {
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
         private _userService:   UserService,
         private _cookieService: CookieService,
+        private _socialService: SocialService,
         private _router:        Router) {
         this.app = app;
     }
@@ -46,6 +56,17 @@ export class LoginComponent implements OnInit {
 
         if (this.JWT) this.Login();
         else {
+            VK.init({
+                apiId: 5549517
+            });
+            setTimeout(function() {
+                var el = document.createElement("script");
+                el.type = "text/javascript";
+                el.src = "//vk.com/js/api/openapi.js";
+                el.async = true;
+                document.getElementById("vk_api_transport").appendChild(el);
+            }, 0);
+            
             window.fbAsyncInit = function () {
                 FB.init({
                     appId: '1557510837900819',
@@ -67,22 +88,14 @@ export class LoginComponent implements OnInit {
     public Login(response?: Object): void {
         var auth: any;
 
-        if (this.JWT) auth = this.JWT;
-        else          auth = JSON.stringify({ email: this.email, password: this.password });
+        if (this.JWT)           auth = JSON.stringify({ jwt:   this.JWT });
+        else if (this.password) auth = JSON.stringify({ email: this.email, password: this.password });
+        else if (this.facebook) auth = JSON.stringify({ email: this.email, facebook: this.facebook });
+        else if (this.vk)       auth = JSON.stringify({ email: this.email, vk:       this.vk });           
 
         this._userService.Login(auth)
             .subscribe(user => {
-                if (user.reason == User.REGISTER_SOCIAL) {
-                    this.alert.reason   = user.reason;
-                    this.alert.show     = true;
-                    this.tabs[0].active = false;
-                    this.tabs[1].active = true;
-                    this.firstname = response['first_name'];
-                    this.lastname  = response['last_name'];
-                    this.email     = response['email'];
-                    this.password  = "";
-                }   
-                else this.HandleLoginResponse(user);
+                this.HandleLoginResponse(user);
             });    
     }
 
@@ -93,8 +106,25 @@ export class LoginComponent implements OnInit {
     public onAuthSocial(): void {
         if (event.srcElement.className == 'fa fa-facebook')
             this.GetFacebookInfoAPI();
-        //else
-        //    this.getVKInfoAPI();
+        else
+           this.GetVKInfoAPI();
+    }
+
+    private GetVKInfoAPI = () => {
+        var self = this;
+
+        VK.Auth.login(function(response) {
+            if (response.session) {
+                self.SetVKInfoAPI(response.session);
+                /* User is authorized successfully */
+                if (response.settings) {
+                /* Selected user access settings, if they were requested */
+                }
+            } else {
+                console.log('VK canceled');
+                /* User clicked Cancel button in the authorization window */
+            }
+        });
     }
 
     private GetFacebookInfoAPI = () => {
@@ -117,24 +147,28 @@ export class LoginComponent implements OnInit {
             this._router.navigate(['/dashboard']);
     }
 
-    private SetFacebookInfoAPI = (response: Object) => {
-        this.email = response['email'];
-        this.password = this._cookieService.get('fbsr_1557510837900819');
-        this.Login(response);
-        //console.log(response['email']);
-        //this._userService.IsExistEmail(response['email'])
-            //.subscribe(isexist => {
-            //    if (isexist) {
-            //        this.user = this.createUser(undefined, undefined, undefined, response['email'], undefined, undefined, undefined, undefined, 'social');
-            //        this._userService.Login(this.user)
-            //            .subscribe(logged => {
-            //                if (logged)
-            //                    this.loginViaForm(logged);
-            //            });
-            //    }
-            //});
+    private SetVKInfoAPI = (session: any) => {
+        let url = 'https://oauth.vk.com/authorize?client_id=5549517&display=popup&redirect_uri=https://localhost:8000/blank.html&response_type=code&scope=email'
+        this.windowVKAuth = this.PopupCenter(url, '', 660, 370);
+ 
+        this.setCodeInterval = setInterval(this.setAccessTokenInterval, 1000, session);
     }
 
+    private SetFacebookInfoAPI = (response: Object) => {
+        this.email    = response['email'];
+        this.facebook = this._cookieService.get('fbsr_1557510837900819');
+        this._userService.IsEmailExist(response['email'])
+            .subscribe(isexist => {
+               if (isexist)
+                    this.Login(response);
+                else {
+                    this.firstname = response["first_name"];
+                    this.lastname  = response["last_name"];                    
+                    this.tabs[0].active = false; 
+                    this.tabs[1].active = true;
+                }
+            });
+    }
 
     private CreateUser(): User {
         var user: User  = new User();
@@ -182,4 +216,52 @@ export class LoginComponent implements OnInit {
     public onFocusoutPhrase(): void {
         this.isPhraseFocused = false;
     }
+
+    private setAccessTokenInterval = (session: any) => {
+         try {
+             if (this.windowVKAuth.location.href.includes('code=')) {
+                 clearInterval(this.setCodeInterval);
+                 let href  = this.windowVKAuth.location.href;
+                 let index = href.indexOf('=');
+                 let code  = href.substring(index + 1, href.length);
+                 this.windowVKAuth.close();
+ 
+                 this._socialService.GetVKInfo(code)
+                     .subscribe(email => {
+                         this.email = email;
+                         this.vk    = "vk";
+                         this._userService.IsEmailExist(email)
+                            .subscribe(isexist => {
+                                if (isexist) {
+                                    this.Login(session);
+                                }
+                                else {
+                                    this.firstname = session.user.first_name;
+                                    this.lastname  = session.user.last_name;                    
+                                    this.tabs[0].active = false; 
+                                    this.tabs[1].active = true;
+                                }
+                            });
+                     });
+             }
+         }
+         catch (error) { }
+     }
+ 
+     private PopupCenter(url, title, w, h): Window {
+         var dualScreenLeft = window.screenLeft;
+         var dualScreenTop = window.screenTop;
+ 
+         var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+         var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+ 
+         var left = ((width / 2) - (w / 2)) + dualScreenLeft;
+         var top = ((height / 2) - (h / 2)) + dualScreenTop;
+         var newWindow = window.open(url, title, 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+ 
+         if (window.focus)
+             newWindow.focus();
+ 
+         return newWindow;
+     }
 }

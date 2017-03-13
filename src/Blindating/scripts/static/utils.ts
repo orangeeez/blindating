@@ -9,10 +9,10 @@ export class Utils {
         return i;
     }
     public static IsJSON(string) {
-    try       { JSON.parse(string); }
-    catch (e) { return false; }
-    return true;
-}
+        try       { JSON.parse(string); }
+        catch (e) { return false; }
+        return true;
+    }
 }
 export enum DataSignals {
     RequestingVideo,

@@ -88,7 +88,12 @@ namespace Blindating.Models
         #endregion
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlServer("Data Source=localhost\\SQLEXPRESS;Initial Catalog=blindating;Integrated Security=True;MultipleActiveResultSets=true;");
+            if (Program.LaunchType == "docker-remote")
+                options.UseSqlServer("Data Source=212.26.131.227,5433;Initial Catalog=blindating;Integrated Security=False;MultipleActiveResultSets=true;User Id=SA;Password=f00tBall");
+            else if (Program.LaunchType == "docker-local")
+                options.UseSqlServer("Data Source=blindating-sql;Initial Catalog=blindating;Integrated Security=False;MultipleActiveResultSets=true;User Id=SA;Password=f00tBall");
+            else
+                options.UseSqlServer("Data Source=localhost\\SQLEXPRESS;Initial Catalog=blindating;Integrated Security=True;MultipleActiveResultSets=true;");
         }
     }
 }

@@ -19,7 +19,23 @@
     "Blindating": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:8000/",
+      "launchUrl": "https://localhost:8000/",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "Blindating (docker local)": {
+      "commandName": "Project",
+      "commandLineArgs": "docker-local",
+      "launchUrl": "https://localhost:8000/",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "Blindating (docker remote)": {
+      "commandName": "Project",
+      "commandLineArgs": "docker-remote",
+      "launchUrl": "https://localhost:8000/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

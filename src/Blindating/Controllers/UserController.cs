@@ -69,6 +69,18 @@ namespace Blindating.Controllers
             return new JsonResult(Users.Login(auth));
         }
         [HttpPost]
+        [ActionName("isemailexist")]
+        public JsonResult IsEmailExist([FromBody] string email)
+        {
+            return new JsonResult(Users.IsEmailExist(email));
+        }
+        [HttpPost]
+        [ActionName("getvkinfo")]
+        public JsonResult GetVKInfo([FromBody] string code)
+        {
+            return new JsonResult(Users.GetVKInfo(code));
+        }
+        [HttpPost]
         [Authorize("Bearer")]
         [ActionName("logout")]
         public void Logout([FromBody] int userID)
@@ -102,6 +114,13 @@ namespace Blindating.Controllers
         public JsonResult GetRandom([FromBody] int count)
         {
             return new JsonResult(Users.GetRandom(count, Request.Headers["Authorization"].ToString().Remove(0, 7)));
+        }
+        [HttpPost]
+        [Authorize("Bearer")]
+        [ActionName("getcalling")]
+        public JsonResult GetCalling([FromBody] string callingJWT)
+        {
+            return new JsonResult(Users.GetCalling(callingJWT, Request.Headers["Authorization"].ToString().Remove(0, 7)));
         }
     }
 }

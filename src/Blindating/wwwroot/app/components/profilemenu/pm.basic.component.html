@@ -85,8 +85,10 @@
          (mouseout)="onHeaderMouseoverout('quotes', false)">
         <div class="col-md-10 no-padding">
             <blockquote style="padding-right: 0">
-                <p *ngIf="app.isSelectedYou">{{quotes[0]?.content || defaultQuote}}</p>
-                <p *ngIf="!app.isSelectedYou">{{quotes[0]?.content || defaultQuoteNotYou}}</p>
+                <p *ngIf="app.isSelectedYou" 
+                   [ngClass]="quotes[0]?.content ? 'quote' : 'default-quote'">{{quotes[0]?.content || defaultQuote}}</p>
+                <p *ngIf="!app.isSelectedYou"
+                   [ngClass]="quotes[0]?.content ? 'quote' : 'default-quote-not-you'">{{quotes[0]?.content || defaultQuoteNotYou}}</p>
                 <footer>{{quotes[0]?.author || defaultAuthor}}</footer>
             </blockquote>
         </div>

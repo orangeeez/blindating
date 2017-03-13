@@ -10,6 +10,8 @@ using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
+using Blindating.Controllers.APIs.Classes;
 
 namespace Blindating.Models.Repositories
 {
@@ -53,36 +55,78 @@ namespace Blindating.Models.Repositories
         {
             using (AppDBContext _context = new AppDBContext())
             {
-                if (auth.StartsWith("{"))
-                {
-                    User user;
-                    dynamic obj = JsonConvert.DeserializeObject(auth);
-                    string email = obj.email;
-                    string password = obj.password;
-                    if (await isAuthExist(email, password))
-                    {
-                        user = await _context.Users.Include(u => u.Information)
-                            .SingleOrDefaultAsync(u => u.Email == email && u.Password == password);
-                        user.Online = true;
-                    }
-                    else
-                    {
-                        user = new User();
-                        user.Reason = User.AUTHORIZATION_FAILED;
-                    }
-                    await _context.SaveChangesAsync();
-                    return user;
-                }
-                else
-                {
-                    string JWT = auth;
-                    User user = await _context.Users.Include(u => u.Information)
-                        .SingleOrDefaultAsync(u => u.JWT == JWT);
-                    user.Online = true;
-                    await _context.SaveChangesAsync();
-                    return user;
-                }
+                if (auth.Contains("password"))
+                    return await this.LoginViaPassword(auth);
+                else if (auth.Contains("jwt"))
+                    return await this.LoginViaJWT(auth);
+                else if (auth.Contains("facebook"))
+                    return await this.LoginViaFacebook(auth);
+                else if (auth.Contains("vk"))
+                    return await this.LoginViaVK(auth);
+                else return null;
             }
+        }
+
+        private async Task<User> LoginViaJWT(string auth)
+        {
+            dynamic obj = JsonConvert.DeserializeObject(auth);
+            string JWT = obj.jwt;
+            User user = await _context.Users.Include(u => u.Information)
+                .SingleOrDefaultAsync(u => u.JWT == JWT);
+            user.Online = true;
+            return user;
+        }
+
+        private async Task<User> LoginViaPassword(string auth)
+        {
+            User user;
+            dynamic obj = JsonConvert.DeserializeObject(auth);
+            string email = obj.email;
+            string password = obj.password;
+            if (await isAuthExist(email, password))
+            {
+                user = await _context.Users.Include(u => u.Information)
+                    .SingleOrDefaultAsync(u => u.Email == email && u.Password == password);
+                user.Online = true;
+            }
+            else
+            {
+                user = new User();
+                user.Reason = User.AUTHORIZATION_FAILED;
+            }
+            return user;
+        }
+
+        private async Task<User> LoginViaFacebook(string auth)
+        {
+            User user = null;
+            string secret = "7d94069605af1505a9f71c57fed00868";
+            HMACSHA256 sha256 = new HMACSHA256(Encoding.ASCII.GetBytes(secret));
+
+            dynamic obj = JsonConvert.DeserializeObject(auth);
+            string email = obj.email;
+            string social = obj.facebook;
+
+            string encodedSignature = social.Split('.')[0];
+            string payload = social.Split('.')[1];
+            string signature = Base64UrlEncoder.Decode(encodedSignature);
+            string expectedSignature = System.Text.Encoding.UTF8.GetString(sha256.ComputeHash(Encoding.ASCII.GetBytes(payload)));
+
+            if (signature == expectedSignature)
+                user = await _context.Users.Include(u => u.Information)
+                    .SingleOrDefaultAsync(u => u.Email == email);
+
+            return user;
+        }
+
+        private async Task<User> LoginViaVK(string auth) {
+            User user = null;            
+            dynamic obj = JsonConvert.DeserializeObject(auth);
+            string email = obj.email;
+            string social = obj.vk;
+
+            return user = await _context.Users.Include(u => u.Information)
+                    .SingleOrDefaultAsync(u => u.Email == email);
         }
 
         public async Task Logout(int userID)
@@ -98,7 +142,7 @@ namespace Blindating.Models.Repositories
             }
         }
 
-        private async Task<bool> IsEmailExist(string email)
+        public async Task<bool> IsEmailExist(string email)
         {
             using (AppDBContext _context = new AppDBContext())
             {
@@ -139,6 +183,18 @@ namespace Blindating.Models.Repositories
                         break;
                 }
                 return user;
+            }
+        }
+        public async Task<User> GetCalling(string callingJWT, string JWT)
+        {
+            using (AppDBContext _context = new AppDBContext())
+            {
+                User user = null;
+                User calling = null;
+                user = await _context.Users.Include(u => u.Information).ThenInclude(i => i.Conversations).FirstOrDefaultAsync(u => u.JWT == JWT);
+                calling = await _context.Users.Include(u => u.Information).ThenInclude(i => i.Conversations).FirstOrDefaultAsync(u => u.JWT == callingJWT);
+                List<User> users = new List<User>() { calling };
+                return this.GetVideoInitiatedUsers(users, user)[0];
             }
         }
         public async Task<List<User>> GetNew(int count, string JWT)
@@ -228,7 +284,8 @@ namespace Blindating.Models.Repositories
                                         where a.Direction == null
                                         select a).ToList().Count;
 
-                    tempPopularUsers.Add(new {
+                    tempPopularUsers.Add(new
+                    {
                         User = u,
                         ConversationsCount = conversationsCount,
                         FeedbacksCount = feedbacksCount,
@@ -274,6 +331,14 @@ namespace Blindating.Models.Repositories
                         u.IsVideoShared = true;
             }
             return users;
+        }
+        public string GetVKInfo(string code)
+        {
+            string appid = "5549517";
+            string secret = "8PhSwnODtPG5jLUparY4";
+            VKToken token = VkHelpers.GetToken(appid, secret, code);
+            string email = token.Email;
+            return email;
         }
     }
 }

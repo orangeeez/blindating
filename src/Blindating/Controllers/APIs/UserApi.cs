@@ -15,7 +15,7 @@ namespace Blindating.Controllers.Classes
             string appID = "5549517";
             string secret = "8PhSwnODtPG5jLUparY4";
             VKToken token = VkHelpers.GetToken(appID, secret, code);
-            string profile = VkHelpers.GetRequest("https://api.vk.com/method/getProfiles?uid=" + token.UserID + "&access_token=" + token.AccessToken);
+            string profile = VkHelpers.GetRequest("https://api.vk.com/method/getProfiles?uid=" + token.UserID + "&access_token=" + token.AccessToken).Result;
             string profileEdited = profile.Insert(profile.Length - 3, ",\"email\":\"" + token.Email + "\"");
             return profileEdited;
         }

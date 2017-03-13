@@ -53,4 +53,12 @@ export class UserService extends BaseService {
         return this._authHttp.post(API_ADDRESS + this.api + "/getrandom", count, this.options)
             .map(users => users.json()['result']);
     }
+    public GetCalling(callingJWT: string): Observable<User> {
+        return this._authHttp.post(API_ADDRESS + this.api + "/getcalling", JSON.stringify(callingJWT), this.options)
+            .map(user => user.json()['result']);
+    }
+    public IsEmailExist(email: string): Observable<boolean> {
+        return this._http.post(API_ADDRESS + this.api + "/isemailexist", JSON.stringify(email), this.options)
+            .map(res => !!res.json()['result']);
+    }
 }
