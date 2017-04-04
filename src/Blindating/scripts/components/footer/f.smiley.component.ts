@@ -22,6 +22,7 @@ import { SMILES }       from '../../static/config';
 export class FSmileyComponent implements OnInit {
     public app:        AppComponent;
     public smiles: string[] = SMILES;
+
     public ngOnInit() {}
 
     public onAddSmile(smile: string): void {

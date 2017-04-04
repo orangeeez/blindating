@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NetCoreAngular2.Models.Interfaces
+namespace Blindating.Models.Interfaces
 {
     public interface IBaseRepository<T> where T: class, IBaseModel, new()
     {

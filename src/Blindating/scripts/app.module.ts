@@ -12,6 +12,7 @@ import { PhotoService }             from './services/information/photo.service';
 import { DetailService }            from './services/information/detail.service';
 import { FeedbackService }          from './services/information/feedback.service';
 import { ConversationService }      from './services/information/conversation.service';
+import { NotificationService }      from './services/information/notification.service';
 import { SearchService }            from './services/search/search.service';
 import { SocialService }            from './services/social.service';
 import { routing }                  from './app.router';
@@ -30,6 +31,7 @@ import { PmQuestionsComponent }     from './components/profilemenu/pm.questions.
 import { PmPhotosComponent }        from './components/profilemenu/pm.photos.component';
 import { PmFeedbacksComponent }     from './components/profilemenu/pm.feedbacks.component';
 import { PmConversationsComponent } from './components/profilemenu/pm.conversations.component';
+import { PmNotificationsComponent } from './components/profilemenu/pm.notifications.component';
 import { FSearchComponent }         from './components/footer/f.search.component';
 import { FSmileyComponent }         from './components/footer/f.smiley.component';
 import { FocusDirective }           from './directives/focus.directive';
@@ -65,6 +67,7 @@ import {
         PmPhotosComponent,
         PmFeedbacksComponent,
         PmConversationsComponent,
+        PmNotificationsComponent,
         FSearchComponent,
         FSmileyComponent,
         FocusDirective,
@@ -85,7 +88,8 @@ import {
         ConversationService,
         SearchService,
         FeedbackService,
-        SocialService
+        SocialService,
+        NotificationService
     ]
 })
 export class AppModule { }

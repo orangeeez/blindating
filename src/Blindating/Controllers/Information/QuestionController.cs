@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Authorization;
 
-namespace NetCoreAngular2.Controllers
+namespace Blindating.Controllers
 {
     [Produces("application/json")]
     [Route("api/user/[controller]/[action]")]
@@ -70,7 +70,7 @@ namespace NetCoreAngular2.Controllers
         [Authorize("Bearer")]
         [HttpPost]
         [ActionName("setanswer")]
-        public JsonResult SetAnswer([FromBody] Answer answer)
+        public JsonResult SetAnswer([FromBody] QuestionAnswer answer)
         {
             return new JsonResult(Questions.SetAnswer(answer));
         }

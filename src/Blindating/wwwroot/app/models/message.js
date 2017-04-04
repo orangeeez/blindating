@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var Message = (function () {
     function Message(time, whose, text) {
         this.id = 0;

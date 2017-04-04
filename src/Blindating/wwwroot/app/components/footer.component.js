@@ -8,9 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-var user_service_1 = require("../services/user.service");
+var core_1 = require('@angular/core');
+var user_service_1 = require('../services/user.service');
 var FooterComponent = (function () {
     function FooterComponent(_userService) {
         this._userService = _userService;
@@ -19,15 +18,15 @@ var FooterComponent = (function () {
     FooterComponent.prototype.searchToggle = function () {
         this.searchState = (this.searchState === 'selected' ? 'deselected' : 'selected');
     };
+    FooterComponent = __decorate([
+        core_1.Component({
+            selector: 'footer-component',
+            templateUrl: 'app/components/footer.component.html',
+            styleUrls: ['app/components/footer.component.css'],
+            inputs: ['app']
+        }), 
+        __metadata('design:paramtypes', [user_service_1.UserService])
+    ], FooterComponent);
     return FooterComponent;
 }());
-FooterComponent = __decorate([
-    core_1.Component({
-        selector: 'footer-component',
-        templateUrl: 'app/components/footer.component.html',
-        styleUrls: ['app/components/footer.component.css'],
-        inputs: ['app']
-    }),
-    __metadata("design:paramtypes", [user_service_1.UserService])
-], FooterComponent);
 exports.FooterComponent = FooterComponent;

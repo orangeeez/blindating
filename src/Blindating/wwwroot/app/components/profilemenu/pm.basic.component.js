@@ -8,20 +8,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-var router_1 = require("@angular/router");
-var user_service_1 = require("../../services/user.service");
-var quote_service_1 = require("../../services/information/quote.service");
-var preference_service_1 = require("../../services/information/preference.service");
-var question_service_1 = require("../../services/information/question.service");
-var photo_service_1 = require("../../services/information/photo.service");
-var conversation_service_1 = require("../../services/information/conversation.service");
-var question_1 = require("../../models/question");
-var preference_1 = require("../../models/preference");
-var countries_1 = require("../../static/countries");
-var config_1 = require("../../static/config");
-var ng2_file_upload_1 = require("ng2-file-upload/ng2-file-upload");
+var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
+var user_service_1 = require('../../services/user.service');
+var quote_service_1 = require('../../services/information/quote.service');
+var preference_service_1 = require('../../services/information/preference.service');
+var question_service_1 = require('../../services/information/question.service');
+var photo_service_1 = require('../../services/information/photo.service');
+var conversation_service_1 = require('../../services/information/conversation.service');
+var question_1 = require('../../models/question');
+var preference_1 = require('../../models/preference');
+var countries_1 = require('../../static/countries');
+var config_1 = require('../../static/config');
+var ng2_file_upload_1 = require('ng2-file-upload/ng2-file-upload');
 var PmBasicComponent = (function () {
     function PmBasicComponent(_userService, _quoteService, _preferenceService, _questionService, _photoService, _conversationService, _router) {
         var _this = this;
@@ -82,9 +81,12 @@ var PmBasicComponent = (function () {
             _this.app.user.image = response;
         };
     }
-    PmBasicComponent.prototype.ngOnInit = function () { };
+    PmBasicComponent.prototype.ngOnInit = function () {
+        console.log('basic init');
+    };
     PmBasicComponent.prototype.ngOnChanges = function (changes) {
         var _this = this;
+        console.log('changes init');
         if (changes['selectedUser']) {
             this.changeProfileLoading();
             this._quoteService.GetAllByID(this.app.selectedUser.id)
@@ -226,12 +228,14 @@ var PmBasicComponent = (function () {
     PmBasicComponent.prototype.onAcceptAnswer = function () {
         var answer = {
             id: 0,
-            result: true,
-            userID: this.app.selectedUser.id,
             remoteUserID: this.app.user.id,
-            message: this.questions[this.questionIndex].message,
-            informationFK: this.questions[this.questionIndex]['information'].id,
-            user: this.app.user
+            questionAnswerFK: this.questions[this.questionIndex]['information'].id,
+            result: true,
+            direction: "Leaved",
+            informationQuestionFK: this.app.user.information.id,
+            remoteInfoQuestionFK: this.app.selectedUser.information.id,
+            remoteUser: null,
+            questionAnswered: this.questions[this.questionIndex].message
         };
         if (this.questionIndex < this.questions.length - 1)
             this.questionIndex++;
@@ -247,12 +251,14 @@ var PmBasicComponent = (function () {
     PmBasicComponent.prototype.onDeclineAnswer = function () {
         var answer = {
             id: 0,
-            result: false,
-            userID: this.app.user.id,
             remoteUserID: this.app.selectedUser.id,
-            message: this.questions[this.questionIndex].message,
-            informationFK: this.questions[this.questionIndex]['information'].id,
-            user: this.app.user
+            questionAnswerFK: this.questions[this.questionIndex]['information'].id,
+            result: false,
+            direction: "Leaved",
+            informationQuestionFK: this.app.user.information.id,
+            remoteInfoQuestionFK: this.app.selectedUser.information.id,
+            remoteUser: null,
+            questionAnswered: this.questions[this.questionIndex].message
         };
         if (this.questionIndex < this.questions.length - 1)
             this.questionIndex++;
@@ -281,21 +287,15 @@ var PmBasicComponent = (function () {
         this.isOpenPhotos = false;
         this.isOpenConversations = false;
     };
+    PmBasicComponent = __decorate([
+        core_1.Component({
+            selector: 'pm-basic-component',
+            templateUrl: 'app/components/profilemenu/pm.basic.component.html',
+            styleUrls: ['app/components/profilemenu/pm.basic.component.css'],
+            inputs: ['app', 'selectedUser', 'isOpenQuotes']
+        }), 
+        __metadata('design:paramtypes', [user_service_1.UserService, quote_service_1.QuoteService, preference_service_1.PreferenceService, question_service_1.QuestionService, photo_service_1.PhotoService, conversation_service_1.ConversationService, router_1.Router])
+    ], PmBasicComponent);
     return PmBasicComponent;
 }());
-PmBasicComponent = __decorate([
-    core_1.Component({
-        selector: 'pm-basic-component',
-        templateUrl: 'app/components/profilemenu/pm.basic.component.html',
-        styleUrls: ['app/components/profilemenu/pm.basic.component.css'],
-        inputs: ['app', 'selectedUser', 'isOpenQuotes']
-    }),
-    __metadata("design:paramtypes", [user_service_1.UserService,
-        quote_service_1.QuoteService,
-        preference_service_1.PreferenceService,
-        question_service_1.QuestionService,
-        photo_service_1.PhotoService,
-        conversation_service_1.ConversationService,
-        router_1.Router])
-], PmBasicComponent);
 exports.PmBasicComponent = PmBasicComponent;

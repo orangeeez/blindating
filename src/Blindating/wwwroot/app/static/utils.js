@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var Utils = (function () {
     function Utils() {
     }
@@ -24,12 +23,12 @@ var Utils = (function () {
     return Utils;
 }());
 exports.Utils = Utils;
-var DataSignals;
 (function (DataSignals) {
     DataSignals[DataSignals["RequestingVideo"] = 0] = "RequestingVideo";
     DataSignals[DataSignals["AcceptingVideo"] = 1] = "AcceptingVideo";
     DataSignals[DataSignals["DenyingVideo"] = 2] = "DenyingVideo";
-})(DataSignals = exports.DataSignals || (exports.DataSignals = {}));
+})(exports.DataSignals || (exports.DataSignals = {}));
+var DataSignals = exports.DataSignals;
 var SearchData = (function () {
     function SearchData() {
     }

@@ -8,10 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-var feedback_1 = require("../../models/feedback");
-var feedback_service_1 = require("../../services/information/feedback.service");
+var core_1 = require('@angular/core');
+var feedback_1 = require('../../models/feedback');
+var feedback_service_1 = require('../../services/information/feedback.service');
 var PmFeedbacksComponent = (function () {
     function PmFeedbacksComponent(_feedbackService) {
         this._feedbackService = _feedbackService;
@@ -23,7 +22,7 @@ var PmFeedbacksComponent = (function () {
         var _this = this;
         if (changes['selectedUser']) {
             this._feedbackService.GetAllByID(this.app.selectedUser.id)
-                .subscribe(function (feedbacks) { return _this.feedbacks = feedbacks; });
+                .subscribe(function (feedbacks) { return _this.feedbacks = feedbacks.reverse(); });
         }
     };
     PmFeedbacksComponent.prototype.onKeyupArea = function (event, textarea) {
@@ -54,31 +53,28 @@ var PmFeedbacksComponent = (function () {
             }
         });
     };
-    PmFeedbacksComponent.prototype.isNegative = function () {
-        if (this.isNegativeIcon == 'fa fa-thumbs-o-down fa-lg')
-            return false;
-        else
-            return true;
+    PmFeedbacksComponent.prototype.getFeedbackResult = function () {
+        return this.isNegativeIcon == 'fa fa-thumbs-o-down fa-lg';
     };
     PmFeedbacksComponent.prototype.createFeedback = function (text) {
         var feedback = new feedback_1.Feedback();
-        feedback.userID = this.app.selectedUser.id;
         feedback.remoteUserID = this.app.user.id;
-        feedback.isNegative = this.isNegative();
+        feedback.informationFeedbackFK = this.app.user.information.id;
+        feedback.remoteInfoFeedbackFK = this.app.selectedUser.information.id;
+        feedback.result = this.getFeedbackResult();
         feedback.text = text;
-        feedback.user = this.app.selectedUser;
-        feedback.remoteUser = this.app.user;
+        feedback.direction = 'Leaved';
         return feedback;
     };
+    PmFeedbacksComponent = __decorate([
+        core_1.Component({
+            selector: 'pm-feedbacks-component',
+            templateUrl: 'app/components/profilemenu/pm.feedbacks.component.html',
+            styleUrls: ['app/components/profilemenu/pm.feedbacks.component.css'],
+            inputs: ['app', 'selectedUser'],
+        }), 
+        __metadata('design:paramtypes', [feedback_service_1.FeedbackService])
+    ], PmFeedbacksComponent);
     return PmFeedbacksComponent;
 }());
-PmFeedbacksComponent = __decorate([
-    core_1.Component({
-        selector: 'pm-feedbacks-component',
-        templateUrl: 'app/components/profilemenu/pm.feedbacks.component.html',
-        styleUrls: ['app/components/profilemenu/pm.feedbacks.component.css'],
-        inputs: ['app', 'selectedUser'],
-    }),
-    __metadata("design:paramtypes", [feedback_service_1.FeedbackService])
-], PmFeedbacksComponent);
 exports.PmFeedbacksComponent = PmFeedbacksComponent;

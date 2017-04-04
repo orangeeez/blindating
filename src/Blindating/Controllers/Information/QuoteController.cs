@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Microsoft.AspNetCore.Authorization;
 
-namespace NetCoreAngular2.Controllers
+namespace Blindating.Controllers
 {
     //[Produces("application/json")]
     [Route("api/user/[controller]/[action]")]

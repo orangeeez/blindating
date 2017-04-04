@@ -98,12 +98,15 @@ export class PmBasicComponent implements OnInit, OnChanges {
         }
     }
 
-    ngOnInit() { }
+    ngOnInit() { 
+        console.log('basic init');
+    }
 
     ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
+        console.log('changes init');
+        
         if (changes['selectedUser']) {
             this.changeProfileLoading();
-
             this._quoteService.GetAllByID(this.app.selectedUser.id)
                 .subscribe(quotes => {
                     this.quotes = quotes.reverse();
@@ -254,12 +257,14 @@ export class PmBasicComponent implements OnInit, OnChanges {
     public onAcceptAnswer(): void {
         let answer: Answer = {
             id: 0,
-            result: true,
-            userID: this.app.selectedUser.id,
             remoteUserID: this.app.user.id,
-            message: this.questions[this.questionIndex].message,
-            informationFK: this.questions[this.questionIndex]['information'].id,
-            user: this.app.user
+            questionAnswerFK: this.questions[this.questionIndex]['information'].id,
+            result: true,
+            direction: "Leaved",
+            informationQuestionFK: this.app.user.information.id,
+            remoteInfoQuestionFK: this.app.selectedUser.information.id,
+            remoteUser: null,
+            questionAnswered: this.questions[this.questionIndex].message
         }
 
         if (this.questionIndex < this.questions.length - 1)
@@ -279,12 +284,14 @@ export class PmBasicComponent implements OnInit, OnChanges {
     public onDeclineAnswer(): void {
         let answer: Answer = {
             id: 0,
-            result: false,
-            userID: this.app.user.id,
             remoteUserID: this.app.selectedUser.id,
-            message: this.questions[this.questionIndex].message,
-            informationFK: this.questions[this.questionIndex]['information'].id,
-            user: this.app.user
+            questionAnswerFK: this.questions[this.questionIndex]['information'].id,
+            result: false,
+            direction: "Leaved",
+            informationQuestionFK: this.app.user.information.id,
+            remoteInfoQuestionFK: this.app.selectedUser.information.id,
+            remoteUser: null,
+            questionAnswered: this.questions[this.questionIndex].message
         }
 
         if (this.questionIndex < this.questions.length - 1)

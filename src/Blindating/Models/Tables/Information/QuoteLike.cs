@@ -1,4 +1,4 @@
-﻿using NetCoreAngular2.Models.Interfaces;
+﻿using Blindating.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -24,8 +24,6 @@ namespace Blindating.Models.Tables
         public string Message { get; set; }
         public virtual Quote Quote { get; set; }
 
-        [NotMapped] public int InformationFK { get; set; }
-        [NotMapped] public int UserID { get; set; }
         [NotMapped] public Quote UpdateQuote { get; set; }
     }
 }

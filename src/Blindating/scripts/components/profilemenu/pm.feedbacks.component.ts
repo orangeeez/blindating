@@ -30,7 +30,7 @@ export class PmFeedbacksComponent implements OnInit, OnChanges {
     ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
         if (changes['selectedUser']) {
             this._feedbackService.GetAllByID(this.app.selectedUser.id)
-                .subscribe(feedbacks => this.feedbacks = feedbacks);
+                .subscribe(feedbacks => this.feedbacks = feedbacks.reverse());
         }
     }
 
@@ -65,21 +65,18 @@ export class PmFeedbacksComponent implements OnInit, OnChanges {
             });
     }
 
-    private isNegative(): boolean {
-        if (this.isNegativeIcon == 'fa fa-thumbs-o-down fa-lg')
-            return false;
-        else
-            return true;
+    private getFeedbackResult(): boolean {
+        return this.isNegativeIcon == 'fa fa-thumbs-o-down fa-lg';
     }
 
     private createFeedback(text: string): Feedback {
         var feedback                   = new Feedback();
-        feedback.userID                = this.app.selectedUser.id;
         feedback.remoteUserID          = this.app.user.id;
-        feedback.isNegative            = this.isNegative();
+        feedback.informationFeedbackFK = this.app.user.information.id;
+        feedback.remoteInfoFeedbackFK  = this.app.selectedUser.information.id;
+        feedback.result                = this.getFeedbackResult();
         feedback.text                  = text;
-        feedback.user                  = this.app.selectedUser;
-        feedback.remoteUser            = this.app.user;
+        feedback.direction             = 'Leaved';
         return feedback;
     }
 }

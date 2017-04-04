@@ -8,13 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var http_1 = require("@angular/http");
-var core_1 = require("@angular/core");
-var config_1 = require("../static/config");
-var angular2_jwt_1 = require("angular2-jwt");
-require("rxjs/add/operator/map");
-require("rxjs/add/operator/catch");
+var http_1 = require('@angular/http');
+var core_1 = require('@angular/core');
+var config_1 = require('../static/config');
+var angular2_jwt_1 = require('angular2-jwt');
+require('rxjs/add/operator/map');
+require('rxjs/add/operator/catch');
 var BaseService = (function () {
     function BaseService(_http, _authHttp, _api) {
         this._http = _http;
@@ -48,11 +47,10 @@ var BaseService = (function () {
         return this._authHttp.post(config_1.API_ADDRESS + this.api + "/remove", JSON.stringify(entity), this.options)
             .map(function (user) { return user.json()['result']; });
     };
+    BaseService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [http_1.Http, angular2_jwt_1.AuthHttp, String])
+    ], BaseService);
     return BaseService;
 }());
-BaseService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [http_1.Http,
-        angular2_jwt_1.AuthHttp, String])
-], BaseService);
 exports.BaseService = BaseService;

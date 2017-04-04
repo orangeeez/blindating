@@ -1,7 +1,7 @@
 ﻿using Blindating.Models.Interfaces;
 using Blindating.Models.Tables;
 using Microsoft.EntityFrameworkCore;
-using NetCoreAngular2.Models.Repositories;
+using Blindating.Models.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

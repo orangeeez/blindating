@@ -1,11 +1,12 @@
 ﻿using Blindating.Models.Interfaces;
 using Blindating.Models.Tables;
 using Microsoft.EntityFrameworkCore;
-using NetCoreAngular2.Models.Repositories;
+using Blindating.Models.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Blindating.Models.Repositories
 {
@@ -21,11 +22,13 @@ namespace Blindating.Models.Repositories
             using (AppDBContext _context = new AppDBContext())
             {
                 Feedback remoteFeedback = new Feedback(feedback);
+                remoteFeedback.Direction = null;
+                remoteFeedback.InformationFeedbackFK = feedback.RemoteInfoFeedbackFK;
+                remoteFeedback.RemoteUser = await GetBy(new { field = "InformationID", value = feedback.InformationFeedbackFK.ToString() });
 
-                remoteFeedback.Direction = "Leaved";
-                remoteFeedback.InformationFeedbackFK = feedback.RemoteUser.Information.ID;
+                _context.Notifications.Add(Notification.Create(remoteFeedback.InformationFeedbackFK, "feedback", JsonConvert.SerializeObject(remoteFeedback)));
+                await _context.SaveChangesAsync();
 
-                feedback.InformationFeedbackFK = feedback.User.Information.ID;
                 await Add(remoteFeedback);
                 return await Add(feedback);
             }

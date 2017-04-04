@@ -58,7 +58,7 @@ export class AppComponent implements OnInit {
     @ViewChild(ProfilemenuComponent) public _profilemenu: ProfilemenuComponent;
     @ViewChild(TalkComponent)        public _talk: TalkComponent;
 
-    public server:       string  = 'https://localhost:8002';
+    public server:       string  = 'http://localhost:8001';
     public stun:         string  = 'stun:stun.l.google.com:19302';
     public stream:       any;
     public localStream:  any;
@@ -76,8 +76,9 @@ export class AppComponent implements OnInit {
 
     public isHelperShow:  boolean = false;
     public isHeaderShow:  boolean = false;
-    public isSelectedYou: boolean = false;
     public isLoginShow:   boolean = true;
+    public isPickupShow:  boolean = false;
+    public isSelectedYou: boolean = false;
 
     constructor(
         private _userService:         UserService,
@@ -112,7 +113,12 @@ export class AppComponent implements OnInit {
             this._header.isProfileActive = !this._header.isProfileActive;
 
         this.setHelperElements();
-        this._profilemenu.setBasicTabActive();
+
+        if (this._header.notificationCount == 0)
+            this._profilemenu.setBasicTabActive();
+        else
+            this._profilemenu.setNotificationTabActive();
+
     }
 
     public initializeWebRTC() {
@@ -161,12 +167,16 @@ export class AppComponent implements OnInit {
             this._helper.denyVideoIcon();
         }
 
+        //if (Utils.IsJSON(e.data)) {
+        //    if (e.data.includes('"type":"message"')) {
+        //        var message = <Message>JSON.parse(e.data);
+        //        message.whose = 'message-you';
+        //        this._zone.run(() => this._talk.messages.push(message));
+        //    }
+        //}
+
         if (Utils.IsJSON(e.data)) {
-            if (e.data.includes('"type":"message"')) {
-                var message = <Message>JSON.parse(e.data);
-                message.whose = 'message-you';
-                this._zone.run(() => this._talk.messages.push(message));
-            }
+            this._zone.run(() => this._talk.sketchCanvas.nativeElement.data().sketch.actions.push(JSON.parse(e.data)));
         }
     }
 
@@ -180,6 +190,7 @@ export class AppComponent implements OnInit {
             audio: true
         }, this.onCreateStream);
 
+        this.isHeaderShow = true;
         this._router.navigate(['/talk']);
         this._helper.isCallInitiated   = true;
         this._helper.startDurationTime = new Date();
@@ -188,7 +199,7 @@ export class AppComponent implements OnInit {
         clearInterval(this._helper.intervalCalling);
     }
 
-    public onCreateStream = (err, stream) => {
+    public onCreateStream = (err, stream): void => {
         this.localStream = stream;
         this.user.peer.publish(this.localStream, this.communicationUser.jwt);
     }

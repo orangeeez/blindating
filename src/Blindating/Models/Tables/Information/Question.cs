@@ -1,4 +1,4 @@
-﻿using NetCoreAngular2.Models.Interfaces;
+﻿using Blindating.Models.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,16 +12,14 @@ namespace Blindating.Models.Tables
     {
         public Question()
         {
-            this.Answers = new List<Answer>();
+            this.Answers = new List<QuestionAnswer>();
         }
         public int ID { get; set; }
         public int InformationQuestionFK { get; set; }
         public string Message { get; set; }
         public virtual Information Information { get; set; }
 
-        [JsonIgnore] public virtual List<Answer> Answers { get; set; }
-        [NotMapped] public int UserID { get; set; }
-        [NotMapped] public int QuestionID { get; set; }
+        [JsonIgnore] public virtual List<QuestionAnswer> Answers { get; set; }
         [NotMapped] public bool Answered { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using NetCoreAngular2.Models.Interfaces;
+﻿using Blindating.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,19 +12,22 @@ namespace Blindating.Models.Tables
         public Feedback() { }
         public Feedback(Feedback feedback)
         {
-            Text         = feedback.Text;
-            RemoteUserID = feedback.RemoteUserID;
-            IsNegative   = feedback.IsNegative;
+            RemoteUserID          = feedback.RemoteUserID;
+            InformationFeedbackFK = feedback.InformationFeedbackFK;
+            Text                  = feedback.Text;
+            Result                = feedback.Result;
+            Direction             = feedback.Direction;
         }
         public int ID { get; set; }
         public int InformationFeedbackFK { get; set; }
-        public string Text { get; set; }
         public int RemoteUserID { get; set; }
-        public bool IsNegative { get; set; }
+        public string Text { get; set; }
+        public bool Result { get; set; }
         public string Direction { get; set; }
+
         public virtual Information Information { get; set; }
-        [NotMapped] public int UserID { get; set; }
-        [NotMapped] public User User { get; set; }
         [NotMapped] public User RemoteUser { get; set; }
+        [NotMapped] public int RemoteInfoFeedbackFK { get; set; }
+
     }
 }

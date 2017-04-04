@@ -4,8 +4,7 @@
                isPhotosLoaded     &&
                isConversationsLoaded"
      [style.height]="'90%'">
-    <img [src]="'images/app/controls/loading.gif?6'"
-         class="image-loading">
+    <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw image-loading image-stats-loading"></i>
 </div>
 <div *ngIf="!isOpenQuotes    &&
             !isOpenQuestions && 
@@ -251,7 +250,9 @@
                  (mouseout)="onHeaderMouseoverout('questions', false)" />
         </div>
         <div class="question-content-decoration">
-            <div class="col-md-12 question-decoration">
+            <div [ngClass]="(questions[questionIndex]?.message != 'User does not add question to others yet' && 
+                    questions[questionIndex]?.message != 'You answered on all questions') ? 'question-decoration' : 'question-decoration-gray'"
+                 class="col-md-12 question-decoration">
                 <p *ngIf="app.isSelectedYou">{{questions[questionIndex]?.message}}</p>
                 <p *ngIf="!app.isSelectedYou">{{questions[questionIndex]?.message}}</p>
             </div>

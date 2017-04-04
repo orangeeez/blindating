@@ -3,6 +3,7 @@
     padding-top: 10px;
 }
 #dashboard .header {
+    width: inherit;
     color: var(--focus-border-color);
     font-weight: bold; 
     font-size: 18px; 
@@ -21,9 +22,6 @@
     background-color: var(--main-aqua-color);
     color: white;
     cursor: pointer;
-}
-#dashboard .image-stats-loading {
-    height: 40px;
 }
 .profile {
     display: flex;

@@ -117,9 +117,10 @@
     font-size: 16px;
     padding-bottom: 5px;
 }
-.question-decoration > p {
+.question-decoration-gray > p {
     color: darkgray;
 }
+
 .question-content-decoration {
     display: flex;
     padding-top: 15px;

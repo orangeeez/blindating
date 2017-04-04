@@ -1,6 +1,7 @@
 ﻿<div *ngIf="app.isLoginShow" id="login">
     <div class="col-md-3"></div>
-    <div class="col-md-6" style="margin-top: 5px">
+    <div class="col-md-12 login-outer">
+    <div class="col-md-6 login-inner">
         <tabset>
             <tab *ngFor="let tab of tabs"
                  [heading]="tab.title"
@@ -16,22 +17,24 @@
                     <label for="email">Email</label>
                     <input type="text" class="form-control" id="email" placeholder="Email"
                            [(ngModel)]="email" name="email"
+                           [disabled]="pickupState == 'selected'"                           
                            #emailref="ngModel"
                            required />
 
                     <div class="alert alert-danger"
-                         [hidden]="emailref.valid || emailref.pristine">
+                         [hidden]="emailref.valid || emailref.pristine || emailref.disabled">
                          Email is required
                     </div>
 
                     <label for="password">Password</label>
                     <input type="password" class="form-control" id="password" placeholder="Password"
                            [(ngModel)]="password" name="password"
+                           [disabled]="pickupState == 'selected'"
                            #passwordref="ngModel"
                            required />
 
                     <div class="alert alert-danger"
-                         [hidden]="passwordref.valid || passwordref.pristine">
+                         [hidden]="passwordref.valid || passwordref.pristine || passwordref.disabled">
                          Password is required
                     </div>
 
@@ -42,15 +45,17 @@
                     </button>
 
                     <div class="social">
-                        <a scope="public_profile,email" class="btn btn-social-icon btn-facebook"
-                           (click)="onAuthSocial($event)">
+                        <button scope="public_profile,email" class="btn btn-social-icon btn-facebook"
+                            [disabled]="pickupState == 'selected'" 
+                            (click)="onAuthSocial($event)">
                             <span class="fa fa-facebook"></span>
-                        </a>
+                        </button>
 
-                        <a class="btn btn-social-icon btn-vk"
-                           (click)="onAuthSocial($event)">
+                        <button class="btn btn-social-icon btn-vk"
+                            [disabled]="pickupState == 'selected'" 
+                            (click)="onAuthSocial($event)">
                             <span class="fa fa-vk"></span>
-                        </a>
+                        </button>
                     </div>
                 </form>
 
@@ -126,6 +131,49 @@
                 </form>
             </tab>
         </tabset>
+    </div>
+    </div>  
+    <!-- TODO Make a component maybe -->
+    <div class="pickup-form"
+        [@pickupState]="pickupState">
+        <div *ngIf="app.isPickupShow" class="row">
+            <div class="col-md-2">
+                <img class="img-circle avatar-decoration" src="images\users\evkb2qif.txr.jpg">
+            </div>
+            <div class="col-md-2">
+                <div class="coincidence">
+                    87 points
+                </div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+                        45%
+                    </div>
+                </div>
+                <div class="rating">
+                    <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+                </div>
+            </div>
+            <div class="col-md-2 preferences">
+                <div><i class="fa fa-check" aria-hidden="true"></i>Gender</div>
+                <div><i class="fa fa-check" aria-hidden="true"></i>Age</div>
+                <div><i class="fa fa-check" aria-hidden="true"></i>Location</div> 
+                <div style="color: #d43f3a;"><i class="fa fa-close" aria-hidden="true"></i>Hair</div>                
+                <div><i class="fa fa-check" aria-hidden="true"></i>Eyes</div>
+                <div><i class="fa fa-check" aria-hidden="true"></i>Hobby</div>                                                                                                              
+            </div>
+            <div class="col-md-4 questions">
+                <div class="question">
+                    <div class="qcategory">{{matchQuestions[indexMatchQuestion].category}}</div>
+                    <div class="qbody">{{matchQuestions[indexMatchQuestion].text}}</div>
+                </div>
+            </div>
+            <div class="col-md-2 buttons">
+                <div><button type="button" class="btn btn-success"
+                             (click)="onPickupInvite()">INVITE</button></div>
+                <div><button type="button" class="btn btn-danger"
+                             (click)="onPickupDecline()">DECLINE</button></div>
+            </div>
+        </div>
     </div>
     <div class="col-md-3"></div>
 </div>

@@ -6,17 +6,38 @@
     AfterViewInit,
     ViewChild,
     ElementRef,
-    forwardRef
-}                        from '@angular/core';
-import { Router }        from '@angular/router';
-import { CookieService } from 'angular2-cookie/core';
-import { UserService }   from '../../services/user.service';
-import { User }          from '../../models/user';
-import { AppComponent }  from '../../components/app.component';
+    AnimationTransitionEvent,
+    forwardRef,
+    trigger,
+    state,
+    style,
+    transition,
+    animate
+}                              from '@angular/core';
+import { Router }              from '@angular/router';
+import { CookieService }       from 'angular2-cookie/core';
+import { UserService }         from '../../services/user.service';
+import { NotificationService } from '../../services/information/notification.service';
+import { User }                from '../../models/user';
+import { AppComponent }        from '../../components/app.component';
 @Component({
     selector:    'dashboard-component',
     templateUrl: 'app/components/router-outlet/dashboard.component.html',
-    styleUrls:  ['app/components/router-outlet/dashboard.component.css']
+    styleUrls:  ['app/components/router-outlet/dashboard.component.css'],
+        animations: [
+        trigger('pickupState', [
+            state('deselected', style({
+                height: '0px',
+                'padding-top': '0px',
+            })),
+            state('selected', style({
+                height: '160px',
+                'padding-top': '10px'
+            })),
+            transition('deselected => selected', animate('300ms ease-in')),
+            transition('selected => deselected', animate('300ms ease-out'))
+        ])
+    ]
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
     @ViewChild('dashboard') dashboard: ElementRef;
@@ -28,7 +49,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     public activeUsers:  User[];
     public searchUsers:  User[];
     public activities:   any[];
-    
+    public pickupState:  string = 'deselected';
 
     public isActiveExpanded:  boolean = false;
     public isNewExpanded:     boolean = false;
@@ -49,13 +70,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     public dashboardStatsHeight:       number;
     public maxUsersColumns:            number;
     public maxUsersStatsColumns:       number;
-    public maxUsersRows:               number;
     public maxUsers:                   number;
 
     constructor(
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
         private _userService: UserService,
         private _cookieService: CookieService,
+        private _notificationService: NotificationService,
         private _router: Router) {
 
         this.app = app;
@@ -69,25 +90,25 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.app._dashboard = this;
         this.app._header.DeselectMenus();
         this.app._header.isDashboardActive = true;
-
-        this._userService.GetAll()
-            .subscribe(users => {
-                this.app.users = users.filter(this.removeCurrentUser);
-                this.isUsersLoaded = true;
-            });
+        if (this.app.isPickupShow) this.pickupToggle();
     }
 
     ngAfterViewInit() {
         this.profileBoardHeight = 110;
         this.profileStatsHeight = 105;
         this.profileStatsHeightExpanded = 75;
-        this.dashboardWidth       = this.dashboard.nativeElement.clientWidth;
-        this.dashboardHeight      = this.dashboard.nativeElement.clientHeight;
+        this.dashboardWidth = this.dashboard.nativeElement.clientWidth;
+        this.dashboardHeight = this.dashboard.nativeElement.clientHeight;
         this.dashboardStatsHeight = this.dashboardStats.nativeElement.clientHeight;
-        this.maxUsersColumns      = this.dashboardWidth / Math.round((this.dashboardWidth * 8.3) / 100);
+        this.maxUsersColumns = this.dashboardWidth / Math.round((this.dashboardWidth * 8.3) / 100);
         this.maxUsersStatsColumns = this.dashboardWidth / Math.round((this.dashboardWidth * 25) / 100);
-        this.maxUsersRows         = (this.dashboardHeight - (this.dashboardStatsHeight + this.profileStatsHeight)) / this.profileBoardHeight;
-        this.maxUsers             = Math.floor(this.maxUsersColumns) * Math.floor(this.maxUsersRows);
+        this.maxUsers = Math.floor(this.maxUsersColumns) * 4;
+
+        this._userService.GetAll()
+            .subscribe(users => {
+                this.app.users = users.filter(this.removeCurrentUser);
+                this.isUsersLoaded = true;
+            });
 
         this._userService.GetNew(Math.round(this.maxUsersStatsColumns))
             .subscribe(users => {
@@ -107,12 +128,24 @@ export class DashboardComponent implements OnInit, AfterViewInit {
                 this.isNewUsersLoaded = true;
             });
 
-        if (Math.round(this.maxUsersRows) <= 0) this.maxUsers = 1;
+        // if (Math.round(this.maxUsersRows) <= 0) this.maxUsers = 1;
         this._userService.GetRandom(this.maxUsers)
             .subscribe(users => {
                 this.app.users = users.filter(this.removeCurrentUser);
                 this.isUsersLoaded = true;
             });
+
+        this._notificationService.GetCount(this.app.user.id)
+            .subscribe(notificaitionCount => {
+                if (notificaitionCount > 99)
+                    notificaitionCount = 99;
+
+                this.app._header.notificationCount = notificaitionCount;
+            });
+    }
+
+    public pickupToggle() {
+        this.pickupState = (this.pickupState === 'selected' ? 'deselected' : 'selected');
     }
 
     public onExpandNew(): void {
@@ -168,6 +201,18 @@ export class DashboardComponent implements OnInit, AfterViewInit {
             .subscribe(users => {
                 this.app.users = users.filter(this.removeCurrentUser);
             })
+    }
+
+    public onPickupDone(event: AnimationTransitionEvent): void { }
+
+    public onPickupInvite(): void {
+        this.app.isPickupShow = false;
+        this.app._helper.onInviteAcceptCall();
+    }
+
+    public onPickupDecline(): void {
+        this.app.isPickupShow = false;
+        this.pickupToggle();
     }
 
     private removeCurrentUser = (user: User): boolean => {

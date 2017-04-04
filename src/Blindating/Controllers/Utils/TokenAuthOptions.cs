@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NetCoreAngular2.Controllers.Utils
+namespace Blindating.Controllers.Utils
 {
     public class TokenAuthOptions
     {

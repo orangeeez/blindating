@@ -11,13 +11,12 @@ using Blindating.Models;
 using Microsoft.EntityFrameworkCore;
 using Blindating.Models.Interfaces;
 using Blindating.Models.Repositories;
-using NetCoreAngular2.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using NetCoreAngular2.Controllers.Utils;
+using Blindating.Controllers.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using NetCoreAngular2.Models.Repositories.Search;
+using Blindating.Models.Repositories.Search;
 
 namespace Blindating
 {
@@ -58,6 +57,8 @@ namespace Blindating
             services.AddSingleton<IFeedbackRepository,     FeedbackRepository>();
             services.AddSingleton<IConversationRepository, ConversationRepository>();
             services.AddSingleton<ISearchRepository,       SearchRepository>();
+            services.AddSingleton<INotificationRepository, NotificationRepository>();
+
 
             services.AddMvc();
 

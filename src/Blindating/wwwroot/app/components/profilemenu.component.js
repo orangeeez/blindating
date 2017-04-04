@@ -8,11 +8,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-var router_1 = require("@angular/router");
-var core_2 = require("angular2-cookie/core");
-var user_service_1 = require("../services/user.service");
+var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
+var core_2 = require('angular2-cookie/core');
+var user_service_1 = require('../services/user.service');
 var ProfilemenuComponent = (function () {
     function ProfilemenuComponent(_userService, _cookieService, _router) {
         this._userService = _userService;
@@ -34,6 +33,7 @@ var ProfilemenuComponent = (function () {
         this.app.selectedUser = null;
         this.app.isLoginShow = true;
         this.app.isHeaderShow = false;
+        this.app.isPickupShow = false;
         this.app._profilemenu.ToggleState();
         this.app._header.DeselectMenus();
         this.app._header.isProfileActive = false;
@@ -55,17 +55,24 @@ var ProfilemenuComponent = (function () {
                 t.active = true;
         }
     };
+    ProfilemenuComponent.prototype.setNotificationTabActive = function () {
+        for (var _i = 0, _a = this.tabs; _i < _a.length; _i++) {
+            var t = _a[_i];
+            if (t.title != 'Notifications')
+                t.active = false;
+            else
+                t.active = true;
+        }
+    };
+    ProfilemenuComponent = __decorate([
+        core_1.Component({
+            selector: 'profilemenu-component',
+            templateUrl: 'app/components/profilemenu.component.html',
+            styleUrls: ['app/components/profilemenu.component.css'],
+            inputs: ['app']
+        }), 
+        __metadata('design:paramtypes', [user_service_1.UserService, core_2.CookieService, router_1.Router])
+    ], ProfilemenuComponent);
     return ProfilemenuComponent;
 }());
-ProfilemenuComponent = __decorate([
-    core_1.Component({
-        selector: 'profilemenu-component',
-        templateUrl: 'app/components/profilemenu.component.html',
-        styleUrls: ['app/components/profilemenu.component.css'],
-        inputs: ['app']
-    }),
-    __metadata("design:paramtypes", [user_service_1.UserService,
-        core_2.CookieService,
-        router_1.Router])
-], ProfilemenuComponent);
 exports.ProfilemenuComponent = ProfilemenuComponent;

@@ -1,5 +1,5 @@
 ﻿using Blindating.Models.Tables;
-using NetCoreAngular2.Models.Interfaces;
+using Blindating.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +11,6 @@ namespace Blindating.Models.Interfaces
     {
         Task<IEnumerable<Question>> GetAllByID(string JWT, int userID);
         Task<IEnumerable<Question>> GetNotAnsweredByID(string JWT, int userID); 
-        Task<bool> SetAnswer(Answer answer);
+        Task<bool> SetAnswer(QuestionAnswer answer);
     }
 }

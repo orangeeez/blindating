@@ -33,30 +33,36 @@ export class UserService extends BaseService {
         return this._authHttp.post(API_ADDRESS + this.api + "/logout", userID, this.options);
     }
 
-    public GetBy(field: string, value: string): Observable<User> {
-        return this._authHttp.post(API_ADDRESS + this.api + "/getby", JSON.stringify({ field, value }), this.options)
-            .map(user => user.json()['result']);
-    }
+    //public GetBy(field: string, value: string): Observable<User> {
+    //    return this._authHttp.post(API_ADDRESS + this.api + "/getby", JSON.stringify({ field, value }), this.options)
+    //        .map(user => user.json()['result']);
+    //}
+
     public GetNew(count: number): Observable<Array<User>> {
         return this._authHttp.post(API_ADDRESS + this.api + "/getnew", count, this.options)
             .map(users => users.json()['result']);
     }
+
     public GetActive(count: number): Observable<Array<User>> {
         return this._authHttp.post(API_ADDRESS + this.api + "/getactive", count, this.options)
             .map(users => users.json()['result']);
     }
+
     public GetPopular(count: number): Observable<Array<User>> {
         return this._authHttp.post(API_ADDRESS + this.api + "/getpopular", count, this.options)
             .map(users => users.json()['result']);
     }
+
     public GetRandom(count: number): Observable<Array<User>> {
         return this._authHttp.post(API_ADDRESS + this.api + "/getrandom", count, this.options)
             .map(users => users.json()['result']);
     }
+
     public GetCalling(callingJWT: string): Observable<User> {
         return this._authHttp.post(API_ADDRESS + this.api + "/getcalling", JSON.stringify(callingJWT), this.options)
             .map(user => user.json()['result']);
     }
+
     public IsEmailExist(email: string): Observable<boolean> {
         return this._http.post(API_ADDRESS + this.api + "/isemailexist", JSON.stringify(email), this.options)
             .map(res => !!res.json()['result']);

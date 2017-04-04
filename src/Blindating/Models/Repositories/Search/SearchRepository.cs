@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Blindating.Models.Tables;
-using NetCoreAngular2.Models.Tables.Utils;
+using Blindating.Models.Tables.Utils;
 using Blindating.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace NetCoreAngular2.Models.Repositories.Search
+namespace Blindating.Models.Repositories.Search
 {
     public class SearchRepository : ISearchRepository
     {
@@ -21,6 +21,7 @@ namespace NetCoreAngular2.Models.Repositories.Search
         {
             using (AppDBContext _context = new AppDBContext())
             {
+                
                 User authUser = await _context.Users.Where(u => u.JWT == JWT).SingleOrDefaultAsync();
                 var users = await _context.Users.Include(u => u.Information)
                                                 .ThenInclude(i => i.Conversations)
@@ -34,6 +35,26 @@ namespace NetCoreAngular2.Models.Repositories.Search
                 return GetVideoInitiatedUsers(users, authUser);
             }
         }
+        // ================== MANY TO MANY RELATIONSHIPS EXAMPLE ==================
+        //public string Test()
+        //{
+        //    using (AppDBContext _context = new AppDBContext())
+        //    {
+        //        User user = _context.Users
+        //            .Include(u => u.Information)
+        //            .ThenInclude(i => i.Quotes)
+        //            .Where(u => u.Email == "orangeeez27.05.93@gmail.com")
+        //            .FirstOrDefault();
+
+        //        var like = _context.Likes.Include(l => l.QLike).ThenInclude(ql => ql.Quote).First();
+        //        var quote = like.QLike.Select(q => q.Quote);
+
+        //        var quote1 = _context.Quotes.Include(l => l.QLike).ThenInclude(ql => ql.Like).First(q => q.Content == "lol");
+        //        var like1 = quote1.QLike.Select(ql => ql.Like).ToList();
+        //        return "";
+        //    }
+        //}
+
         private List<User> GetVideoInitiatedUsers(List<User> users, User user)
         {
             foreach (var u in users)

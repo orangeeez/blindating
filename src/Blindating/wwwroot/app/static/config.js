@@ -1,6 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.API_ADDRESS = 'https://localhost:8000/';
+exports.API_ADDRESS = 'http://localhost:8000/';
 exports.HANGUP = 'images/app/controls/phone-hang-up.svg';
 exports.HANGUP_INACTIVE = 'images/app/controls/phone-hang-up-inactive.svg';
 exports.PHONE = 'images/app/controls/phone.svg';

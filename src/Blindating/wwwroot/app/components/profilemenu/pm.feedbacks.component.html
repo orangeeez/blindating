@@ -5,8 +5,7 @@
                 <div *ngIf="feedbacks?.length == 0" class="no-wishes">No wishes yet</div>
                 <div *ngFor="let feedback of feedbacks" class="col-md-12">
                     <blockquote style="padding-right: 0"
-                        [class.good]="!feedback.isNegative"
-                        [class.bad]="feedback.isNegative">
+                        [ngClass]="feedback.result ? 'good' : 'bad'">
                         <p>{{feedback.text}}</p>
                         <footer>
                             <a (click)="app.selectDeselectUser(feedback?.remoteUser || app.user)">

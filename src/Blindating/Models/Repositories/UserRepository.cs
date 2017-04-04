@@ -2,7 +2,7 @@
 using Blindating.Models.Tables;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using NetCoreAngular2.Models.Repositories;
+using Blindating.Models.Repositories;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
-using Blindating.Controllers.APIs.Classes;
+using Blindating.Controllers.Utils.Social;
 
 namespace Blindating.Models.Repositories
 {
@@ -22,7 +22,6 @@ namespace Blindating.Models.Repositories
         {
             _context = context;
         }
-        // TODO Make refactoring
         public async Task<dynamic> Register(User user, string JWT)
         {
             using (AppDBContext _context = new AppDBContext())
@@ -50,7 +49,6 @@ namespace Blindating.Models.Repositories
                 }
             }
         }
-        // TODO Make refactoring
         public async Task<User> Login(string auth)
         {
             using (AppDBContext _context = new AppDBContext())
@@ -69,64 +67,88 @@ namespace Blindating.Models.Repositories
 
         private async Task<User> LoginViaJWT(string auth)
         {
-            dynamic obj = JsonConvert.DeserializeObject(auth);
-            string JWT = obj.jwt;
-            User user = await _context.Users.Include(u => u.Information)
-                .SingleOrDefaultAsync(u => u.JWT == JWT);
-            user.Online = true;
-            return user;
+            using (AppDBContext _context = new AppDBContext())
+            {
+                dynamic obj = JsonConvert.DeserializeObject(auth);
+                string JWT = obj.jwt;
+                User user = await _context.Users.Include(u => u.Information)
+                    .SingleOrDefaultAsync(u => u.JWT == JWT);
+                user.Online = true;
+                user.Reason = User.AUTHORIZATION_SUCCESS;
+                await _context.SaveChangesAsync();
+                return user;
+            }
         }
 
         private async Task<User> LoginViaPassword(string auth)
         {
-            User user;
-            dynamic obj = JsonConvert.DeserializeObject(auth);
-            string email = obj.email;
-            string password = obj.password;
-            if (await isAuthExist(email, password))
+            using (AppDBContext _context = new AppDBContext())
             {
-                user = await _context.Users.Include(u => u.Information)
-                    .SingleOrDefaultAsync(u => u.Email == email && u.Password == password);
-                user.Online = true;
+                User user;
+                dynamic obj = JsonConvert.DeserializeObject(auth);
+                string email = obj.email;
+                string password = obj.password;
+                if (await isAuthExist(email, password))
+                {
+                    user = await _context.Users.Include(u => u.Information)
+                        .SingleOrDefaultAsync(u => u.Email == email && u.Password == password);
+                    user.Online = true;
+                    user.Reason = User.AUTHORIZATION_SUCCESS;
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    user = new User();
+                    user.Reason = User.AUTHORIZATION_FAILED;
+                }
+                return user;
             }
-            else
-            {
-                user = new User();
-                user.Reason = User.AUTHORIZATION_FAILED;
-            }
-            return user;
         }
 
         private async Task<User> LoginViaFacebook(string auth)
         {
-            User user = null;
-            string secret = "7d94069605af1505a9f71c57fed00868";
-            HMACSHA256 sha256 = new HMACSHA256(Encoding.ASCII.GetBytes(secret));
+            using (AppDBContext _context = new AppDBContext())
+            {
+                User user = null;
+                string secret = "7d94069605af1505a9f71c57fed00868";
+                HMACSHA256 sha256 = new HMACSHA256(Encoding.ASCII.GetBytes(secret));
 
-            dynamic obj = JsonConvert.DeserializeObject(auth);
-            string email = obj.email;
-            string social = obj.facebook;
+                dynamic obj = JsonConvert.DeserializeObject(auth);
+                string email = obj.email;
+                string social = obj.facebook;
 
-            string encodedSignature = social.Split('.')[0];
-            string payload = social.Split('.')[1];
-            string signature = Base64UrlEncoder.Decode(encodedSignature);
-            string expectedSignature = System.Text.Encoding.UTF8.GetString(sha256.ComputeHash(Encoding.ASCII.GetBytes(payload)));
+                string encodedSignature = social.Split('.')[0];
+                string payload = social.Split('.')[1];
+                string signature = Base64UrlEncoder.Decode(encodedSignature);
+                string expectedSignature = Encoding.UTF8.GetString(sha256.ComputeHash(Encoding.ASCII.GetBytes(payload)));
 
-            if (signature == expectedSignature)
-                user = await _context.Users.Include(u => u.Information)
-                    .SingleOrDefaultAsync(u => u.Email == email);
+                if (signature == expectedSignature)
+                {
+                    user = await _context.Users.Include(u => u.Information)
+                        .SingleOrDefaultAsync(u => u.Email == email);
+                    user.Online = true;
+                    user.Reason = User.AUTHORIZATION_SUCCESS;
+                    await _context.SaveChangesAsync();
+                }
 
-            return user;
+                return user;
+            }
         }
 
-        private async Task<User> LoginViaVK(string auth) {
-            User user = null;            
+        private async Task<User> LoginViaVK(string auth)
+        {
+            User user = null;
             dynamic obj = JsonConvert.DeserializeObject(auth);
             string email = obj.email;
             string social = obj.vk;
 
-            return user = await _context.Users.Include(u => u.Information)
+            user = await _context.Users.Include(u => u.Information)
                     .SingleOrDefaultAsync(u => u.Email == email);
+            user.Online = true;
+            user.Reason = User.AUTHORIZATION_SUCCESS;
+            await _context.SaveChangesAsync();
+
+            return user;
         }
 
         public async Task Logout(int userID)
@@ -163,28 +185,28 @@ namespace Blindating.Models.Repositories
                 return await _context.Users.AnyAsync(u => u.Email == email && u.Password == password);
             }
         }
-        public async Task<User> GetBy(dynamic condition)
-        {
-            using (AppDBContext _context = new AppDBContext())
-            {
-                string field = condition.field;
-                string value = condition.value;
-                User user = null;
-                switch (field)
-                {
-                    case "JWT":
-                        user = await _context.Users.Include(u => u.Information).FirstOrDefaultAsync(u => u.JWT == value);
-                        break;
-                    case "ID":
-                        user = await _context.Users.Include(u => u.Information).FirstOrDefaultAsync(u => u.ID == int.Parse(value));
-                        break;
-                    case "InformationID":
-                        user = await _context.Users.Include(u => u.Information).ThenInclude(i => i.Conversations).FirstOrDefaultAsync(u => u.Information.ID == int.Parse(value));
-                        break;
-                }
-                return user;
-            }
-        }
+        //public async Task<User> GetBy(dynamic condition)
+        //{
+        //    using (AppDBContext _context = new AppDBContext())
+        //    {
+        //        string field = condition.field;
+        //        string value = condition.value;
+        //        User user = null;
+        //        switch (field)
+        //        {
+        //            case "JWT":
+        //                user = await _context.Users.Include(u => u.Information).FirstOrDefaultAsync(u => u.JWT == value);
+        //                break;
+        //            case "ID":
+        //                user = await _context.Users.Include(u => u.Information).FirstOrDefaultAsync(u => u.ID == int.Parse(value));
+        //                break;
+        //            case "InformationID":
+        //                user = await _context.Users.Include(u => u.Information).ThenInclude(i => i.Conversations).FirstOrDefaultAsync(u => u.Information.ID == int.Parse(value));
+        //                break;
+        //        }
+        //        return user;
+        //    }
+        //}
         public async Task<User> GetCalling(string callingJWT, string JWT)
         {
             using (AppDBContext _context = new AppDBContext())
@@ -281,7 +303,7 @@ namespace Blindating.Models.Repositories
                     var feedbacksCount = cpu.Feedbacks.Where(c => c.Direction == null).Count();
                     var answersCount = (from q in cpu.Questions
                                         from a in q.Answers
-                                        where a.Direction == null
+                                        where a.Direction == "Leaved"
                                         select a).ToList().Count;
 
                     tempPopularUsers.Add(new

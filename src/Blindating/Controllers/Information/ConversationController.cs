@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Authorization;
 
-namespace NetCoreAngular2.Controllers
+namespace Blindating.Controllers
 {
     [Produces("application/json")]
     [Route("api/user/[controller]/[action]")]

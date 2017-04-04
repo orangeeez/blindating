@@ -1,11 +1,15 @@
 import { User } from './user';
 export class Answer {
-    id:            number;
-    result:        boolean;
-    userID:        number;
-    remoteUserID:  number;
-    message:       string;
-    informationFK: number;
+    id:               number;
+    result:           boolean;
+    remoteUserID:     number;
+    questionAnswerFK: number;
+    direction:        string;
 
-    user: User;
+    // NotMapped
+    informationQuestionFK: number;
+    remoteInfoQuestionFK: number;
+    remoteUser:       User;
+    questionAnswered: string;
+
 }

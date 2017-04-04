@@ -3,11 +3,11 @@ import { Quote } from './quote';
 
 export class QuoteLike {
     id:            number;
-    result:        boolean;
+    quoteLikeFK:   number;
     remoteUserID:  number;
+    direction:     string;
+    result:        boolean;
     message:       string;
-    informationFK: number;
 
     updateQuote:   Quote;
-    userID:        number;
 }

@@ -4,6 +4,8 @@
     Inject,
     OnInit,
     OnDestroy,
+    OnChanges,
+    AfterViewInit,
     NgZone,
     forwardRef,
     ElementRef,
@@ -20,6 +22,8 @@ import { UserService }  from '../../services/user.service';
 import { User }         from '../../models/user';
 import { Message }      from '../../models/message';
 import { AppComponent } from '../../components/app.component';
+
+declare var $: any;
 @Component({
     selector: 'talk-component',
     templateUrl: 'app/components/router-outlet/talk.component.html',
@@ -37,19 +41,23 @@ import { AppComponent } from '../../components/app.component';
         ])
     ]
 })
-export class TalkComponent implements OnInit, OnDestroy {
-    @ViewChild('dialogBody')    private dialogBody: ElementRef;
-    @ViewChild('videoRemote')   private videoRemote: ElementRef;
-    @ViewChild('expandIcon')    private expandIcon: ElementRef; 
+export class TalkComponent implements OnInit, OnDestroy, AfterViewInit {
+    @ViewChild('talk')          private talk:          ElementRef;    
+    @ViewChild('dialogBody')    private dialogBody:    ElementRef;
+    @ViewChild('videoRemote')   private videoRemote:   ElementRef;
+    @ViewChild('expandIcon')    private expandIcon:    ElementRef; 
     @ViewChild('minimizeVideo') private minimizeVideo: ElementRef;
     @ViewChild('maximizeVideo') private maximizeVideo: ElementRef;
+    @ViewChild('sketchCanvas')  public  sketchCanvas:  ElementRef;
 
-    public isSmileActive: boolean = false;                                                 
-    
-    public app: AppComponent;
+
+    public isSmileActive:   boolean = false;                                                 
+    public app:             AppComponent;
     public isExpandedVideo: boolean;
-    public dialogState: string = 'shown';
-    public messages: Message[] = [
+    public dialogState:     string = 'shown';
+    public talkWidth:       number = 100;
+    public talkHeight:      number = 100;
+    public messages:        Message[] = [
         new Message(
             12, "message-you", "Привет, как твои дела. Давно не виделись. Не хотел бы встретиться, а то я уже соскучился"
         ),
@@ -64,6 +72,7 @@ export class TalkComponent implements OnInit, OnDestroy {
         )
     ];
 
+
     constructor(
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
         private _userService: UserService,
@@ -72,25 +81,49 @@ export class TalkComponent implements OnInit, OnDestroy {
         this.app = app;
     }
     public ngOnInit() {
+        // this.app.user = new User();
+        // this.app.communicationUser = new User();
+
+        if (this.app.selectedUser) this.app._profilemenu.ToggleState();
         this.app._talk = this;
         this.app._header.DeselectMenus();
         this.app._header.isTalkActive = true;
+
+        this.talkWidth  = this.talk.nativeElement.clientWidth;
+        this.talkHeight = this.talk.nativeElement.clientHeight;
+
+        $((function() {
+            this.sketchCanvas.nativeElement = $('#sketch').sketch();
+        }).call(this));
+        
     }
+
     public ngOnDestroy() {
         this.isSmileActive = false;
     }
+
+    public ngAfterViewInit() {
+        this.onMinimizeVideo();
+    }
+
+    public onSketchDraw(): void {
+        this.app.user.peer.send(JSON.stringify(this.sketchCanvas.nativeElement.data().sketch.actions[this.sketchCanvas.nativeElement.data().sketch.actions.length - 1]), this.app.communicationUser.jwt);
+    }
+
     public onSendMessage(textareaMessage: HTMLTextAreaElement): void {
         var message = new Message(+ Date.now, 'message-me', textareaMessage.value);
         this.messages.push(message);
         this.app.user.peer.send(JSON.stringify(message), this.app.communicationUser.jwt);
         textareaMessage.value = '';
     }
+
     public onEnterSendMessage(event: KeyboardEvent, textareaMessage: HTMLTextAreaElement): boolean {
         if (event.keyCode == 13) {
             this.onSendMessage(textareaMessage);
             return false;
         }
     }
+
     public onExpandNarrowVideo(): void {
         if (!this.isExpandedVideo) {
             this.videoRemote.nativeElement.style.height = '100%';
@@ -123,22 +156,26 @@ export class TalkComponent implements OnInit, OnDestroy {
         
         this.isExpandedVideo = !this.isExpandedVideo;        
     }
+
     public onMinimizeVideo(): void {
         this.videoRemote.nativeElement.hidden = true;
         this.maximizeVideo.nativeElement.style.visibility = 'visible';
     }
+
     public onMaximizeVideo(): void {
         this.videoRemote.nativeElement.hidden = false;
         this.maximizeVideo.nativeElement.style.visibility = 'hidden';
     }
+
     public onSmileClick(): void {
         this.isSmileActive = !this.isSmileActive;
     }
+
     private dialogToggle(): void {
         this.dialogState = (this.dialogState == 'hidden') ? this.dialogState = 'shown' : this.dialogState = 'hidden';
     }
-    public dialogToggleDone(event: AnimationTransitionEvent, dialog: HTMLDivElement, arrowShow: HTMLDivElement): void {
-                                                                                
+
+    public dialogToggleDone(event: AnimationTransitionEvent, dialog: HTMLDivElement, arrowShow: HTMLDivElement): void {                                                                         
         if (event.fromState == 'void')
             return;
 

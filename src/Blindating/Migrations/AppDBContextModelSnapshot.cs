@@ -16,28 +16,6 @@ namespace Blindating.Migrations
                 .HasAnnotation("ProductVersion", "1.0.1")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Blindating.Models.Tables.Answer", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Direction");
-
-                    b.Property<string>("Message");
-
-                    b.Property<int>("QuestionAnswerFK");
-
-                    b.Property<int>("RemoteUserID");
-
-                    b.Property<bool>("Result");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("QuestionAnswerFK");
-
-                    b.ToTable("Answers");
-                });
-
             modelBuilder.Entity("Blindating.Models.Tables.Conversation", b =>
                 {
                     b.Property<int>("ID")
@@ -128,9 +106,9 @@ namespace Blindating.Migrations
 
                     b.Property<int>("InformationFeedbackFK");
 
-                    b.Property<bool>("IsNegative");
-
                     b.Property<int>("RemoteUserID");
+
+                    b.Property<bool>("Result");
 
                     b.Property<string>("Text");
 
@@ -189,13 +167,13 @@ namespace Blindating.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("EntityID");
-
                     b.Property<int>("InformationNotificationFK");
 
                     b.Property<bool>("IsShown");
 
-                    b.Property<string>("Table");
+                    b.Property<string>("JSONObject");
+
+                    b.Property<string>("Type");
 
                     b.HasKey("ID");
 
@@ -281,6 +259,26 @@ namespace Blindating.Migrations
                     b.ToTable("Questions");
                 });
 
+            modelBuilder.Entity("Blindating.Models.Tables.QuestionAnswer", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Direction");
+
+                    b.Property<int>("QuestionAnswerFK");
+
+                    b.Property<int>("RemoteUserID");
+
+                    b.Property<bool>("Result");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("QuestionAnswerFK");
+
+                    b.ToTable("Answers");
+                });
+
             modelBuilder.Entity("Blindating.Models.Tables.Quote", b =>
                 {
                     b.Property<int>("ID")
@@ -355,14 +353,6 @@ namespace Blindating.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Blindating.Models.Tables.Answer", b =>
-                {
-                    b.HasOne("Blindating.Models.Tables.Question", "Question")
-                        .WithMany("Answers")
-                        .HasForeignKey("QuestionAnswerFK")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Blindating.Models.Tables.Conversation", b =>
                 {
                     b.HasOne("Blindating.Models.Tables.Information", "Information")
@@ -424,6 +414,14 @@ namespace Blindating.Migrations
                     b.HasOne("Blindating.Models.Tables.Information", "Information")
                         .WithMany("Questions")
                         .HasForeignKey("InformationQuestionFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Blindating.Models.Tables.QuestionAnswer", b =>
+                {
+                    b.HasOne("Blindating.Models.Tables.Question", "Question")
+                        .WithMany("Answers")
+                        .HasForeignKey("QuestionAnswerFK")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

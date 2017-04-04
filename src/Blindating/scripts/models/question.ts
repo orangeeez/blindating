@@ -3,8 +3,8 @@ export class Question {
     message:               string;
     informationQuestionFK: number;
     userID:                number;
-    isEditing:             boolean;
 
     //not mapped
     answered: boolean;
+    isEditing: boolean;
 }

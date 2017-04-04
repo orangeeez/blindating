@@ -12,11 +12,11 @@
         },
         {
             "command": "dotnet",
-            "taskName": "build",
+            "taskName": "dotnet",
             "args": ["build", "src/Blindating/project.json"],
             "isBuildCommand": true,
             "isShellCommand": true,                        
             "problemMatcher": "$msCompile"
-        }
+        },
     ]
 }

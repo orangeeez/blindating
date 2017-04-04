@@ -1,4 +1,11 @@
-﻿input {
+﻿#login .login-outer {
+    display: inline-flex
+}
+#login .login-inner {
+    margin: 0 auto;
+    margin-top: 5px;
+}
+input {
     margin-bottom: 5px;
 }
 label {

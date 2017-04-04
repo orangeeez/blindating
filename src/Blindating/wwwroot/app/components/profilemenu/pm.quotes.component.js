@@ -8,9 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-var quote_service_1 = require("../../services/information/quote.service");
+var core_1 = require('@angular/core');
+var quote_service_1 = require('../../services/information/quote.service');
 var PmQuotesComponent = (function () {
     function PmQuotesComponent(_quoteService) {
         this._quoteService = _quoteService;
@@ -47,11 +46,11 @@ var PmQuotesComponent = (function () {
         quote.up++;
         var qlike = {
             id: 0,
-            result: true,
-            userID: this.app.selectedUser.id,
+            quoteLikeFK: quote.informationQuoteFK,
             remoteUserID: this.app.user.id,
+            direction: 'Leaved',
+            result: true,
             message: this.quotes.find(function (q) { return q.id == quote.id; }).content,
-            informationFK: this.quotes.find(function (q) { return q.id == quote.id; })['information'].id,
             updateQuote: quote
         };
         this._quoteService.SetLike(qlike).subscribe();
@@ -62,11 +61,11 @@ var PmQuotesComponent = (function () {
         quote.down++;
         var qlike = {
             id: 0,
-            result: false,
-            userID: this.app.selectedUser.id,
+            quoteLikeFK: quote.informationQuoteFK,
             remoteUserID: this.app.user.id,
+            direction: "Leaved",
+            result: false,
             message: this.quotes.find(function (q) { return q.id == quote.id; }).content,
-            informationFK: this.quotes.find(function (q) { return q.id == quote.id; })['information'].id,
             updateQuote: quote
         };
         this._quoteService.SetLike(qlike).subscribe();
@@ -127,16 +126,16 @@ var PmQuotesComponent = (function () {
                 break;
         }
     };
+    PmQuotesComponent = __decorate([
+        core_1.Component({
+            selector: 'pm-quotes-component',
+            templateUrl: 'app/components/profilemenu/pm.quotes.component.html',
+            styleUrls: ['app/components/profilemenu/pm.quotes.component.css'],
+            inputs: ['app', 'quotes'],
+            outputs: ['onBack']
+        }), 
+        __metadata('design:paramtypes', [quote_service_1.QuoteService])
+    ], PmQuotesComponent);
     return PmQuotesComponent;
 }());
-PmQuotesComponent = __decorate([
-    core_1.Component({
-        selector: 'pm-quotes-component',
-        templateUrl: 'app/components/profilemenu/pm.quotes.component.html',
-        styleUrls: ['app/components/profilemenu/pm.quotes.component.css'],
-        inputs: ['app', 'quotes'],
-        outputs: ['onBack']
-    }),
-    __metadata("design:paramtypes", [quote_service_1.QuoteService])
-], PmQuotesComponent);
 exports.PmQuotesComponent = PmQuotesComponent;

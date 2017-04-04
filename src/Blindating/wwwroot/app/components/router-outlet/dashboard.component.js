@@ -11,18 +11,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-var router_1 = require("@angular/router");
-var core_2 = require("angular2-cookie/core");
-var user_service_1 = require("../../services/user.service");
-var app_component_1 = require("../../components/app.component");
+var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
+var core_2 = require('angular2-cookie/core');
+var user_service_1 = require('../../services/user.service');
+var notification_service_1 = require('../../services/information/notification.service');
+var app_component_1 = require('../../components/app.component');
 var DashboardComponent = (function () {
-    function DashboardComponent(app, _userService, _cookieService, _router) {
+    function DashboardComponent(app, _userService, _cookieService, _notificationService, _router) {
         var _this = this;
         this._userService = _userService;
         this._cookieService = _cookieService;
+        this._notificationService = _notificationService;
         this._router = _router;
+        this.pickupState = 'deselected';
         this.isActiveExpanded = false;
         this.isNewExpanded = false;
         this.isPopularExpanded = false;
@@ -41,15 +43,11 @@ var DashboardComponent = (function () {
         };
     }
     DashboardComponent.prototype.ngOnInit = function () {
-        var _this = this;
         this.app._dashboard = this;
         this.app._header.DeselectMenus();
         this.app._header.isDashboardActive = true;
-        this._userService.GetAll()
-            .subscribe(function (users) {
-            _this.app.users = users.filter(_this.removeCurrentUser);
-            _this.isUsersLoaded = true;
-        });
+        if (this.app.isPickupShow)
+            this.pickupToggle();
     };
     DashboardComponent.prototype.ngAfterViewInit = function () {
         var _this = this;
@@ -61,8 +59,12 @@ var DashboardComponent = (function () {
         this.dashboardStatsHeight = this.dashboardStats.nativeElement.clientHeight;
         this.maxUsersColumns = this.dashboardWidth / Math.round((this.dashboardWidth * 8.3) / 100);
         this.maxUsersStatsColumns = this.dashboardWidth / Math.round((this.dashboardWidth * 25) / 100);
-        this.maxUsersRows = (this.dashboardHeight - (this.dashboardStatsHeight + this.profileStatsHeight)) / this.profileBoardHeight;
-        this.maxUsers = Math.floor(this.maxUsersColumns) * Math.floor(this.maxUsersRows);
+        this.maxUsers = Math.floor(this.maxUsersColumns) * 4;
+        this._userService.GetAll()
+            .subscribe(function (users) {
+            _this.app.users = users.filter(_this.removeCurrentUser);
+            _this.isUsersLoaded = true;
+        });
         this._userService.GetNew(Math.round(this.maxUsersStatsColumns))
             .subscribe(function (users) {
             _this.newUsers = users;
@@ -78,13 +80,21 @@ var DashboardComponent = (function () {
             _this.popularUsers = users;
             _this.isNewUsersLoaded = true;
         });
-        if (Math.round(this.maxUsersRows) <= 0)
-            this.maxUsers = 1;
+        // if (Math.round(this.maxUsersRows) <= 0) this.maxUsers = 1;
         this._userService.GetRandom(this.maxUsers)
             .subscribe(function (users) {
             _this.app.users = users.filter(_this.removeCurrentUser);
             _this.isUsersLoaded = true;
         });
+        this._notificationService.GetCount(this.app.user.id)
+            .subscribe(function (notificaitionCount) {
+            if (notificaitionCount > 99)
+                notificaitionCount = 99;
+            _this.app._header.notificationCount = notificaitionCount;
+        });
+    };
+    DashboardComponent.prototype.pickupToggle = function () {
+        this.pickupState = (this.pickupState === 'selected' ? 'deselected' : 'selected');
     };
     DashboardComponent.prototype.onExpandNew = function () {
         var _this = this;
@@ -135,29 +145,50 @@ var DashboardComponent = (function () {
             _this.app.users = users.filter(_this.removeCurrentUser);
         });
     };
+    DashboardComponent.prototype.onPickupDone = function (event) { };
+    DashboardComponent.prototype.onPickupInvite = function () {
+        this.app.isPickupShow = false;
+        this.app._helper.onInviteAcceptCall();
+    };
+    DashboardComponent.prototype.onPickupDecline = function () {
+        this.app.isPickupShow = false;
+        this.pickupToggle();
+    };
     DashboardComponent.prototype.getUsersCountForExpand = function () {
         return Math.floor((this.dashboardHeight - (Math.round(this.maxUsersStatsColumns) * this.profileStatsHeightExpanded)) / this.profileStatsHeightExpanded);
     };
+    __decorate([
+        core_1.ViewChild('dashboard'), 
+        __metadata('design:type', core_1.ElementRef)
+    ], DashboardComponent.prototype, "dashboard", void 0);
+    __decorate([
+        core_1.ViewChild('dashboardStats'), 
+        __metadata('design:type', core_1.ElementRef)
+    ], DashboardComponent.prototype, "dashboardStats", void 0);
+    DashboardComponent = __decorate([
+        core_1.Component({
+            selector: 'dashboard-component',
+            templateUrl: 'app/components/router-outlet/dashboard.component.html',
+            styleUrls: ['app/components/router-outlet/dashboard.component.css'],
+            animations: [
+                core_1.trigger('pickupState', [
+                    core_1.state('deselected', core_1.style({
+                        height: '0px',
+                        'padding-top': '0px',
+                    })),
+                    core_1.state('selected', core_1.style({
+                        height: '160px',
+                        'padding-top': '10px'
+                    })),
+                    core_1.transition('deselected => selected', core_1.animate('300ms ease-in')),
+                    core_1.transition('selected => deselected', core_1.animate('300ms ease-out'))
+                ])
+            ]
+        }),
+        __param(0, core_1.Host()),
+        __param(0, core_1.Inject(core_1.forwardRef(function () { return app_component_1.AppComponent; }))), 
+        __metadata('design:paramtypes', [app_component_1.AppComponent, user_service_1.UserService, core_2.CookieService, notification_service_1.NotificationService, router_1.Router])
+    ], DashboardComponent);
     return DashboardComponent;
 }());
-__decorate([
-    core_1.ViewChild('dashboard'),
-    __metadata("design:type", core_1.ElementRef)
-], DashboardComponent.prototype, "dashboard", void 0);
-__decorate([
-    core_1.ViewChild('dashboardStats'),
-    __metadata("design:type", core_1.ElementRef)
-], DashboardComponent.prototype, "dashboardStats", void 0);
-DashboardComponent = __decorate([
-    core_1.Component({
-        selector: 'dashboard-component',
-        templateUrl: 'app/components/router-outlet/dashboard.component.html',
-        styleUrls: ['app/components/router-outlet/dashboard.component.css']
-    }),
-    __param(0, core_1.Host()), __param(0, core_1.Inject(core_1.forwardRef(function () { return app_component_1.AppComponent; }))),
-    __metadata("design:paramtypes", [app_component_1.AppComponent,
-        user_service_1.UserService,
-        core_2.CookieService,
-        router_1.Router])
-], DashboardComponent);
 exports.DashboardComponent = DashboardComponent;

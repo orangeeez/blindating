@@ -6,7 +6,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
-namespace NetCoreAngular2.Controllers.Utils
+namespace Blindating.Controllers.Utils
 {
     public static class TokenAuth
     {

@@ -19,7 +19,7 @@
     "Blindating": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "https://localhost:8000/",
+      "launchUrl": "http://localhost:8000/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

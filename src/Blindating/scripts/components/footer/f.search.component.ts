@@ -17,7 +17,7 @@ import { User }         from '../../models/user';
     selector:    'f-search-component',
     templateUrl: 'app/components/footer/f.search.component.html',
     styleUrls:  ['app/components/footer/f.search.component.css'],
-    inputs:     ['app', 'searchState', ''],
+    inputs:     ['app', 'searchState'],
     animations: [
         trigger('searchState', [
             state('deselected', style({

@@ -10,7 +10,7 @@ using Blindating.Models.Tables;
 using Blindating.Models.Interfaces;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json.Linq;
-using NetCoreAngular2.Controllers.Utils;
+using Blindating.Controllers.Utils;
 using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -41,13 +41,13 @@ namespace Blindating.Controllers
         {
             return new JsonResult(Users.GetAll());
         }
-        [HttpPost]
-        [Authorize("Bearer")]
-        [ActionName("getby")]
-        public JsonResult GetBy([FromBody] dynamic condition)
-        {
-            return new JsonResult(Users.GetBy(condition));
-        }
+        //[HttpPost]
+        //[Authorize("Bearer")]
+        //[ActionName("getby")]
+        //public JsonResult GetBy([FromBody] dynamic condition)
+        //{
+        //    return new JsonResult(Users.GetBy(condition));
+        //}
         [HttpPost]
         [Authorize("Bearer")]
         [ActionName("update")]

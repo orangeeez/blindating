@@ -1,13 +1,13 @@
 ﻿using Blindating.Models.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NetCoreAngular2.Models.Tables.Utils;
+using Blindating.Models.Tables.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NetCoreAngular2.Controllers.Search
+namespace Blindating.Controllers.Search
 {
     [Produces("application/json")]
     [Route("api/[controller]/[action]")]
@@ -25,5 +25,12 @@ namespace NetCoreAngular2.Controllers.Search
         {
             return new JsonResult(Search.SearchUsers(Request.Headers["Authorization"].ToString().Remove(0, 7), searchData));
         }
+        // ================== MANY TO MANY RELATIONSHIPS EXAMPLE ==================
+        //[HttpGet]
+        //[ActionName("test")]
+        //public JsonResult Test()
+        //{
+        //    return new JsonResult(Search.Test());
+        //}
     }
 }

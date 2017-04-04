@@ -25,6 +25,11 @@
                                         [app]="app"
                                         [selectedUser]="app.selectedUser">
                 </pm-feedbacks-component>
+                <pm-notifications-component *ngIf="tab.title == 'Notifications' &&
+                                                   tab.active"
+                                        [app]="app"
+                                        [selectedUser]="app.selectedUser">
+                </pm-notifications-component>
             </tab>
         </tabset>
     </div>

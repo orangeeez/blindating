@@ -11,12 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-var router_1 = require("@angular/router");
-var user_service_1 = require("../../services/user.service");
-var message_1 = require("../../models/message");
-var app_component_1 = require("../../components/app.component");
+var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
+var user_service_1 = require('../../services/user.service');
+var message_1 = require('../../models/message');
+var app_component_1 = require('../../components/app.component');
 var TalkComponent = (function () {
     function TalkComponent(app, _userService, _router, _zone) {
         this._userService = _userService;
@@ -24,6 +23,8 @@ var TalkComponent = (function () {
         this._zone = _zone;
         this.isSmileActive = false;
         this.dialogState = 'shown';
+        this.talkWidth = 100;
+        this.talkHeight = 100;
         this.messages = [
             new message_1.Message(12, "message-you", "Привет, как твои дела. Давно не виделись. Не хотел бы встретиться, а то я уже соскучился"),
             new message_1.Message(12, "message-you", "Как ты"),
@@ -33,12 +34,27 @@ var TalkComponent = (function () {
         this.app = app;
     }
     TalkComponent.prototype.ngOnInit = function () {
+        // this.app.user = new User();
+        // this.app.communicationUser = new User();
+        if (this.app.selectedUser)
+            this.app._profilemenu.ToggleState();
         this.app._talk = this;
         this.app._header.DeselectMenus();
         this.app._header.isTalkActive = true;
+        this.talkWidth = this.talk.nativeElement.clientWidth;
+        this.talkHeight = this.talk.nativeElement.clientHeight;
+        $((function () {
+            this.sketchCanvas.nativeElement = $('#sketch').sketch();
+        }).call(this));
     };
     TalkComponent.prototype.ngOnDestroy = function () {
         this.isSmileActive = false;
+    };
+    TalkComponent.prototype.ngAfterViewInit = function () {
+        this.onMinimizeVideo();
+    };
+    TalkComponent.prototype.onSketchDraw = function () {
+        this.app.user.peer.send(JSON.stringify(this.sketchCanvas.nativeElement.data().sketch.actions[this.sketchCanvas.nativeElement.data().sketch.actions.length - 1]), this.app.communicationUser.jwt);
     };
     TalkComponent.prototype.onSendMessage = function (textareaMessage) {
         var message = new message_1.Message(+Date.now, 'message-me', textareaMessage.value);
@@ -121,50 +137,56 @@ var TalkComponent = (function () {
             }
         }
     };
+    __decorate([
+        core_1.ViewChild('talk'), 
+        __metadata('design:type', core_1.ElementRef)
+    ], TalkComponent.prototype, "talk", void 0);
+    __decorate([
+        core_1.ViewChild('dialogBody'), 
+        __metadata('design:type', core_1.ElementRef)
+    ], TalkComponent.prototype, "dialogBody", void 0);
+    __decorate([
+        core_1.ViewChild('videoRemote'), 
+        __metadata('design:type', core_1.ElementRef)
+    ], TalkComponent.prototype, "videoRemote", void 0);
+    __decorate([
+        core_1.ViewChild('expandIcon'), 
+        __metadata('design:type', core_1.ElementRef)
+    ], TalkComponent.prototype, "expandIcon", void 0);
+    __decorate([
+        core_1.ViewChild('minimizeVideo'), 
+        __metadata('design:type', core_1.ElementRef)
+    ], TalkComponent.prototype, "minimizeVideo", void 0);
+    __decorate([
+        core_1.ViewChild('maximizeVideo'), 
+        __metadata('design:type', core_1.ElementRef)
+    ], TalkComponent.prototype, "maximizeVideo", void 0);
+    __decorate([
+        core_1.ViewChild('sketchCanvas'), 
+        __metadata('design:type', core_1.ElementRef)
+    ], TalkComponent.prototype, "sketchCanvas", void 0);
+    TalkComponent = __decorate([
+        core_1.Component({
+            selector: 'talk-component',
+            templateUrl: 'app/components/router-outlet/talk.component.html',
+            styleUrls: ['app/components/router-outlet/talk.component.css'],
+            animations: [
+                core_1.trigger('dialogState', [
+                    core_1.state('hidden', core_1.style({
+                        width: '0px'
+                    })),
+                    core_1.state('shown', core_1.style({
+                        width: '33.3%'
+                    })),
+                    core_1.transition('hidden => shown', core_1.animate('100ms ease-in')),
+                    core_1.transition('shown => hidden', core_1.animate('100ms ease-out'))
+                ])
+            ]
+        }),
+        __param(0, core_1.Host()),
+        __param(0, core_1.Inject(core_1.forwardRef(function () { return app_component_1.AppComponent; }))), 
+        __metadata('design:paramtypes', [app_component_1.AppComponent, user_service_1.UserService, router_1.Router, core_1.NgZone])
+    ], TalkComponent);
     return TalkComponent;
 }());
-__decorate([
-    core_1.ViewChild('dialogBody'),
-    __metadata("design:type", core_1.ElementRef)
-], TalkComponent.prototype, "dialogBody", void 0);
-__decorate([
-    core_1.ViewChild('videoRemote'),
-    __metadata("design:type", core_1.ElementRef)
-], TalkComponent.prototype, "videoRemote", void 0);
-__decorate([
-    core_1.ViewChild('expandIcon'),
-    __metadata("design:type", core_1.ElementRef)
-], TalkComponent.prototype, "expandIcon", void 0);
-__decorate([
-    core_1.ViewChild('minimizeVideo'),
-    __metadata("design:type", core_1.ElementRef)
-], TalkComponent.prototype, "minimizeVideo", void 0);
-__decorate([
-    core_1.ViewChild('maximizeVideo'),
-    __metadata("design:type", core_1.ElementRef)
-], TalkComponent.prototype, "maximizeVideo", void 0);
-TalkComponent = __decorate([
-    core_1.Component({
-        selector: 'talk-component',
-        templateUrl: 'app/components/router-outlet/talk.component.html',
-        styleUrls: ['app/components/router-outlet/talk.component.css'],
-        animations: [
-            core_1.trigger('dialogState', [
-                core_1.state('hidden', core_1.style({
-                    width: '0px'
-                })),
-                core_1.state('shown', core_1.style({
-                    width: '33.3%'
-                })),
-                core_1.transition('hidden => shown', core_1.animate('100ms ease-in')),
-                core_1.transition('shown => hidden', core_1.animate('100ms ease-out'))
-            ])
-        ]
-    }),
-    __param(0, core_1.Host()), __param(0, core_1.Inject(core_1.forwardRef(function () { return app_component_1.AppComponent; }))),
-    __metadata("design:paramtypes", [app_component_1.AppComponent,
-        user_service_1.UserService,
-        router_1.Router,
-        core_1.NgZone])
-], TalkComponent);
 exports.TalkComponent = TalkComponent;

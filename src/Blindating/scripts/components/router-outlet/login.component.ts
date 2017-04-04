@@ -3,14 +3,19 @@
     Host,
     Inject,
     OnInit,
-    forwardRef
+    forwardRef,
+    trigger,
+    state,
+    style,
+    transition,
+    animate
 }                        from '@angular/core';
 import { Router }        from '@angular/router';
 import { CookieService } from 'angular2-cookie/core';
 import { UserService }   from '../../services/user.service';
-import { SocialService }   from '../../services/social.service';
-
+import { SocialService } from '../../services/social.service';
 import { User }          from '../../models/user';
+import { MatchQuestion } from '../../models/matchquestion';
 import { AppComponent }  from '../../components/app.component';
 
 declare var VK: any;
@@ -18,6 +23,21 @@ declare var VK: any;
     selector:    'login-component',
     templateUrl: 'app/components/router-outlet/login.component.html',
     styleUrls:   ['app/components/router-outlet/login.component.css'],
+    animations: [
+        trigger('pickupState', [
+            state('deselected', style({
+                height: '0px',
+                'padding-top': '0px'
+            })),
+            state('selected', style({
+                height: '160px',
+                'padding-top': '10px'
+                
+            })),
+            transition('deselected => selected', animate('300ms ease-in')),
+            transition('selected => deselected', animate('300ms ease-out'))
+        ])
+    ]
 })
 export class LoginComponent implements OnInit {
     public windowVKAuth: Window;
@@ -27,16 +47,18 @@ export class LoginComponent implements OnInit {
     public email:     string;
     public password:  string;
     public facebook:  string;
-    public vk      :  string;
+    public vk:        string;
     public firstname: string;
     public lastname:  string;
     public phrase:    string;
     public JWT:       string;
+    public matchQuestions:     MatchQuestion[] = [];
+    public indexMatchQuestion: number = 0;
+    public pickupState:        string = 'deselected';
 
     public isPhraseFocused: boolean = false;
 
     public alert: any = { show: false, type: 'success', reason: null };
-
     public tabs: Array<any> = [
         { title: 'Login', active: true },
         { title: 'Register' }
@@ -54,7 +76,10 @@ export class LoginComponent implements OnInit {
     public ngOnInit() {
         this.JWT = localStorage.getItem('id_token');
 
-        if (this.JWT) this.Login();
+        if (this.JWT) {
+            this.app.isPickupShow = true;
+            this.Login();
+        }
         else {
             VK.init({
                 apiId: 5549517
@@ -83,6 +108,14 @@ export class LoginComponent implements OnInit {
                 fjs.parentNode.insertBefore(js, fjs);
             } (document, 'script', 'facebook-jssdk'));
         }
+
+        let mq = new MatchQuestion(
+            0,
+            'Religion',
+            'Could you live without the Internet?'
+        );
+
+        this.matchQuestions.push(mq);
     }
 
     public Login(response?: Object): void {
@@ -103,6 +136,7 @@ export class LoginComponent implements OnInit {
         this._userService.Register(this.CreateUser())
             .subscribe(response => this.HandleRegisterResponse(response));
     }
+
     public onAuthSocial(): void {
         if (event.srcElement.className == 'fa fa-facebook')
             this.GetFacebookInfoAPI();
@@ -203,8 +237,32 @@ export class LoginComponent implements OnInit {
             this.app.user = user;
             this.app.initializeWebRTC();
             this.app.isHelperShow = true;
-            this.app.isHeaderShow = true;
-            this._router.navigate(['/dashboard']);
+
+            if (this.JWT) {
+                this.app.isHeaderShow = true;       
+                this._router.navigate(['/dashboard']);
+            }
+            else {
+                this.alert.show = true;
+                this.alert.reason = user.reason;
+
+                this.app.isHeaderShow = false;                       
+                this.tabs[1].disabled = true;
+
+                let u = new User();
+
+                u.id = 2;
+                u.firstname = "Viktor";
+                u.lastname = "Orkush";
+                u.email = "v.orkush@gmail.com";
+                u.image = 'images/users/3hqzwa25.agr.jpg';
+                u.jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InYub3JrdXNoQGdtYWlsLmNvbSIsImlzcyI6Iklzc3VlciIsImF1ZCI6IkF1ZGllbmNlIn0.flhwvv4VCsaKp0grVAbB2RBGJkutHle2CgvvgdoTkDo';
+
+                this.app.selectedUser = u;
+                this.app.isPickupShow = true;
+                this.pickupToggle();
+            }
+
             localStorage.setItem('id_token', user.jwt);
         }
     }
@@ -215,6 +273,23 @@ export class LoginComponent implements OnInit {
 
     public onFocusoutPhrase(): void {
         this.isPhraseFocused = false;
+    }
+
+    public pickupToggle() {
+        this.pickupState = (this.pickupState === 'selected' ? 'deselected' : 'selected');
+    }
+
+    public onPickupInvite(): void {
+        this.app.isPickupShow = false;
+        this.pickupToggle();
+        this.app._helper.onInviteAcceptCall();
+    }
+
+    public onPickupDecline(): void {
+        this.app.isPickupShow = false;
+        this.app.selectedUser = null;
+        this.app.isHeaderShow = true;
+        this._router.navigate(['/dashboard']);
     }
 
     private setAccessTokenInterval = (session: any) => {

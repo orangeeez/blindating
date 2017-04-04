@@ -13,7 +13,6 @@ gulp.task('restore', function () {
         'node_modules/zone.js/dist/*.js',
         'node_modules/core-js/client/*.js',
         'node_modules/reflect-metadata/reflect.js',
-        'node_modules/jquery/dist/*.js',
         'node_modules/bootstrap/dist/**/*.*',
         'node_modules/ng2-bootstrap/bundles/ng2-bootstrap.min.js',
         'node_modules/ng2-file-upload/**/*',
@@ -21,7 +20,8 @@ gulp.task('restore', function () {
         'node_modules/jwt-simple/lib/jwt.js',
         'node_modules/angular2-cookie/**/*',
         'node_modules/photoswipe/dist/**/*',
-        'node_modules/angular2-jwt/**/*'
+        'node_modules/angular2-jwt/**/*',
+        'node_modules/jquery/dist/jquery.min.js'
     ],  {
             base: 'node_modules'
         }).pipe(gulp.dest('./wwwroot/libs'));

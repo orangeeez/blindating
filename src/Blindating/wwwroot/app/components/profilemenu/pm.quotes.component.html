@@ -41,22 +41,22 @@
                 <div *ngIf="!quote.isEditing">
                     <p>{{quote.content}}</p>
                     <div class="quote-menu">
-                        <i *ngIf="!app.isSelectedYou" class="up-counter">
+                        <i class="up-counter">
                             {{quote.up}}
                         </i>
-                        <i *ngIf="!app.isSelectedYou" class="fa thumbs-up"
+                        <i class="fa thumbs-up"
                            [class.fa-thumbs-o-up]="!quote.isLike"
                            [class.fa-thumbs-up]="quote.isLike"
                            [class.disabled]="quote.isAnswered"
                            [style.color]="quote.isLike ? '#42A948' : '#333'"
                            (click)="onUpQuote(quote)"></i>
-                        <i *ngIf="!app.isSelectedYou" class="fa thumbs-down"
+                        <i class="fa thumbs-down"
                            [class.fa-thumbs-o-down]="!quote.isDislike"
                            [class.fa-thumbs-down]="quote.isDislike"
                            [class.disabled]="quote.isAnswered"
                            [style.color]="quote.isDislike ? '#a94442' : '#333'"
                            (click)="onDownQuote(quote)"></i>
-                        <i *ngIf="!app.isSelectedYou" class="down-counter">
+                        <i class="down-counter">
                             {{quote.down}}
                         </i>
                         <i *ngIf="app.isSelectedYou" class="fa fa-pencil pencil"

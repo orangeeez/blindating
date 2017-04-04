@@ -1,11 +1,12 @@
 ﻿using Blindating.Models.Interfaces;
 using Blindating.Models.Tables;
 using Microsoft.EntityFrameworkCore;
-using NetCoreAngular2.Models.Repositories;
+using Blindating.Models.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Blindating.Models.Repositories
 {
@@ -50,18 +51,14 @@ namespace Blindating.Models.Repositories
             }
         }
 
-        public async Task<bool> SetAnswer(Answer answer)
+        public async Task<bool> SetAnswer(QuestionAnswer answer)
         {
             using (AppDBContext _context = new AppDBContext())
             {
-                var questionFK = (from q in _context.Questions
-                                  where q.InformationQuestionFK == answer.InformationFK && q.Message == answer.Message
-                                  select q.ID).SingleOrDefault();
-
-                answer.Direction = "Leaved";
-                answer.QuestionAnswerFK = questionFK;
-
+                QuestionAnswer remoteAnswer = new QuestionAnswer(answer);
+                remoteAnswer.RemoteUser = await GetBy(new { field = "InformationID", value = answer.InformationQuestionFK.ToString() });
                 _context.Answers.Add(answer);
+                _context.Notifications.Add(Notification.Create(answer.RemoteInfoQuestionFK, "answer", JsonConvert.SerializeObject(remoteAnswer)));
                 await _context.SaveChangesAsync();
 
                 return true;
@@ -74,9 +71,8 @@ namespace Blindating.Models.Repositories
 
             foreach (Question q in questions)
             {
-                foreach (Answer a in q.Answers)
-                    if (q.Message == a.Message && 
-                        a.RemoteUserID == ID)
+                foreach (QuestionAnswer a in q.Answers)
+                    if (a.RemoteUserID == ID)
                         q.Answered = a.Result;
             }
             return answeredQuestions;
@@ -95,8 +91,8 @@ namespace Blindating.Models.Repositories
 
             foreach (Question q in questions)
             {
-                foreach (Answer a in q.Answers)
-                    if (q.Message == a.Message && a.RemoteUserID == ID)
+                foreach (QuestionAnswer a in q.Answers)
+                    if (a.RemoteUserID == ID)
                         notAnsweredQuestions.Remove(q);
 
                 if (notAnsweredQuestions.Count == 0)
@@ -104,7 +100,6 @@ namespace Blindating.Models.Repositories
                     question.Message = "You answered on all questions";
                     notAnsweredQuestions.Add(question);
                 }
-
             }
             return notAnsweredQuestions;
         }

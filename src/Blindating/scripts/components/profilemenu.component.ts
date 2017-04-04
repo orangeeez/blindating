@@ -38,6 +38,7 @@ export class ProfilemenuComponent implements OnInit {
         this.app.selectedUser = null;
         this.app.isLoginShow  = true;
         this.app.isHeaderShow = false;
+        this.app.isPickupShow = false;
         this.app._profilemenu.ToggleState();
         this.app._header.DeselectMenus();
         this.app._header.isProfileActive = false;
@@ -56,6 +57,14 @@ export class ProfilemenuComponent implements OnInit {
     public setBasicTabActive() {
         for (var t of this.tabs)
             if (t.title != 'Basic')
+                t.active = false;
+            else
+                t.active = true;
+    }
+
+    public setNotificationTabActive() {
+        for (var t of this.tabs)
+            if (t.title != 'Notifications')
                 t.active = false;
             else
                 t.active = true;

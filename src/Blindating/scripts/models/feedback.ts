@@ -1,14 +1,13 @@
 import { User } from '../models/user';
 export class Feedback {
     id:                    number;
+    remoteUserID:          number;
     informationFeedbackFK: number;
     text:                  string;
-    video:                 string;
-    audio:                 string;
-    userID:                number;
-    remoteUserID:          number;
-    isNegative:            boolean;
-    Direction:             string;
-    user:                  User;
+    result:                boolean;
+    direction:             string;
+
+    // NotMapped
     remoteUser:            User;
+    remoteInfoFeedbackFK:  number;
 }

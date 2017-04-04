@@ -1,5 +1,5 @@
 ﻿using Blindating.Models.Tables;
-using NetCoreAngular2.Models.Interfaces;
+using Blindating.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +11,5 @@ namespace Blindating.Models.Interfaces
     {
         Task<IEnumerable<Feedback>> GetAllByID(int userID);
         Task<int> AddOther(Feedback feedback);
-
     }
 }

@@ -1,4 +1,4 @@
-﻿using NetCoreAngular2.Models.Interfaces;
+﻿using Blindating.Models.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Blindating.Models.Interfaces
 {
-    interface INotificationRepository
+    public interface INotificationRepository : IBaseRepository<Notification>
     {
-        List<string> GetNotifications(int userID);
-        dynamic GetAnswerNotification(int answerID);
-        bool UpdateNotifications(List<Notification> updateNotifications);
+        Task<IEnumerable<Notification>> GetAllByID(int userID);
+        Task<int> GetCount(int userID);
     }
 }

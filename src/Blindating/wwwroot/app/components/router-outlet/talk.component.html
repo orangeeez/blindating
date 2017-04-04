@@ -1,4 +1,8 @@
-﻿<div id="talk">
+﻿<div #talk id="talk">
+    <canvas #sketchCanvas id="sketch"
+    [width]="talkWidth" 
+    [height]="talkHeight"
+    (click)="onSketchDraw()"></canvas>
     <div #videoRemote *ngIf="true || app.videoState == 'initiatedVideo'" id="video-remote" class="video-remote">
         <div #expandIcon class="expand"
             (click)="onExpandNarrowVideo()">

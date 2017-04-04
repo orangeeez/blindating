@@ -5,6 +5,8 @@
 
         <img *ngIf="app.user" class="avatar-decoration" 
              [src]="app.user.image">
+
+        <div *ngIf="notificationCount != 0" class="notification-decoration">{{notificationCount}}</div>
     </a>
     <p class="navbar-text navbar-right navbar-text-decoration"
        routerLink="/dashboard"

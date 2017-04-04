@@ -8,11 +8,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-var config_1 = require("../static/config");
-var utils_1 = require("../static/utils");
-var user_service_1 = require("../services/user.service");
+var core_1 = require('@angular/core');
+var config_1 = require('../static/config');
+var utils_1 = require('../static/utils');
+var user_service_1 = require('../services/user.service');
 var HelperComponent = (function () {
     function HelperComponent(_userService, _ref) {
         var _this = this;
@@ -127,16 +126,15 @@ var HelperComponent = (function () {
         this.isSearchInitiated = !this.isSearchInitiated;
         this.app._footer.searchToggle();
     };
+    HelperComponent = __decorate([
+        core_1.Component({
+            selector: 'helper-component',
+            templateUrl: 'app/components/helper.component.html',
+            styleUrls: ['app/components/helper.component.css'],
+            inputs: ['app']
+        }), 
+        __metadata('design:paramtypes', [user_service_1.UserService, core_1.ChangeDetectorRef])
+    ], HelperComponent);
     return HelperComponent;
 }());
-HelperComponent = __decorate([
-    core_1.Component({
-        selector: 'helper-component',
-        templateUrl: 'app/components/helper.component.html',
-        styleUrls: ['app/components/helper.component.css'],
-        inputs: ['app']
-    }),
-    __metadata("design:paramtypes", [user_service_1.UserService,
-        core_1.ChangeDetectorRef])
-], HelperComponent);
 exports.HelperComponent = HelperComponent;

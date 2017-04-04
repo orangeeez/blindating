@@ -20,12 +20,16 @@ namespace Blindating.Models
         public DbSet<City> Cities { get; set; }
         public DbSet<Preference> Preferences { get; set; }
         public DbSet<Question> Questions { get; set; }
-        public DbSet<Answer> Answers { get; set; }
+        public DbSet<QuestionAnswer> Answers { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Conversation> Conversations { get; set; }
         public DbSet<Detail> Details { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<QuoteLike> QuoteLikes { get; set; }
+
+        // ================== MANY TO MANY RELATIONSHIPS EXAMPLE ==================
+        //public DbSet<Like> Likes { get; set; }
+        //public DbSet<QLike> QLikes { get; set; }
 
         #region Determine Relationships
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -84,12 +88,27 @@ namespace Blindating.Models
                 .HasMany(p => p.QuoteLikes)
                 .WithOne(i => i.Quote)
                 .HasForeignKey(b => b.QuoteLikeFK);
+
+            // ================== MANY TO MANY RELATIONSHIPS EXAMPLE ==================
+            //modelBuilder.Entity<QLike>()
+            //    .HasKey(ql => new { ql.LikeID, ql.QuoteID });
+
+            //modelBuilder.Entity<QLike>()
+            //    .HasOne(l => l.Like)
+            //    .WithMany(ql => ql.QLike)
+            //    .HasForeignKey(l => l.LikeID);
+
+            //modelBuilder.Entity<QLike>()
+            //    .HasOne(q => q.Quote)
+            //    .WithMany(ql => ql.QLike)
+            //    .HasForeignKey(q => q.QuoteID);
         }
+
         #endregion
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             if (Program.LaunchType == "docker-remote")
-                options.UseSqlServer("Data Source=212.26.131.227,5433;Initial Catalog=blindating;Integrated Security=False;MultipleActiveResultSets=true;User Id=SA;Password=f00tBall");
+                options.UseSqlServer("Data Source=212.26.131.227,8081;Initial Catalog=blindating;Integrated Security=False;MultipleActiveResultSets=true;User Id=sa;Password=f00tBall;");
             else if (Program.LaunchType == "docker-local")
                 options.UseSqlServer("Data Source=blindating-sql;Initial Catalog=blindating;Integrated Security=False;MultipleActiveResultSets=true;User Id=SA;Password=f00tBall");
             else

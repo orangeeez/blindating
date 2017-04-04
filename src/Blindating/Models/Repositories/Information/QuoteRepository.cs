@@ -1,7 +1,7 @@
 ﻿using Blindating.Models.Interfaces;
 using Blindating.Models.Tables;
 using Microsoft.EntityFrameworkCore;
-using NetCoreAngular2.Models.Repositories;
+using Blindating.Models.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,19 +37,6 @@ namespace Blindating.Models.Repositories
         {
             using (AppDBContext _context = new AppDBContext())
             {
-                User user = await _context.Users.Include(u => u.Information)
-                                                .ThenInclude(i => i.Quotes)
-                                                .ThenInclude(q => q.QuoteLikes)
-                    .Where(u => u.ID == qlike.UserID)
-                    .SingleOrDefaultAsync();
-
-                var quoteFK = (from q in user.Information.Quotes
-                               where q.InformationQuoteFK == qlike.InformationFK && q.Content == qlike.Message
-                               select q.ID).SingleOrDefault();
-
-                qlike.Direction = "Leaved";
-                qlike.QuoteLikeFK = quoteFK;
-
                 await Update(qlike.UpdateQuote);
                 _context.QuoteLikes.Add(qlike);
                 await _context.SaveChangesAsync();

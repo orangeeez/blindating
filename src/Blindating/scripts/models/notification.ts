@@ -1,6 +1,16 @@
 export class Notification {
     ID: number;
-    Table: string;
-    EntityID: string;
-    IsShown: boolean;
+    type: string;
+    JSONObject: string;
+    isShown: boolean;
+
+    // NotMapped
+    object: any;
+
+    constructor(ID, type, JSONObject, isShown) {
+        this.ID      = ID;
+        this.type    = type;
+        this.JSONObject  = JSONObject;
+        this.isShown = isShown;
+    }
 }

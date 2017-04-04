@@ -11,14 +11,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-var router_1 = require("@angular/router");
-var core_2 = require("angular2-cookie/core");
-var user_service_1 = require("../../services/user.service");
-var social_service_1 = require("../../services/social.service");
-var user_1 = require("../../models/user");
-var app_component_1 = require("../../components/app.component");
+var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
+var core_2 = require('angular2-cookie/core');
+var user_service_1 = require('../../services/user.service');
+var social_service_1 = require('../../services/social.service');
+var user_1 = require('../../models/user');
+var matchquestion_1 = require('../../models/matchquestion');
+var app_component_1 = require('../../components/app.component');
 var LoginComponent = (function () {
     function LoginComponent(app, _userService, _cookieService, _socialService, _router) {
         var _this = this;
@@ -26,6 +26,9 @@ var LoginComponent = (function () {
         this._cookieService = _cookieService;
         this._socialService = _socialService;
         this._router = _router;
+        this.matchQuestions = [];
+        this.indexMatchQuestion = 0;
+        this.pickupState = 'deselected';
         this.isPhraseFocused = false;
         this.alert = { show: false, type: 'success', reason: null };
         this.tabs = [
@@ -39,12 +42,10 @@ var LoginComponent = (function () {
                     self.SetVKInfoAPI(response.session);
                     /* User is authorized successfully */
                     if (response.settings) {
-                        /* Selected user access settings, if they were requested */
                     }
                 }
                 else {
                     console.log('VK canceled');
-                    /* User clicked Cancel button in the authorization window */
                 }
             });
         };
@@ -104,8 +105,26 @@ var LoginComponent = (function () {
                 _this.app.user = user;
                 _this.app.initializeWebRTC();
                 _this.app.isHelperShow = true;
-                _this.app.isHeaderShow = true;
-                _this._router.navigate(['/dashboard']);
+                if (_this.JWT) {
+                    _this.app.isHeaderShow = true;
+                    _this._router.navigate(['/dashboard']);
+                }
+                else {
+                    _this.alert.show = true;
+                    _this.alert.reason = user.reason;
+                    _this.app.isHeaderShow = false;
+                    _this.tabs[1].disabled = true;
+                    var u = new user_1.User();
+                    u.id = 2;
+                    u.firstname = "Viktor";
+                    u.lastname = "Orkush";
+                    u.email = "v.orkush@gmail.com";
+                    u.image = 'images/users/3hqzwa25.agr.jpg';
+                    u.jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InYub3JrdXNoQGdtYWlsLmNvbSIsImlzcyI6Iklzc3VlciIsImF1ZCI6IkF1ZGllbmNlIn0.flhwvv4VCsaKp0grVAbB2RBGJkutHle2CgvvgdoTkDo';
+                    _this.app.selectedUser = u;
+                    _this.app.isPickupShow = true;
+                    _this.pickupToggle();
+                }
                 localStorage.setItem('id_token', user.jwt);
             }
         };
@@ -142,8 +161,10 @@ var LoginComponent = (function () {
     }
     LoginComponent.prototype.ngOnInit = function () {
         this.JWT = localStorage.getItem('id_token');
-        if (this.JWT)
+        if (this.JWT) {
+            this.app.isPickupShow = true;
             this.Login();
+        }
         else {
             VK.init({
                 apiId: 5549517
@@ -173,6 +194,8 @@ var LoginComponent = (function () {
                 fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));
         }
+        var mq = new matchquestion_1.MatchQuestion(0, 'Religion', 'Could you live without the Internet?');
+        this.matchQuestions.push(mq);
     };
     LoginComponent.prototype.Login = function (response) {
         var _this = this;
@@ -217,6 +240,20 @@ var LoginComponent = (function () {
     LoginComponent.prototype.onFocusoutPhrase = function () {
         this.isPhraseFocused = false;
     };
+    LoginComponent.prototype.pickupToggle = function () {
+        this.pickupState = (this.pickupState === 'selected' ? 'deselected' : 'selected');
+    };
+    LoginComponent.prototype.onPickupInvite = function () {
+        this.app.isPickupShow = false;
+        this.pickupToggle();
+        this.app._helper.onInviteAcceptCall();
+    };
+    LoginComponent.prototype.onPickupDecline = function () {
+        this.app.isPickupShow = false;
+        this.app.selectedUser = null;
+        this.app.isHeaderShow = true;
+        this._router.navigate(['/dashboard']);
+    };
     LoginComponent.prototype.PopupCenter = function (url, title, w, h) {
         var dualScreenLeft = window.screenLeft;
         var dualScreenTop = window.screenTop;
@@ -229,19 +266,30 @@ var LoginComponent = (function () {
             newWindow.focus();
         return newWindow;
     };
+    LoginComponent = __decorate([
+        core_1.Component({
+            selector: 'login-component',
+            templateUrl: 'app/components/router-outlet/login.component.html',
+            styleUrls: ['app/components/router-outlet/login.component.css'],
+            animations: [
+                core_1.trigger('pickupState', [
+                    core_1.state('deselected', core_1.style({
+                        height: '0px',
+                        'padding-top': '0px'
+                    })),
+                    core_1.state('selected', core_1.style({
+                        height: '160px',
+                        'padding-top': '10px'
+                    })),
+                    core_1.transition('deselected => selected', core_1.animate('300ms ease-in')),
+                    core_1.transition('selected => deselected', core_1.animate('300ms ease-out'))
+                ])
+            ]
+        }),
+        __param(0, core_1.Host()),
+        __param(0, core_1.Inject(core_1.forwardRef(function () { return app_component_1.AppComponent; }))), 
+        __metadata('design:paramtypes', [app_component_1.AppComponent, user_service_1.UserService, core_2.CookieService, social_service_1.SocialService, router_1.Router])
+    ], LoginComponent);
     return LoginComponent;
 }());
-LoginComponent = __decorate([
-    core_1.Component({
-        selector: 'login-component',
-        templateUrl: 'app/components/router-outlet/login.component.html',
-        styleUrls: ['app/components/router-outlet/login.component.css'],
-    }),
-    __param(0, core_1.Host()), __param(0, core_1.Inject(core_1.forwardRef(function () { return app_component_1.AppComponent; }))),
-    __metadata("design:paramtypes", [app_component_1.AppComponent,
-        user_service_1.UserService,
-        core_2.CookieService,
-        social_service_1.SocialService,
-        router_1.Router])
-], LoginComponent);
 exports.LoginComponent = LoginComponent;
