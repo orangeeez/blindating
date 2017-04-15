@@ -3,6 +3,7 @@ import { BrowserModule }            from '@angular/platform-browser';
 import { FormsModule }              from '@angular/forms';
 import { HttpModule }               from '@angular/http';
 import { Ng2BootstrapModule }       from 'ng2-bootstrap/ng2-bootstrap';
+import { DropdownModule }           from 'ng2-bootstrap/components/dropdown';
 import { CookieService }            from 'angular2-cookie/services/cookies.service';
 import { UserService }              from './services/user.service';
 import { QuoteService }             from './services/information/quote.service';
@@ -13,6 +14,7 @@ import { DetailService }            from './services/information/detail.service'
 import { FeedbackService }          from './services/information/feedback.service';
 import { ConversationService }      from './services/information/conversation.service';
 import { NotificationService }      from './services/information/notification.service';
+import { MatchQuestionService }     from './services/matchquestion.service';
 import { SearchService }            from './services/search/search.service';
 import { SocialService }            from './services/social.service';
 import { routing }                  from './app.router';
@@ -32,6 +34,7 @@ import { PmPhotosComponent }        from './components/profilemenu/pm.photos.com
 import { PmFeedbacksComponent }     from './components/profilemenu/pm.feedbacks.component';
 import { PmConversationsComponent } from './components/profilemenu/pm.conversations.component';
 import { PmNotificationsComponent } from './components/profilemenu/pm.notifications.component';
+import { PmatchquestionsComponent } from './components/profilemenu/pm.matchquestions.component';
 import { FSearchComponent }         from './components/footer/f.search.component';
 import { FSmileyComponent }         from './components/footer/f.smiley.component';
 import { FocusDirective }           from './directives/focus.directive';
@@ -49,6 +52,7 @@ import {
         FormsModule,
         HttpModule,
         Ng2BootstrapModule,
+        DropdownModule,
         routing
     ],
     declarations: [
@@ -68,6 +72,7 @@ import {
         PmFeedbacksComponent,
         PmConversationsComponent,
         PmNotificationsComponent,
+        PmatchquestionsComponent,
         FSearchComponent,
         FSmileyComponent,
         FocusDirective,
@@ -89,7 +94,8 @@ import {
         SearchService,
         FeedbackService,
         SocialService,
-        NotificationService
+        NotificationService,
+        MatchQuestionService
     ]
 })
 export class AppModule { }

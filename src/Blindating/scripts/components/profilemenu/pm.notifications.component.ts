@@ -6,7 +6,7 @@
     SimpleChange
 }                              from '@angular/core';
 import { Notification }        from '../../models/notification';
-import { Answer }              from '../../models/answer';
+import { QuestionAnswer }      from '../../models/questionanswer';
 import { Feedback }            from '../../models/feedback';
 import { NotificationService } from '../../services/information/notification.service';
 import { AppComponent }        from '../../components/app.component';

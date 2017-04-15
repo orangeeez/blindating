@@ -25,6 +25,10 @@
                                         [app]="app"
                                         [selectedUser]="app.selectedUser">
                 </pm-feedbacks-component>
+                <pm-matchquestions-component *ngIf="tab.title == 'Q&A'"
+                                        [app]="app"
+                                        [selectedUser]="app.selectedUser">
+                </pm-matchquestions-component>
                 <pm-notifications-component *ngIf="tab.title == 'Notifications' &&
                                                    tab.active"
                                         [app]="app"

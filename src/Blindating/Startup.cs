@@ -58,7 +58,7 @@ namespace Blindating
             services.AddSingleton<IConversationRepository, ConversationRepository>();
             services.AddSingleton<ISearchRepository,       SearchRepository>();
             services.AddSingleton<INotificationRepository, NotificationRepository>();
-
+            services.AddSingleton<IMatchQuestionRepository, MatchQuestionRepository>();
 
             services.AddMvc();
 
@@ -76,7 +76,7 @@ namespace Blindating
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, AppDBContext _context)
         {
-            //DbInitializer.Initialize(_context);
+            DbInitializer.Initialize(_context);
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 

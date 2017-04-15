@@ -56,21 +56,23 @@ var AppComponent = (function () {
             if (e.data == utils_1.DataSignals.DenyingVideo) {
                 _this._helper.denyVideoIcon();
             }
-            //if (Utils.IsJSON(e.data)) {
-            //    if (e.data.includes('"type":"message"')) {
-            //        var message = <Message>JSON.parse(e.data);
-            //        message.whose = 'message-you';
-            //        this._zone.run(() => this._talk.messages.push(message));
-            //    }
-            //}
             if (utils_1.Utils.IsJSON(e.data)) {
-                _this._zone.run(function () { return _this._talk.sketchCanvas.nativeElement.data().sketch.actions.push(JSON.parse(e.data)); });
+                if (e.data.includes('"type":"message"')) {
+                    var message = JSON.parse(e.data);
+                    message.whose = 'message-you';
+                    _this._zone.run(function () { return _this._talk.messages.push(message); });
+                }
             }
+            //if (Utils.IsJSON(e.data)) {
+            //    this._zone.run(() => this._talk.sketchCanvas.nativeElement.data().sketch.actions.push(JSON.parse(e.data)));
+            //}
         };
         this.onCallStarted = function (e) {
             if (_this.communicationState == 'caller')
                 _this.communicationState = 'initiatedCaller';
             _this.communicationUser = _this.defineCommunicationUser();
+            if (!_this.selectedUser)
+                _this.selectDeselectUser(_this.communicationUser);
             Woogeen.LocalStream.create({
                 audio: true
             }, _this.onCreateStream);
@@ -119,10 +121,20 @@ var AppComponent = (function () {
             _this._helper.duration = '00:00';
             _this._helper.durationTime = new Date(0, 0, 0, 0, 0, 0, 0);
             _this._helper.cleanVideoIcon();
+            if (_this.selectedUser)
+                _this.selectDeselectUser(_this.selectedUser);
             _this._router.navigate(['/dashboard']);
             clearInterval(_this._helper.intervalCalling);
             clearInterval(_this._helper.intervalDuration);
             clearInterval(_this._helper.intervalVideoing);
+        };
+        this.setHeaderElements = function (user) {
+            if (_this.user.id == user.id)
+                _this._header.isProfileActive = !_this._header.isProfileActive;
+            if (_this._header.notificationCount == 0)
+                _this._profilemenu.setBasicTabActive();
+            else
+                _this._profilemenu.setNotificationTabActive();
         };
         this.createConversation = function () {
             var conversation = new conversation_1.Conversation();
@@ -148,30 +160,24 @@ var AppComponent = (function () {
     AppComponent.prototype.ngOnInit = function () {
         this.isLoginShow = !Boolean(localStorage.getItem('id_token'));
     };
-    AppComponent.prototype.selectDeselectUser = function (user) {
+    AppComponent.prototype.selectDeselectUser = function (user, isToggle) {
+        if (isToggle === void 0) { isToggle = true; }
         if (this.selectedUser == user) {
             this.selectedUser = null;
             this._profilemenu.ToggleState();
         }
         else if (this.selectedUser == null) {
             this.selectedUser = user;
-            this._profilemenu.ToggleState();
+            if (isToggle)
+                this._profilemenu.ToggleState();
         }
         else if (this.selectedUser != user) {
             this.selectedUser = user;
             this._header.isProfileActive = false;
         }
-        if (!this.selectedUser)
-            this.isSelectedYou = false;
-        else
-            this.isSelectedYou = this.user.id == this.selectedUser.id;
-        if (this.user.id == user.id)
-            this._header.isProfileActive = !this._header.isProfileActive;
+        this.isSelectedUserYou();
         this.setHelperElements();
-        if (this._header.notificationCount == 0)
-            this._profilemenu.setBasicTabActive();
-        else
-            this._profilemenu.setNotificationTabActive();
+        this.setHeaderElements(user);
     };
     AppComponent.prototype.initializeWebRTC = function () {
         this.user.peer = new Woogeen.PeerClient({
@@ -190,8 +196,16 @@ var AppComponent = (function () {
         this.user.peer.on('stream-added', this.onStreamAdded);
         this.user.peer.on('stream-removed', this.onStreamRemoved);
     };
+    AppComponent.prototype.isSelectedUserYou = function () {
+        if (!this.selectedUser)
+            this.isSelectedYou = false;
+        else
+            this.isSelectedYou = this.user.id == this.selectedUser.id;
+    };
     AppComponent.prototype.setHelperElements = function () {
-        if (this.selectedUser && !this.selectedUser.online && !this.isSelectedYou) {
+        if (this.selectedUser &&
+            !this.selectedUser.online &&
+            !this.isSelectedYou) {
             this._helper.phoneIcon = config_1.PHONE_INACTIVE;
             this._helper.isPhoneDisabled = true;
         }

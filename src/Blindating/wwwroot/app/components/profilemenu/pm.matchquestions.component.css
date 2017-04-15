@@ -1,0 +1,59 @@
+﻿#matchquestion {
+    padding-bottom: 30px;
+    margin-top: 40px;
+}
+#matchquestion .col-md-12 {
+    padding: 0;
+}
+.matchquestions {
+    padding: 5px;
+}
+.matchquestions .col-md-12 {
+    text-align: center;    
+    padding-left: 5px;
+}
+.matchquestions .matchquestion {
+    border-bottom: 1px solid var(--main-border-color);
+}
+.matchquestions .header-category {
+    margin-top: 5px;
+}
+.header-category .category-decoration {
+    background-color: cadetblue;
+    padding: 4px;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+}
+.header-category .lifestyle {
+    background-color: crimson;
+}
+.header-category .religion {
+    background-color: cadetblue;
+}
+.matchquestions .text-decoration {
+    margin-top: 5px;
+    font-size: 16px;
+    font-weight: bold;
+}
+.matchquestions .button-decoration button {
+    border-radius: 10px;
+    padding: 0 12px;
+}
+.matchquestions .button-decoration button:focus {outline:0;}
+.matchquestions .radio {
+    text-align: left;
+    padding-left: 15px;
+}
+.matchquestions .radio .checked {
+    color: var(--valid-color);
+}
+.matchquestions .radio .linethrough {
+    text-decoration: line-through;
+}
+.no-mquestions {
+    color: var(--inactive-text-color);
+    text-align: center;
+    font-size: 18px;
+}

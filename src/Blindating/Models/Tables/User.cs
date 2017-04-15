@@ -23,6 +23,7 @@ namespace Blindating.Models.Tables
         public string Phrase { get; set; }
         public string Registered { get; set; }
         public virtual Information Information { get; set; }
+        public List<UserMatchQuestion> UserMatchQuestions { get; set; }
 
         [NotMapped] public dynamic Peer { get; set; }
         [NotMapped] public string Reason { get; set; }

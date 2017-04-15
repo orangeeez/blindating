@@ -36,8 +36,7 @@ var TalkComponent = (function () {
     TalkComponent.prototype.ngOnInit = function () {
         // this.app.user = new User();
         // this.app.communicationUser = new User();
-        if (this.app.selectedUser)
-            this.app._profilemenu.ToggleState();
+        //if (this.app.selectedUser) this.app._profilemenu.ToggleState();
         this.app._talk = this;
         this.app._header.DeselectMenus();
         this.app._header.isTalkActive = true;

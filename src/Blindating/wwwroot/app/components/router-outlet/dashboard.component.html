@@ -184,6 +184,14 @@
                     <i class="fa fa-refresh refresh"
                        (click)="onRefreshUsers()"></i>
                 </div>
+                <div *ngFor="let toggle of searchToggles" class="btn-group dropdown" dropdown>
+                    <button id="dropdown-button" type="button" class="btn btn-primary" dropdownToggle>
+                        {{toggle.title}} <span class="caret"></span>
+                    </button>
+                    <ul dropdownMenu role="menu" aria-labelledby="dropdown-button">
+                        <li *ngFor="let item of toggle.items" role="menuitem"><a class="dropdown-item" href="#">{{item}}</a></li>
+                    </ul>
+                </div>
             </div>
             <div *ngIf="!isUsersLoaded">
                 <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw image-loading image-stats-loading"></i>
@@ -239,7 +247,7 @@
                         <div><i class="fa fa-check" aria-hidden="true"></i>Gender</div>
                         <div><i class="fa fa-check" aria-hidden="true"></i>Age</div>
                         <div><i class="fa fa-check" aria-hidden="true"></i>Location</div> 
-                        <div><i class="fa fa-close" aria-hidden="true"></i>Hair</div>                
+                        <div><i style="color: #d43f3a" class="fa fa-close" aria-hidden="true"></i>Hair</div>                
                         <div><i class="fa fa-check" aria-hidden="true"></i>Eyes</div>
                         <div><i class="fa fa-check" aria-hidden="true"></i>Hobby</div>                                                                                                              
                     </div>

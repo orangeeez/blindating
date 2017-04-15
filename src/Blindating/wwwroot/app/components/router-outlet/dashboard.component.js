@@ -16,6 +16,7 @@ var router_1 = require('@angular/router');
 var core_2 = require('angular2-cookie/core');
 var user_service_1 = require('../../services/user.service');
 var notification_service_1 = require('../../services/information/notification.service');
+var user_1 = require('../../models/user');
 var app_component_1 = require('../../components/app.component');
 var DashboardComponent = (function () {
     function DashboardComponent(app, _userService, _cookieService, _notificationService, _router) {
@@ -33,6 +34,12 @@ var DashboardComponent = (function () {
         this.isPopularUsersLoaded = false;
         this.isActiveUsersLoaded = false;
         this.isSearchShow = false;
+        this.searchToggles = [
+            { title: 'Gender', items: ['Male', 'Female', 'Anyway'] },
+            { title: 'Hair', items: ['Male', 'Female', 'Anyway'] },
+            { title: 'Eyes', items: ['Male', 'Female', 'Anyway'] },
+            { title: 'Color', items: ['Male', 'Female', 'Anyway'] },
+        ];
         this.removeCurrentUser = function (user) {
             return user.id != _this.app.user.id;
         };
@@ -48,6 +55,14 @@ var DashboardComponent = (function () {
         this.app._header.isDashboardActive = true;
         if (this.app.isPickupShow)
             this.pickupToggle();
+        this.pickupUser = new user_1.User();
+        this.pickupUser.id = 2;
+        this.pickupUser.firstname = "Viktor";
+        this.pickupUser.lastname = "Orkush";
+        this.pickupUser.email = "v.orkush@gmail.com";
+        this.pickupUser.image = 'images/users/3hqzwa25.agr.jpg';
+        this.pickupUser.online = true;
+        this.pickupUser.jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InYub3JrdXNoQGdtYWlsLmNvbSIsImlzcyI6Iklzc3VlciIsImF1ZCI6IkF1ZGllbmNlIn0.flhwvv4VCsaKp0grVAbB2RBGJkutHle2CgvvgdoTkDo';
     };
     DashboardComponent.prototype.ngAfterViewInit = function () {
         var _this = this;
@@ -147,12 +162,17 @@ var DashboardComponent = (function () {
     };
     DashboardComponent.prototype.onPickupDone = function (event) { };
     DashboardComponent.prototype.onPickupInvite = function () {
+        this.app.selectDeselectUser(this.pickupUser);
+        this.app.isSelectedUserYou();
         this.app.isPickupShow = false;
         this.app._helper.onInviteAcceptCall();
+        this.pickupToggle();
     };
     DashboardComponent.prototype.onPickupDecline = function () {
         this.app.isPickupShow = false;
         this.pickupToggle();
+        this.app.isHeaderShow = true;
+        this.app.selectedUser = null;
     };
     DashboardComponent.prototype.getUsersCountForExpand = function () {
         return Math.floor((this.dashboardHeight - (Math.round(this.maxUsersStatsColumns) * this.profileStatsHeightExpanded)) / this.profileStatsHeightExpanded);

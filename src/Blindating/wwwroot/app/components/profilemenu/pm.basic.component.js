@@ -81,12 +81,9 @@ var PmBasicComponent = (function () {
             _this.app.user.image = response;
         };
     }
-    PmBasicComponent.prototype.ngOnInit = function () {
-        console.log('basic init');
-    };
+    PmBasicComponent.prototype.ngOnInit = function () { };
     PmBasicComponent.prototype.ngOnChanges = function (changes) {
         var _this = this;
-        console.log('changes init');
         if (changes['selectedUser']) {
             this.changeProfileLoading();
             this._quoteService.GetAllByID(this.app.selectedUser.id)

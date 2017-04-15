@@ -54,7 +54,7 @@ namespace Blindating.Controllers.Utils.Social
         }
         public static string GetAccessTokenUrl(string appID, string appSecret, string code)
         {
-            return string.Format(@"https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&code={2}&redirect_uri=https://localhost:8000/blank.html", appID, appSecret, code);
+            return string.Format(@"https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&code={2}&redirect_uri=http://localhost:8000/blank.html", appID, appSecret, code);
         }
         // public static string GetApiUrl(string app_id, string method, string sig, )
         // {

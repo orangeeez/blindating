@@ -13,6 +13,7 @@ var platform_browser_1 = require('@angular/platform-browser');
 var forms_1 = require('@angular/forms');
 var http_1 = require('@angular/http');
 var ng2_bootstrap_1 = require('ng2-bootstrap/ng2-bootstrap');
+var dropdown_1 = require('ng2-bootstrap/components/dropdown');
 var cookies_service_1 = require('angular2-cookie/services/cookies.service');
 var user_service_1 = require('./services/user.service');
 var quote_service_1 = require('./services/information/quote.service');
@@ -23,6 +24,7 @@ var detail_service_1 = require('./services/information/detail.service');
 var feedback_service_1 = require('./services/information/feedback.service');
 var conversation_service_1 = require('./services/information/conversation.service');
 var notification_service_1 = require('./services/information/notification.service');
+var matchquestion_service_1 = require('./services/matchquestion.service');
 var search_service_1 = require('./services/search/search.service');
 var social_service_1 = require('./services/social.service');
 var app_router_1 = require('./app.router');
@@ -42,6 +44,7 @@ var pm_photos_component_1 = require('./components/profilemenu/pm.photos.componen
 var pm_feedbacks_component_1 = require('./components/profilemenu/pm.feedbacks.component');
 var pm_conversations_component_1 = require('./components/profilemenu/pm.conversations.component');
 var pm_notifications_component_1 = require('./components/profilemenu/pm.notifications.component');
+var pm_matchquestions_component_1 = require('./components/profilemenu/pm.matchquestions.component');
 var f_search_component_1 = require('./components/footer/f.search.component');
 var f_smiley_component_1 = require('./components/footer/f.smiley.component');
 var focus_directive_1 = require('./directives/focus.directive');
@@ -59,6 +62,7 @@ var AppModule = (function () {
                 forms_1.FormsModule,
                 http_1.HttpModule,
                 ng2_bootstrap_1.Ng2BootstrapModule,
+                dropdown_1.DropdownModule,
                 app_router_1.routing
             ],
             declarations: [
@@ -78,6 +82,7 @@ var AppModule = (function () {
                 pm_feedbacks_component_1.PmFeedbacksComponent,
                 pm_conversations_component_1.PmConversationsComponent,
                 pm_notifications_component_1.PmNotificationsComponent,
+                pm_matchquestions_component_1.PmatchquestionsComponent,
                 f_search_component_1.FSearchComponent,
                 f_smiley_component_1.FSmileyComponent,
                 focus_directive_1.FocusDirective,
@@ -99,7 +104,8 @@ var AppModule = (function () {
                 search_service_1.SearchService,
                 feedback_service_1.FeedbackService,
                 social_service_1.SocialService,
-                notification_service_1.NotificationService
+                notification_service_1.NotificationService,
+                matchquestion_service_1.MatchQuestionService
             ]
         }), 
         __metadata('design:paramtypes', [])

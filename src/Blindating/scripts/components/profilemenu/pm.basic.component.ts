@@ -16,7 +16,7 @@ import { Quote }                from '../../models/quote';
 import { Question }             from '../../models/question';
 import { Photo }                from '../../models/photo';
 import { Preference }           from '../../models/preference';
-import { Answer }               from '../../models/answer';
+import { QuestionAnswer }       from '../../models/questionanswer';
 import { Conversation }         from '../../models/conversation';
 import { AppComponent }         from '../../components/app.component';
 import { SlicePipe }            from '../../pipes/slice.pipe';
@@ -98,13 +98,9 @@ export class PmBasicComponent implements OnInit, OnChanges {
         }
     }
 
-    ngOnInit() { 
-        console.log('basic init');
-    }
+    ngOnInit() { }
 
     ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
-        console.log('changes init');
-        
         if (changes['selectedUser']) {
             this.changeProfileLoading();
             this._quoteService.GetAllByID(this.app.selectedUser.id)
@@ -255,7 +251,7 @@ export class PmBasicComponent implements OnInit, OnChanges {
     }
 
     public onAcceptAnswer(): void {
-        let answer: Answer = {
+        let answer: QuestionAnswer = {
             id: 0,
             remoteUserID: this.app.user.id,
             questionAnswerFK: this.questions[this.questionIndex]['information'].id,
@@ -282,7 +278,7 @@ export class PmBasicComponent implements OnInit, OnChanges {
     }
 
     public onDeclineAnswer(): void {
-        let answer: Answer = {
+        let answer: QuestionAnswer = {
             id: 0,
             remoteUserID: this.app.selectedUser.id,
             questionAnswerFK: this.questions[this.questionIndex]['information'].id,

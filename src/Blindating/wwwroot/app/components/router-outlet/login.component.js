@@ -51,7 +51,7 @@ var LoginComponent = (function () {
         };
         this.GetFacebookInfoAPI = function () {
             var self = _this;
-            setInterval(_this.CheckFBLoginInterval, 1000);
+            _this.facebookIntervalNumber = setInterval(_this.CheckFBLoginInterval, 1000);
             FB.getLoginStatus(function (response) { statusChangeCallback(response); });
             function statusChangeCallback(response) {
                 if (response.status === 'connected')
@@ -61,11 +61,12 @@ var LoginComponent = (function () {
             }
         };
         this.CheckFBLoginInterval = function () {
-            if (_this.app.user)
-                _this._router.navigate(['/dashboard']);
+            if (_this.app.user) {
+                clearInterval(_this.facebookIntervalNumber);
+            }
         };
         this.SetVKInfoAPI = function (session) {
-            var url = 'https://oauth.vk.com/authorize?client_id=5549517&display=popup&redirect_uri=https://localhost:8000/blank.html&response_type=code&scope=email';
+            var url = 'https://oauth.vk.com/authorize?client_id=5549517&display=popup&redirect_uri=http://localhost:8000/blank.html&response_type=code&scope=email';
             _this.windowVKAuth = _this.PopupCenter(url, '', 660, 370);
             _this.setCodeInterval = setInterval(_this.setAccessTokenInterval, 1000, session);
         };
@@ -114,14 +115,15 @@ var LoginComponent = (function () {
                     _this.alert.reason = user.reason;
                     _this.app.isHeaderShow = false;
                     _this.tabs[1].disabled = true;
-                    var u = new user_1.User();
-                    u.id = 2;
-                    u.firstname = "Viktor";
-                    u.lastname = "Orkush";
-                    u.email = "v.orkush@gmail.com";
-                    u.image = 'images/users/3hqzwa25.agr.jpg';
-                    u.jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InYub3JrdXNoQGdtYWlsLmNvbSIsImlzcyI6Iklzc3VlciIsImF1ZCI6IkF1ZGllbmNlIn0.flhwvv4VCsaKp0grVAbB2RBGJkutHle2CgvvgdoTkDo';
-                    _this.app.selectedUser = u;
+                    _this.pickupUser = new user_1.User();
+                    _this.pickupUser.id = 2;
+                    _this.pickupUser.firstname = "Viktor";
+                    _this.pickupUser.lastname = "Orkush";
+                    _this.pickupUser.email = "v.orkush@gmail.com";
+                    _this.pickupUser.image = 'images/users/3hqzwa25.agr.jpg';
+                    _this.pickupUser.online = true;
+                    _this.pickupUser.jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InYub3JrdXNoQGdtYWlsLmNvbSIsImlzcyI6Iklzc3VlciIsImF1ZCI6IkF1ZGllbmNlIn0.flhwvv4VCsaKp0grVAbB2RBGJkutHle2CgvvgdoTkDo';
+                    //this.app.selectedUser = u;
                     _this.app.isPickupShow = true;
                     _this.pickupToggle();
                 }
@@ -244,14 +246,16 @@ var LoginComponent = (function () {
         this.pickupState = (this.pickupState === 'selected' ? 'deselected' : 'selected');
     };
     LoginComponent.prototype.onPickupInvite = function () {
+        this.app.selectDeselectUser(this.pickupUser);
+        this.app.isSelectedUserYou();
         this.app.isPickupShow = false;
-        this.pickupToggle();
         this.app._helper.onInviteAcceptCall();
+        this.pickupToggle();
     };
     LoginComponent.prototype.onPickupDecline = function () {
         this.app.isPickupShow = false;
-        this.app.selectedUser = null;
         this.app.isHeaderShow = true;
+        this.app.selectedUser = null;
         this._router.navigate(['/dashboard']);
     };
     LoginComponent.prototype.PopupCenter = function (url, title, w, h) {
@@ -262,8 +266,8 @@ var LoginComponent = (function () {
         var left = ((width / 2) - (w / 2)) + dualScreenLeft;
         var top = ((height / 2) - (h / 2)) + dualScreenTop;
         var newWindow = window.open(url, title, 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
-        if (window.focus)
-            newWindow.focus();
+        //if (window.focus)
+        //    newWindow.focus();
         return newWindow;
     };
     LoginComponent = __decorate([

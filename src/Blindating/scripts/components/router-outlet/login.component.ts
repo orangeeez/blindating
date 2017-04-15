@@ -43,18 +43,20 @@ export class LoginComponent implements OnInit {
     public windowVKAuth: Window;
     public setCodeInterval: any;
 
-    public app:       AppComponent;
-    public email:     string;
-    public password:  string;
-    public facebook:  string;
-    public vk:        string;
-    public firstname: string;
-    public lastname:  string;
-    public phrase:    string;
-    public JWT:       string;
-    public matchQuestions:     MatchQuestion[] = [];
-    public indexMatchQuestion: number = 0;
-    public pickupState:        string = 'deselected';
+    public app:        AppComponent;
+    public email:      string;
+    public password:   string;
+    public facebook:   string;
+    public vk:         string;
+    public firstname:  string;
+    public lastname:   string;
+    public phrase:     string;
+    public JWT:        string;
+    public pickupUser: User;
+    public matchQuestions:         MatchQuestion[] = [];
+    public indexMatchQuestion:     number = 0;
+    public pickupState:            string = 'deselected';
+    public facebookIntervalNumber: number;
 
     public isPhraseFocused: boolean = false;
 
@@ -164,7 +166,7 @@ export class LoginComponent implements OnInit {
     private GetFacebookInfoAPI = () => {
         var self = this;
 
-        setInterval(this.CheckFBLoginInterval, 1000)
+        this.facebookIntervalNumber = setInterval(this.CheckFBLoginInterval, 1000)
 
         FB.getLoginStatus(function (response) { statusChangeCallback(response); });
 
@@ -177,12 +179,13 @@ export class LoginComponent implements OnInit {
     }
 
     private CheckFBLoginInterval = () => {
-        if (this.app.user) 
-            this._router.navigate(['/dashboard']);
+        if (this.app.user) {
+            clearInterval(this.facebookIntervalNumber);
+        }
     }
 
     private SetVKInfoAPI = (session: any) => {
-        let url = 'https://oauth.vk.com/authorize?client_id=5549517&display=popup&redirect_uri=https://localhost:8000/blank.html&response_type=code&scope=email'
+        let url = 'https://oauth.vk.com/authorize?client_id=5549517&display=popup&redirect_uri=http://localhost:8000/blank.html&response_type=code&scope=email'
         this.windowVKAuth = this.PopupCenter(url, '', 660, 370);
  
         this.setCodeInterval = setInterval(this.setAccessTokenInterval, 1000, session);
@@ -249,16 +252,17 @@ export class LoginComponent implements OnInit {
                 this.app.isHeaderShow = false;                       
                 this.tabs[1].disabled = true;
 
-                let u = new User();
+                this.pickupUser = new User();
 
-                u.id = 2;
-                u.firstname = "Viktor";
-                u.lastname = "Orkush";
-                u.email = "v.orkush@gmail.com";
-                u.image = 'images/users/3hqzwa25.agr.jpg';
-                u.jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InYub3JrdXNoQGdtYWlsLmNvbSIsImlzcyI6Iklzc3VlciIsImF1ZCI6IkF1ZGllbmNlIn0.flhwvv4VCsaKp0grVAbB2RBGJkutHle2CgvvgdoTkDo';
-
-                this.app.selectedUser = u;
+                this.pickupUser.id = 2;
+                this.pickupUser.firstname = "Viktor";
+                this.pickupUser.lastname = "Orkush";
+                this.pickupUser.email = "v.orkush@gmail.com";
+                this.pickupUser.image = 'images/users/3hqzwa25.agr.jpg';
+                this.pickupUser.online = true;
+                this.pickupUser.jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InYub3JrdXNoQGdtYWlsLmNvbSIsImlzcyI6Iklzc3VlciIsImF1ZCI6IkF1ZGllbmNlIn0.flhwvv4VCsaKp0grVAbB2RBGJkutHle2CgvvgdoTkDo';
+                
+                //this.app.selectedUser = u;
                 this.app.isPickupShow = true;
                 this.pickupToggle();
             }
@@ -280,15 +284,17 @@ export class LoginComponent implements OnInit {
     }
 
     public onPickupInvite(): void {
+        this.app.selectDeselectUser(this.pickupUser);
+        this.app.isSelectedUserYou();
         this.app.isPickupShow = false;
-        this.pickupToggle();
         this.app._helper.onInviteAcceptCall();
+        this.pickupToggle();
     }
 
     public onPickupDecline(): void {
         this.app.isPickupShow = false;
-        this.app.selectedUser = null;
         this.app.isHeaderShow = true;
+        this.app.selectedUser = null;
         this._router.navigate(['/dashboard']);
     }
 
@@ -334,8 +340,8 @@ export class LoginComponent implements OnInit {
          var top = ((height / 2) - (h / 2)) + dualScreenTop;
          var newWindow = window.open(url, title, 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
  
-         if (window.focus)
-             newWindow.focus();
+         //if (window.focus)
+         //    newWindow.focus();
  
          return newWindow;
      }

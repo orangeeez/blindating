@@ -162,6 +162,20 @@ namespace Blindating.Migrations
                     b.ToTable("Countries");
                 });
 
+            modelBuilder.Entity("Blindating.Models.Tables.MatchQuestion", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Category");
+
+                    b.Property<string>("Text");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("MatchQuestions");
+                });
+
             modelBuilder.Entity("Blindating.Models.Tables.Notification", b =>
                 {
                     b.Property<int>("ID")
@@ -276,7 +290,7 @@ namespace Blindating.Migrations
 
                     b.HasIndex("QuestionAnswerFK");
 
-                    b.ToTable("Answers");
+                    b.ToTable("QuestionAnswers");
                 });
 
             modelBuilder.Entity("Blindating.Models.Tables.Quote", b =>
@@ -351,6 +365,39 @@ namespace Blindating.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Blindating.Models.Tables.UserMatchQuestion", b =>
+                {
+                    b.Property<int>("UserID");
+
+                    b.Property<int>("MatchQuestionID");
+
+                    b.Property<int>("MatchAnswerID");
+
+                    b.HasKey("UserID", "MatchQuestionID");
+
+                    b.HasIndex("MatchQuestionID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("UserMatchQuestions");
+                });
+
+            modelBuilder.Entity("NetCoreAngular2.Models.Tables.MatchAnswer", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("MatchQuestionFK");
+
+                    b.Property<string>("Text");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("MatchQuestionFK");
+
+                    b.ToTable("MatchAnswers");
                 });
 
             modelBuilder.Entity("Blindating.Models.Tables.Conversation", b =>
@@ -438,6 +485,27 @@ namespace Blindating.Migrations
                     b.HasOne("Blindating.Models.Tables.Quote", "Quote")
                         .WithMany("QuoteLikes")
                         .HasForeignKey("QuoteLikeFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Blindating.Models.Tables.UserMatchQuestion", b =>
+                {
+                    b.HasOne("Blindating.Models.Tables.MatchQuestion", "MatchQuestion")
+                        .WithMany("UserMatchQuestions")
+                        .HasForeignKey("MatchQuestionID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Blindating.Models.Tables.User", "User")
+                        .WithMany("UserMatchQuestions")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("NetCoreAngular2.Models.Tables.MatchAnswer", b =>
+                {
+                    b.HasOne("Blindating.Models.Tables.MatchQuestion", "MatchQuestion")
+                        .WithMany("MatchAnswers")
+                        .HasForeignKey("MatchQuestionFK")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

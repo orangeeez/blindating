@@ -13,6 +13,11 @@ export class Utils {
         catch (e) { return false; }
         return true;
     }
+    public static moveArray(arr, fromIndex, toIndex) {
+        var element = arr[fromIndex];
+        arr.splice(fromIndex, 1);
+        arr.splice(toIndex, 0, element);
+    }
 }
 export enum DataSignals {
     RequestingVideo,

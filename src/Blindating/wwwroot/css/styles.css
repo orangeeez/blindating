@@ -40,6 +40,10 @@ html * {
     border-bottom-color: var(--main-aqua-color);
     background-color: var(--link-color);
 }
+#profile .nav > li > a {
+    margin-right: 0;
+    padding: 10px 10px;
+}
 #profile .nav > li > a:hover, 
 #profile .nav > li > a:focus {
     border-color: transparent;

@@ -1,5 +1,5 @@
 import { User } from './user';
-export class Answer {
+export class QuestionAnswer {
     id:               number;
     result:           boolean;
     remoteUserID:     number;

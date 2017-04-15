@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NetCoreAngular2.Models.Tables;
 
 namespace Blindating.Models
 {
@@ -20,16 +21,16 @@ namespace Blindating.Models
         public DbSet<City> Cities { get; set; }
         public DbSet<Preference> Preferences { get; set; }
         public DbSet<Question> Questions { get; set; }
-        public DbSet<QuestionAnswer> Answers { get; set; }
+        public DbSet<QuestionAnswer> QuestionAnswers { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Conversation> Conversations { get; set; }
         public DbSet<Detail> Details { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<QuoteLike> QuoteLikes { get; set; }
+        public DbSet<MatchQuestion> MatchQuestions { get; set; }
+        public DbSet<MatchAnswer> MatchAnswers { get; set; }
 
-        // ================== MANY TO MANY RELATIONSHIPS EXAMPLE ==================
-        //public DbSet<Like> Likes { get; set; }
-        //public DbSet<QLike> QLikes { get; set; }
+        public DbSet<UserMatchQuestion> UserMatchQuestions { get; set; }
 
         #region Determine Relationships
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -89,26 +90,30 @@ namespace Blindating.Models
                 .WithOne(i => i.Quote)
                 .HasForeignKey(b => b.QuoteLikeFK);
 
-            // ================== MANY TO MANY RELATIONSHIPS EXAMPLE ==================
-            //modelBuilder.Entity<QLike>()
-            //    .HasKey(ql => new { ql.LikeID, ql.QuoteID });
+            modelBuilder.Entity<UserMatchQuestion>()
+                .HasKey(umq => new { umq.UserID, umq.MatchQuestionID });
 
-            //modelBuilder.Entity<QLike>()
-            //    .HasOne(l => l.Like)
-            //    .WithMany(ql => ql.QLike)
-            //    .HasForeignKey(l => l.LikeID);
+            modelBuilder.Entity<UserMatchQuestion>()
+                .HasOne(umq => umq.MatchQuestion)
+                .WithMany(mq => mq.UserMatchQuestions)
+                .HasForeignKey(umq => umq.MatchQuestionID);
 
-            //modelBuilder.Entity<QLike>()
-            //    .HasOne(q => q.Quote)
-            //    .WithMany(ql => ql.QLike)
-            //    .HasForeignKey(q => q.QuoteID);
+            modelBuilder.Entity<UserMatchQuestion>()
+                .HasOne(umq => umq.User)
+                .WithMany(u => u.UserMatchQuestions)
+                .HasForeignKey(umq => umq.UserID);
+
+            modelBuilder.Entity<MatchQuestion>()
+                .HasMany(mq => mq.MatchAnswers)
+                .WithOne(ma => ma.MatchQuestion)
+                .HasForeignKey(ma => ma.MatchQuestionFK);
         }
 
         #endregion
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             if (Program.LaunchType == "docker-remote")
-                options.UseSqlServer("Data Source=212.26.131.227,8081;Initial Catalog=blindating;Integrated Security=False;MultipleActiveResultSets=true;User Id=sa;Password=f00tBall;");
+                options.UseSqlServer("Data Source=162.243.216.55,1433;Initial Catalog=blindating;Integrated Security=False;MultipleActiveResultSets=true;User Id=sa;Password=f00tBall;");
             else if (Program.LaunchType == "docker-local")
                 options.UseSqlServer("Data Source=blindating-sql;Initial Catalog=blindating;Integrated Security=False;MultipleActiveResultSets=true;User Id=SA;Password=f00tBall");
             else

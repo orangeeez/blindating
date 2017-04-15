@@ -22,6 +22,7 @@ export class ProfilemenuComponent implements OnInit {
         { title: 'Basic',         active: true  },
         { title: 'Details',       active: false },
         { title: 'Wishes',        active: false },
+        { title: 'Q&A',           active: false },
         { title: 'Notifications', active: false }
     ];
 

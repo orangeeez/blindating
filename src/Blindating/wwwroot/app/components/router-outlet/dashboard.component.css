@@ -23,6 +23,16 @@
     color: white;
     cursor: pointer;
 }
+#dashboard .dropdown button {
+    color: var(--focus-border-color);
+    font-weight: bold;
+    background-color: white;
+    border: none;
+    padding: 0 10px;
+}
+#dashboard .dropdown .dropdown-toggle {
+    box-shadow: none;
+}
 .profile {
     display: flex;
     justify-content: center;

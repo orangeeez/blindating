@@ -50,6 +50,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     public searchUsers:  User[];
     public activities:   any[];
     public pickupState:  string = 'deselected';
+    public pickupUser:   User;
 
     public isActiveExpanded:  boolean = false;
     public isNewExpanded:     boolean = false;
@@ -72,6 +73,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     public maxUsersStatsColumns:       number;
     public maxUsers:                   number;
 
+    public searchToggles: Array<any> = [
+        { title: 'Gender', items: ['Male', 'Female', 'Anyway']  },
+        { title: 'Hair', items:   ['Male', 'Female', 'Anyway']  },
+        { title: 'Eyes', items:   ['Male', 'Female', 'Anyway']  },
+        { title: 'Color', items:  ['Male', 'Female', 'Anyway']  },
+    ];
+
     constructor(
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
         private _userService: UserService,
@@ -91,6 +99,16 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.app._header.DeselectMenus();
         this.app._header.isDashboardActive = true;
         if (this.app.isPickupShow) this.pickupToggle();
+
+        this.pickupUser = new User();
+
+        this.pickupUser.id = 2;
+        this.pickupUser.firstname = "Viktor";
+        this.pickupUser.lastname = "Orkush";
+        this.pickupUser.email = "v.orkush@gmail.com";
+        this.pickupUser.image = 'images/users/3hqzwa25.agr.jpg';
+        this.pickupUser.online = true;
+        this.pickupUser.jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InYub3JrdXNoQGdtYWlsLmNvbSIsImlzcyI6Iklzc3VlciIsImF1ZCI6IkF1ZGllbmNlIn0.flhwvv4VCsaKp0grVAbB2RBGJkutHle2CgvvgdoTkDo';
     }
 
     ngAfterViewInit() {
@@ -206,13 +224,18 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     public onPickupDone(event: AnimationTransitionEvent): void { }
 
     public onPickupInvite(): void {
+        this.app.selectDeselectUser(this.pickupUser);
+        this.app.isSelectedUserYou();
         this.app.isPickupShow = false;
         this.app._helper.onInviteAcceptCall();
+        this.pickupToggle();
     }
 
     public onPickupDecline(): void {
         this.app.isPickupShow = false;
         this.pickupToggle();
+        this.app.isHeaderShow = true;
+        this.app.selectedUser = null;
     }
 
     private removeCurrentUser = (user: User): boolean => {

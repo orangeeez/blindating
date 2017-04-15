@@ -90,35 +90,23 @@ export class AppComponent implements OnInit {
         this.isLoginShow = !Boolean(localStorage.getItem('id_token'));
     }
 
-    public selectDeselectUser(user: User): void {
+    public selectDeselectUser(user: User, isToggle: boolean = true): void {
         if (this.selectedUser == user) {
             this.selectedUser = null;
             this._profilemenu.ToggleState();
         }
         else if (this.selectedUser == null) {
             this.selectedUser = user;
-            this._profilemenu.ToggleState();
+             if (isToggle) this._profilemenu.ToggleState();
         }
         else if (this.selectedUser != user) {
             this.selectedUser = user;
             this._header.isProfileActive = false;
         }
 
-        if (!this.selectedUser)
-            this.isSelectedYou = false;
-        else
-            this.isSelectedYou = this.user.id == this.selectedUser.id;
-
-        if (this.user.id == user.id)
-            this._header.isProfileActive = !this._header.isProfileActive;
-
+        this.isSelectedUserYou();
         this.setHelperElements();
-
-        if (this._header.notificationCount == 0)
-            this._profilemenu.setBasicTabActive();
-        else
-            this._profilemenu.setNotificationTabActive();
-
+        this.setHeaderElements(user);
     }
 
     public initializeWebRTC() {
@@ -167,17 +155,17 @@ export class AppComponent implements OnInit {
             this._helper.denyVideoIcon();
         }
 
-        //if (Utils.IsJSON(e.data)) {
-        //    if (e.data.includes('"type":"message"')) {
-        //        var message = <Message>JSON.parse(e.data);
-        //        message.whose = 'message-you';
-        //        this._zone.run(() => this._talk.messages.push(message));
-        //    }
-        //}
-
         if (Utils.IsJSON(e.data)) {
-            this._zone.run(() => this._talk.sketchCanvas.nativeElement.data().sketch.actions.push(JSON.parse(e.data)));
+            if (e.data.includes('"type":"message"')) {
+                var message = <Message>JSON.parse(e.data);
+                message.whose = 'message-you';
+                this._zone.run(() => this._talk.messages.push(message));
+            }
         }
+
+        //if (Utils.IsJSON(e.data)) {
+        //    this._zone.run(() => this._talk.sketchCanvas.nativeElement.data().sketch.actions.push(JSON.parse(e.data)));
+        //}
     }
 
     private onCallStarted = (e): void => {
@@ -185,6 +173,8 @@ export class AppComponent implements OnInit {
             this.communicationState = 'initiatedCaller';
 
         this.communicationUser = this.defineCommunicationUser();
+
+        if (!this.selectedUser) this.selectDeselectUser(this.communicationUser);
 
         Woogeen.LocalStream.create({
             audio: true
@@ -194,7 +184,7 @@ export class AppComponent implements OnInit {
         this._router.navigate(['/talk']);
         this._helper.isCallInitiated   = true;
         this._helper.startDurationTime = new Date();
-        this._helper.intervalDuration = setInterval(this._helper.startDuration, 1000);
+        this._helper.intervalDuration  = setInterval(this._helper.startDuration, 1000);
 
         clearInterval(this._helper.intervalCalling);
     }
@@ -248,22 +238,43 @@ export class AppComponent implements OnInit {
         this._helper.duration          = '00:00';
         this._helper.durationTime      = new Date(0, 0, 0, 0, 0, 0, 0);
         this._helper.cleanVideoIcon();
+
+        if (this.selectedUser) this.selectDeselectUser(this.selectedUser);
+
         this._router.navigate(['/dashboard']);
 
         clearInterval(this._helper.intervalCalling);
         clearInterval(this._helper.intervalDuration);
         clearInterval(this._helper.intervalVideoing);
-
     } 
 
+    public isSelectedUserYou(): void {
+        if (!this.selectedUser)
+            this.isSelectedYou = false;
+        else
+            this.isSelectedYou = this.user.id == this.selectedUser.id;
+    }
+
     private setHelperElements(): void {
-        if (this.selectedUser && !this.selectedUser.online && !this.isSelectedYou) {
-            this._helper.phoneIcon = PHONE_INACTIVE;
-            this._helper.isPhoneDisabled = true;
+        if (this.selectedUser         && 
+            !this.selectedUser.online && 
+            !this.isSelectedYou) {
+                this._helper.phoneIcon = PHONE_INACTIVE;
+                this._helper.isPhoneDisabled = true;
         }
 
         if (this._helper.isSearchInitiated)
             this._helper.onSearchShow();
+    }
+
+    private setHeaderElements = (user: User): void => {
+        if (this.user.id == user.id)
+            this._header.isProfileActive = !this._header.isProfileActive;
+
+        if (this._header.notificationCount == 0)
+            this._profilemenu.setBasicTabActive();
+        else
+            this._profilemenu.setNotificationTabActive();
     }
 
     private createConversation = (): Conversation => {

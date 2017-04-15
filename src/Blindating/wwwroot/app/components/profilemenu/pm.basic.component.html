@@ -111,7 +111,7 @@
                     <span dropdown class="dropdown">
                         <input dropdownToggle size="6" placeholder="Gender" readonly 
                                [value]="preferences.gender"
-                               [size]="preferences.gender?.length || 6"
+                               [size]="preferences.gender?.length + 1 || 6"
                                [disabled]="!app.isSelectedYou"/>
                         <ul class="dropdown-menu" dropdownMenu>
                             <li *ngFor="let gender of genders">
