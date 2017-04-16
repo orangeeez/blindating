@@ -16,36 +16,33 @@ import { MatchQuestionService } from '../../services/matchquestion.service';
     styleUrls:   ['app/components/profilemenu/pm.matchquestions.component.css'],
     inputs:      ['app', 'selectedUser'],
 })
-export class PmatchquestionsComponent implements OnInit {
+export class PmatchquestionsComponent implements OnInit, OnChanges {
     public app: AppComponent;
     public matchQuestions: MatchQuestion[];
-    public isComparing: boolean = false;
 
     constructor(
         private _matchQuestionService: MatchQuestionService
     ) { }
 
-    ngOnInit() {
-        console.log('init');
+    ngOnInit() { }
 
-        if (this.app.isSelectedYou) {
-            console.log('you');
-
-            this._matchQuestionService.GetAllByID(this.app.selectedUser.id)
-                .subscribe(questions => {
-                    this.matchQuestions = questions;
-                    for (var i = 0; i < this.matchQuestions.length; i++)
-                        if (!this.matchQuestions[i].isAnswered)
-                            Utils.moveArray(this.matchQuestions, i, 0);
-                });
-        }
-        else {
-            console.log('not you');
-            this._matchQuestionService.GetMatchedWith(this.app.selectedUser.id)
-                .subscribe(questions => {
-                    this.isComparing = true;
-                    console.log(questions);
-                });
+    ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
+        if (changes['selectedUser']) {
+            if (this.app.isSelectedYou) {
+                this._matchQuestionService.GetAllByID(this.app.selectedUser.id)
+                    .subscribe(questions => {
+                        this.matchQuestions = questions;
+                        for (var i = 0; i < this.matchQuestions.length; i++)
+                            if (!this.matchQuestions[i].isAnswered)
+                                Utils.moveArray(this.matchQuestions, i, 0);
+                    });
+            }
+            else {
+                this._matchQuestionService.GetMatchedWith(this.app.selectedUser.id)
+                    .subscribe(questions => {
+                        this.matchQuestions = questions;
+                    });
+            }
         }
     }
 
@@ -63,13 +60,26 @@ export class PmatchquestionsComponent implements OnInit {
     }
 
     public setRadioStyle = (matchQuestion: MatchQuestion, matchAnswerID: number): string => {
+        if (!this.app.isSelectedYou &&
+            matchQuestion.remoteMatchAnswerID == matchAnswerID &&
+            matchQuestion.matchAnswerID != matchQuestion.remoteMatchAnswerID)
+            return 'linethrough red';
         if (matchQuestion.isAnswered &&
             matchQuestion.matchAnswerID == matchAnswerID)
             return 'checked';
         else if (matchQuestion.isAnswered &&
-            matchQuestion.matchAnswerID != matchAnswerID)
+                 matchQuestion.matchAnswerID != matchAnswerID)
             return 'linethrough';
         else if (!matchQuestion.isAnswered)
             return '';
+    }
+
+    public setBackgroundColor = (matchQuestion: MatchQuestion): string => {
+        if (this.app.isSelectedYou)
+            return 'white';
+        else if (matchQuestion.matchAnswerID == matchQuestion.remoteMatchAnswerID)
+            return 'aliceblue';
+        else
+            return 'antiquewhite';
     }
 }

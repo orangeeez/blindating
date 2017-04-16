@@ -13,6 +13,7 @@
     padding-left: 5px;
 }
 .matchquestions .matchquestion {
+    margin-bottom: 5px;
     border-bottom: 1px solid var(--main-border-color);
 }
 .matchquestions .header-category {
@@ -51,6 +52,9 @@
 }
 .matchquestions .radio .linethrough {
     text-decoration: line-through;
+}
+.matchquestions .radio .red {
+    color: var(--invalid-color);
 }
 .no-mquestions {
     color: var(--inactive-text-color);

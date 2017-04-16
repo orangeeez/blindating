@@ -1,10 +1,11 @@
 import { MatchAnswer } from './matchanswer';
 export class MatchQuestion {
-    id:            number;
-    category:      string;
-    text:          string;
-    matchAnswers:  MatchAnswer[];
-    matchAnswerID: number;
+    id:                  number;
+    category:            string;
+    text:                string;
+    matchAnswers:        MatchAnswer[];
+    matchAnswerID:       number;
+    remoteMatchAnswerID: number;
     isAnswered:    boolean;
 
     constructor(id, category, text) {

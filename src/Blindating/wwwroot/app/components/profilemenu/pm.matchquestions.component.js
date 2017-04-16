@@ -15,7 +15,6 @@ var PmatchquestionsComponent = (function () {
     function PmatchquestionsComponent(_matchQuestionService) {
         var _this = this;
         this._matchQuestionService = _matchQuestionService;
-        this.isComparing = false;
         this.onAnswer = function (index, matchAnswerID) {
             _this.matchQuestions[index].isAnswered = true;
             _this._matchQuestionService.AddOverriden(_this.matchQuestions[index]).subscribe();
@@ -27,6 +26,10 @@ var PmatchquestionsComponent = (function () {
             matchQuestion.matchAnswerID = matchAnswerID;
         };
         this.setRadioStyle = function (matchQuestion, matchAnswerID) {
+            if (!_this.app.isSelectedYou &&
+                matchQuestion.remoteMatchAnswerID == matchAnswerID &&
+                matchQuestion.matchAnswerID != matchQuestion.remoteMatchAnswerID)
+                return 'linethrough red';
             if (matchQuestion.isAnswered &&
                 matchQuestion.matchAnswerID == matchAnswerID)
                 return 'checked';
@@ -36,27 +39,34 @@ var PmatchquestionsComponent = (function () {
             else if (!matchQuestion.isAnswered)
                 return '';
         };
+        this.setBackgroundColor = function (matchQuestion) {
+            if (_this.app.isSelectedYou)
+                return 'white';
+            else if (matchQuestion.matchAnswerID == matchQuestion.remoteMatchAnswerID)
+                return 'aliceblue';
+            else
+                return 'antiquewhite';
+        };
     }
-    PmatchquestionsComponent.prototype.ngOnInit = function () {
+    PmatchquestionsComponent.prototype.ngOnInit = function () { };
+    PmatchquestionsComponent.prototype.ngOnChanges = function (changes) {
         var _this = this;
-        console.log('init');
-        if (this.app.isSelectedYou) {
-            console.log('you');
-            this._matchQuestionService.GetAllByID(this.app.selectedUser.id)
-                .subscribe(function (questions) {
-                _this.matchQuestions = questions;
-                for (var i = 0; i < _this.matchQuestions.length; i++)
-                    if (!_this.matchQuestions[i].isAnswered)
-                        utils_1.Utils.moveArray(_this.matchQuestions, i, 0);
-            });
-        }
-        else {
-            console.log('not you');
-            this._matchQuestionService.GetMatchedWith(this.app.selectedUser.id)
-                .subscribe(function (questions) {
-                _this.isComparing = true;
-                console.log(questions);
-            });
+        if (changes['selectedUser']) {
+            if (this.app.isSelectedYou) {
+                this._matchQuestionService.GetAllByID(this.app.selectedUser.id)
+                    .subscribe(function (questions) {
+                    _this.matchQuestions = questions;
+                    for (var i = 0; i < _this.matchQuestions.length; i++)
+                        if (!_this.matchQuestions[i].isAnswered)
+                            utils_1.Utils.moveArray(_this.matchQuestions, i, 0);
+                });
+            }
+            else {
+                this._matchQuestionService.GetMatchedWith(this.app.selectedUser.id)
+                    .subscribe(function (questions) {
+                    _this.matchQuestions = questions;
+                });
+            }
         }
     };
     PmatchquestionsComponent = __decorate([

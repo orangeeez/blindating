@@ -82,17 +82,22 @@ namespace Blindating.Models.Repositories
                                                                   .Where(umq => umq.UserID == user.ID ||
                                                                                 umq.UserID == remoteUserID)
                                                                   .GroupBy(umq => umq.MatchQuestionID)
-                                                                  .Select(grp => grp.ToList())
-                                                                  .ToList();
+                                                                  .Select(grp => grp.ToList());
 
                 foreach (List<UserMatchQuestion> umqGroup in matchedWithGroup)
-                    foreach (UserMatchQuestion umq in umqGroup)
-                    {
-                        
-                        //Console.WriteLine("\t{0}", umq.);
-                    }
+                {
+                    if (umqGroup.Exists(umq => umq.UserID == user.ID) && umqGroup.Exists(umq => umq.UserID == remoteUserID)) {
+                        var userMatchAnswerID       = umqGroup.First(umq => umq.UserID == user.ID).MatchAnswerID;
+                        var remoteUserMatchAnswerID = umqGroup.First(umq => umq.UserID == remoteUserID).MatchAnswerID;
 
-                return null;
+                        umqGroup[0].MatchQuestion.MatchAnswerID = userMatchAnswerID;
+                        umqGroup[0].MatchQuestion.RemoteMatchAnswerID = remoteUserMatchAnswerID;
+                        umqGroup[0].MatchQuestion.IsAnswered = true;
+
+                        matchedQuestions.Add(umqGroup[0].MatchQuestion);
+                    }
+                }
+                return matchedQuestions;
             }
         }
         public async void Answer(MatchQuestion matchQuestion, string JWT)
