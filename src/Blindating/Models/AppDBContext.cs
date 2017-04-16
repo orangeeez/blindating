@@ -81,7 +81,7 @@ namespace Blindating.Models
                 .HasForeignKey(b => b.InformationFeedbackFK);
 
             modelBuilder.Entity<Question>()
-                .HasMany(p => p.Answers)
+                .HasMany(p => p.QuestionAnswers)
                 .WithOne(i => i.Question)
                 .HasForeignKey(b => b.QuestionAnswerFK);
 

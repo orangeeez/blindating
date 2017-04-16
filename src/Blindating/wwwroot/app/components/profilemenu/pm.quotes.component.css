@@ -54,6 +54,9 @@
     right: 10px;
     cursor: pointer;
 }
+.pencil {
+    padding-left: 10px;
+}
 .pencil:hover {
     cursor: pointer;
     color: var(--invalid-color);
@@ -62,27 +65,17 @@
     position: absolute;
     right: 10px;
 }
-.up-counter {
-    color: var(--valid-color);
-}
-.down-counter {
-    color: var(--invalid-color);
-}
 .thumbs-up:hover {
     cursor: pointer;
-    color: var(--valid-color) !important;
 }
 .thumbs-down:hover {
     cursor: pointer;
-    color: var(--invalid-color) !important;
 }
 .pencil:hover {
     cursor: pointer;
-    color: var(--valid-color);
 }
 .trash:hover {
     cursor: pointer;
-    color: var(--invalid-color);
 }
 form {
     margin-bottom: 0;

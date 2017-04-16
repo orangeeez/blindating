@@ -21,7 +21,7 @@ namespace Blindating.Controllers.Search
         [HttpPost]
         [Authorize("Bearer")]
         [ActionName("searchusers")]
-        public JsonResult SearchUsers([FromBody]SearchData searchData)
+        public JsonResult SearchUsers([FromBody]SearchUserData searchData)
         {
             return new JsonResult(Search.SearchUsers(Request.Headers["Authorization"].ToString().Remove(0, 7), searchData));
         }

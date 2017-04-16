@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Blindating.Models.Repositories
 {
@@ -37,7 +38,10 @@ namespace Blindating.Models.Repositories
         {
             using (AppDBContext _context = new AppDBContext())
             {
+                QuoteLike remoteQlike = new QuoteLike(qlike);
+                remoteQlike.RemoteUser = await GetBy(new { field = "InformationID", value = qlike.InformationNotificationFK.ToString() });
                 await Update(qlike.UpdateQuote);
+                _context.Notifications.Add(Notification.Create(qlike.RemoteInfoNotificationFK, "qlike", JsonConvert.SerializeObject(remoteQlike)));
                 _context.QuoteLikes.Add(qlike);
                 await _context.SaveChangesAsync();
 

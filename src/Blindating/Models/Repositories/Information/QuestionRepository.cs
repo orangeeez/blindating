@@ -26,7 +26,7 @@ namespace Blindating.Models.Repositories
 
                 User user = await _context.Users.Include(u => u.Information)
                                                 .ThenInclude(i => i.Questions)
-                                                .ThenInclude(q => q.Answers)
+                                                .ThenInclude(q => q.QuestionAnswers)
                     .Where(u => u.ID == userID)
                     .SingleOrDefaultAsync();
 
@@ -43,7 +43,7 @@ namespace Blindating.Models.Repositories
 
                 User user = await _context.Users.Include(u => u.Information)
                                                 .ThenInclude(i => i.Questions)
-                                                .ThenInclude(q => q.Answers)
+                                                .ThenInclude(q => q.QuestionAnswers)
                     .Where(u => u.ID == userID)
                     .SingleOrDefaultAsync();
 
@@ -71,7 +71,8 @@ namespace Blindating.Models.Repositories
 
             foreach (Question q in questions)
             {
-                foreach (QuestionAnswer a in q.Answers)
+                q.AnswersCount = q.QuestionAnswers.Count;
+                foreach (QuestionAnswer a in q.QuestionAnswers)
                     if (a.RemoteUserID == ID)
                         q.Answered = a.Result;
             }
@@ -91,7 +92,8 @@ namespace Blindating.Models.Repositories
 
             foreach (Question q in questions)
             {
-                foreach (QuestionAnswer a in q.Answers)
+                q.AnswersCount = q.QuestionAnswers.Count;
+                foreach (QuestionAnswer a in q.QuestionAnswers)
                     if (a.RemoteUserID == ID)
                         notAnsweredQuestions.Remove(q);
 

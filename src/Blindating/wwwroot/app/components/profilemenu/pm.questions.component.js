@@ -16,11 +16,8 @@ var PmQuestionsComponent = (function () {
         this.onBack = new core_1.EventEmitter();
         this.isAddingQuestion = false;
     }
-    PmQuestionsComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this._questionService.GetAllByID(this.app.selectedUser.id)
-            .subscribe(function (questions) { return _this.questions = questions; });
-    };
+    PmQuestionsComponent.prototype.ngOnInit = function () { };
+    PmQuestionsComponent.prototype.ngOnDestroy = function () { };
     PmQuestionsComponent.prototype.ngAfterViewInit = function () {
         document.getElementById('profilemenu').scrollTop = 0;
     };
@@ -56,7 +53,8 @@ var PmQuestionsComponent = (function () {
                         informationQuestionFK: this.app.selectedUser.information['id'],
                         userID: this.app.selectedUser.id,
                         isEditing: false,
-                        answered: false
+                        answered: false,
+                        answersCount: 0
                     };
                     this.isAddingQuestion = false;
                     this.message = '';

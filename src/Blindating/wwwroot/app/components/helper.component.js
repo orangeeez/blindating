@@ -122,10 +122,6 @@ var HelperComponent = (function () {
         else
             this.denyCall(this.app.communicationUser.jwt);
     };
-    HelperComponent.prototype.onSearchShow = function () {
-        this.isSearchInitiated = !this.isSearchInitiated;
-        this.app._footer.searchToggle();
-    };
     HelperComponent = __decorate([
         core_1.Component({
             selector: 'helper-component',

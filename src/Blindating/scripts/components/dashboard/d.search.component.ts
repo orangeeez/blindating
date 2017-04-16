@@ -6,38 +6,33 @@
     style,
     transition,
     animate
-}                       from '@angular/core';
-import { AppComponent } from '../../components/app.component';
-import { SearchData }   from '../../static/utils';
-import { UserService }  from '../../services/user.service';
-import { SearchService } from '../../services/search/search.service';
+}                         from '@angular/core';
+import { AppComponent }   from '../../components/app.component';
+import { SearchUserData } from '../../static/utils';
+import { UserService }    from '../../services/user.service';
+import { SearchService }  from '../../services/search/search.service';
 
 import { User }         from '../../models/user';
 @Component({
-    selector:    'f-search-component',
-    templateUrl: 'app/components/footer/f.search.component.html',
-    styleUrls:  ['app/components/footer/f.search.component.css'],
-    inputs:     ['app', 'searchState'],
-    animations: [
-        trigger('searchState', [
-            state('deselected', style({
-                top: '50px'
-            })),
-            state('selected', style({
-                top: '15px'
-            })),
-            transition('deselected => selected', animate('300ms ease-in')),
-            transition('selected => deselected', animate('300ms ease-out'))
-        ])
-    ]
+    selector:    'd-search-component',
+    templateUrl: 'app/components/dashboard/d.search.component.html',
+    styleUrls:  ['app/components/dashboard/d.search.component.css'],
+    inputs:     ['app']
 })
-export class FSearchComponent implements OnInit {
+export class DSearchComponent implements OnInit {
     public app:        AppComponent;
-    public searchData: SearchData;
+    public searchData: SearchUserData;
+
+    public searchToggles: Array<any> = [
+        { title: 'Gender', items: ['Male', 'Female', 'Anyway'] },
+        { title: 'Hair',   items: ['Male', 'Female', 'Anyway'] },
+        { title: 'Eyes',   items: ['Male', 'Female', 'Anyway'] },
+        { title: 'Color',  items: ['Male', 'Female', 'Anyway'] },
+    ];
 
     constructor(private _userService:   UserService,
                 private _searchService: SearchService) {
-        this.searchData = new SearchData();
+        this.searchData = new SearchUserData();
     }
 
     ngOnInit() { }

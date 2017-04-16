@@ -158,9 +158,4 @@ export class HelperComponent implements OnInit {
         this.isVideoing       = false;
         clearInterval(this.intervalVideoing);
     }
-
-    public onSearchShow() {
-        this.isSearchInitiated = !this.isSearchInitiated;
-        this.app._footer.searchToggle();
-    }
 }

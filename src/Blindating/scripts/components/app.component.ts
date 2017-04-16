@@ -262,9 +262,6 @@ export class AppComponent implements OnInit {
                 this._helper.phoneIcon = PHONE_INACTIVE;
                 this._helper.isPhoneDisabled = true;
         }
-
-        if (this._helper.isSearchInitiated)
-            this._helper.onSearchShow();
     }
 
     private setHeaderElements = (user: User): void => {

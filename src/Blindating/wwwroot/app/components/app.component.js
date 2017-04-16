@@ -209,8 +209,6 @@ var AppComponent = (function () {
             this._helper.phoneIcon = config_1.PHONE_INACTIVE;
             this._helper.isPhoneDisabled = true;
         }
-        if (this._helper.isSearchInitiated)
-            this._helper.onSearchShow();
     };
     AppComponent.prototype.openGallery = function (photos, number) {
         if (number === void 0) { number = 0; }

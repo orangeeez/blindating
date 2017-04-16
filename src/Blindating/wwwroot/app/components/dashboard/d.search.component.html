@@ -1,0 +1,14 @@
+<div *ngFor="let toggle of searchToggles" class="btn-group dropdown" dropdown>
+    <button id="dropdown-button" type="button" class="btn btn-primary" dropdownToggle>
+        {{toggle.title}} <span class="caret"></span>
+    </button>
+    <ul dropdownMenu role="menu" aria-labelledby="dropdown-button">
+        <li *ngFor="let item of toggle.items" role="menuitem"><a class="dropdown-item" href="#">{{item}}</a></li>
+    </ul>
+</div>
+<span>
+    <input type="text" placeholder="e.g Andrew Ryzhkov"
+           [(ngModel)]="searchData.name"
+           [size]="searchData?.name?.length || 20"
+           (keyup)="onSearchUsers($event)" />
+</span>

@@ -73,13 +73,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     public maxUsersStatsColumns:       number;
     public maxUsers:                   number;
 
-    public searchToggles: Array<any> = [
-        { title: 'Gender', items: ['Male', 'Female', 'Anyway']  },
-        { title: 'Hair', items:   ['Male', 'Female', 'Anyway']  },
-        { title: 'Eyes', items:   ['Male', 'Female', 'Anyway']  },
-        { title: 'Color', items:  ['Male', 'Female', 'Anyway']  },
-    ];
-
     constructor(
         @Host() @Inject(forwardRef(() => AppComponent)) app: AppComponent,
         private _userService: UserService,

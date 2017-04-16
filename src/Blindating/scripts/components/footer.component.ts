@@ -16,11 +16,6 @@ import { UserService }  from '../services/user.service';
 })
 export class FooterComponent {
     public app:         AppComponent;
-    public searchState: string = 'deselected';
 
     constructor(private _userService: UserService) { }
-
-    public searchToggle() {
-        this.searchState = (this.searchState === 'selected' ? 'deselected' : 'selected');
-    }
 }

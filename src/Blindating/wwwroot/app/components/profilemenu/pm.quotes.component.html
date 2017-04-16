@@ -48,13 +48,13 @@
                            [class.fa-thumbs-o-up]="!quote.isLike"
                            [class.fa-thumbs-up]="quote.isLike"
                            [class.disabled]="quote.isAnswered"
-                           [style.color]="quote.isLike ? '#42A948' : '#333'"
+                           [style.color]="quote.isLike ? '#333333' : '#333'"
                            (click)="onUpQuote(quote)"></i>
                         <i class="fa thumbs-down"
                            [class.fa-thumbs-o-down]="!quote.isDislike"
                            [class.fa-thumbs-down]="quote.isDislike"
                            [class.disabled]="quote.isAnswered"
-                           [style.color]="quote.isDislike ? '#a94442' : '#333'"
+                           [style.color]="quote.isDislike ? '#333333' : '#333'"
                            (click)="onDownQuote(quote)"></i>
                         <i class="down-counter">
                             {{quote.down}}

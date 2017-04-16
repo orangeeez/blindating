@@ -22,8 +22,17 @@
                             <i class="name">{{notification.object.RemoteUser.Firstname + ' ' + notification.object.RemoteUser.Lastname}}</i>
                             <i>leaved </i><i [ngClass]="notification.object.Result ? 'result-true' : 'result-false'"
                                              [innerHTML]="notification.object.Result ? 'positive' : 'negative'">positive</i><i> feedback</i>
-                            <div class="question">{{'"' + notification.object.Text + '"'}}</div>                            
+                            <div class="question">{{notification.object.Text}}</div>                            
                             <div class="date">7 Mar at 11:54 PM</div>                                                       
+                        </div>
+                    </div>
+                    <div *ngIf="notification.type == 'qlike'" class="col-md-10">
+                        <div class="info-decoration">
+                            <i class="name">{{notification.object.RemoteUser.Firstname + ' ' + notification.object.RemoteUser.Lastname}}</i>
+                            <i [ngClass]="notification.object.Result ? 'result-true' : 'result-false'"
+                                             [innerHTML]="notification.object.Result ? 'liked' : 'disliked'"></i><i> your quote</i>
+                            <div class="question">{{notification.object.Message}}</div>
+                            <div class="date">7 Mar at 11:54 PM</div>
                         </div>
                     </div>
                 </div>

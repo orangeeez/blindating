@@ -115,12 +115,6 @@ export class PmBasicComponent implements OnInit, OnChanges {
                     this.isPreferenceLoaded = true;
                 });
 
-            this._questionService.GetNotAnsweredByID(this.app.selectedUser.id)
-                .subscribe(questions => {
-                    this.questions = questions.reverse();
-                    this.isQuestionsLoaded = true;
-                });
-
             this._photoService.GetAllByID(this.app.selectedUser.id)
                 .subscribe(photos => {
                     this.photos = photos.reverse();
@@ -132,6 +126,21 @@ export class PmBasicComponent implements OnInit, OnChanges {
                     this.conversations = conversations.reverse();
                     this.isConversationsLoaded = true;
                 });
+
+            if (this.app.user.id == this.app.selectedUser.id) {
+                this._questionService.GetAllByID(this.app.selectedUser.id)
+                    .subscribe(questions => {
+                        this.questions = questions.reverse();
+                        this.isQuestionsLoaded = true;
+                    });
+            }
+            else {
+                this._questionService.GetNotAnsweredByID(this.app.selectedUser.id)
+                    .subscribe(questions => {
+                        this.questions = questions.reverse();
+                        this.isQuestionsLoaded = true;
+                    });
+            }
         }
     }
 
@@ -250,11 +259,19 @@ export class PmBasicComponent implements OnInit, OnChanges {
         this.isOpenConversations = false;
     }
 
+    public onShowAnswers = (): void => {
+        this._questionService.GetAllByID(this.app.selectedUser.id)
+            .subscribe(questions => {
+                this.questions = questions.reverse();
+                this.isQuestionsLoaded = true;
+            });
+    }
+
     public onAcceptAnswer(): void {
         let answer: QuestionAnswer = {
             id: 0,
             remoteUserID: this.app.user.id,
-            questionAnswerFK: this.questions[this.questionIndex]['information'].id,
+            questionAnswerFK: this.questions[this.questionIndex].id,
             result: true,
             direction: "Leaved",
             informationQuestionFK: this.app.user.information.id,
@@ -273,7 +290,6 @@ export class PmBasicComponent implements OnInit, OnChanges {
             this.questions.push(q);
         }
         
-
         this._questionService.SetAnswer(answer).subscribe();
     }
 
@@ -299,6 +315,8 @@ export class PmBasicComponent implements OnInit, OnChanges {
             this.questionIndex = 0;
             this.questions.push(q);
         }
+
+        this._questionService.SetAnswer(answer).subscribe();
     }
 
     public setBasicComponentShow(): void {

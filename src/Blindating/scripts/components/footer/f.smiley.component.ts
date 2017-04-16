@@ -8,7 +8,7 @@ import {
     animate
 }                       from '@angular/core';
 import { AppComponent } from '../../components/app.component';
-import { SearchData }   from '../../static/utils';
+import { SearchUserData }   from '../../static/utils';
 import { Message }      from '../../models/message';
 import { SMILES }       from '../../static/config';
 

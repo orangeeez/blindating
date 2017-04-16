@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Blindating.Models.Interfaces
 {
     public interface ISearchRepository {
-        Task<IEnumerable<User>> SearchUsers(string JWT, SearchData searchData);
+        Task<IEnumerable<User>> SearchUsers(string JWT, SearchUserData searchData);
         //string Test();
     }
 }

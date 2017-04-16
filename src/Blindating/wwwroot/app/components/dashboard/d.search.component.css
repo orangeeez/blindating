@@ -1,0 +1,38 @@
+.search-form {
+    color: #777;
+}
+input {
+    padding-left: 5px;
+    border: none;
+    border-bottom: 1px solid #e7e7e7;
+}
+input:focus {
+    border-bottom: 1px solid #808080;
+}
+.dropdown button {
+    color: var(--focus-border-color);
+    font-weight: bold;
+    background-color: white;
+    border: none;
+    padding: 0 10px;
+}
+.dropdown button:focus {
+    color: var(--focus-border-color);
+    font-weight: bold;
+    background-color: white;
+}
+.dropdown .dropdown-toggle {
+    box-shadow: none;
+}
+::-webkit-input-placeholder {
+  color: var(--inactive-text-color);
+}
+:-ms-input-placeholder {
+  color: var(--inactive-text-color);
+}
+::-moz-placeholder {
+  color: var(--inactive-text-color);
+}
+:-moz-placeholder {
+  color: var(--inactive-text-color);
+}

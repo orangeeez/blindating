@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Blindating.Models.Tables.Utils
 {
     [NotMapped]
-    public class SearchData
+    public class SearchUserData
     {
         public string Name { get; set; }
         public int Count { get; set; }

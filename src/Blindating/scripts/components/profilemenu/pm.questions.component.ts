@@ -1,6 +1,7 @@
 ﻿import {
     Component,
     OnInit,
+    OnDestroy
     EventEmitter,
     AfterViewInit
 }                            from '@angular/core';
@@ -15,7 +16,7 @@ import { AppComponent }      from '../../components/app.component';
     outputs:   ['onBack']
 
 })
-export class PmQuestionsComponent implements OnInit, AfterViewInit {
+export class PmQuestionsComponent implements OnInit, OnDestroy, AfterViewInit {
     public app: AppComponent;
     public onBack = new EventEmitter();
 
@@ -28,10 +29,9 @@ export class PmQuestionsComponent implements OnInit, AfterViewInit {
     constructor(
         private _questionService: QuestionService) { }
 
-    ngOnInit() {
-        this._questionService.GetAllByID(this.app.selectedUser.id)
-            .subscribe(questions => this.questions = questions);
-    }
+    ngOnInit() { }
+
+    ngOnDestroy() { }
 
     ngAfterViewInit() {
         document.getElementById('profilemenu').scrollTop = 0;
@@ -71,7 +71,8 @@ export class PmQuestionsComponent implements OnInit, AfterViewInit {
                         informationQuestionFK: this.app.selectedUser.information['id'],
                         userID:                this.app.selectedUser.id,
                         isEditing:             false,
-                        answered:              false
+                        answered:              false,
+                        answersCount:          0
                     };
                     this.isAddingQuestion = false;
                     this.message       = '';

@@ -17,7 +17,7 @@ namespace Blindating.Models.Repositories.Search
         {
             _context = context;
         }
-        public async Task<IEnumerable<User>> SearchUsers(string JWT, SearchData searchData)
+        public async Task<IEnumerable<User>> SearchUsers(string JWT, SearchUserData searchData)
         {
             using (AppDBContext _context = new AppDBContext())
             {

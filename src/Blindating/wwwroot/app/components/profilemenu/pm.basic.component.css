@@ -117,13 +117,18 @@
     font-size: 16px;
     padding-bottom: 5px;
 }
+.question-decoration p {
+    margin-bottom: 0;
+}
 .question-decoration-gray > p {
     color: darkgray;
 }
-
 .question-content-decoration {
     display: flex;
     padding-top: 15px;
+}
+.question-content-decoration .answer {
+    font-size: 80%;
 }
 .photos-content {
     padding: 0;
@@ -186,18 +191,22 @@
     right: 5px;
     top: 40%
 }
+#basic-questions .btn-questions {
+    border-radius: 10px;
+    padding: 0 12px;
+}
 .question-yesno {
     text-align: center;
 }
 .question-yesno i {
     cursor: pointer;
 }
-.question-yesno .fa-check-circle-o {
+/*.question-yesno .fa-check-circle-o {
     color: var(--valid-color);
 }
 .question-yesno .fa-times-circle-o {
     color: var(--invalid-color);
-}
+}*/
 .no-content-decoration {
     height: 100px;
     line-height: 100px;

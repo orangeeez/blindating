@@ -65,6 +65,13 @@ var PmBasicComponent = (function () {
         this.isQuestionsLoaded = false;
         this.isPhotosLoaded = false;
         this.isConversationsLoaded = false;
+        this.onShowAnswers = function () {
+            _this._questionService.GetAllByID(_this.app.selectedUser.id)
+                .subscribe(function (questions) {
+                _this.questions = questions.reverse();
+                _this.isQuestionsLoaded = true;
+            });
+        };
         this.filterInputDropdownCountry = function (country) {
             return country.includes(_this.preferences.country);
         };
@@ -96,11 +103,6 @@ var PmBasicComponent = (function () {
                 _this.preferences = preference;
                 _this.isPreferenceLoaded = true;
             });
-            this._questionService.GetNotAnsweredByID(this.app.selectedUser.id)
-                .subscribe(function (questions) {
-                _this.questions = questions.reverse();
-                _this.isQuestionsLoaded = true;
-            });
             this._photoService.GetAllByID(this.app.selectedUser.id)
                 .subscribe(function (photos) {
                 _this.photos = photos.reverse();
@@ -111,6 +113,20 @@ var PmBasicComponent = (function () {
                 _this.conversations = conversations.reverse();
                 _this.isConversationsLoaded = true;
             });
+            if (this.app.user.id == this.app.selectedUser.id) {
+                this._questionService.GetAllByID(this.app.selectedUser.id)
+                    .subscribe(function (questions) {
+                    _this.questions = questions.reverse();
+                    _this.isQuestionsLoaded = true;
+                });
+            }
+            else {
+                this._questionService.GetNotAnsweredByID(this.app.selectedUser.id)
+                    .subscribe(function (questions) {
+                    _this.questions = questions.reverse();
+                    _this.isQuestionsLoaded = true;
+                });
+            }
         }
     };
     PmBasicComponent.prototype.onFocusoutName = function () {
@@ -226,7 +242,7 @@ var PmBasicComponent = (function () {
         var answer = {
             id: 0,
             remoteUserID: this.app.user.id,
-            questionAnswerFK: this.questions[this.questionIndex]['information'].id,
+            questionAnswerFK: this.questions[this.questionIndex].id,
             result: true,
             direction: "Leaved",
             informationQuestionFK: this.app.user.information.id,
@@ -266,6 +282,7 @@ var PmBasicComponent = (function () {
             this.questionIndex = 0;
             this.questions.push(q);
         }
+        this._questionService.SetAnswer(answer).subscribe();
     };
     PmBasicComponent.prototype.setBasicComponentShow = function () {
         this.isOpenQuotes = false;

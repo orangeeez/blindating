@@ -238,12 +238,13 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div id="basic-questions" class="row">
         <div class="header"
+             [style.pointer-events]="app.isSelectedYou ? 'auto' : 'none'"
              (mouseover)="onHeaderMouseoverout('questions', true)"
              (mouseout)="onHeaderMouseoverout('questions', false)"
              (click)="onOpenQuestions()">
-            Question
+            Questions
             <img class="arrow-right-decoration" src="../../../images/app/controls/arrow-right.svg"
                  [hidden]="!isQuestionsArrowShow"
                  (mouseover)="onHeaderMouseoverout('questions', true)"
@@ -251,10 +252,15 @@
         </div>
         <div class="question-content-decoration">
             <div [ngClass]="(questions[questionIndex]?.message != 'User does not add question to others yet' && 
-                    questions[questionIndex]?.message != 'You answered on all questions') ? 'question-decoration' : 'question-decoration-gray'"
+                            questions[questionIndex]?.message != 'You answered on all questions') ? 'question-decoration' : 'question-decoration-gray'"
                  class="col-md-12 question-decoration">
                 <p *ngIf="app.isSelectedYou">{{questions[questionIndex]?.message}}</p>
-                <p *ngIf="!app.isSelectedYou">{{questions[questionIndex]?.message}}</p>
+                <p *ngIf="!app.isSelectedYou"
+                   [style.text-align]="questions[questionIndex]?.message == 'You answered on all questions' ? 'center' : 'left'">{{questions[questionIndex]?.message}}</p>
+                <div *ngIf="app.isSelectedYou &&
+                            questions[questionIndex]?.message != 'User does not add question to others yet'" class="answer">
+                    <span>- <b>{{questions[questionIndex]?.answersCount}}</b> users answered this question</span>
+                </div>
             </div>
         </div>
         <div *ngIf="questionIndex < questions.length &&
@@ -273,8 +279,9 @@
         </div>
         <div *ngIf="questions[0]?.message == 'You answered on all questions'"
              [style.text-align]="'center'">
-            <button class="btn btn-default"
-                    (click)="onOpenQuestions()">
+            <button class="btn btn-default btn-questions"
+                    (click)="onOpenQuestions();
+                             onShowAnswers();">
                 Show answers
             </button>
         </div>

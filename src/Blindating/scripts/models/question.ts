@@ -1,10 +1,11 @@
 export class Question {
     id:                    number;
-    message:               string;
-    informationQuestionFK: number;
     userID:                number;
+    informationQuestionFK: number;
+    message:               string;
 
     //not mapped
-    answered: boolean;
-    isEditing: boolean;
+    answered:     boolean;
+    isEditing:    boolean;
+    answersCount: number;
 }

@@ -39,6 +39,17 @@
 .question-decoration textarea:focus {
     border-bottom: 1px solid var(--focus-border-color);
 }
+.question-decoration .answer-valid {
+    color: var(--valid-color);
+    font-weight: bold;
+}
+.question-decoration .answer {
+    font-size: 80%;
+}
+.question-decoration .answer-invalid {
+    color: var(--invalid-color);
+    font-weight: bold;
+}
 .plus {
     z-index: 1001;
     position: fixed;

@@ -243,7 +243,7 @@ namespace Blindating.Models.Repositories
                                            into conversations
                                            join feedback in _context.Feedbacks on information.ID equals feedback.InformationFeedbackFK
                                            into feedbacks
-                                           join question in _context.Questions.Include(q => q.Answers) on information.ID equals question.InformationQuestionFK
+                                           join question in _context.Questions.Include(q => q.QuestionAnswers) on information.ID equals question.InformationQuestionFK
                                            into questions
                                            select new { InformationID = information.ID, Conversations = conversations, Feedbacks = feedbacks, Questions = questions };
 
@@ -252,8 +252,8 @@ namespace Blindating.Models.Repositories
                     var u = await GetBy(new { field = "InformationID", value = cau.InformationID.ToString() });
                     var conversationsCount = cau.Conversations.Where(c => c.Direction == "initiatedCaller").Count();
                     var feedbacksCount = cau.Feedbacks.Where(c => c.Direction == "Leaved").Count();
-                    var answersCount = (from q in _context.Questions.Include(q => q.Answers)
-                                        from a in q.Answers
+                    var answersCount = (from q in _context.Questions.Include(q => q.QuestionAnswers)
+                                        from a in q.QuestionAnswers
                                         where a.RemoteUserID == u.ID
                                         select a).ToList().Count;
                     tempActiveUsers.Add(new
@@ -292,7 +292,7 @@ namespace Blindating.Models.Repositories
                                             into conversations
                                             join feedback in _context.Feedbacks on information.ID equals feedback.InformationFeedbackFK
                                             into feedbacks
-                                            join question in _context.Questions.Include(q => q.Answers) on information.ID equals question.InformationQuestionFK
+                                            join question in _context.Questions.Include(q => q.QuestionAnswers) on information.ID equals question.InformationQuestionFK
                                             into questions
                                             select new { InformationID = information.ID, Conversations = conversations, Feedbacks = feedbacks, Questions = questions };
 
@@ -302,7 +302,7 @@ namespace Blindating.Models.Repositories
                     var conversationsCount = cpu.Conversations.Where(c => c.Direction == "initiatedCalling").Count();
                     var feedbacksCount = cpu.Feedbacks.Where(c => c.Direction == null).Count();
                     var answersCount = (from q in cpu.Questions
-                                        from a in q.Answers
+                                        from a in q.QuestionAnswers
                                         where a.Direction == "Leaved"
                                         select a).ToList().Count;
 

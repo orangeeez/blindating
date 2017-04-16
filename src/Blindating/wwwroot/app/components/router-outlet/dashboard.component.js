@@ -34,12 +34,6 @@ var DashboardComponent = (function () {
         this.isPopularUsersLoaded = false;
         this.isActiveUsersLoaded = false;
         this.isSearchShow = false;
-        this.searchToggles = [
-            { title: 'Gender', items: ['Male', 'Female', 'Anyway'] },
-            { title: 'Hair', items: ['Male', 'Female', 'Anyway'] },
-            { title: 'Eyes', items: ['Male', 'Female', 'Anyway'] },
-            { title: 'Color', items: ['Male', 'Female', 'Anyway'] },
-        ];
         this.removeCurrentUser = function (user) {
             return user.id != _this.app.user.id;
         };

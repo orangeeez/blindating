@@ -46,12 +46,14 @@ var PmQuotesComponent = (function () {
         quote.up++;
         var qlike = {
             id: 0,
-            quoteLikeFK: quote.informationQuoteFK,
+            quoteLikeFK: quote.id,
             remoteUserID: this.app.user.id,
             direction: 'Leaved',
             result: true,
             message: this.quotes.find(function (q) { return q.id == quote.id; }).content,
-            updateQuote: quote
+            updateQuote: quote,
+            informationNotificationFK: this.app.user.information.id,
+            remoteInfoNotificationFK: this.app.selectedUser.information.id,
         };
         this._quoteService.SetLike(qlike).subscribe();
     };
@@ -61,12 +63,14 @@ var PmQuotesComponent = (function () {
         quote.down++;
         var qlike = {
             id: 0,
-            quoteLikeFK: quote.informationQuoteFK,
+            quoteLikeFK: quote.id,
             remoteUserID: this.app.user.id,
             direction: "Leaved",
             result: false,
             message: this.quotes.find(function (q) { return q.id == quote.id; }).content,
-            updateQuote: quote
+            updateQuote: quote,
+            informationNotificationFK: this.app.user.information.id,
+            remoteInfoNotificationFK: this.app.selectedUser.information.id,
         };
         this._quoteService.SetLike(qlike).subscribe();
     };

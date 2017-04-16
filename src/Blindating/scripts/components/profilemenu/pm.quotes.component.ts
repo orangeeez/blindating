@@ -67,12 +67,14 @@ export class PmQuotesComponent implements OnInit, AfterViewInit {
         quote.up++;
         let qlike: QuoteLike = {
             id: 0,
-            quoteLikeFK:  quote.informationQuoteFK,
+            quoteLikeFK:  quote.id,
             remoteUserID: this.app.user.id,
             direction:    'Leaved',
             result:       true,
             message:      this.quotes.find(function (q) { return q.id == quote.id }).content,
-            updateQuote:  quote
+            updateQuote:  quote,
+            informationNotificationFK: this.app.user.information.id,
+            remoteInfoNotificationFK:  this.app.selectedUser.information.id,
         }
 
         this._quoteService.SetLike(qlike).subscribe();
@@ -85,12 +87,14 @@ export class PmQuotesComponent implements OnInit, AfterViewInit {
         quote.down++;
         let qlike: QuoteLike = {
             id: 0,
-            quoteLikeFK:  quote.informationQuoteFK,
+            quoteLikeFK:  quote.id,
             remoteUserID: this.app.user.id,
             direction:    "Leaved",
             result:       false,
             message:      this.quotes.find(function (q) { return q.id == quote.id }).content,
-            updateQuote:  quote
+            updateQuote: quote,
+            informationNotificationFK: this.app.user.information.id,
+            remoteInfoNotificationFK:  this.app.selectedUser.information.id,
         }
 
         this._quoteService.SetLike(qlike).subscribe();

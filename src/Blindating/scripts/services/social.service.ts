@@ -7,7 +7,7 @@ import {
 import { Injectable }  from '@angular/core';
 import { Observable }  from 'rxjs/Observable';
 import { User }        from '../models/user';
-import { SearchData }  from '../static/utils';
+import { SearchUserData }  from '../static/utils';
 
 import { API_ADDRESS } from '../static/config';
 import { BaseService } from '../services/base.service';

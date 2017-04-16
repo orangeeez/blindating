@@ -12,14 +12,16 @@ namespace Blindating.Models.Tables
     {
         public Question()
         {
-            this.Answers = new List<QuestionAnswer>();
+            this.QuestionAnswers = new List<QuestionAnswer>();
         }
         public int ID { get; set; }
         public int InformationQuestionFK { get; set; }
         public string Message { get; set; }
         public virtual Information Information { get; set; }
 
-        [JsonIgnore] public virtual List<QuestionAnswer> Answers { get; set; }
+        [JsonIgnore] public virtual List<QuestionAnswer> QuestionAnswers { get; set; }
         [NotMapped] public bool Answered { get; set; }
+        [NotMapped] public int AnswersCount { get; set; }
+
     }
 }

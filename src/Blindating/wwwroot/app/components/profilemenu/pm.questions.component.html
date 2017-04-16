@@ -23,10 +23,15 @@
                 </div>
             </form>
             <div *ngIf="questions?.length == 0" class="no-questions">No questions yet</div>
-            <div *ngFor="let question of questions" class="question-decoration"
-                 [style.border-right]="question.answered ? '5px solid #42A948' : '5px solid #a94442'">
+            <div *ngFor="let question of questions" class="question-decoration">
                 <div *ngIf="!question.isEditing">
                     <div>{{question.message}}</div>
+                    <div *ngIf="!app.isSelectedYou" class="answer">- You answered
+                        <span [ngClass]="question.answered ? 'answer-valid' : 'answer-invalid'">{{question.answered}}</span>
+                    </div>
+                    <div *ngIf="app.isSelectedYou" class="answer">
+                        <span>- <b>{{question.answersCount}}</b> users answered this question</span>
+                    </div>
                     <i *ngIf="app.isSelectedYou" class="fa fa-pencil pencil"
                        (click)="onEditQuestion(question)"></i>
                     <i *ngIf="app.isSelectedYou" class="fa fa-trash trash"

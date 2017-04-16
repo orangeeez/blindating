@@ -184,14 +184,8 @@
                     <i class="fa fa-refresh refresh"
                        (click)="onRefreshUsers()"></i>
                 </div>
-                <div *ngFor="let toggle of searchToggles" class="btn-group dropdown" dropdown>
-                    <button id="dropdown-button" type="button" class="btn btn-primary" dropdownToggle>
-                        {{toggle.title}} <span class="caret"></span>
-                    </button>
-                    <ul dropdownMenu role="menu" aria-labelledby="dropdown-button">
-                        <li *ngFor="let item of toggle.items" role="menuitem"><a class="dropdown-item" href="#">{{item}}</a></li>
-                    </ul>
-                </div>
+                <d-search-component
+                                    [app]="app"></d-search-component>
             </div>
             <div *ngIf="!isUsersLoaded">
                 <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw image-loading image-stats-loading"></i>
@@ -211,6 +205,7 @@
                 </div>
             </div>
             <div *ngIf="isSearchShow" class="row">
+                <div *ngIf="searchUsers.length == 0" class="no-activities">No search results</div>
                 <div *ngFor="let user of searchUsers" class="col-md-1 profile"
                      [class.selected]="user.id == app.selectedUser?.id"
                      (click)="app.selectDeselectUser(user)">
@@ -223,7 +218,7 @@
                     </div>
                 </div>
             </div>
-            <div class="pickup-form"
+            <!--<div class="pickup-form"
                  [@pickupState]="pickupState"
                  (@pickupState.done)="onPickupDone($event)">
                 <div *ngIf="app.isPickupShow" class="row">
@@ -264,7 +259,7 @@
                                      (click)="onPickupDecline()">DECLINE</button></div>
                     </div>
                 </div>
-            </div>
+            </div>-->
         </div>
     </div>
 </div>
