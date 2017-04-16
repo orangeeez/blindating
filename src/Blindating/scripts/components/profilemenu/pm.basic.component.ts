@@ -127,20 +127,24 @@ export class PmBasicComponent implements OnInit, OnChanges {
                     this.isConversationsLoaded = true;
                 });
 
-            if (this.app.user.id == this.app.selectedUser.id) {
-                this._questionService.GetAllByID(this.app.selectedUser.id)
-                    .subscribe(questions => {
-                        this.questions = questions.reverse();
-                        this.isQuestionsLoaded = true;
-                    });
-            }
-            else {
-                this._questionService.GetNotAnsweredByID(this.app.selectedUser.id)
-                    .subscribe(questions => {
-                        this.questions = questions.reverse();
-                        this.isQuestionsLoaded = true;
-                    });
-            }
+            this.GetQuestions();
+        }
+    }
+
+    public GetQuestions = (): void => {
+        if (this.app.user.id == this.app.selectedUser.id) {
+            this._questionService.GetAllByID(this.app.selectedUser.id)
+                .subscribe(questions => {
+                    this.questions = questions.reverse();
+                    this.isQuestionsLoaded = true;
+                });
+        }
+        else {
+            this._questionService.GetNotAnsweredByID(this.app.selectedUser.id)
+                .subscribe(questions => {
+                    this.questions = questions.reverse();
+                    this.isQuestionsLoaded = true;
+                });
         }
     }
 
@@ -249,6 +253,7 @@ export class PmBasicComponent implements OnInit, OnChanges {
 
     public onBackQuestions(): void {
         this.isOpenQuestions = false;
+        this.GetQuestions();
     }
 
     public onBackPhotos(): void {
@@ -267,6 +272,7 @@ export class PmBasicComponent implements OnInit, OnChanges {
             });
     }
 
+    // TODO: Refactor Accept/Decline Answer
     public onAcceptAnswer(): void {
         let answer: QuestionAnswer = {
             id: 0,
@@ -296,8 +302,8 @@ export class PmBasicComponent implements OnInit, OnChanges {
     public onDeclineAnswer(): void {
         let answer: QuestionAnswer = {
             id: 0,
-            remoteUserID: this.app.selectedUser.id,
-            questionAnswerFK: this.questions[this.questionIndex]['information'].id,
+            remoteUserID: this.app.user.id,
+            questionAnswerFK: this.questions[this.questionIndex].id,
             result: false,
             direction: "Leaved",
             informationQuestionFK: this.app.user.information.id,

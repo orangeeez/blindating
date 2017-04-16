@@ -65,6 +65,22 @@ var PmBasicComponent = (function () {
         this.isQuestionsLoaded = false;
         this.isPhotosLoaded = false;
         this.isConversationsLoaded = false;
+        this.GetQuestions = function () {
+            if (_this.app.user.id == _this.app.selectedUser.id) {
+                _this._questionService.GetAllByID(_this.app.selectedUser.id)
+                    .subscribe(function (questions) {
+                    _this.questions = questions.reverse();
+                    _this.isQuestionsLoaded = true;
+                });
+            }
+            else {
+                _this._questionService.GetNotAnsweredByID(_this.app.selectedUser.id)
+                    .subscribe(function (questions) {
+                    _this.questions = questions.reverse();
+                    _this.isQuestionsLoaded = true;
+                });
+            }
+        };
         this.onShowAnswers = function () {
             _this._questionService.GetAllByID(_this.app.selectedUser.id)
                 .subscribe(function (questions) {
@@ -113,20 +129,7 @@ var PmBasicComponent = (function () {
                 _this.conversations = conversations.reverse();
                 _this.isConversationsLoaded = true;
             });
-            if (this.app.user.id == this.app.selectedUser.id) {
-                this._questionService.GetAllByID(this.app.selectedUser.id)
-                    .subscribe(function (questions) {
-                    _this.questions = questions.reverse();
-                    _this.isQuestionsLoaded = true;
-                });
-            }
-            else {
-                this._questionService.GetNotAnsweredByID(this.app.selectedUser.id)
-                    .subscribe(function (questions) {
-                    _this.questions = questions.reverse();
-                    _this.isQuestionsLoaded = true;
-                });
-            }
+            this.GetQuestions();
         }
     };
     PmBasicComponent.prototype.onFocusoutName = function () {
@@ -231,6 +234,7 @@ var PmBasicComponent = (function () {
     };
     PmBasicComponent.prototype.onBackQuestions = function () {
         this.isOpenQuestions = false;
+        this.GetQuestions();
     };
     PmBasicComponent.prototype.onBackPhotos = function () {
         this.isOpenPhotos = false;
@@ -238,6 +242,7 @@ var PmBasicComponent = (function () {
     PmBasicComponent.prototype.onBackConversations = function () {
         this.isOpenConversations = false;
     };
+    // TODO: Refactor Accept/Decline Answer
     PmBasicComponent.prototype.onAcceptAnswer = function () {
         var answer = {
             id: 0,
@@ -264,8 +269,8 @@ var PmBasicComponent = (function () {
     PmBasicComponent.prototype.onDeclineAnswer = function () {
         var answer = {
             id: 0,
-            remoteUserID: this.app.selectedUser.id,
-            questionAnswerFK: this.questions[this.questionIndex]['information'].id,
+            remoteUserID: this.app.user.id,
+            questionAnswerFK: this.questions[this.questionIndex].id,
             result: false,
             direction: "Leaved",
             informationQuestionFK: this.app.user.information.id,
