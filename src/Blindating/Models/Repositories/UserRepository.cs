@@ -39,6 +39,7 @@ namespace Blindating.Models.Repositories
                     user.Information = new Information();
                     user.Information.Preference = new Preference();
                     user.Information.Detail = new Detail();
+                    user.Information.Rating = new Rating();
 
                     _context.Users.Add(user);
                     await _context.SaveChangesAsync();
@@ -72,7 +73,10 @@ namespace Blindating.Models.Repositories
                 dynamic obj = JsonConvert.DeserializeObject(auth);
                 string JWT = obj.jwt;
                 User user = await _context.Users.Include(u => u.Information)
+                                                .ThenInclude(i => i.Rating)
                     .SingleOrDefaultAsync(u => u.JWT == JWT);
+                user.GradeRating = user.Information.Rating.Grade;
+                user.CountRating = user.Information.Rating.Count;
                 user.Online = true;
                 user.Reason = User.AUTHORIZATION_SUCCESS;
                 await _context.SaveChangesAsync();
@@ -91,7 +95,10 @@ namespace Blindating.Models.Repositories
                 if (await isAuthExist(email, password))
                 {
                     user = await _context.Users.Include(u => u.Information)
+                                               .ThenInclude(i => i.Rating)
                         .SingleOrDefaultAsync(u => u.Email == email && u.Password == password);
+                    user.GradeRating = user.Information.Rating.Grade;
+                    user.CountRating = user.Information.Rating.Count;
                     user.Online = true;
                     user.Reason = User.AUTHORIZATION_SUCCESS;
                     await _context.SaveChangesAsync();
@@ -125,7 +132,10 @@ namespace Blindating.Models.Repositories
                 if (signature == expectedSignature)
                 {
                     user = await _context.Users.Include(u => u.Information)
+                                               .ThenInclude(i => i.Rating)
                         .SingleOrDefaultAsync(u => u.Email == email);
+                    user.GradeRating = user.Information.Rating.Grade;
+                    user.CountRating = user.Information.Rating.Count;
                     user.Online = true;
                     user.Reason = User.AUTHORIZATION_SUCCESS;
                     await _context.SaveChangesAsync();
@@ -143,7 +153,10 @@ namespace Blindating.Models.Repositories
             string social = obj.vk;
 
             user = await _context.Users.Include(u => u.Information)
+                                       .ThenInclude(i => i.Rating)
                     .SingleOrDefaultAsync(u => u.Email == email);
+            user.GradeRating = user.Information.Rating.Grade;
+            user.CountRating = user.Information.Rating.Count;
             user.Online = true;
             user.Reason = User.AUTHORIZATION_SUCCESS;
             await _context.SaveChangesAsync();
@@ -185,28 +198,6 @@ namespace Blindating.Models.Repositories
                 return await _context.Users.AnyAsync(u => u.Email == email && u.Password == password);
             }
         }
-        //public async Task<User> GetBy(dynamic condition)
-        //{
-        //    using (AppDBContext _context = new AppDBContext())
-        //    {
-        //        string field = condition.field;
-        //        string value = condition.value;
-        //        User user = null;
-        //        switch (field)
-        //        {
-        //            case "JWT":
-        //                user = await _context.Users.Include(u => u.Information).FirstOrDefaultAsync(u => u.JWT == value);
-        //                break;
-        //            case "ID":
-        //                user = await _context.Users.Include(u => u.Information).FirstOrDefaultAsync(u => u.ID == int.Parse(value));
-        //                break;
-        //            case "InformationID":
-        //                user = await _context.Users.Include(u => u.Information).ThenInclude(i => i.Conversations).FirstOrDefaultAsync(u => u.Information.ID == int.Parse(value));
-        //                break;
-        //        }
-        //        return user;
-        //    }
-        //}
         public async Task<User> GetCalling(string callingJWT, string JWT)
         {
             using (AppDBContext _context = new AppDBContext())
@@ -224,7 +215,11 @@ namespace Blindating.Models.Repositories
             using (AppDBContext _context = new AppDBContext())
             {
                 var user = await GetBy(new { field = "JWT", value = JWT, });
-                var users = await _context.Users.Include(u => u.Information).ThenInclude(i => i.Conversations).ToListAsync();
+                var users = await _context.Users.Include(u => u.Information)
+                                                .ThenInclude(i => i.Conversations)
+                                                .Include(u => u.Information)
+                                                .ThenInclude(i => i.Rating).ToListAsync();
+
                 users.Reverse();
                 users = users.Take(count).ToList();
                 return GetVideoInitiatedUsers(users, user);
@@ -273,6 +268,8 @@ namespace Blindating.Models.Repositories
                     u.User.ConversationsCount = u.ConversationsCount;
                     u.User.FeedbacksCount = u.FeedbacksCount;
                     u.User.AnswersCount = u.AnswersCount;
+                    u.User.GradeRating = u.User.Information.Rating.Grade;
+                    u.User.CountRating = u.User.Information.Rating.Count;
                     activeUsers.Add(u.User);
                 }
 
@@ -323,6 +320,8 @@ namespace Blindating.Models.Repositories
                     u.User.ConversationsCount = u.ConversationsCount;
                     u.User.FeedbacksCount = u.FeedbacksCount;
                     u.User.AnswersCount = u.AnswersCount;
+                    u.User.GradeRating = u.User.Information.Rating.Grade;
+                    u.User.CountRating = u.User.Information.Rating.Count;
                     popularUsers.Add(u.User);
                 }
 
@@ -335,11 +334,13 @@ namespace Blindating.Models.Repositories
             {
                 Random random = new Random();
                 var user = await GetBy(new { field = "JWT", value = JWT });
-                var users = await _context.Users.Include(u => u.Information).
-                                                 ThenInclude(i => i.Conversations)
-                                                 .OrderBy(u => random.Next())
-                                                 .Take(count)
-                                                 .ToListAsync();
+                var users = await _context.Users.Include(u => u.Information)
+                                                .ThenInclude(i => i.Conversations)
+                                                .Include(u => u.Information)
+                                                .ThenInclude(i => i.Rating)
+                                                .OrderBy(u => random.Next())
+                                                .Take(count)
+                                                .ToListAsync();
                 return GetVideoInitiatedUsers(users, user);
             }
         }
@@ -347,6 +348,8 @@ namespace Blindating.Models.Repositories
         {
             foreach (var u in users)
             {
+                u.GradeRating = u.Information.Rating.Grade;
+                u.CountRating = u.Information.Rating.Count;
                 if (u.ID == user.ID) u.IsVideoShared = true;
                 foreach (var c in u.Information.Conversations)
                     if (c.RemoteUserID == user.ID && c.IsVideoInitiated)

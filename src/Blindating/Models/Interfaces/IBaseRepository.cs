@@ -11,5 +11,7 @@ namespace Blindating.Models.Interfaces
         Task<int> Add(T entity);    
         Task<bool> Remove(T entity);
         Task<bool> Update(T entity);
+        Task<float> IncreaseProgress(string JWT, string type);
+        Task<float> DecreaseProgress(string JWT, string type);
     }
 }

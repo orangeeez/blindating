@@ -10,13 +10,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var question_service_1 = require('../../services/information/question.service');
+var utils_1 = require('../../static/utils');
 var PmQuestionsComponent = (function () {
     function PmQuestionsComponent(_questionService) {
         this._questionService = _questionService;
         this.onBack = new core_1.EventEmitter();
         this.isAddingQuestion = false;
     }
-    PmQuestionsComponent.prototype.ngOnInit = function () { };
+    PmQuestionsComponent.prototype.ngOnInit = function () {
+        console.log(this.questions);
+    };
     PmQuestionsComponent.prototype.ngOnDestroy = function () { };
     PmQuestionsComponent.prototype.ngAfterViewInit = function () {
         document.getElementById('profilemenu').scrollTop = 0;
@@ -31,13 +34,16 @@ var PmQuestionsComponent = (function () {
         question.isEditing = true;
         this.indexEditingQuestion = this.questions.indexOf(question);
     };
-    PmQuestionsComponent.prototype.onRemoveQuestion = function (quote) {
+    PmQuestionsComponent.prototype.onRemoveQuestion = function (question) {
         var _this = this;
-        this._questionService.Remove(quote)
+        question.isLast = this.questions.length == 1;
+        this._questionService.Remove(question)
             .subscribe(function (isremoved) {
             if (isremoved) {
-                var index = _this.questions.indexOf(quote);
+                var index = _this.questions.indexOf(question);
                 _this.questions.splice(index, 1);
+                if (question.isLast)
+                    _this.app.selectedUser.progress -= utils_1.ProgressPrice.basic;
             }
         });
     };
@@ -46,6 +52,7 @@ var PmQuestionsComponent = (function () {
         var key = event.which || event.keyCode;
         switch (key) {
             case 13:
+                var isFirst = this.questions.length == 0;
                 if (isFormValid) {
                     var question = {
                         id: 0,
@@ -54,7 +61,9 @@ var PmQuestionsComponent = (function () {
                         userID: this.app.selectedUser.id,
                         isEditing: false,
                         answered: false,
-                        answersCount: 0
+                        answersCount: 0,
+                        isFirst: isFirst,
+                        isLast: false
                     };
                     this.isAddingQuestion = false;
                     this.message = '';
@@ -62,6 +71,8 @@ var PmQuestionsComponent = (function () {
                         .subscribe(function (id) {
                         question.id = id;
                         _this.questions.unshift(question);
+                        if (isFirst)
+                            _this.app.selectedUser.progress += utils_1.ProgressPrice.basic;
                     });
                 }
                 break;

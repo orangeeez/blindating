@@ -72,7 +72,8 @@ namespace Blindating.Controllers
         {
             Image image;
             var uploader = Request.Headers["Uploader"].ToString();
-            
+            var userID = int.Parse(Request.Headers["UserID"].ToString());
+
             var JWT = Request.Headers["Authorization"].ToString().Remove(0, 7);
             var relatedPath = "images/users/";
             var filename = Path.GetRandomFileName() + ".jpg";
@@ -86,6 +87,9 @@ namespace Blindating.Controllers
                     await file.CopyToAsync(fs);
                     image = Image.FromStream(fs);
                 }
+
+                if (Photos.GetAllByID(userID).Result.Count() == 0)
+                    await Photos.IncreaseProgress(Request.Headers["Authorization"].ToString().Remove(0, 7), "photo");
 
                 return await Photos.AddByJWT(JWT, image, relatedPath + filename, uploader);
             }
@@ -103,6 +107,9 @@ namespace Blindating.Controllers
         [ActionName("remove")]
         public JsonResult Remove([FromBody] Photo photo)
         {
+            if (photo.IsLast)
+                Photos.DecreaseProgress(Request.Headers["Authorization"].ToString().Remove(0, 7), "photo");
+
             System.IO.File.Delete(Path.Combine(Environment.WebRootPath, photo.Path));
             return new JsonResult(Photos.Remove(photo));
         }

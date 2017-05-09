@@ -47,7 +47,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     public newUsers:     User[];
     public popularUsers: User[];
     public activeUsers:  User[];
-    public searchUsers:  User[];
+    public searchUsers:  User[] = [];
     public activities:   any[];
     public pickupState:  string = 'deselected';
     public pickupUser:   User;
@@ -139,7 +139,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
                 this.isNewUsersLoaded = true;
             });
 
-        // if (Math.round(this.maxUsersRows) <= 0) this.maxUsers = 1;
         this._userService.GetRandom(this.maxUsers)
             .subscribe(users => {
                 this.app.users = users.filter(this.removeCurrentUser);

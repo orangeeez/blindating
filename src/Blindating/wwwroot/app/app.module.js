@@ -24,6 +24,7 @@ var detail_service_1 = require('./services/information/detail.service');
 var feedback_service_1 = require('./services/information/feedback.service');
 var conversation_service_1 = require('./services/information/conversation.service');
 var notification_service_1 = require('./services/information/notification.service');
+var rating_service_1 = require('./services/information/rating.service');
 var matchquestion_service_1 = require('./services/matchquestion.service');
 var search_service_1 = require('./services/search/search.service');
 var social_service_1 = require('./services/social.service');
@@ -35,6 +36,7 @@ var profilemenu_component_1 = require('./components/profilemenu.component');
 var helper_component_1 = require('./components/helper.component');
 var login_component_1 = require('./components/router-outlet/login.component');
 var dashboard_component_1 = require('./components/router-outlet/dashboard.component');
+var pickup_component_1 = require('./components/router-outlet/pickup.component');
 var talk_component_1 = require('./components/router-outlet/talk.component');
 var pm_basic_component_1 = require('./components/profilemenu/pm.basic.component');
 var pm_details_component_1 = require('./components/profilemenu/pm.details.component');
@@ -74,6 +76,7 @@ var AppModule = (function () {
                 login_component_1.LoginComponent,
                 dashboard_component_1.DashboardComponent,
                 talk_component_1.TalkComponent,
+                pickup_component_1.PickupComponent,
                 pm_basic_component_1.PmBasicComponent,
                 pm_details_component_1.PmDetailsComponent,
                 pm_quotes_component_1.PmQuotesComponent,
@@ -105,7 +108,8 @@ var AppModule = (function () {
                 feedback_service_1.FeedbackService,
                 social_service_1.SocialService,
                 notification_service_1.NotificationService,
-                matchquestion_service_1.MatchQuestionService
+                matchquestion_service_1.MatchQuestionService,
+                rating_service_1.RatingService
             ]
         }), 
         __metadata('design:paramtypes', [])

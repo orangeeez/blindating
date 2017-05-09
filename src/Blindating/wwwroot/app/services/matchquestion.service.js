@@ -38,7 +38,8 @@ var MatchQuestionService = (function (_super) {
             .map(function (users) { return users.json()['result']; });
     };
     MatchQuestionService.prototype.AddOverriden = function (matchQuestion) {
-        return this._authHttp.post(config_1.API_ADDRESS + this.api + "/addoverriden", JSON.stringify(matchQuestion), this.options);
+        return this._authHttp.post(config_1.API_ADDRESS + this.api + "/addoverriden", JSON.stringify(matchQuestion), this.options)
+            .map(function (mq) { return mq.json()['result']; });
     };
     MatchQuestionService = __decorate([
         core_1.Injectable(), 

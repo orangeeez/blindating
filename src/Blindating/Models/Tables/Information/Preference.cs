@@ -24,10 +24,10 @@ namespace Blindating.Models.Tables
         public string Facebook { get; set; }
         public string Twitter { get; set; }
         public string Google { get; set; }
+        public int FilledCount { get; set; }
 
         public virtual Information Information { get; set; }
 
-        [NotMapped]
-        public int UserID { get; set; }
+        [NotMapped] public int UserID { get; set; }
     }
 }

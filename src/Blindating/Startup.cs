@@ -63,7 +63,7 @@ namespace Blindating
             services.AddMvc();
 
             // TODO Cors fo testing
-            services.AddCors();
+            //services.AddCors();
 
             services.AddSingleton(tokenOptions);
 
@@ -99,11 +99,11 @@ namespace Blindating
             };
 
             // TODO Cors fo testing
-            app.UseCors(builder =>
-                builder.AllowAnyOrigin()
-                       .AllowAnyHeader()
-                       .AllowAnyMethod()
-                       .AllowCredentials());
+            //app.UseCors(builder =>
+            //    builder.AllowAnyOrigin()
+            //           .AllowAnyHeader()
+            //           .AllowAnyMethod()
+            //           .AllowCredentials());
 
             app.UseJwtBearerAuthentication(new JwtBearerOptions
             {

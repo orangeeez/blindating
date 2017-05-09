@@ -1,3 +1,5 @@
+import { Information } from './information';
+
 export class User {
     id:          number  = 0;
     firstname:   string  = null;
@@ -9,20 +11,22 @@ export class User {
     image:       string  = null;
     phrase:      string  = null;
     online:      boolean = false;
-    registered:  string = null;
-    information: any;
+    registered:  string  = null;
+    progress:    number = null;
+    information: Information;
 
     // not mapped
     conversationsCount: number;
     feedbacksCount:     number;
     answersCount:       number;
-    isVideoShared: boolean = false;
-    reason:        string  = null;
-    peer:          any     = null;
+    gradeRating:        number;
+    countRating:        number;
+    isVideoShared:      boolean = false;
+    reason:             string  = null;
+    peer:               any     = null;
 
     static EMAIL_ALREADY_EXIST = "User with current email is already registered.";
     static REGISTERED_SUCCESSFULLY = "Congratulations! You're successfully registered. Please log in.";
     static AUTHORIZATION_FAILED = "Login failed. Please check entered email/password.";
-    static REGISTER_SOCIAL = "Please fill the remaining fields."
-
+    static REGISTER_SOCIAL = "Please fill the remaining fields.";
 }

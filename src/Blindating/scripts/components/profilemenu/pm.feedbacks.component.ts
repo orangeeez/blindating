@@ -7,6 +7,7 @@
 import { Feedback }          from '../../models/feedback';
 import { FeedbackService }   from '../../services/information/feedback.service';
 import { AppComponent }      from '../../components/app.component';
+import { ProgressPrice }     from '../../static/utils';
 
 @Component({
     selector: 'pm-feedbacks-component',
@@ -56,11 +57,15 @@ export class PmFeedbacksComponent implements OnInit, OnChanges {
     }
 
     public onRemoveFeedback(feedback: Feedback): void {
+        feedback.isLast = this.feedbacks.length == 1;
         this._feedbackService.Remove(feedback)
             .subscribe(isremoved => {
                 if (isremoved) {
                     var index: number = this.feedbacks.indexOf(feedback);
                     this.feedbacks.splice(index, 1);
+
+                    if (feedback.isLast)
+                        this.app.selectedUser.progress -= ProgressPrice.feedbacks;
                 }
             });
     }
@@ -76,7 +81,9 @@ export class PmFeedbacksComponent implements OnInit, OnChanges {
         feedback.remoteInfoFeedbackFK  = this.app.selectedUser.information.id;
         feedback.result                = this.getFeedbackResult();
         feedback.text                  = text;
+        feedback.remoteJWT             = this.app.selectedUser.jwt;
         feedback.direction             = 'Leaved';
+        feedback.isFirst               = this.feedbacks.length == 0;
         return feedback;
     }
 }

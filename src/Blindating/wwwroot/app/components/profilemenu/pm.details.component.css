@@ -34,7 +34,7 @@
 }
 .dropdown-menu {
     margin-top: 7px;
-    left: -100%;
+    min-width: 135px !important;
 }
 .dropdown input {
     border: none;
@@ -47,6 +47,7 @@
     position: fixed;
     z-index: 1000;
     right: 5px;
+    margin-top: 25px;
 }
 .dropdown input[disabled] {
     background-color: white;

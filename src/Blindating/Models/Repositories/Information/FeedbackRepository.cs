@@ -7,13 +7,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Blindating.Models.Tables.Utils;
 
 namespace Blindating.Models.Repositories
 {
     public class FeedbackRepository : BaseRepository<Feedback>, IFeedbackRepository
     {
         private AppDBContext _context;
-        public FeedbackRepository(AppDBContext context) : base(context)
+        public FeedbackRepository(AppDBContext context) : base(context, ProgressPrice.Feedbacks)
         {
             _context = context;
         }

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Blindating.Models.Interfaces;
 using Blindating.Models.Tables;
 using Microsoft.AspNetCore.Authorization;
+using System.Reflection;
+using Blindating.Models.Tables.Utils;
 
 namespace Blindating.Controllers
 {
@@ -44,7 +46,25 @@ namespace Blindating.Controllers
         [ActionName("update")]
         public JsonResult Update([FromBody] Preference preference)
         {
-            return new JsonResult(Preferences.Update(preference));
+            var filledCount = 0;
+            foreach (PropertyInfo propertie in preference.GetType().GetProperties())
+            {
+                if (propertie.Name == "ID" ||
+                    propertie.Name == "InformationPreferenceFK" ||
+                    propertie.Name == "Information" ||
+                    propertie.Name == "UserID" ||
+                    propertie.Name == "FilledCount")
+                    continue;
+
+                else if (!string.IsNullOrEmpty(propertie.GetValue(preference)?.ToString()))
+                    filledCount++;
+            }
+
+            preference.FilledCount = filledCount;
+            var progress = Preferences.IncreaseProgress(Request.Headers["Authorization"].ToString().Remove(0, 7), "preference" + filledCount);
+            Preferences.Update(preference);
+
+            return new JsonResult(progress);
         }
         [Authorize("Bearer")]
         [HttpPost]

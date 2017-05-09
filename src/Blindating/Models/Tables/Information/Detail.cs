@@ -31,6 +31,7 @@ namespace Blindating.Models.Tables
         public string ClothingStyle { get; set; }
         public string MyBestPart { get; set; }
         public string OverallAppearance { get; set; }
+        public int FilledCount { get; set; }
 
         public virtual Information Information { get; set; }
 

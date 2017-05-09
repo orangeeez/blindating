@@ -55,6 +55,8 @@ export class PmDetailsComponent implements OnInit, OnChanges {
                 .subscribe(details => {
                     this.details           = details;
                     this.details.birthDate = moment(this.details.birthDate).format('MM/DD/YYYY');
+                    if (this.details.birthDate == '01/01/0001')
+                        this.details.birthDate = '';
                 });
         }
     }
@@ -73,7 +75,10 @@ export class PmDetailsComponent implements OnInit, OnChanges {
         dateElement.hidden = true;
 
         this.details[p] = new Date(this.dt.setDate(this.dt.getDate() + 1))
-        this._detailService.Update(this.details).subscribe();
+        this._detailService.Update(this.details)
+            .subscribe(progress => {
+                this.app.selectedUser.progress = progress;
+            });
     }
 
     public onSelectDropdown(event: Event, property: string): void {
@@ -103,6 +108,9 @@ export class PmDetailsComponent implements OnInit, OnChanges {
             return;
 
         this.details[p] = value;
-        this._detailService.Update(this.details).subscribe();
+        this._detailService.Update(this.details)
+            .subscribe(progress => {
+                this.app.selectedUser.progress = progress;
+            });
     }
 }

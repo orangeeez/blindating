@@ -248,6 +248,7 @@ E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Controllers\In
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Controllers\Information\PreferenceController.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Controllers\Information\QuestionController.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Controllers\Information\QuoteController.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Controllers\Information\RatingController.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Controllers\Search\SearchController.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Controllers\Utils\TokenAuth.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Controllers\Utils\TokenAuthOptions.cs
@@ -330,8 +331,17 @@ E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\201
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20170414090754_FixUserMatchQuestionTable#2.Designer.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20170416160857_RenameQuestionAnswersTable.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20170416160857_RenameQuestionAnswersTable.Designer.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20170503085407_AddRatingProgressFieldToUserTable.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20170503085407_AddRatingProgressFieldToUserTable.Designer.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20170504062020_AddRatingTable.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20170504062020_AddRatingTable.Designer.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20170504114159_FixProgressFieldinUserTable.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20170504114159_FixProgressFieldinUserTable.Designer.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20170505104709_AddFilledFieldInPreferenceTable.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20170505104709_AddFilledFieldInPreferenceTable.Designer.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20170507202724_AddFilledFieldInDetailTable.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\20170507202724_AddFilledFieldInDetailTable.Designer.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\AppDBContextModelSnapshot.cs
-E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Migrations\BaseRepository.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\AppDBContext.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\DbInitializer.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Interfaces\IBaseModel.cs
@@ -347,7 +357,9 @@ E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Interfa
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Interfaces\Information\IPreferenceRepository.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Interfaces\Information\IQuestionRepository.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Interfaces\Information\IQuoteRepository.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Interfaces\Information\IRatingRepository.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Interfaces\Search\ISearchRepository.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Repositories\BaseRepository.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Repositories\MatchQuestionRepository.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Repositories\UserRepository.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Repositories\Information\ConversationRepository.cs
@@ -359,6 +371,7 @@ E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Reposit
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Repositories\Information\PreferenceRepository.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Repositories\Information\QuestionRepository.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Repositories\Information\QuoteRepository.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Repositories\Information\RatingRepository.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Repositories\Search\SearchRepository.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Tables\Information.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Tables\MatchAnswer.cs
@@ -375,6 +388,8 @@ E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Tables\
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Tables\Information\Question.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Tables\Information\QuestionAnswer.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Tables\Information\QuoteLike.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Tables\Information\Rating.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Tables\Location\City.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Tables\Location\Country.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Tables\Utils\ProgressPrice.cs
 E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\Models\Tables\Utils\SearchUserData.cs

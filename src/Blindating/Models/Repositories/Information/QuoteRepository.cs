@@ -7,13 +7,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Blindating.Models.Tables.Utils;
 
 namespace Blindating.Models.Repositories
 {
     public class QuoteRepository : BaseRepository<Quote>, IQuoteRepository
     {
         private AppDBContext _context;
-        public QuoteRepository(AppDBContext context) : base(context)
+        public QuoteRepository(AppDBContext context) : base(context, ProgressPrice.Basic)
         {
             _context = context;
         }

@@ -1,0 +1,33 @@
+﻿using Blindating.Models.Interfaces;
+using Blindating.Models.Tables;
+using Microsoft.EntityFrameworkCore;
+using Blindating.Models.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Blindating.Models.Tables.Utils;
+
+namespace Blindating.Models.Repositories
+{
+    public class RatingRepository : BaseRepository<Rating>, IRatingRepository
+    {
+        private AppDBContext _context;
+        public RatingRepository(AppDBContext context) : base(context, ProgressPrice.Basic)
+        {
+            _context = context;
+        }
+
+        public async Task<Detail> GetAllByID(int userID)
+        {
+            using (AppDBContext _context = new AppDBContext())
+            {
+                User user = await _context.Users.Include(u => u.Information).ThenInclude(i => i.Detail)
+                    .Where(u => u.ID == userID)
+                    .SingleOrDefaultAsync();
+
+                return user.Information.Detail;
+            }
+        }
+    }
+}

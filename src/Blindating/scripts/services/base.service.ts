@@ -38,7 +38,7 @@ export class BaseService {
             .map(user => user.json()['result']);
     }
 
-    public Update(entity: any): Observable<boolean> {
+    public Update(entity: any): Observable<any> {
         return this._authHttp.post(API_ADDRESS + this.api + "/update", JSON.stringify(entity), this.options)
             .map(user => user.json()['result']);
     }

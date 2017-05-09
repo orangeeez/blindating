@@ -7,13 +7,14 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using Blindating.Models.Tables.Utils;
 
 namespace Blindating.Models.Repositories
 {
     public class PhotoRepository : BaseRepository<Photo>, IPhotoRepository
     {
         private AppDBContext _context;
-        public PhotoRepository(AppDBContext context) : base(context)
+        public PhotoRepository(AppDBContext context) : base(context, ProgressPrice.Basic)
         {
             _context = context;
         }

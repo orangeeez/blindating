@@ -7,6 +7,7 @@
 import { Photo }               from '../../models/photo';
 import { PhotoService }        from '../../services/information/photo.service';
 import { AppComponent }        from '../../components/app.component';
+import { ProgressPrice }       from '../../static/utils';
 import {
     FileUploader,
     Headers,
@@ -41,12 +42,21 @@ export class PmPhotosComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
+        var userIdHeader: Headers = { name: 'UserID', value: this.app.selectedUser.id + "" };
+        this.uploader.options.headers = [];
+        this.uploader.options.headers.push(userIdHeader);
+
         this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
             this._photoService.GetLast(this.app.user.id)
                 .subscribe(p => {
+                    var isFirst = this.photos.length == 0;
+
                     var photo = p as Photo;
                     this.previews.splice(this.index, 1);
                     this.photos.unshift(photo);
+
+                    if (isFirst)
+                        this.app.selectedUser.progress += ProgressPrice.basic;
                 });
         }
     }
@@ -81,9 +91,13 @@ export class PmPhotosComponent implements OnInit, AfterViewInit {
     }
 
     public onRemovePhoto(photo: Photo): void {
+        photo.isLast = this.photos.length == 1;
         this._photoService.Remove(photo)
             .subscribe(isremoved => {
                 this.photos.splice(this.photos.indexOf(photo), 1);
+
+                if (photo.isLast)
+                    this.app.selectedUser.progress -= ProgressPrice.basic;
             });
     } 
 

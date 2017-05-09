@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var quote_service_1 = require('../../services/information/quote.service');
+var utils_1 = require('../../static/utils');
 var PmQuotesComponent = (function () {
     function PmQuotesComponent(_quoteService) {
         this._quoteService = _quoteService;
@@ -32,11 +33,14 @@ var PmQuotesComponent = (function () {
     };
     PmQuotesComponent.prototype.onRemoveQuote = function (quote) {
         var _this = this;
+        quote.isLast = this.quotes.length == 1;
         this._quoteService.Remove(quote)
             .subscribe(function (isremoved) {
             if (isremoved) {
                 var index = _this.quotes.indexOf(quote);
                 _this.quotes.splice(index, 1);
+                if (quote.isLast)
+                    _this.app.selectedUser.progress -= utils_1.ProgressPrice.basic;
             }
         });
     };
@@ -80,6 +84,7 @@ var PmQuotesComponent = (function () {
         switch (key) {
             case 13:
                 event.preventDefault();
+                var isFirst = this.quotes.length == 0;
                 if (isFormValid) {
                     var quote = {
                         id: 0,
@@ -92,7 +97,9 @@ var PmQuotesComponent = (function () {
                         isEditing: false,
                         isAnswered: false,
                         isLike: false,
-                        isDislike: false
+                        isDislike: false,
+                        isFirst: isFirst,
+                        isLast: false
                     };
                     this.isAddingQuote = false;
                     this.content = '';
@@ -101,6 +108,8 @@ var PmQuotesComponent = (function () {
                         .subscribe(function (id) {
                         quote.id = id;
                         _this.quotes.unshift(quote);
+                        if (isFirst)
+                            _this.app.selectedUser.progress += utils_1.ProgressPrice.basic;
                     });
                 }
                 break;

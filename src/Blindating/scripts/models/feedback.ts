@@ -8,6 +8,9 @@ export class Feedback {
     direction:             string;
 
     // NotMapped
-    remoteUser:            User;
-    remoteInfoFeedbackFK:  number;
+    remoteUser:           User;
+    remoteJWT:            string;
+    remoteInfoFeedbackFK: number;
+    isFirst: boolean;
+    isLast:  boolean;
 }

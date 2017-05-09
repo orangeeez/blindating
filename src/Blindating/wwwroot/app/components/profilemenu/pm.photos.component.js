@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var photo_service_1 = require('../../services/information/photo.service');
+var utils_1 = require('../../static/utils');
 var ng2_file_upload_1 = require('ng2-file-upload/ng2-file-upload');
 var config_1 = require('../../static/config');
 var PmPhotosComponent = (function () {
@@ -30,12 +31,18 @@ var PmPhotosComponent = (function () {
     }
     PmPhotosComponent.prototype.ngOnInit = function () {
         var _this = this;
+        var userIdHeader = { name: 'UserID', value: this.app.selectedUser.id + "" };
+        this.uploader.options.headers = [];
+        this.uploader.options.headers.push(userIdHeader);
         this.uploader.onCompleteItem = function (item, response, status, headers) {
             _this._photoService.GetLast(_this.app.user.id)
                 .subscribe(function (p) {
+                var isFirst = _this.photos.length == 0;
                 var photo = p;
                 _this.previews.splice(_this.index, 1);
                 _this.photos.unshift(photo);
+                if (isFirst)
+                    _this.app.selectedUser.progress += utils_1.ProgressPrice.basic;
             });
         };
     };
@@ -65,9 +72,12 @@ var PmPhotosComponent = (function () {
     };
     PmPhotosComponent.prototype.onRemovePhoto = function (photo) {
         var _this = this;
+        photo.isLast = this.photos.length == 1;
         this._photoService.Remove(photo)
             .subscribe(function (isremoved) {
             _this.photos.splice(_this.photos.indexOf(photo), 1);
+            if (photo.isLast)
+                _this.app.selectedUser.progress -= utils_1.ProgressPrice.basic;
         });
     };
     PmPhotosComponent.prototype.onRemoveUpload = function (item, index) {

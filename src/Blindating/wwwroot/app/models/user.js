@@ -12,6 +12,7 @@ var User = (function () {
         this.phrase = null;
         this.online = false;
         this.registered = null;
+        this.progress = null;
         this.isVideoShared = false;
         this.reason = null;
         this.peer = null;

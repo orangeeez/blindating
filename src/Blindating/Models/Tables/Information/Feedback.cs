@@ -27,7 +27,10 @@ namespace Blindating.Models.Tables
 
         public virtual Information Information { get; set; }
         [NotMapped] public User RemoteUser { get; set; }
+        [NotMapped] public string remoteJWT { get; set; }
         [NotMapped] public int RemoteInfoFeedbackFK { get; set; }
+        [NotMapped] public bool IsFirst { get; set; }
+        [NotMapped] public bool IsLast { get; set; }
 
     }
 }

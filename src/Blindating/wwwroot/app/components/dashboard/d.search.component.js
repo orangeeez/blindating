@@ -10,47 +10,62 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var utils_1 = require('../../static/utils');
+var preference_service_1 = require('../../services/information/preference.service');
 var user_service_1 = require('../../services/user.service');
 var search_service_1 = require('../../services/search/search.service');
+var preference_1 = require('../../models/preference');
 var DSearchComponent = (function () {
-    function DSearchComponent(_userService, _searchService) {
+    function DSearchComponent(_userService, _searchService, _preferenceService) {
         var _this = this;
         this._userService = _userService;
         this._searchService = _searchService;
+        this._preferenceService = _preferenceService;
+        this.preferences = new preference_1.Preference();
         this.searchToggles = [
-            { title: 'Gender', items: ['Male', 'Female', 'Anyway'] },
-            { title: 'Hair', items: ['Male', 'Female', 'Anyway'] },
-            { title: 'Eyes', items: ['Male', 'Female', 'Anyway'] },
-            { title: 'Color', items: ['Male', 'Female', 'Anyway'] },
+            { title: 'Gender', name: 'gender', items: utils_1.PreferenceData.genders },
+            { title: 'Hair', name: 'hcolor', items: utils_1.PreferenceData.hcolors },
+            { title: 'Eyes', name: 'ecolor', items: utils_1.PreferenceData.ecolors },
+            { title: 'Hobby', name: 'hobby', items: utils_1.PreferenceData.hobbies }
         ];
+        this.onSelectPreference = function (event) {
+            event.preventDefault();
+            var element = event.target;
+            _this.preferences[element['id']] = element['innerHTML'];
+        };
         this.isContainName = function (user) {
             var fullName = (user.firstname + ' ' + user.lastname).toUpperCase();
             var fullNameConversely = (user.lastname + ' ' + user.firstname).toUpperCase();
-            return fullName.includes(_this.searchData.name.toUpperCase()) ||
-                fullNameConversely.includes(_this.searchData.name.toUpperCase());
+            return fullName.includes(_this.searchUserData.name.toUpperCase()) ||
+                fullNameConversely.includes(_this.searchUserData.name.toUpperCase());
         };
-        this.searchData = new utils_1.SearchUserData();
+        this.searchUserData = new utils_1.SearchUserData();
     }
-    DSearchComponent.prototype.ngOnInit = function () { };
+    DSearchComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this._preferenceService.GetAllByID(this.app.user.id)
+            .subscribe(function (preference) {
+            _this.preferences = preference;
+        });
+    };
     DSearchComponent.prototype.onSearchUsers = function (event) {
         var _this = this;
-        if (!this.searchData.count)
-            this.searchData.count = this.app._dashboard.maxUsers;
-        if (this.searchData.name)
+        if (!this.searchUserData.count)
+            this.searchUserData.count = this.app._dashboard.maxUsers;
+        if (this.searchUserData.name)
             this.app._dashboard.isSearchShow = true;
         else
             this.app._dashboard.isSearchShow = false;
         var key = event.which || event.keyCode;
         if (key >= 65 && key <= 90 || key == 8) {
             this.app._dashboard.searchUsers = this.app.users.filter(this.isContainName);
-            this.searchData.count - this.app._dashboard.searchUsers.length;
-            this.searchData.users = this.app.users;
-            this._searchService.SearchUsers(this.searchData)
+            this.searchUserData.count - this.app._dashboard.searchUsers.length;
+            this.searchUserData.users = this.app.users;
+            this._searchService.SearchUsers(this.searchUserData)
                 .subscribe(function (users) {
                 (_a = _this.app._dashboard.searchUsers).push.apply(_a, users);
                 var _a;
             });
-            this.searchData.count + this.app._dashboard.searchUsers.length;
+            this.searchUserData.count + this.app._dashboard.searchUsers.length;
         }
     };
     DSearchComponent = __decorate([
@@ -60,7 +75,7 @@ var DSearchComponent = (function () {
             styleUrls: ['app/components/dashboard/d.search.component.css'],
             inputs: ['app']
         }), 
-        __metadata('design:paramtypes', [user_service_1.UserService, search_service_1.SearchService])
+        __metadata('design:paramtypes', [user_service_1.UserService, search_service_1.SearchService, preference_service_1.PreferenceService])
     ], DSearchComponent);
     return DSearchComponent;
 }());

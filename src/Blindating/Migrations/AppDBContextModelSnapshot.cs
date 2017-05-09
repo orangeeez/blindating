@@ -63,6 +63,8 @@ namespace Blindating.Migrations
 
                     b.Property<string>("EyeColor");
 
+                    b.Property<int>("FilledCount");
+
                     b.Property<string>("Firstname");
 
                     b.Property<string>("Gender");
@@ -229,6 +231,8 @@ namespace Blindating.Migrations
 
                     b.Property<string>("Facebook");
 
+                    b.Property<int>("FilledCount");
+
                     b.Property<string>("From");
 
                     b.Property<string>("Gender");
@@ -337,6 +341,25 @@ namespace Blindating.Migrations
                     b.ToTable("QuoteLikes");
                 });
 
+            modelBuilder.Entity("Blindating.Models.Tables.Rating", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Count");
+
+                    b.Property<float>("Grade");
+
+                    b.Property<int>("InformationRatingFK");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("InformationRatingFK")
+                        .IsUnique();
+
+                    b.ToTable("Rating");
+                });
+
             modelBuilder.Entity("Blindating.Models.Tables.User", b =>
                 {
                     b.Property<int>("ID")
@@ -359,6 +382,8 @@ namespace Blindating.Migrations
                     b.Property<string>("Password");
 
                     b.Property<string>("Phrase");
+
+                    b.Property<float>("Progress");
 
                     b.Property<string>("Registered");
 
@@ -485,6 +510,14 @@ namespace Blindating.Migrations
                     b.HasOne("Blindating.Models.Tables.Quote", "Quote")
                         .WithMany("QuoteLikes")
                         .HasForeignKey("QuoteLikeFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Blindating.Models.Tables.Rating", b =>
+                {
+                    b.HasOne("Blindating.Models.Tables.Information", "Information")
+                        .WithOne("Rating")
+                        .HasForeignKey("Blindating.Models.Tables.Rating", "InformationRatingFK")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -2,6 +2,7 @@
 using Blindating.Models.Interfaces;
 using Blindating.Models.Repositories;
 using Blindating.Models.Tables;
+using Blindating.Models.Tables.Utils;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace Blindating.Models.Repositories
     public class MatchQuestionRepository : BaseRepository<MatchQuestion>, IMatchQuestionRepository
     {
         private AppDBContext _context;
-        public MatchQuestionRepository(AppDBContext context) : base(context)
+        public MatchQuestionRepository(AppDBContext context) : base(context, ProgressPrice.MatchQuestions)
         {
             _context = context;
         }

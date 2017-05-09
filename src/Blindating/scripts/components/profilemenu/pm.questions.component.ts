@@ -1,13 +1,15 @@
 ﻿import {
     Component,
     OnInit,
-    OnDestroy
+    OnDestroy,
     EventEmitter,
     AfterViewInit
 }                            from '@angular/core';
 import { Question }          from '../../models/question';
-import { QuestionService }      from '../../services/information/question.service';
+import { QuestionService }   from '../../services/information/question.service';
 import { AppComponent }      from '../../components/app.component';
+import { ProgressPrice }     from '../../static/utils';
+
 @Component({
     selector:  'pm-questions-component',
     templateUrl: 'app/components/profilemenu/pm.questions.component.html',
@@ -29,7 +31,9 @@ export class PmQuestionsComponent implements OnInit, OnDestroy, AfterViewInit {
     constructor(
         private _questionService: QuestionService) { }
 
-    ngOnInit() { }
+    ngOnInit() {
+        console.log(this.questions);
+    }
 
     ngOnDestroy() { }
 
@@ -50,12 +54,17 @@ export class PmQuestionsComponent implements OnInit, OnDestroy, AfterViewInit {
         this.indexEditingQuestion = this.questions.indexOf(question);
     }
 
-    public onRemoveQuestion(quote: Question):void {
-        this._questionService.Remove(quote)
+    public onRemoveQuestion(question: Question): void {
+        question.isLast = this.questions.length == 1;
+
+        this._questionService.Remove(question)
             .subscribe(isremoved => {
                 if (isremoved) {
-                    var index: number = this.questions.indexOf(quote);
+                    var index: number = this.questions.indexOf(question);
                     this.questions.splice(index, 1);
+
+                    if (question.isLast)
+                        this.app.selectedUser.progress -= ProgressPrice.basic;
                 }
             })
     }
@@ -64,6 +73,7 @@ export class PmQuestionsComponent implements OnInit, OnDestroy, AfterViewInit {
         var key: number = event.which || event.keyCode;
         switch (key) {
             case 13:
+                var isFirst = this.questions.length == 0;
                 if (isFormValid) {
                     var question: Question = {
                         id:                    0,
@@ -72,7 +82,9 @@ export class PmQuestionsComponent implements OnInit, OnDestroy, AfterViewInit {
                         userID:                this.app.selectedUser.id,
                         isEditing:             false,
                         answered:              false,
-                        answersCount:          0
+                        answersCount:          0,
+                        isFirst:               isFirst,
+                        isLast:                false
                     };
                     this.isAddingQuestion = false;
                     this.message       = '';
@@ -80,6 +92,9 @@ export class PmQuestionsComponent implements OnInit, OnDestroy, AfterViewInit {
                         .subscribe(id => {
                             question.id = id;
                             this.questions.unshift(question);
+
+                            if (isFirst)
+                                this.app.selectedUser.progress += ProgressPrice.basic;
                         })
                 }
                 break;

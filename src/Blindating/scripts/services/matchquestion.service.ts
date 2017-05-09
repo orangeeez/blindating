@@ -32,7 +32,8 @@ export class MatchQuestionService extends BaseService {
         return this._authHttp.post(API_ADDRESS + this.api + "/getmatchedwith", JSON.stringify(remoteUserID), this.options)
             .map(users => users.json()['result']);
     }
-    public AddOverriden(matchQuestion: MatchQuestion) {
-        return this._authHttp.post(API_ADDRESS + this.api + "/addoverriden", JSON.stringify(matchQuestion), this.options);
+    public AddOverriden(matchQuestion: MatchQuestion): Observable<any> {
+        return this._authHttp.post(API_ADDRESS + this.api + "/addoverriden", JSON.stringify(matchQuestion), this.options)
+            .map(mq => mq.json()['result']);
     }
 }

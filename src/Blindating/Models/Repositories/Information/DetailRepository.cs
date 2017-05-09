@@ -6,13 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Blindating.Models.Tables.Utils;
 
 namespace Blindating.Models.Repositories
 {
     public class DetailRepository : BaseRepository<Detail>, IDetailRepository
     {
         private AppDBContext _context;
-        public DetailRepository(AppDBContext context) : base(context)
+        public DetailRepository(AppDBContext context) : base(context, ProgressPrice.Details)
         {
             _context = context;
         }

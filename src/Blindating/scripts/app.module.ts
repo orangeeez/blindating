@@ -14,6 +14,7 @@ import { DetailService }            from './services/information/detail.service'
 import { FeedbackService }          from './services/information/feedback.service';
 import { ConversationService }      from './services/information/conversation.service';
 import { NotificationService }      from './services/information/notification.service';
+import { RatingService }            from './services/information/rating.service';
 import { MatchQuestionService }     from './services/matchquestion.service';
 import { SearchService }            from './services/search/search.service';
 import { SocialService }            from './services/social.service';
@@ -25,6 +26,7 @@ import { ProfilemenuComponent }     from './components/profilemenu.component';
 import { HelperComponent }          from './components/helper.component';
 import { LoginComponent }           from './components/router-outlet/login.component';
 import { DashboardComponent }       from './components/router-outlet/dashboard.component';
+import { PickupComponent }          from './components/router-outlet/pickup.component';
 import { TalkComponent }            from './components/router-outlet/talk.component';
 import { PmBasicComponent }         from './components/profilemenu/pm.basic.component';
 import { PmDetailsComponent }       from './components/profilemenu/pm.details.component';
@@ -64,6 +66,7 @@ import {
         LoginComponent,
         DashboardComponent,
         TalkComponent,
+        PickupComponent,
         PmBasicComponent,
         PmDetailsComponent,
         PmQuotesComponent,
@@ -95,7 +98,8 @@ import {
         FeedbackService,
         SocialService,
         NotificationService,
-        MatchQuestionService
+        MatchQuestionService,
+        RatingService
     ]
 })
 export class AppModule { }

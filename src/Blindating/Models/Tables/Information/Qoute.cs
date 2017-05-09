@@ -22,12 +22,12 @@ namespace Blindating.Models.Tables
         public int Down { get; set; }
         public virtual Information Information { get; set; }
 
-        // ================== MANY TO MANY RELATIONSHIPS EXAMPLE ==================
-        //public List<QLike> QLike { get; set; }
-
         [JsonIgnore] public virtual List<QuoteLike> QuoteLikes { get; set; }
         [NotMapped] public bool IsAnswered { get; set; }
         [NotMapped] public bool IsLike { get; set; }
         [NotMapped] public bool IsDislike { get; set; }
+        [NotMapped] public bool IsFirst { get; set; }
+        [NotMapped] public bool IsLast { get; set; }
+
     }
 }

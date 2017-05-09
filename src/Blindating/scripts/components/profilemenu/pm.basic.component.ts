@@ -11,6 +11,7 @@ import { PreferenceService }    from '../../services/information/preference.serv
 import { QuestionService }      from '../../services/information/question.service';
 import { PhotoService }         from '../../services/information/photo.service';
 import { ConversationService }  from '../../services/information/conversation.service';
+import { RatingService }        from '../../services/information/rating.service';
 import { User }                 from '../../models/user';
 import { Quote }                from '../../models/quote';
 import { Question }             from '../../models/question';
@@ -21,6 +22,7 @@ import { Conversation }         from '../../models/conversation';
 import { AppComponent }         from '../../components/app.component';
 import { SlicePipe }            from '../../pipes/slice.pipe';
 import { COUNTRIES }            from '../../static/countries';
+import { PreferenceData }       from '../../static/utils';
 import { PHOTO_BY_JWT_ADDRESS } from '../../static/config';
 import {
     FileUploader, 
@@ -39,9 +41,11 @@ export class PmBasicComponent implements OnInit, OnChanges {
         url: PHOTO_BY_JWT_ADDRESS,
         authToken: 'Bearer ' + localStorage.getItem('id_token')
     });
-    public header:                   Headers = { name: 'Uploader', value: 'basic' };
-    public defaultQuote:             string  = 'Please add your favorite quote here';
-    public defaultQuoteNotYou:       string  = 'User does not add quote yet';
+    public uploadHeader:       Headers = { name: 'Uploader', value: 'basic' };
+    public defaultQuote:       string  = 'Please add your favorite quote here';
+    public defaultQuoteNotYou: string  = 'User does not add quote yet';
+    public defaultQuestion:    string = 'Please add your question to others here';
+
 
     public defaultAuthor:   string = 'By Author';
     public questionIndex:   number = 0;
@@ -52,13 +56,13 @@ export class PmBasicComponent implements OnInit, OnChanges {
     public conversations: Array<any>      = new Array<Conversation>();
     public preferences:   Preference      = new Preference();
 
-    public genders:       Array<string> = ['Man', 'Woman ', 'Anyway'];
+    public genders:       Array<string> = PreferenceData.genders;
     public ages:          Array<number> = Array.from(Array(80).keys()).slice(16, 80);
     public cities:        Array<string> = [];
     public countries:     Array<string> = COUNTRIES;
-    public hcolors:       Array<string> = ['Black', 'Brown', 'Red', 'Blond'];
-    public ecolors:       Array<string> = ['Grey', 'Green', 'Blue'];
-    public hobbies:       Array<string> = ['Football', 'Basketball', 'Golf', 'Other'];
+    public hcolors:       Array<string> = PreferenceData.hcolors;
+    public ecolors:       Array<string> = PreferenceData.ecolors;
+    public hobbies:       Array<string> = PreferenceData.hobbies;
 
     public isOpenQuotes:        boolean = false;
     public isOpenQuestions:     boolean = false;
@@ -83,11 +87,12 @@ export class PmBasicComponent implements OnInit, OnChanges {
         private _questionService:     QuestionService,
         private _photoService:        PhotoService,
         private _conversationService: ConversationService,
+        private _ratingService:       RatingService,
         private _router:              Router) {
 
         this.uploader.options.removeAfterUpload = true;
         this.uploader.options.headers = [];
-        this.uploader.options.headers.push(this.header);
+        this.uploader.options.headers.push(this.uploadHeader);
 
         this.uploader.onAfterAddingFile = (item: any) => {
             this.uploader.uploadItem(item);
@@ -157,7 +162,9 @@ export class PmBasicComponent implements OnInit, OnChanges {
 
     public onFocusoutPreference(): void {
         this._preferenceService.Update(this.preferences)
-            .subscribe(isupdated => {});
+            .subscribe(progress => {
+                this.app.selectedUser.progress = progress;
+            });
     }
 
     public onSelectPreference(event: MouseEvent, input?: HTMLElement): void {
@@ -200,7 +207,10 @@ export class PmBasicComponent implements OnInit, OnChanges {
                 else this.preferences.hobby = element['innerHTML'];
                 break;
         }
-        this._preferenceService.Update(this.preferences).subscribe();
+        this._preferenceService.Update(this.preferences)
+            .subscribe(progress => {
+                this.app.selectedUser.progress = progress;
+            });
     }
 
     public onInputDropdown(event: KeyboardEvent): void {

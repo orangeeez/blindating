@@ -31,10 +31,13 @@ var PmDetailsComponent = (function () {
                 .subscribe(function (details) {
                 _this.details = details;
                 _this.details.birthDate = moment(_this.details.birthDate).format('MM/DD/YYYY');
+                if (_this.details.birthDate == '01/01/0001')
+                    _this.details.birthDate = '';
             });
         }
     };
     PmDetailsComponent.prototype.onSelectDate = function (property) {
+        var _this = this;
         var daypicker = document.getElementsByTagName('daypicker')[0];
         var table = daypicker.getElementsByTagName('table');
         if (table.length == 0)
@@ -45,7 +48,10 @@ var PmDetailsComponent = (function () {
         element['value'] = moment(this.dt).format('MM/DD/YYYY');
         dateElement.hidden = true;
         this.details[p] = new Date(this.dt.setDate(this.dt.getDate() + 1));
-        this._detailService.Update(this.details).subscribe();
+        this._detailService.Update(this.details)
+            .subscribe(function (progress) {
+            _this.app.selectedUser.progress = progress;
+        });
     };
     PmDetailsComponent.prototype.onSelectDropdown = function (event, property) {
         var element = document.getElementById(property);
@@ -65,11 +71,15 @@ var PmDetailsComponent = (function () {
             this.updateDetail(event.target['value'], property);
     };
     PmDetailsComponent.prototype.updateDetail = function (value, property) {
+        var _this = this;
         var p = utils_1.Utils.JoinToLowerCase(property);
         if (this.details[p] == value)
             return;
         this.details[p] = value;
-        this._detailService.Update(this.details).subscribe();
+        this._detailService.Update(this.details)
+            .subscribe(function (progress) {
+            _this.app.selectedUser.progress = progress;
+        });
     };
     PmDetailsComponent = __decorate([
         core_1.Component({

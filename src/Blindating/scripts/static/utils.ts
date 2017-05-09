@@ -29,3 +29,15 @@ export class SearchUserData {
     count: number;
     users: User[];
 }
+export class PreferenceData {
+    public static genders: Array<string> = ['Man', 'Woman ', 'Anyway'];
+    public static hcolors: Array<string> = ['Black', 'Brown', 'Red', 'Blond'];
+    public static ecolors: Array<string> = ['Grey', 'Green', 'Blue'];
+    public static hobbies: Array<string> = ['Football', 'Basketball', 'Golf', 'Other'];
+}
+export class ProgressPrice {
+    public static basic: number = 10;
+    public static details: number = 1;
+    public static matchquestions: number = 10;
+    public static feedbacks: number = 10;
+}

@@ -17,5 +17,7 @@ namespace Blindating.Models.Tables
         public virtual Information Information { get; set; }
         [NotMapped] public int UserID { get; set; }
         [NotMapped] public int PhotoID { get; set; }
+        [NotMapped] public bool IsFirst { get; set; }
+        [NotMapped] public bool IsLast { get; set; }
     }
 }

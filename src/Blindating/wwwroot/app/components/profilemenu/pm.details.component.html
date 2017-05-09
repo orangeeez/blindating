@@ -17,7 +17,7 @@
                     <span dropdown class="dropdown">
                         <input dropdownToggle size="20"
                                [readonly]="basicInformationDrop[i].length > 0"
-                               [disabled]="app.selectedUser != app.user"
+                               [disabled]="app.selectedUser.id != app.user.id"
                                [attr.id]="basic"
                                [value]="details | hasproperty: basic"
                                (focusin)="onFocusinInput($event, basic)"
@@ -55,7 +55,7 @@
                     <span dropdown class="dropdown">
                         <input dropdownToggle size="20"
                                [readonly]="looksDrop[i].length > 0"
-                               [disabled]="app.selectedUser != app.user"
+                               [disabled]="app.selectedUser.id != app.user.id"
                                [attr.id]="look"
                                [value]="details | hasproperty: look"
                                (focusin)="onFocusinInput($event, basic)"

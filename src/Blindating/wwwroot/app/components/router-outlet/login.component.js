@@ -17,8 +17,8 @@ var core_2 = require('angular2-cookie/core');
 var user_service_1 = require('../../services/user.service');
 var social_service_1 = require('../../services/social.service');
 var user_1 = require('../../models/user');
-var matchquestion_1 = require('../../models/matchquestion');
 var app_component_1 = require('../../components/app.component');
+var pickup_component_1 = require('../../components/router-outlet/pickup.component');
 var LoginComponent = (function () {
     function LoginComponent(app, _userService, _cookieService, _socialService, _router) {
         var _this = this;
@@ -26,9 +26,6 @@ var LoginComponent = (function () {
         this._cookieService = _cookieService;
         this._socialService = _socialService;
         this._router = _router;
-        this.matchQuestions = [];
-        this.indexMatchQuestion = 0;
-        this.pickupState = 'deselected';
         this.isPhraseFocused = false;
         this.alert = { show: false, type: 'success', reason: null };
         this.tabs = [
@@ -111,23 +108,14 @@ var LoginComponent = (function () {
                     _this._router.navigate(['/dashboard']);
                 }
                 else {
+                    localStorage.setItem('id_token', user.jwt);
                     _this.alert.show = true;
                     _this.alert.reason = user.reason;
                     _this.app.isHeaderShow = false;
                     _this.tabs[1].disabled = true;
-                    _this.pickupUser = new user_1.User();
-                    _this.pickupUser.id = 2;
-                    _this.pickupUser.firstname = "Viktor";
-                    _this.pickupUser.lastname = "Orkush";
-                    _this.pickupUser.email = "v.orkush@gmail.com";
-                    _this.pickupUser.image = 'images/users/3hqzwa25.agr.jpg';
-                    _this.pickupUser.online = true;
-                    _this.pickupUser.jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InYub3JrdXNoQGdtYWlsLmNvbSIsImlzcyI6Iklzc3VlciIsImF1ZCI6IkF1ZGllbmNlIn0.flhwvv4VCsaKp0grVAbB2RBGJkutHle2CgvvgdoTkDo';
-                    //this.app.selectedUser = u;
                     _this.app.isPickupShow = true;
-                    _this.pickupToggle();
+                    _this.pickupComponent.pickupToggle();
                 }
-                localStorage.setItem('id_token', user.jwt);
             }
         };
         this.setAccessTokenInterval = function (session) {
@@ -196,8 +184,6 @@ var LoginComponent = (function () {
                 fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));
         }
-        var mq = new matchquestion_1.MatchQuestion(0, 'Religion', 'Could you live without the Internet?');
-        this.matchQuestions.push(mq);
     };
     LoginComponent.prototype.Login = function (response) {
         var _this = this;
@@ -242,22 +228,6 @@ var LoginComponent = (function () {
     LoginComponent.prototype.onFocusoutPhrase = function () {
         this.isPhraseFocused = false;
     };
-    LoginComponent.prototype.pickupToggle = function () {
-        this.pickupState = (this.pickupState === 'selected' ? 'deselected' : 'selected');
-    };
-    LoginComponent.prototype.onPickupInvite = function () {
-        this.app.selectDeselectUser(this.pickupUser);
-        this.app.isSelectedUserYou();
-        this.app.isPickupShow = false;
-        this.app._helper.onInviteAcceptCall();
-        this.pickupToggle();
-    };
-    LoginComponent.prototype.onPickupDecline = function () {
-        this.app.isPickupShow = false;
-        this.app.isHeaderShow = true;
-        this.app.selectedUser = null;
-        this._router.navigate(['/dashboard']);
-    };
     LoginComponent.prototype.PopupCenter = function (url, title, w, h) {
         var dualScreenLeft = window.screenLeft;
         var dualScreenTop = window.screenTop;
@@ -270,25 +240,15 @@ var LoginComponent = (function () {
         //    newWindow.focus();
         return newWindow;
     };
+    __decorate([
+        core_1.ViewChild(pickup_component_1.PickupComponent), 
+        __metadata('design:type', pickup_component_1.PickupComponent)
+    ], LoginComponent.prototype, "pickupComponent", void 0);
     LoginComponent = __decorate([
         core_1.Component({
             selector: 'login-component',
             templateUrl: 'app/components/router-outlet/login.component.html',
-            styleUrls: ['app/components/router-outlet/login.component.css'],
-            animations: [
-                core_1.trigger('pickupState', [
-                    core_1.state('deselected', core_1.style({
-                        height: '0px',
-                        'padding-top': '0px'
-                    })),
-                    core_1.state('selected', core_1.style({
-                        height: '160px',
-                        'padding-top': '10px'
-                    })),
-                    core_1.transition('deselected => selected', core_1.animate('300ms ease-in')),
-                    core_1.transition('selected => deselected', core_1.animate('300ms ease-out'))
-                ])
-            ]
+            styleUrls: ['app/components/router-outlet/login.component.css']
         }),
         __param(0, core_1.Host()),
         __param(0, core_1.Inject(core_1.forwardRef(function () { return app_component_1.AppComponent; }))), 

@@ -6,7 +6,7 @@ export class MatchQuestion {
     matchAnswers:        MatchAnswer[];
     matchAnswerID:       number;
     remoteMatchAnswerID: number;
-    isAnswered:    boolean;
+    isAnswered:          boolean;
 
     constructor(id, category, text) {
         this.id       = id;

@@ -3,4 +3,8 @@ export class Photo {
     path: string;
     width: number;
     height: number;
+
+    //not mapped
+    isFirst: boolean;
+    isLast: boolean;
 }

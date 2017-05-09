@@ -8,4 +8,6 @@ export class Question {
     answered:     boolean;
     isEditing:    boolean;
     answersCount: number;
+    isFirst:      boolean;
+    isLast:       boolean;
 }

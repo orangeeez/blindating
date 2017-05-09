@@ -15,9 +15,12 @@ var PmatchquestionsComponent = (function () {
     function PmatchquestionsComponent(_matchQuestionService) {
         var _this = this;
         this._matchQuestionService = _matchQuestionService;
-        this.onAnswer = function (index, matchAnswerID) {
+        this.onAnswer = function (index) {
             _this.matchQuestions[index].isAnswered = true;
-            _this._matchQuestionService.AddOverriden(_this.matchQuestions[index]).subscribe();
+            _this._matchQuestionService.AddOverriden(_this.matchQuestions[index])
+                .subscribe(function (progress) {
+                _this.app.selectedUser.progress += progress;
+            });
         };
         this.onSkip = function (index) {
             _this.matchQuestions.splice(index, 1);
@@ -54,8 +57,8 @@ var PmatchquestionsComponent = (function () {
         if (changes['selectedUser']) {
             if (this.app.isSelectedYou) {
                 this._matchQuestionService.GetAllByID(this.app.selectedUser.id)
-                    .subscribe(function (questions) {
-                    _this.matchQuestions = questions;
+                    .subscribe(function (matchQuestions) {
+                    _this.matchQuestions = matchQuestions;
                     for (var i = 0; i < _this.matchQuestions.length; i++)
                         if (!_this.matchQuestions[i].isAnswered)
                             utils_1.Utils.moveArray(_this.matchQuestions, i, 0);
@@ -63,8 +66,8 @@ var PmatchquestionsComponent = (function () {
             }
             else {
                 this._matchQuestionService.GetMatchedWith(this.app.selectedUser.id)
-                    .subscribe(function (questions) {
-                    _this.matchQuestions = questions;
+                    .subscribe(function (matchQuestions) {
+                    _this.matchQuestions = matchQuestions;
                 });
             }
         }

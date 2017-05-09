@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-12" style="margin-bottom: 20%;">
             <div class="matchquestions">
-                <div *ngIf="matchQuestions?.length == 0" class="no-mquestions">No questions yet</div>
+                <div *ngIf="matchQuestions?.length == 0" class="no-mquestions">No matched questions yet</div>
                 <div *ngFor="let matchQuestion of matchQuestions; let i = index" class="col-md-12 matchquestion"
                      [style.background-color]="setBackgroundColor(matchQuestion)">
                     <div class="header-category">
@@ -10,24 +10,7 @@
                               class="category-decoration">{{matchQuestion.category}}</span>
                     </div>
                     <div class="text-decoration">{{matchQuestion.text}}</div>
-                    <form *ngIf="app.IsSelectedYou">
-                        <div *ngFor="let answer of matchQuestion.matchAnswers; let j = index;" class="radio">
-                            <label [ngClass]="setRadioStyle(matchQuestion, j)">
-                                <input type="radio" name="answeradio"
-                                       [disabled]="matchQuestion.isAnswered"            
-                                       (click)="checkRadio(matchQuestion, j)">{{answer.text}}
-                            </label>
-                        </div>
-                        <div class="button-decoration">
-                            <button type="button" class="btn btn-info"
-                                    [disabled]="matchQuestion.isAnswered"
-                                    (click)="onAnswer(i)">Answer</button>
-                            <button type="button" class="btn btn-default"
-                                    [disabled]="matchQuestion.isAnswered"
-                                    (click)="onSkip(i)">Skip</button>
-                        </div>
-                    </form>
-                    <form *ngIf="!app.IsSelectedYou">
+                    <form>
                         <div *ngFor="let answer of matchQuestion.matchAnswers; let j = index;" class="radio">
                             <label [ngClass]="setRadioStyle(matchQuestion, j)">
                                 <input type="radio" name="answeradio"
@@ -37,7 +20,8 @@
                         </div>
                         <div class="button-decoration">
                             <button type="button" class="btn btn-info"
-                                    [disabled]="matchQuestion.isAnswered"
+                                    [disabled]="matchQuestion.isAnswered || 
+                                                matchQuestion.matchAnswerID == -1"
                                     (click)="onAnswer(i)">
                                 Answer
                             </button>

@@ -51,6 +51,9 @@ namespace Blindating.Controllers
         [ActionName("addother")]
         public JsonResult AddOther([FromBody] Feedback feedback)
         {
+            if (feedback.IsFirst)
+                Feedbacks.IncreaseProgress(feedback.remoteJWT, "feedback");
+
             return new JsonResult(Feedbacks.AddOther(feedback));
         }
         [Authorize("Bearer")]
@@ -58,6 +61,9 @@ namespace Blindating.Controllers
         [ActionName("remove")]
         public JsonResult Remove([FromBody] Feedback feedback)
         {
+            if (feedback.IsLast)
+                Feedbacks.DecreaseProgress(Request.Headers["Authorization"].ToString().Remove(0, 7), "feedback");
+
             return new JsonResult(Feedbacks.Remove(feedback));
         }
     }

@@ -40,3 +40,23 @@ var SearchUserData = (function () {
     return SearchUserData;
 }());
 exports.SearchUserData = SearchUserData;
+var PreferenceData = (function () {
+    function PreferenceData() {
+    }
+    PreferenceData.genders = ['Man', 'Woman ', 'Anyway'];
+    PreferenceData.hcolors = ['Black', 'Brown', 'Red', 'Blond'];
+    PreferenceData.ecolors = ['Grey', 'Green', 'Blue'];
+    PreferenceData.hobbies = ['Football', 'Basketball', 'Golf', 'Other'];
+    return PreferenceData;
+}());
+exports.PreferenceData = PreferenceData;
+var ProgressPrice = (function () {
+    function ProgressPrice() {
+    }
+    ProgressPrice.basic = 10;
+    ProgressPrice.details = 1;
+    ProgressPrice.matchquestions = 10;
+    ProgressPrice.feedbacks = 10;
+    return ProgressPrice;
+}());
+exports.ProgressPrice = ProgressPrice;

@@ -56,9 +56,11 @@ namespace Blindating.Controllers
         [Authorize("Bearer")]
         [HttpPost]
         [ActionName("addoverriden")]
-        public void AddAverriden([FromBody] MatchQuestion matchQuestion)
+        public JsonResult AddOverriden([FromBody] MatchQuestion matchQuestion)
         {
             MatchQuestions.AddOverriden(matchQuestion, Request.Headers["Authorization"].ToString().Remove(0, 7));
+
+            return new JsonResult(MatchQuestions.IncreaseProgress(Request.Headers["Authorization"].ToString().Remove(0, 7), "matchquestion"));
         }
         [Authorize("Bearer")]
         [HttpPost]

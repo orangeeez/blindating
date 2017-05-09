@@ -51,6 +51,9 @@ namespace Blindating.Controllers
         [ActionName("add")]
         public JsonResult Add([FromBody] Question question)
         {
+            if (question.IsFirst)
+                Questions.IncreaseProgress(Request.Headers["Authorization"].ToString().Remove(0, 7), "question");
+
             return new JsonResult(Questions.Add(question));
         }
         [Authorize("Bearer")]
@@ -65,6 +68,9 @@ namespace Blindating.Controllers
         [ActionName("remove")]
         public JsonResult Remove([FromBody] Question question)
         {
+            if (question.IsLast)
+                Questions.DecreaseProgress(Request.Headers["Authorization"].ToString().Remove(0, 7), "question");
+
             return new JsonResult(Questions.Remove(question));
         }
         [Authorize("Bearer")]

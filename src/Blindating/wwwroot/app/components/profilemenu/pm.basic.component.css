@@ -1,5 +1,6 @@
 ﻿#basic {
     margin-top: 40px;
+    margin-bottom: 30px;
 }
 .avatar {
     display: flex;
@@ -92,6 +93,34 @@
 .row blockquote .default-quote-not-you {
     color: darkgray;
 }
+#basic .progress-decoration {
+    text-align: center;
+}
+#basic .row .progress {
+    border-radius: 0;
+    box-shadow: none;
+    margin-bottom: 0;
+}
+#basic .row .progress .progress-digit {
+    position: absolute;
+    left: 0;
+    right: 0;
+    font-weight: bold;
+    color: #555;
+}
+#basic .row .rating {
+    font-size: 30px;
+}
+#basic .row .rating > span:not(.empty):before {
+   content: "\2605";
+   position: absolute;
+}
+#basic .row .rating .grade-rating {
+    font-size: 20px;
+}
+#basic .row .rating .total-rating {
+    font-size: 15px;
+}
 .header {
     width: 100%;
     height: 18px;
@@ -129,6 +158,9 @@
 }
 .question-content-decoration .answer {
     font-size: 80%;
+}
+.question-content-decoration .default-question {
+    color: darkgray;
 }
 .photos-content {
     padding: 0;
@@ -201,12 +233,6 @@
 .question-yesno i {
     cursor: pointer;
 }
-/*.question-yesno .fa-check-circle-o {
-    color: var(--valid-color);
-}
-.question-yesno .fa-times-circle-o {
-    color: var(--invalid-color);
-}*/
 .no-content-decoration {
     height: 100px;
     line-height: 100px;
@@ -219,7 +245,6 @@
 }
 .talk-decoration {
     padding-bottom: 10px;
-    margin-bottom: 20px;
 }
 .talk-decoration .avatar-decoration {
     height: 60px;

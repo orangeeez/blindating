@@ -1,5 +1,6 @@
 ﻿import {
     Component,
+    ViewChild,
     Host,
     Inject,
     OnInit,
@@ -15,31 +16,19 @@ import { CookieService } from 'angular2-cookie/core';
 import { UserService }   from '../../services/user.service';
 import { SocialService } from '../../services/social.service';
 import { User }          from '../../models/user';
-import { MatchQuestion } from '../../models/matchquestion';
 import { AppComponent }  from '../../components/app.component';
+import { PickupComponent } from '../../components/router-outlet/pickup.component';
 
 declare var VK: any;
 @Component({
     selector:    'login-component',
     templateUrl: 'app/components/router-outlet/login.component.html',
-    styleUrls:   ['app/components/router-outlet/login.component.css'],
-    animations: [
-        trigger('pickupState', [
-            state('deselected', style({
-                height: '0px',
-                'padding-top': '0px'
-            })),
-            state('selected', style({
-                height: '160px',
-                'padding-top': '10px'
-                
-            })),
-            transition('deselected => selected', animate('300ms ease-in')),
-            transition('selected => deselected', animate('300ms ease-out'))
-        ])
-    ]
+    styleUrls:   ['app/components/router-outlet/login.component.css']
 })
 export class LoginComponent implements OnInit {
+    @ViewChild(PickupComponent)
+    private pickupComponent: PickupComponent;
+
     public windowVKAuth: Window;
     public setCodeInterval: any;
 
@@ -52,10 +41,6 @@ export class LoginComponent implements OnInit {
     public lastname:   string;
     public phrase:     string;
     public JWT:        string;
-    public pickupUser: User;
-    public matchQuestions:         MatchQuestion[] = [];
-    public indexMatchQuestion:     number = 0;
-    public pickupState:            string = 'deselected';
     public facebookIntervalNumber: number;
 
     public isPhraseFocused: boolean = false;
@@ -110,14 +95,6 @@ export class LoginComponent implements OnInit {
                 fjs.parentNode.insertBefore(js, fjs);
             } (document, 'script', 'facebook-jssdk'));
         }
-
-        let mq = new MatchQuestion(
-            0,
-            'Religion',
-            'Could you live without the Internet?'
-        );
-
-        this.matchQuestions.push(mq);
     }
 
     public Login(response?: Object): void {
@@ -246,28 +223,17 @@ export class LoginComponent implements OnInit {
                 this._router.navigate(['/dashboard']);
             }
             else {
+                localStorage.setItem('id_token', user.jwt);
+
                 this.alert.show = true;
                 this.alert.reason = user.reason;
 
                 this.app.isHeaderShow = false;                       
                 this.tabs[1].disabled = true;
 
-                this.pickupUser = new User();
-
-                this.pickupUser.id = 2;
-                this.pickupUser.firstname = "Viktor";
-                this.pickupUser.lastname = "Orkush";
-                this.pickupUser.email = "v.orkush@gmail.com";
-                this.pickupUser.image = 'images/users/3hqzwa25.agr.jpg';
-                this.pickupUser.online = true;
-                this.pickupUser.jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InYub3JrdXNoQGdtYWlsLmNvbSIsImlzcyI6Iklzc3VlciIsImF1ZCI6IkF1ZGllbmNlIn0.flhwvv4VCsaKp0grVAbB2RBGJkutHle2CgvvgdoTkDo';
-                
-                //this.app.selectedUser = u;
                 this.app.isPickupShow = true;
-                this.pickupToggle();
+                this.pickupComponent.pickupToggle();
             }
-
-            localStorage.setItem('id_token', user.jwt);
         }
     }
 
@@ -279,24 +245,6 @@ export class LoginComponent implements OnInit {
         this.isPhraseFocused = false;
     }
 
-    public pickupToggle() {
-        this.pickupState = (this.pickupState === 'selected' ? 'deselected' : 'selected');
-    }
-
-    public onPickupInvite(): void {
-        this.app.selectDeselectUser(this.pickupUser);
-        this.app.isSelectedUserYou();
-        this.app.isPickupShow = false;
-        this.app._helper.onInviteAcceptCall();
-        this.pickupToggle();
-    }
-
-    public onPickupDecline(): void {
-        this.app.isPickupShow = false;
-        this.app.isHeaderShow = true;
-        this.app.selectedUser = null;
-        this._router.navigate(['/dashboard']);
-    }
 
     private setAccessTokenInterval = (session: any) => {
          try {

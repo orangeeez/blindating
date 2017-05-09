@@ -16,13 +16,15 @@ var preference_service_1 = require('../../services/information/preference.servic
 var question_service_1 = require('../../services/information/question.service');
 var photo_service_1 = require('../../services/information/photo.service');
 var conversation_service_1 = require('../../services/information/conversation.service');
+var rating_service_1 = require('../../services/information/rating.service');
 var question_1 = require('../../models/question');
 var preference_1 = require('../../models/preference');
 var countries_1 = require('../../static/countries');
+var utils_1 = require('../../static/utils');
 var config_1 = require('../../static/config');
 var ng2_file_upload_1 = require('ng2-file-upload/ng2-file-upload');
 var PmBasicComponent = (function () {
-    function PmBasicComponent(_userService, _quoteService, _preferenceService, _questionService, _photoService, _conversationService, _router) {
+    function PmBasicComponent(_userService, _quoteService, _preferenceService, _questionService, _photoService, _conversationService, _ratingService, _router) {
         var _this = this;
         this._userService = _userService;
         this._quoteService = _quoteService;
@@ -30,14 +32,16 @@ var PmBasicComponent = (function () {
         this._questionService = _questionService;
         this._photoService = _photoService;
         this._conversationService = _conversationService;
+        this._ratingService = _ratingService;
         this._router = _router;
         this.uploader = new ng2_file_upload_1.FileUploader({
             url: config_1.PHOTO_BY_JWT_ADDRESS,
             authToken: 'Bearer ' + localStorage.getItem('id_token')
         });
-        this.header = { name: 'Uploader', value: 'basic' };
+        this.uploadHeader = { name: 'Uploader', value: 'basic' };
         this.defaultQuote = 'Please add your favorite quote here';
         this.defaultQuoteNotYou = 'User does not add quote yet';
+        this.defaultQuestion = 'Please add your question to others here';
         this.defaultAuthor = 'By Author';
         this.questionIndex = 0;
         this.quotes = new Array();
@@ -45,13 +49,13 @@ var PmBasicComponent = (function () {
         this.photos = new Array();
         this.conversations = new Array();
         this.preferences = new preference_1.Preference();
-        this.genders = ['Man', 'Woman ', 'Anyway'];
+        this.genders = utils_1.PreferenceData.genders;
         this.ages = Array.from(Array(80).keys()).slice(16, 80);
         this.cities = [];
         this.countries = countries_1.COUNTRIES;
-        this.hcolors = ['Black', 'Brown', 'Red', 'Blond'];
-        this.ecolors = ['Grey', 'Green', 'Blue'];
-        this.hobbies = ['Football', 'Basketball', 'Golf', 'Other'];
+        this.hcolors = utils_1.PreferenceData.hcolors;
+        this.ecolors = utils_1.PreferenceData.ecolors;
+        this.hobbies = utils_1.PreferenceData.hobbies;
         this.isOpenQuotes = false;
         this.isOpenQuestions = false;
         this.isOpenPhotos = false;
@@ -96,7 +100,7 @@ var PmBasicComponent = (function () {
         };
         this.uploader.options.removeAfterUpload = true;
         this.uploader.options.headers = [];
-        this.uploader.options.headers.push(this.header);
+        this.uploader.options.headers.push(this.uploadHeader);
         this.uploader.onAfterAddingFile = function (item) {
             _this.uploader.uploadItem(item);
         };
@@ -140,8 +144,11 @@ var PmBasicComponent = (function () {
         });
     };
     PmBasicComponent.prototype.onFocusoutPreference = function () {
+        var _this = this;
         this._preferenceService.Update(this.preferences)
-            .subscribe(function (isupdated) { });
+            .subscribe(function (progress) {
+            _this.app.selectedUser.progress = progress;
+        });
     };
     PmBasicComponent.prototype.onSelectPreference = function (event, input) {
         var _this = this;
@@ -185,7 +192,10 @@ var PmBasicComponent = (function () {
                     this.preferences.hobby = element['innerHTML'];
                 break;
         }
-        this._preferenceService.Update(this.preferences).subscribe();
+        this._preferenceService.Update(this.preferences)
+            .subscribe(function (progress) {
+            _this.app.selectedUser.progress = progress;
+        });
     };
     PmBasicComponent.prototype.onInputDropdown = function (event) {
         switch (event.target['id']) {
@@ -313,7 +323,7 @@ var PmBasicComponent = (function () {
             styleUrls: ['app/components/profilemenu/pm.basic.component.css'],
             inputs: ['app', 'selectedUser', 'isOpenQuotes']
         }), 
-        __metadata('design:paramtypes', [user_service_1.UserService, quote_service_1.QuoteService, preference_service_1.PreferenceService, question_service_1.QuestionService, photo_service_1.PhotoService, conversation_service_1.ConversationService, router_1.Router])
+        __metadata('design:paramtypes', [user_service_1.UserService, quote_service_1.QuoteService, preference_service_1.PreferenceService, question_service_1.QuestionService, photo_service_1.PhotoService, conversation_service_1.ConversationService, rating_service_1.RatingService, router_1.Router])
     ], PmBasicComponent);
     return PmBasicComponent;
 }());

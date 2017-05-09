@@ -30,5 +30,7 @@ namespace Blindating.Models.Tables
         [JsonIgnore] public virtual List<Feedback> Feedbacks { get; set; }
         [JsonIgnore] public virtual Detail Detail { get; set; }
         [JsonIgnore] public virtual Preference Preference { get; set; }
+        [JsonIgnore] public virtual Rating Rating { get; set; }
+
     }
 }

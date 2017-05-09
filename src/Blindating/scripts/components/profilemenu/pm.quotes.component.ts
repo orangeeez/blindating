@@ -8,6 +8,7 @@ import { Quote }             from '../../models/quote';
 import { QuoteService }      from '../../services/information/quote.service';
 import { AppComponent }      from '../../components/app.component';
 import { QuoteLike }         from '../../models/quotelike';
+import { ProgressPrice }     from '../../static/utils';
 
 @Component({
     selector: 'pm-quotes-component',
@@ -51,11 +52,15 @@ export class PmQuotesComponent implements OnInit, AfterViewInit {
     }
 
     public onRemoveQuote(quote: Quote) {
+        quote.isLast = this.quotes.length == 1;
         this._quoteService.Remove(quote)
             .subscribe(isremoved => {
                 if (isremoved) {
                     var index: number = this.quotes.indexOf(quote);
                     this.quotes.splice(index, 1);
+
+                    if (quote.isLast)
+                        this.app.selectedUser.progress -= ProgressPrice.basic;
                 }
             })
     }
@@ -105,6 +110,7 @@ export class PmQuotesComponent implements OnInit, AfterViewInit {
         switch (key) {
             case 13:
                 event.preventDefault();
+                var isFirst = this.quotes.length == 0;
                 if (isFormValid) {
                     var quote: Quote = {
                         id:                 0,
@@ -117,7 +123,9 @@ export class PmQuotesComponent implements OnInit, AfterViewInit {
                         isEditing:          false,
                         isAnswered:         false,
                         isLike:             false,
-                        isDislike:          false
+                        isDislike:          false,
+                        isFirst:            isFirst,
+                        isLast:             false
                     };
                     this.isAddingQuote = false;
                     this.content = '';
@@ -126,6 +134,9 @@ export class PmQuotesComponent implements OnInit, AfterViewInit {
                         .subscribe(id => {
                             quote.id = id;
                             this.quotes.unshift(quote);
+
+                            if (isFirst)
+                                this.app.selectedUser.progress += ProgressPrice.basic;
                         })
                 }
                 break;

@@ -15,7 +15,7 @@ namespace Blindating.Models.Tables
         public string Text { get; set; }
         [NotMapped] public bool IsAnswered { get; set; }
         [NotMapped] public bool IsCoincided { get; set; }
-        [NotMapped] public int MatchAnswerID { get; set; }
+        [NotMapped] public int MatchAnswerID { get; set; } = -1;
         [NotMapped] public int RemoteMatchAnswerID { get; set; } = -1;
 
         public MatchQuestion() { }

@@ -22,6 +22,7 @@ namespace Blindating.Models.Tables
         public bool Online { get; set; } = false;
         public string Phrase { get; set; }
         public string Registered { get; set; }
+        public float Progress { get; set; }
         public virtual Information Information { get; set; }
         public List<UserMatchQuestion> UserMatchQuestions { get; set; }
 
@@ -31,6 +32,8 @@ namespace Blindating.Models.Tables
         [NotMapped] public int ConversationsCount { get; set; }
         [NotMapped] public int FeedbacksCount { get; set; }
         [NotMapped] public int AnswersCount { get; set; }
+        [NotMapped] public float GradeRating { get; set; }
+        [NotMapped] public int CountRating { get; set; }
 
         public static string EMAIL_ALREADY_EXIST = "User with current email is already registered.";
         public static string REGISTERED_SUCCESSFULLY = "Congratulations! You're successfully registered. Please log in.";

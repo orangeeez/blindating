@@ -6,13 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Blindating.Models.Tables.Utils;
 
 namespace Blindating.Models.Repositories
 {
     public class PreferenceRepository : BaseRepository<Preference>, IPreferenceRepository
     {
         private AppDBContext _context;
-        public PreferenceRepository(AppDBContext context) : base(context)
+        public PreferenceRepository(AppDBContext context) : base(context, (float) ProgressPrice.Basic / 12)
         {
             _context = context;
         }

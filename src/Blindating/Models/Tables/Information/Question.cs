@@ -22,6 +22,7 @@ namespace Blindating.Models.Tables
         [JsonIgnore] public virtual List<QuestionAnswer> QuestionAnswers { get; set; }
         [NotMapped] public bool Answered { get; set; }
         [NotMapped] public int AnswersCount { get; set; }
-
+        [NotMapped] public bool IsFirst { get; set; }
+        [NotMapped] public bool IsLast { get; set; }
     }
 }

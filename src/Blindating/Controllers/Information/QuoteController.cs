@@ -45,6 +45,9 @@ namespace Blindating.Controllers
         [ActionName("add")]
         public JsonResult Add([FromBody] Quote quote)
         {
+            if (quote.IsFirst)
+                Quotes.IncreaseProgress(Request.Headers["Authorization"].ToString().Remove(0, 7), "quote");
+
             return new JsonResult(Quotes.Add(quote));
         }
         [HttpPost]
@@ -59,6 +62,9 @@ namespace Blindating.Controllers
         [ActionName("remove")]
         public JsonResult Remove([FromBody] Quote quote)
         {
+            if (quote.IsLast)
+                Quotes.DecreaseProgress(Request.Headers["Authorization"].ToString().Remove(0, 7), "quote");
+
             return new JsonResult(Quotes.Remove(quote));
         }
         [HttpPost]

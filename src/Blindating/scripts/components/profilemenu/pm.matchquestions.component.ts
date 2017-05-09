@@ -30,8 +30,8 @@ export class PmatchquestionsComponent implements OnInit, OnChanges {
         if (changes['selectedUser']) {
             if (this.app.isSelectedYou) {
                 this._matchQuestionService.GetAllByID(this.app.selectedUser.id)
-                    .subscribe(questions => {
-                        this.matchQuestions = questions;
+                    .subscribe(matchQuestions => {
+                        this.matchQuestions = matchQuestions;
                         for (var i = 0; i < this.matchQuestions.length; i++)
                             if (!this.matchQuestions[i].isAnswered)
                                 Utils.moveArray(this.matchQuestions, i, 0);
@@ -39,16 +39,19 @@ export class PmatchquestionsComponent implements OnInit, OnChanges {
             }
             else {
                 this._matchQuestionService.GetMatchedWith(this.app.selectedUser.id)
-                    .subscribe(questions => {
-                        this.matchQuestions = questions;
+                    .subscribe(matchQuestions => {
+                        this.matchQuestions = matchQuestions;
                     });
             }
         }
     }
 
-    public onAnswer = (index: number, matchAnswerID: number): void => {
+    public onAnswer = (index: number): void => {
         this.matchQuestions[index].isAnswered = true;
-        this._matchQuestionService.AddOverriden(this.matchQuestions[index]).subscribe();
+        this._matchQuestionService.AddOverriden(this.matchQuestions[index])
+            .subscribe(progress => {
+                this.app.selectedUser.progress += progress;
+            });
     }
 
     public onSkip = (index: number) => {

@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var feedback_1 = require('../../models/feedback');
 var feedback_service_1 = require('../../services/information/feedback.service');
+var utils_1 = require('../../static/utils');
 var PmFeedbacksComponent = (function () {
     function PmFeedbacksComponent(_feedbackService) {
         this._feedbackService = _feedbackService;
@@ -45,11 +46,14 @@ var PmFeedbacksComponent = (function () {
     };
     PmFeedbacksComponent.prototype.onRemoveFeedback = function (feedback) {
         var _this = this;
+        feedback.isLast = this.feedbacks.length == 1;
         this._feedbackService.Remove(feedback)
             .subscribe(function (isremoved) {
             if (isremoved) {
                 var index = _this.feedbacks.indexOf(feedback);
                 _this.feedbacks.splice(index, 1);
+                if (feedback.isLast)
+                    _this.app.selectedUser.progress -= utils_1.ProgressPrice.feedbacks;
             }
         });
     };
@@ -63,7 +67,9 @@ var PmFeedbacksComponent = (function () {
         feedback.remoteInfoFeedbackFK = this.app.selectedUser.information.id;
         feedback.result = this.getFeedbackResult();
         feedback.text = text;
+        feedback.remoteJWT = this.app.selectedUser.jwt;
         feedback.direction = 'Leaved';
+        feedback.isFirst = this.feedbacks.length == 0;
         return feedback;
     };
     PmFeedbacksComponent = __decorate([

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Blindating.Models.Interfaces;
 using Blindating.Models.Tables;
 using Microsoft.AspNetCore.Authorization;
+using System.Reflection;
 
 namespace Blindating.Controllers
 {
@@ -36,7 +37,25 @@ namespace Blindating.Controllers
         [ActionName("update")]
         public JsonResult Update([FromBody] Detail detail)
         {
-            return new JsonResult(Details.Update(detail));
+            var filledCount = 0;
+            foreach (PropertyInfo propertie in detail.GetType().GetProperties())
+            {
+                if (propertie.Name == "ID" ||
+                    propertie.Name == "InformationDetailsFK" ||
+                    propertie.Name == "Information" ||
+                    propertie.Name == "UserID" ||
+                    propertie.Name == "FilledCount")
+                    continue;
+
+                else if (!string.IsNullOrEmpty(propertie.GetValue(detail)?.ToString()))
+                    filledCount++;
+            }
+
+            detail.FilledCount = filledCount;
+            var progress = Details.IncreaseProgress(Request.Headers["Authorization"].ToString().Remove(0, 7), "detail" + filledCount);
+            Details.Update(detail);
+
+            return new JsonResult(progress);
         }
         [Authorize("Bearer")]
         [HttpPost]

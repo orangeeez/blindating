@@ -20,6 +20,8 @@ namespace Blindating.Models
         public DbSet<Country> Countries { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<Preference> Preferences { get; set; }
+        public DbSet<Rating> Rating { get; set; }
+
         public DbSet<Question> Questions { get; set; }
         public DbSet<QuestionAnswer> QuestionAnswers { get; set; }
         public DbSet<Notification> Notifications { get; set; }
@@ -49,6 +51,11 @@ namespace Blindating.Models
                 .HasOne(p => p.Preference)
                 .WithOne(i => i.Information)
                 .HasForeignKey<Preference>(b => b.InformationPreferenceFK);
+
+            modelBuilder.Entity<Information>()
+                .HasOne(p => p.Rating)
+                .WithOne(i => i.Information)
+                .HasForeignKey<Rating>(b => b.InformationRatingFK);
 
             modelBuilder.Entity<Information>()
                 .HasMany(p => p.Photos)

@@ -25,6 +25,7 @@ var DashboardComponent = (function () {
         this._cookieService = _cookieService;
         this._notificationService = _notificationService;
         this._router = _router;
+        this.searchUsers = [];
         this.pickupState = 'deselected';
         this.isActiveExpanded = false;
         this.isNewExpanded = false;
@@ -89,7 +90,6 @@ var DashboardComponent = (function () {
             _this.popularUsers = users;
             _this.isNewUsersLoaded = true;
         });
-        // if (Math.round(this.maxUsersRows) <= 0) this.maxUsers = 1;
         this._userService.GetRandom(this.maxUsers)
             .subscribe(function (users) {
             _this.app.users = users.filter(_this.removeCurrentUser);
