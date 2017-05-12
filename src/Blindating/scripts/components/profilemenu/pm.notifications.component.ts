@@ -10,6 +10,7 @@ import { QuestionAnswer }      from '../../models/questionanswer';
 import { Feedback }            from '../../models/feedback';
 import { NotificationService } from '../../services/information/notification.service';
 import { AppComponent }        from '../../components/app.component';
+import { Utils } from '../../static/utils';
 
 @Component({
     selector: 'pm-notifications-component',
@@ -25,52 +26,19 @@ export class PmNotificationsComponent implements OnInit, OnChanges, OnDestroy {
         private _notificationService: NotificationService) {
     }
     
-    ngOnInit() {
-        //let answer = new Answer();
-        //answer.id = 0;
-        //answer.result = true;
-        //answer.remoteUserID = 2;
-        //answer.questionAnswerFK = 1;
-        //answer.direction = 'Leaved';
-        //answer.remoteUser = this.app.user;
-        //answer.questionAnswered = 'Do you believe in God?';
-
-        //let feedback = new Feedback();
-        //feedback.id = 0;
-        //feedback.result = true;
-        //feedback.remoteUser = this.app.user;
-        //feedback.text = 'I dont want to talk with you anymore';
-
-        //let notification = new Notification(
-        //    0,
-        //    'answer',
-        //    JSON.stringify(answer),
-        //    false
-        //);
-
-        //let notification1 = new Notification(
-        //    0,
-        //    'feedback',
-        //    JSON.stringify(feedback),
-        //    false
-        //);
-
-        //notification.object  = <Answer> JSON.parse(notification.JSONObject);
-        //notification1.object = <Feedback> JSON.parse(notification1.JSONObject);
-
-        //this.notifications.push(notification);
-        //this.notifications.push(notification1);
-    }
+    ngOnInit() { }
 
     ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
          if (changes['selectedUser']) {
              this._notificationService.GetAllByID(this.app.selectedUser.id)
                  .subscribe(notifications => {
                      this.notifications = notifications.reverse();
-                     for (let notification of this.notifications)
+                     for (let notification of this.notifications) {
                          notification.object = JSON.parse(notification['jsonObject']);
+                         notification.object.RemoteUser = Utils.ObjectKeysToLowerCase(notification.object.RemoteUser);
+                     }
                  });
-         }
+        }
     }
 
     ngOnDestroy() {

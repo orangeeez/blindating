@@ -17,6 +17,7 @@ var PmFeedbacksComponent = (function () {
         this._feedbackService = _feedbackService;
         this.keydown = {};
         this.isNegativeIcon = 'fa fa-thumbs-o-down fa-lg';
+        this.isAttentionVisible = 'hidden';
     }
     PmFeedbacksComponent.prototype.ngOnInit = function () { };
     PmFeedbacksComponent.prototype.ngOnChanges = function (changes) {
@@ -24,6 +25,11 @@ var PmFeedbacksComponent = (function () {
         if (changes['selectedUser']) {
             this._feedbackService.GetAllByID(this.app.selectedUser.id)
                 .subscribe(function (feedbacks) { return _this.feedbacks = feedbacks.reverse(); });
+            if (!this.app.selectedUser.isVideoShared &&
+                !this.app.isSelectedYou) {
+                this.isAttentionVisible = 'visible';
+                this.attentionText = 'Before leave a wish you need a conversation with this user.';
+            }
         }
     };
     PmFeedbacksComponent.prototype.onKeyupArea = function (event, textarea) {

@@ -8,39 +8,38 @@ import { UserService }       from '../services/user.service';
 import { AppComponent }      from '../components/app.component';
 import { PmBasicComponent }  from '../components/profilemenu/pm.basic.component';
 @Component({
-    selector:    'profilemenu-component',
+    selector: 'profilemenu-component',
     templateUrl: 'app/components/profilemenu.component.html',
-    styleUrls:   ['app/components/profilemenu.component.css'],
-    inputs:      ['app']
+    styleUrls: ['app/components/profilemenu.component.css'],
+    inputs: ['app']
 })
 export class ProfilemenuComponent implements OnInit {
-    public app:  AppComponent;
-    public state:  string  = 'deselected';
-    public isShow: boolean = false;
+    public app: AppComponent;
+    public state: string = 'deselected';
 
     public tabs: Array<any> = [
-        { title: 'Basic',         active: true  },
-        { title: 'Details',       active: false },
-        { title: 'Wishes',        active: false },
-        { title: 'Q&A',           active: false },
-        { title: 'Notifications', active: false }
+        { title: 'Basic', active: true },
+        { title: 'Details', active: false },
+        { title: 'Wishes', active: false },
+        { title: 'Q&A', active: false },
+        { title: 'Notifications', active: false, disabled: true }
     ];
 
     constructor(
-        private _userService:   UserService,
+        private _userService: UserService,
         private _cookieService: CookieService,
-        private _router:        Router) { }
+        private _router: Router) { }
 
     public ngOnInit() { }
 
     public onLogout(): void {
         this._userService.Logout(this.app.user.id).subscribe();
-        this.app.user         = null;
+        this.app.user = null;
         this.app.selectedUser = null;
-        this.app.isLoginShow  = true;
+        this.app.isLoginShow = true;
         this.app.isHeaderShow = false;
         this.app.isPickupShow = false;
-        this.app._profilemenu.ToggleState();
+        this.app._profilemenu.toggleState();
         this.app._header.DeselectMenus();
         this.app._header.isProfileActive = false;
         localStorage.removeItem('id_token');
@@ -51,7 +50,7 @@ export class ProfilemenuComponent implements OnInit {
         this.app.selectDeselectUser(this.app.selectedUser);
     }
 
-    public ToggleState(): void {
+    public toggleState(): void {
         this.state = (this.state === 'selected' ? 'deselected' : 'selected');
     }
 
@@ -69,6 +68,22 @@ export class ProfilemenuComponent implements OnInit {
                 t.active = false;
             else
                 t.active = true;
+    }
+
+    public disableTab(title: string): void {
+        var tab = this.tabs.filter(function (tab) {
+            return tab.title == title;
+        });
+
+        tab[0].disabled = true;
+    }
+
+    public enableTab(title: string): void {
+        var tab = this.tabs.filter(function (tab) {
+            return tab.title == title;
+        });
+
+        tab[0].disabled = false;
     }
 }
 

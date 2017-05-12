@@ -6,12 +6,15 @@
                 <div *ngFor="let notification of notifications" class="col-md-12" style="margin-bottom: 5px" 
                      [ngClass]="notification.isShown ? 'shown' : 'notshown'">
                     <div class="col-md-2 div-avatar-padding">
-                        <img [src]="notification.object.RemoteUser.Image" 
-                             [class.blur]="false" class="img-circle avatar-decoration" />
+                        <img class="img-circle avatar-decoration"
+                             [src]="notification.object.RemoteUser.image" 
+                             [class.blur]="false"
+                             (click)="app.selectDeselectUser(notification.object.RemoteUser)" />
                     </div>
                     <div *ngIf="notification.type == 'answer'" class="col-md-10">
                         <div class="info-decoration">
-                            <i class="name">{{notification.object.RemoteUser.Firstname + ' ' + notification.object.RemoteUser.Lastname}}</i>
+                            <i class="name"
+                               (click)="app.selectDeselectUser(notification.object.RemoteUser)">{{notification.object.RemoteUser.firstname + ' ' + notification.object.RemoteUser.lastname}}</i>
                             <i>answered </i><i [ngClass]="notification.object.Result ? 'result-true' : 'result-false'">{{notification.object.Result}}</i><i> on your question</i>
                             <div class="question">{{notification.object.QuestionAnswered}}</div>
                             <div class="date">7 Mar at 11:54 PM</div>
@@ -19,7 +22,8 @@
                     </div>
                     <div *ngIf="notification.type == 'feedback'" class="col-md-10">
                         <div class="info-decoration">
-                            <i class="name">{{notification.object.RemoteUser.Firstname + ' ' + notification.object.RemoteUser.Lastname}}</i>
+                            <i class="name"
+                               (click)="app.selectDeselectUser(notification.object.RemoteUser)">{{notification.object.RemoteUser.firstname + ' ' + notification.object.RemoteUser.lastname}}</i>
                             <i>leaved </i><i [ngClass]="notification.object.Result ? 'result-true' : 'result-false'"
                                              [innerHTML]="notification.object.Result ? 'positive' : 'negative'">positive</i><i> feedback</i>
                             <div class="question">{{notification.object.Text}}</div>                            
@@ -28,7 +32,8 @@
                     </div>
                     <div *ngIf="notification.type == 'qlike'" class="col-md-10">
                         <div class="info-decoration">
-                            <i class="name">{{notification.object.RemoteUser.Firstname + ' ' + notification.object.RemoteUser.Lastname}}</i>
+                            <i class="name"
+                               (click)="app.selectDeselectUser(notification.object.RemoteUser)">{{notification.object.RemoteUser.firstname + ' ' + notification.object.RemoteUser.lastname}}</i>
                             <i [ngClass]="notification.object.Result ? 'result-true' : 'result-false'"
                                              [innerHTML]="notification.object.Result ? 'liked' : 'disliked'"></i><i> your quote</i>
                             <div class="question">{{notification.object.Message}}</div>

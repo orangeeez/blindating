@@ -21,6 +21,8 @@ export class PmFeedbacksComponent implements OnInit, OnChanges {
 
     public keydown =         {};
     public isNegativeIcon = 'fa fa-thumbs-o-down fa-lg';
+    public isAttentionVisible: string = 'hidden';
+    public attentionText: string;
 
     constructor(
         private _feedbackService: FeedbackService) {
@@ -32,6 +34,12 @@ export class PmFeedbacksComponent implements OnInit, OnChanges {
         if (changes['selectedUser']) {
             this._feedbackService.GetAllByID(this.app.selectedUser.id)
                 .subscribe(feedbacks => this.feedbacks = feedbacks.reverse());
+
+            if (!this.app.selectedUser.isVideoShared &&
+                !this.app.isSelectedYou) {
+                this.isAttentionVisible = 'visible';
+                this.attentionText = 'Before leave a wish you need a conversation with this user.';
+            }
         }
     }
 

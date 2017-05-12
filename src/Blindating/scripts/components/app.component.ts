@@ -93,11 +93,11 @@ export class AppComponent implements OnInit {
     public selectDeselectUser(user: User, isToggle: boolean = true): void {
         if (this.selectedUser == user) {
             this.selectedUser = null;
-            this._profilemenu.ToggleState();
+            this._profilemenu.toggleState();
         }
         else if (this.selectedUser == null) {
             this.selectedUser = user;
-             if (isToggle) this._profilemenu.ToggleState();
+             if (isToggle) this._profilemenu.toggleState();
         }
         else if (this.selectedUser != user) {
             this.selectedUser = user;
@@ -107,6 +107,7 @@ export class AppComponent implements OnInit {
         this.isSelectedUserYou();
         this.setHelperElements();
         this.setHeaderElements(user);
+        this.setProfilemenuElements();
     }
 
     public initializeWebRTC() {
@@ -272,6 +273,14 @@ export class AppComponent implements OnInit {
             this._profilemenu.setBasicTabActive();
         else
             this._profilemenu.setNotificationTabActive();
+    }
+
+    private setProfilemenuElements = (): void => {
+        if (this.isSelectedYou)
+            this._profilemenu.enableTab('Notifications');
+
+        if (!this.isSelectedYou)
+            this._profilemenu.disableTab('Notifications');
     }
 
     private createConversation = (): Conversation => {

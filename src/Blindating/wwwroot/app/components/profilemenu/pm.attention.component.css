@@ -1,0 +1,6 @@
+#attention {
+    background-color: var(--main-aqua-color);
+    color: white;
+    font-weight: bold;
+    padding: 0 10px;
+}

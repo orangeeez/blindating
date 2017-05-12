@@ -37,6 +37,7 @@ import { PmFeedbacksComponent }     from './components/profilemenu/pm.feedbacks.
 import { PmConversationsComponent } from './components/profilemenu/pm.conversations.component';
 import { PmNotificationsComponent } from './components/profilemenu/pm.notifications.component';
 import { PmatchquestionsComponent } from './components/profilemenu/pm.matchquestions.component';
+import { PmAttentionComponent }     from './components/profilemenu/pm.attention.component';
 import { DSearchComponent }         from './components/dashboard/d.search.component';
 import { FSmileyComponent }         from './components/footer/f.smiley.component';
 import { FocusDirective }           from './directives/focus.directive';
@@ -76,6 +77,7 @@ import {
         PmConversationsComponent,
         PmNotificationsComponent,
         PmatchquestionsComponent,
+        PmAttentionComponent,
         DSearchComponent,
         FSmileyComponent,
         FocusDirective,

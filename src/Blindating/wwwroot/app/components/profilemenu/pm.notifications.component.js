@@ -10,42 +10,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var notification_service_1 = require('../../services/information/notification.service');
+var utils_1 = require('../../static/utils');
 var PmNotificationsComponent = (function () {
     function PmNotificationsComponent(_notificationService) {
         this._notificationService = _notificationService;
         this.notifications = [];
     }
-    PmNotificationsComponent.prototype.ngOnInit = function () {
-        //let answer = new Answer();
-        //answer.id = 0;
-        //answer.result = true;
-        //answer.remoteUserID = 2;
-        //answer.questionAnswerFK = 1;
-        //answer.direction = 'Leaved';
-        //answer.remoteUser = this.app.user;
-        //answer.questionAnswered = 'Do you believe in God?';
-        //let feedback = new Feedback();
-        //feedback.id = 0;
-        //feedback.result = true;
-        //feedback.remoteUser = this.app.user;
-        //feedback.text = 'I dont want to talk with you anymore';
-        //let notification = new Notification(
-        //    0,
-        //    'answer',
-        //    JSON.stringify(answer),
-        //    false
-        //);
-        //let notification1 = new Notification(
-        //    0,
-        //    'feedback',
-        //    JSON.stringify(feedback),
-        //    false
-        //);
-        //notification.object  = <Answer> JSON.parse(notification.JSONObject);
-        //notification1.object = <Feedback> JSON.parse(notification1.JSONObject);
-        //this.notifications.push(notification);
-        //this.notifications.push(notification1);
-    };
+    PmNotificationsComponent.prototype.ngOnInit = function () { };
     PmNotificationsComponent.prototype.ngOnChanges = function (changes) {
         var _this = this;
         if (changes['selectedUser']) {
@@ -55,6 +26,7 @@ var PmNotificationsComponent = (function () {
                 for (var _i = 0, _a = _this.notifications; _i < _a.length; _i++) {
                     var notification = _a[_i];
                     notification.object = JSON.parse(notification['jsonObject']);
+                    notification.object.RemoteUser = utils_1.Utils.ObjectKeysToLowerCase(notification.object.RemoteUser);
                 }
             });
         }

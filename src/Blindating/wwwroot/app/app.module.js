@@ -47,6 +47,7 @@ var pm_feedbacks_component_1 = require('./components/profilemenu/pm.feedbacks.co
 var pm_conversations_component_1 = require('./components/profilemenu/pm.conversations.component');
 var pm_notifications_component_1 = require('./components/profilemenu/pm.notifications.component');
 var pm_matchquestions_component_1 = require('./components/profilemenu/pm.matchquestions.component');
+var pm_attention_component_1 = require('./components/profilemenu/pm.attention.component');
 var d_search_component_1 = require('./components/dashboard/d.search.component');
 var f_smiley_component_1 = require('./components/footer/f.smiley.component');
 var focus_directive_1 = require('./directives/focus.directive');
@@ -86,6 +87,7 @@ var AppModule = (function () {
                 pm_conversations_component_1.PmConversationsComponent,
                 pm_notifications_component_1.PmNotificationsComponent,
                 pm_matchquestions_component_1.PmatchquestionsComponent,
+                pm_attention_component_1.PmAttentionComponent,
                 d_search_component_1.DSearchComponent,
                 f_smiley_component_1.FSmileyComponent,
                 focus_directive_1.FocusDirective,

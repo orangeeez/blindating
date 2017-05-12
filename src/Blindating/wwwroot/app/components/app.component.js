@@ -136,6 +136,12 @@ var AppComponent = (function () {
             else
                 _this._profilemenu.setNotificationTabActive();
         };
+        this.setProfilemenuElements = function () {
+            if (_this.isSelectedYou)
+                _this._profilemenu.enableTab('Notifications');
+            if (!_this.isSelectedYou)
+                _this._profilemenu.disableTab('Notifications');
+        };
         this.createConversation = function () {
             var conversation = new conversation_1.Conversation();
             conversation.userID = _this.user.id;
@@ -164,12 +170,12 @@ var AppComponent = (function () {
         if (isToggle === void 0) { isToggle = true; }
         if (this.selectedUser == user) {
             this.selectedUser = null;
-            this._profilemenu.ToggleState();
+            this._profilemenu.toggleState();
         }
         else if (this.selectedUser == null) {
             this.selectedUser = user;
             if (isToggle)
-                this._profilemenu.ToggleState();
+                this._profilemenu.toggleState();
         }
         else if (this.selectedUser != user) {
             this.selectedUser = user;
@@ -178,6 +184,7 @@ var AppComponent = (function () {
         this.isSelectedUserYou();
         this.setHelperElements();
         this.setHeaderElements(user);
+        this.setProfilemenuElements();
     };
     AppComponent.prototype.initializeWebRTC = function () {
         this.user.peer = new Woogeen.PeerClient({

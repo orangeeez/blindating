@@ -18,13 +18,12 @@ var ProfilemenuComponent = (function () {
         this._cookieService = _cookieService;
         this._router = _router;
         this.state = 'deselected';
-        this.isShow = false;
         this.tabs = [
             { title: 'Basic', active: true },
             { title: 'Details', active: false },
             { title: 'Wishes', active: false },
             { title: 'Q&A', active: false },
-            { title: 'Notifications', active: false }
+            { title: 'Notifications', active: false, disabled: true }
         ];
     }
     ProfilemenuComponent.prototype.ngOnInit = function () { };
@@ -35,7 +34,7 @@ var ProfilemenuComponent = (function () {
         this.app.isLoginShow = true;
         this.app.isHeaderShow = false;
         this.app.isPickupShow = false;
-        this.app._profilemenu.ToggleState();
+        this.app._profilemenu.toggleState();
         this.app._header.DeselectMenus();
         this.app._header.isProfileActive = false;
         localStorage.removeItem('id_token');
@@ -44,7 +43,7 @@ var ProfilemenuComponent = (function () {
     ProfilemenuComponent.prototype.onHide = function () {
         this.app.selectDeselectUser(this.app.selectedUser);
     };
-    ProfilemenuComponent.prototype.ToggleState = function () {
+    ProfilemenuComponent.prototype.toggleState = function () {
         this.state = (this.state === 'selected' ? 'deselected' : 'selected');
     };
     ProfilemenuComponent.prototype.setBasicTabActive = function () {
@@ -64,6 +63,18 @@ var ProfilemenuComponent = (function () {
             else
                 t.active = true;
         }
+    };
+    ProfilemenuComponent.prototype.disableTab = function (title) {
+        var tab = this.tabs.filter(function (tab) {
+            return tab.title == title;
+        });
+        tab[0].disabled = true;
+    };
+    ProfilemenuComponent.prototype.enableTab = function (title) {
+        var tab = this.tabs.filter(function (tab) {
+            return tab.title == title;
+        });
+        tab[0].disabled = false;
     };
     ProfilemenuComponent = __decorate([
         core_1.Component({

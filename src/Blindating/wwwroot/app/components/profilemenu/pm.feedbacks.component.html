@@ -1,5 +1,7 @@
 ﻿<div class="container-fluid" id="feedback">
     <div class="row">
+        <pm-attention-component [text]="attentionText"
+                                [style.visibility]="isAttentionVisible"></pm-attention-component>
         <div class="col-md-12" style="margin-bottom: 20%;">
             <div class="feedbacks">
                 <div *ngIf="feedbacks?.length == 0" class="no-wishes">No wishes yet</div>
@@ -18,7 +20,8 @@
                     </blockquote>
                 </div>
             </div>
-            <div *ngIf="!app.isSelectedYou" class="feedback-field">
+            <div *ngIf="!app.isSelectedYou &&
+                        app.selectedUser.isVideoShared" class="feedback-field">
                 <div class="col-md-11">
                     <textarea placeholder="Leave your wish here. To send a wish, please press Alt+Enter"
                               #textarea

@@ -18,6 +18,21 @@ export class Utils {
         arr.splice(fromIndex, 1);
         arr.splice(toIndex, 0, element);
     }
+    public static ObjectKeysToLowerCase(obj: any): any {
+        var key, keys = Object.keys(obj);
+        var n = keys.length;
+        var newobj = {};
+        while (n--) {
+            key = keys[n];
+            //newobj[key.toLowerCase()] = obj[key];
+            if (key == 'ID')
+                newobj[key.toLowerCase()] = obj[key];
+            else
+                newobj[key.charAt(0).toLowerCase() + key.slice(1)] = obj[key];
+
+        }
+        return newobj;
+    }
 }
 export enum DataSignals {
     RequestingVideo,

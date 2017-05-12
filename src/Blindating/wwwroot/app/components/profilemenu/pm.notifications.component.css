@@ -12,10 +12,12 @@
     height: 50px;
     width: 50px;
     object-fit: cover;
+    cursor: pointer;
 }
 #notification .info-decoration .name {
     font-weight: bold;
     color: var(--main-aqua-color);
+    cursor: pointer;
 }
 #notification .info-decoration .question {
     font-weight: bold;
