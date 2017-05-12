@@ -2,12 +2,14 @@
     Component,
     OnInit,
     OnChanges,
-    SimpleChange
+    SimpleChange,
+    ViewChild
 }                            from '@angular/core';
 import { Feedback }          from '../../models/feedback';
 import { FeedbackService }   from '../../services/information/feedback.service';
 import { AppComponent }      from '../../components/app.component';
 import { ProgressPrice }     from '../../static/utils';
+import { PmAttentionComponent } from './pm.attention.component';
 
 @Component({
     selector: 'pm-feedbacks-component',
@@ -16,6 +18,8 @@ import { ProgressPrice }     from '../../static/utils';
     inputs:      ['app', 'selectedUser'],
 })
 export class PmFeedbacksComponent implements OnInit, OnChanges {
+    @ViewChild(PmAttentionComponent) attentionComponent: PmAttentionComponent;
+
     public app:       AppComponent;
     public feedbacks: Feedback[];
 
@@ -32,14 +36,15 @@ export class PmFeedbacksComponent implements OnInit, OnChanges {
 
     ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
         if (changes['selectedUser']) {
+            if (!this.app.selectedUser.isVideoShared &&
+                !this.app.isSelectedYou)
+                this.attentionComponent.set('Before leave a wish you need a conversation with this user.', 'visible');
+            else
+                this.attentionComponent.set('', 'hidden');
+
             this._feedbackService.GetAllByID(this.app.selectedUser.id)
                 .subscribe(feedbacks => this.feedbacks = feedbacks.reverse());
 
-            if (!this.app.selectedUser.isVideoShared &&
-                !this.app.isSelectedYou) {
-                this.isAttentionVisible = 'visible';
-                this.attentionText = 'Before leave a wish you need a conversation with this user.';
-            }
         }
     }
 

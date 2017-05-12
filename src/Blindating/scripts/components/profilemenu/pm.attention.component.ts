@@ -17,9 +17,14 @@ import { Utils }             from '../../static/utils';
 export class PmAttentionComponent implements OnInit {
     public app: AppComponent;
     public text: string;
+    public visible: string;
 
     constructor() { }
     
     ngOnInit() { }
 
+    public set(text: string, visible: string): void {
+        this.text = text;
+        this.visible = visible;
+    }
 }

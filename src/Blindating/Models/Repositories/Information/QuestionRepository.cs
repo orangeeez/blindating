@@ -59,7 +59,7 @@ namespace Blindating.Models.Repositories
                 QuestionAnswer remoteAnswer = new QuestionAnswer(answer);
                 remoteAnswer.RemoteUser = await GetBy(new { field = "InformationID", value = answer.InformationQuestionFK.ToString() });
                 _context.QuestionAnswers.Add(answer);
-                _context.Notifications.Add(Notification.Create(answer.RemoteInfoQuestionFK, "answer", JsonConvert.SerializeObject(remoteAnswer)));
+                _context.Notifications.Add(Notification.Create(answer.RemoteInfoQuestionFK, "answer", JsonConvert.SerializeObject(remoteAnswer), DateTime.Now));
                 await _context.SaveChangesAsync();
 
                 return true;

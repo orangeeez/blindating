@@ -42,7 +42,7 @@ namespace Blindating.Models.Repositories
                 QuoteLike remoteQlike = new QuoteLike(qlike);
                 remoteQlike.RemoteUser = await GetBy(new { field = "InformationID", value = qlike.InformationNotificationFK.ToString() });
                 await Update(qlike.UpdateQuote);
-                _context.Notifications.Add(Notification.Create(qlike.RemoteInfoNotificationFK, "qlike", JsonConvert.SerializeObject(remoteQlike)));
+                _context.Notifications.Add(Notification.Create(qlike.RemoteInfoNotificationFK, "qlike", JsonConvert.SerializeObject(remoteQlike), DateTime.Now));
                 _context.QuoteLikes.Add(qlike);
                 await _context.SaveChangesAsync();
 

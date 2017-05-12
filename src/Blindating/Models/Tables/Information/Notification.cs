@@ -14,16 +14,18 @@ namespace Blindating.Models.Tables
         public string Type { get; set; }
         public string JSONObject { get; set; }
         public bool IsShown { get; set; }
+        public DateTime Date { get; set; }
 
         public virtual Information Information { get; set; }
 
-        public static Notification Create(int informationNotificationFK, string type, string JSONObject)
+        public static Notification Create(int informationNotificationFK, string type, string JSONObject, DateTime date)
         { 
             Notification notification = new Notification();
             notification.ID = 0;
             notification.InformationNotificationFK = informationNotificationFK;
             notification.Type = type;
             notification.JSONObject = JSONObject;
+            notification.Date = date;
 
             return notification;
         }

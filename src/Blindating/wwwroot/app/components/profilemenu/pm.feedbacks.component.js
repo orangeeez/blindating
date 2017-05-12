@@ -12,6 +12,7 @@ var core_1 = require('@angular/core');
 var feedback_1 = require('../../models/feedback');
 var feedback_service_1 = require('../../services/information/feedback.service');
 var utils_1 = require('../../static/utils');
+var pm_attention_component_1 = require('./pm.attention.component');
 var PmFeedbacksComponent = (function () {
     function PmFeedbacksComponent(_feedbackService) {
         this._feedbackService = _feedbackService;
@@ -23,13 +24,13 @@ var PmFeedbacksComponent = (function () {
     PmFeedbacksComponent.prototype.ngOnChanges = function (changes) {
         var _this = this;
         if (changes['selectedUser']) {
+            if (!this.app.selectedUser.isVideoShared &&
+                !this.app.isSelectedYou)
+                this.attentionComponent.set('Before leave a wish you need a conversation with this user.', 'visible');
+            else
+                this.attentionComponent.set('', 'hidden');
             this._feedbackService.GetAllByID(this.app.selectedUser.id)
                 .subscribe(function (feedbacks) { return _this.feedbacks = feedbacks.reverse(); });
-            if (!this.app.selectedUser.isVideoShared &&
-                !this.app.isSelectedYou) {
-                this.isAttentionVisible = 'visible';
-                this.attentionText = 'Before leave a wish you need a conversation with this user.';
-            }
         }
     };
     PmFeedbacksComponent.prototype.onKeyupArea = function (event, textarea) {
@@ -78,6 +79,10 @@ var PmFeedbacksComponent = (function () {
         feedback.isFirst = this.feedbacks.length == 0;
         return feedback;
     };
+    __decorate([
+        core_1.ViewChild(pm_attention_component_1.PmAttentionComponent), 
+        __metadata('design:type', pm_attention_component_1.PmAttentionComponent)
+    ], PmFeedbacksComponent.prototype, "attentionComponent", void 0);
     PmFeedbacksComponent = __decorate([
         core_1.Component({
             selector: 'pm-feedbacks-component',

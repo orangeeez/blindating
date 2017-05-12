@@ -1,7 +1,8 @@
 ﻿<div class="container-fluid" id="feedback">
     <div class="row">
-        <pm-attention-component [text]="attentionText"
-                                [style.visibility]="isAttentionVisible"></pm-attention-component>
+        <pm-attention-component [app]="app"
+                                [text]="attentionComponent.text"
+                                [style.visibility]="attentionComponent.visible"></pm-attention-component>
         <div class="col-md-12" style="margin-bottom: 20%;">
             <div class="feedbacks">
                 <div *ngIf="feedbacks?.length == 0" class="no-wishes">No wishes yet</div>

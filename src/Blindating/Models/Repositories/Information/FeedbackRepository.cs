@@ -27,7 +27,7 @@ namespace Blindating.Models.Repositories
                 remoteFeedback.InformationFeedbackFK = feedback.RemoteInfoFeedbackFK;
                 remoteFeedback.RemoteUser = await GetBy(new { field = "InformationID", value = feedback.InformationFeedbackFK.ToString() });
 
-                _context.Notifications.Add(Notification.Create(remoteFeedback.InformationFeedbackFK, "feedback", JsonConvert.SerializeObject(remoteFeedback)));
+                _context.Notifications.Add(Notification.Create(remoteFeedback.InformationFeedbackFK, "feedback", JsonConvert.SerializeObject(remoteFeedback), DateTime.Now));
                 await _context.SaveChangesAsync();
 
                 await Add(remoteFeedback);

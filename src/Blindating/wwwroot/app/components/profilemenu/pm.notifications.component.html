@@ -17,7 +17,7 @@
                                (click)="app.selectDeselectUser(notification.object.RemoteUser)">{{notification.object.RemoteUser.firstname + ' ' + notification.object.RemoteUser.lastname}}</i>
                             <i>answered </i><i [ngClass]="notification.object.Result ? 'result-true' : 'result-false'">{{notification.object.Result}}</i><i> on your question</i>
                             <div class="question">{{notification.object.QuestionAnswered}}</div>
-                            <div class="date">7 Mar at 11:54 PM</div>
+                            <div class="date">{{notification.date | date:'medium'}}</div>
                         </div>
                     </div>
                     <div *ngIf="notification.type == 'feedback'" class="col-md-10">
@@ -27,7 +27,7 @@
                             <i>leaved </i><i [ngClass]="notification.object.Result ? 'result-true' : 'result-false'"
                                              [innerHTML]="notification.object.Result ? 'positive' : 'negative'">positive</i><i> feedback</i>
                             <div class="question">{{notification.object.Text}}</div>                            
-                            <div class="date">7 Mar at 11:54 PM</div>                                                       
+                            <div class="date">{{notification.date | date:'medium'}}</div>                                                       
                         </div>
                     </div>
                     <div *ngIf="notification.type == 'qlike'" class="col-md-10">
@@ -37,7 +37,7 @@
                             <i [ngClass]="notification.object.Result ? 'result-true' : 'result-false'"
                                              [innerHTML]="notification.object.Result ? 'liked' : 'disliked'"></i><i> your quote</i>
                             <div class="question">{{notification.object.Message}}</div>
-                            <div class="date">7 Mar at 11:54 PM</div>
+                            <div class="date">{{notification.date | date:'medium'}}</div>
                         </div>
                     </div>
                 </div>

@@ -3,6 +3,7 @@ export class Notification {
     type: string;
     JSONObject: string;
     isShown: boolean;
+    date: Date;
 
     // NotMapped
     object: any;

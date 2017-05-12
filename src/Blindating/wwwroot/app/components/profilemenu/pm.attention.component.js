@@ -13,6 +13,10 @@ var PmAttentionComponent = (function () {
     function PmAttentionComponent() {
     }
     PmAttentionComponent.prototype.ngOnInit = function () { };
+    PmAttentionComponent.prototype.set = function (text, visible) {
+        this.text = text;
+        this.visible = visible;
+    };
     PmAttentionComponent = __decorate([
         core_1.Component({
             selector: 'pm-attention-component',
