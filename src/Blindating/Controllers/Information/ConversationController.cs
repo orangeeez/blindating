@@ -42,7 +42,10 @@ namespace Blindating.Controllers
         [ActionName("add")]
         public JsonResult Add([FromBody] Conversation conversation)
         {
-            return new JsonResult(Conversations.Add(conversation));
+            if (conversation.IsFirst)
+                return new JsonResult(Conversations.IncreaseProgress(Request.Headers["Authorization"].ToString().Remove(0, 7), "conversation"));
+            else 
+                return new JsonResult(Conversations.Add(conversation));
         }
         [Authorize("Bearer")]
         [HttpPost]

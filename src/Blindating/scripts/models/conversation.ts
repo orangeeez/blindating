@@ -10,4 +10,7 @@ export class Conversation {
     userID:           number;
     direction:        string;
     informationConversationFK: number;
+
+    //not mapped
+    isFirst: boolean = false;
 }

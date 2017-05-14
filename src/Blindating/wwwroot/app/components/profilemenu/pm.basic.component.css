@@ -244,7 +244,7 @@
     cursor: pointer;
 }
 .talk-decoration {
-    padding-bottom: 10px;
+    /*padding-bottom: 10px;*/
 }
 .talk-decoration .avatar-decoration {
     height: 60px;

@@ -206,7 +206,10 @@ export class AppComponent implements OnInit {
 
         setTimeout(this.disapearCall, 2000);
 
-        this._conversationService.Add(this.createConversation()).subscribe();
+        this._conversationService.Add(this.createConversation())
+            .subscribe(progress => {
+                this.user.progress = progress;
+            });
     }
 
     private onCallDenied = (e): void => {
@@ -283,7 +286,7 @@ export class AppComponent implements OnInit {
             this._profilemenu.disableTab('Notifications');
     }
 
-    private createConversation = (): Conversation => {
+    private createConversation = (isFirst?: boolean): Conversation => {
         var conversation              = new Conversation();
         conversation.userID           = this.user.id;
         conversation.remoteUserID     = this.callerUser ? this.callerUser.id : this.callingUser.id;

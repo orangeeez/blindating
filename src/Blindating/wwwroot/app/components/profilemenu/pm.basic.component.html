@@ -332,7 +332,7 @@
             </div>
         </div>
     </div>
-    <!--<div class="row talk-decoration">
+    <div class="row talk-decoration">
         <div class="header"
              (mouseover)="onHeaderMouseoverout('conversations', true)"
              (mouseout)="onHeaderMouseoverout('conversations', false)"
@@ -343,9 +343,14 @@
                  (mouseover)="onHeaderMouseoverout('conversations', true)"
                  (mouseout)="onHeaderMouseoverout('conversations', false)" />
         </div>
-        <div *ngIf="conversations.length == 0" class="col-md-12 no-content-decoration"
+        <div *ngIf="conversations.length == 0 &&
+                    app.selectedUser.isVideoShared" class="col-md-12 no-content-decoration"
              (click)="onOpenConversations()">
             <div>No Talks</div>
+        </div>
+        <div *ngIf="!app.selectedUser.isVideoShared &&
+                    !app.isSelectedYou" class="col-md-12 no-content-decoration">
+            <div [style.font-size]="'18px'">Before see user's talks you need a conversation</div>
         </div>
         <div *ngIf="conversations.length != 0" class="col-md-12 no-padding">
             <div *ngFor="let conversation of conversations | slice: 2" class="col-md-6 no-padding">
@@ -371,7 +376,7 @@
                 </div>
             </div>
         </div>
-    </div>-->
+    </div>
 </div>
 <pm-quotes-component *ngIf="isOpenQuotes"
                      [app]="app"
@@ -388,7 +393,7 @@
                      [photos]="photos"
                      (onBack)="onBackPhotos()"></pm-photos-component>
 
-<!--<pm-conversations-component *ngIf="isOpenConversations"
+<pm-conversations-component *ngIf="isOpenConversations"
                      [app]="app"
                      [conversations]="conversations"
-                     (onBack)="onBackConversations()"></pm-conversations-component>-->
+                     (onBack)="onBackConversations()"></pm-conversations-component>

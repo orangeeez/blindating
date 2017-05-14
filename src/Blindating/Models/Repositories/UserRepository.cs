@@ -204,8 +204,14 @@ namespace Blindating.Models.Repositories
             {
                 User user = null;
                 User calling = null;
-                user = await _context.Users.Include(u => u.Information).ThenInclude(i => i.Conversations).FirstOrDefaultAsync(u => u.JWT == JWT);
-                calling = await _context.Users.Include(u => u.Information).ThenInclude(i => i.Conversations).FirstOrDefaultAsync(u => u.JWT == callingJWT);
+                user = await _context.Users.Include(u => u.Information)
+                                           .ThenInclude(i => i.Conversations)
+                                           .FirstOrDefaultAsync(u => u.JWT == JWT);
+                calling = await _context.Users.Include(u => u.Information)
+                                              .ThenInclude(i => i.Conversations)
+                                              .Include(u => u.Information)
+                                              .ThenInclude(i => i.Rating)
+                                              .FirstOrDefaultAsync(u => u.JWT == callingJWT);
                 List<User> users = new List<User>() { calling };
                 return this.GetVideoInitiatedUsers(users, user)[0];
             }

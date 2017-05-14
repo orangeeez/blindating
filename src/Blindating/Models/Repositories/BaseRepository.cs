@@ -106,6 +106,14 @@ namespace Blindating.Models.Repositories
                     user.Progress -= user.Information.Detail.FilledCount * _priceProgress;
                     user.Progress += filledCount * _priceProgress;
                 }
+                else if (type.Contains("conversation"))
+                {
+                    user = _context.Users.Include(u => u.Information)
+                                              .ThenInclude(i => i.Conversations)
+                                              .FirstOrDefault(u => u.JWT == JWT);
+                    if (user.Information.Conversations.Count == 0)
+                        user.Progress += _priceProgress;
+                }
                 else
                 {
                     user = _context.Users.FirstOrDefault(u => u.JWT == JWT);

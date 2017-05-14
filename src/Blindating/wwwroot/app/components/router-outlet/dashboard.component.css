@@ -23,6 +23,38 @@
     color: white;
     cursor: pointer;
 }
+#dashboard .row .progress {
+    text-align: center;
+    border-radius: 0;
+    box-shadow: none;
+    margin-bottom: 0;
+    margin: 0 15px;
+}
+#dashboard .row .progress .progress-digit {
+    position: absolute;
+    left: 0;
+    right: 0;
+    font-weight: bold;
+    color: #555;
+}
+#dashboard .row .rating {
+    font-size: 30px;
+}
+#dashboard .row .rating > span:not(.empty):before {
+   content: "\2605";
+   position: absolute;
+}
+#dashboard .row .rating .grade-rating {
+    font-size: 20px;
+}
+#dashboard .row .rating .total-rating {
+    font-size: 15px;
+}
+#dashboard .quote {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
 .profile {
     display: flex;
     justify-content: center;

@@ -192,15 +192,38 @@
             </div>
             <div *ngIf="isUsersLoaded &&
                         !isSearchShow" class="row">
-                <div *ngFor="let user of app.users" class="col-md-1 profile"
+                <div *ngFor="let user of app.users" class="col-md-4 profile"
                      [class.selected]="user.id == app.selectedUser?.id"
                      (click)="app.selectDeselectUser(user)">
-                    <div>
-                        <img [src]="user.image" class="img-circle avatar-decoration avatar-dashboard"
-                             [class.blur]="!user.isVideoShared" />
-                        <div class="name-dashboard">{{user.firstname}}</div>
-                        <img src="../../../images/app/controls/online.png" class="online-decoration"
-                             [hidden]="!user.online" />
+                    <div class="row"
+                         [style.width]="'100%'">
+                        <div class="col-md-3 no-padding">
+                            <img [src]="user.image" class="img-circle avatar-decoration avatar-dashboard"
+                                 [class.blur]="!user.isVideoShared" />
+                            <div class="name-dashboard">{{user.firstname}}</div>
+                            <img src="../../../images/app/controls/online.png" class="online-decoration"
+                                 [style.left]="'10px'"
+                                 [hidden]="!user.online" />
+                        </div>
+                        <div class="col-md-9 no-padding">
+                            <div class="quote">{{user.phrase}}</div>
+                            <div class="progress">
+                                <div [style.width]="user.progress + '%'"
+                                     [style.background-color]="user.id == app.selectedUser?.id ? '#808080' : '#93e6ff'"
+                                     class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="box-shadow: none;">
+                                    <div class="progress-digit">{{user.progress | number: '1.0-0'}}%</div>
+                                </div>
+                            </div>
+                            <span class="rating">
+                                <span [ngClass]="user.gradeRating >= 0.5 ? 'fill' : 'empty'">☆</span>
+                                <span [ngClass]="user.gradeRating >= 1.5 ? 'fill' : 'empty'">☆</span>
+                                <span [ngClass]="user.gradeRating >= 2.5 ? 'fill' : 'empty'">☆</span>
+                                <span [ngClass]="user.gradeRating >= 3.5 ? 'fill' : 'empty'">☆</span>
+                                <span [ngClass]="user.gradeRating >= 4.5 ? 'fill' : 'empty'">☆</span>
+                                <i class="grade-rating">{{user.gradeRating}}</i>
+                                <i class="total-rating">{{user.countRating}}</i>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>

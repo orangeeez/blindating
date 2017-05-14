@@ -5,13 +5,14 @@ using Blindating.Models.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Blindating.Models.Tables.Utils;
 
 namespace Blindating.Models.Repositories
 {
     public class ConversationRepository : BaseRepository<Conversation>, IConversationRepository
     {
         private AppDBContext _context;
-        public ConversationRepository(AppDBContext context) : base(context)
+        public ConversationRepository(AppDBContext context) : base(context, ProgressPrice.Basic)
         {
             _context = context;
         }

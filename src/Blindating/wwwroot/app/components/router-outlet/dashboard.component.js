@@ -67,14 +67,9 @@ var DashboardComponent = (function () {
         this.dashboardWidth = this.dashboard.nativeElement.clientWidth;
         this.dashboardHeight = this.dashboard.nativeElement.clientHeight;
         this.dashboardStatsHeight = this.dashboardStats.nativeElement.clientHeight;
-        this.maxUsersColumns = this.dashboardWidth / Math.round((this.dashboardWidth * 8.3) / 100);
+        this.maxUsersColumns = this.dashboardWidth / Math.round((this.dashboardWidth * 33.33333333) / 100);
         this.maxUsersStatsColumns = this.dashboardWidth / Math.round((this.dashboardWidth * 25) / 100);
         this.maxUsers = Math.floor(this.maxUsersColumns) * 4;
-        this._userService.GetAll()
-            .subscribe(function (users) {
-            _this.app.users = users.filter(_this.removeCurrentUser);
-            _this.isUsersLoaded = true;
-        });
         this._userService.GetNew(Math.round(this.maxUsersStatsColumns))
             .subscribe(function (users) {
             _this.newUsers = users;

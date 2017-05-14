@@ -21,5 +21,7 @@ namespace Blindating.Models.Tables
 
         [NotMapped] public int UserID { get; set; }
         [NotMapped] public User RemoteUser { get; set; }
+        [NotMapped] public bool IsFirst { get; set; }
+
     }
 }

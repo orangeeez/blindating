@@ -95,7 +95,10 @@ var AppComponent = (function () {
             _this.localStream = undefined;
             _this.remoteStream = undefined;
             setTimeout(_this.disapearCall, 2000);
-            _this._conversationService.Add(_this.createConversation()).subscribe();
+            _this._conversationService.Add(_this.createConversation())
+                .subscribe(function (progress) {
+                _this.user.progress = progress;
+            });
         };
         this.onCallDenied = function (e) {
             _this._helper.isCallDenied = true;
@@ -142,7 +145,7 @@ var AppComponent = (function () {
             if (!_this.isSelectedYou)
                 _this._profilemenu.disableTab('Notifications');
         };
-        this.createConversation = function () {
+        this.createConversation = function (isFirst) {
             var conversation = new conversation_1.Conversation();
             conversation.userID = _this.user.id;
             conversation.remoteUserID = _this.callerUser ? _this.callerUser.id : _this.callingUser.id;
