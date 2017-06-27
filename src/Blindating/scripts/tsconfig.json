@@ -10,7 +10,6 @@
     "removeComments": false,
     "noImplicitAny": false,
     "rootDir": ".",
-    "outDir": "../wwwroot/app/",
-    "watch": true
+    "outDir": "../wwwroot/app/"
   }
 }

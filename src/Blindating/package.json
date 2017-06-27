@@ -32,6 +32,9 @@
   },
   "devDependencies": {
     "@types/jquery": "^2.0.41",
+    "@types/jasmine": "2.5.38",
+    "@types/node": "~6.0.60",
+    "@types/webpack": "3.0.0",
     "gulp": "^3.9.1",
     "typescript": "^2.0.2",
     "typings": "^1.4.0"

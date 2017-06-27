@@ -1,9 +1,14 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -13,21 +18,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var http_1 = require('@angular/http');
-var core_1 = require('@angular/core');
-var config_1 = require('../static/config');
-var base_service_1 = require('../services/base.service');
-var angular2_jwt_1 = require('angular2-jwt');
-require('rxjs/add/operator/map');
-require('rxjs/add/operator/catch');
+Object.defineProperty(exports, "__esModule", { value: true });
+var http_1 = require("@angular/http");
+var core_1 = require("@angular/core");
+var config_1 = require("../static/config");
+var base_service_1 = require("../services/base.service");
+var angular2_jwt_1 = require("angular2-jwt");
+require("rxjs/add/operator/map");
+require("rxjs/add/operator/catch");
 var MatchQuestionService = (function (_super) {
     __extends(MatchQuestionService, _super);
     function MatchQuestionService(_http, _authHttp) {
-        _super.call(this, _http, _authHttp, 'api/user/matchquestion');
-        this._http = _http;
-        this._authHttp = _authHttp;
-        this.headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        this.options = new http_1.RequestOptions({ headers: this.headers });
+        var _this = _super.call(this, _http, _authHttp, 'api/user/matchquestion') || this;
+        _this._http = _http;
+        _this._authHttp = _authHttp;
+        _this.headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        _this.options = new http_1.RequestOptions({ headers: _this.headers });
+        return _this;
     }
     MatchQuestionService.prototype.GetAllOverriden = function () {
         return this._authHttp.get(config_1.API_ADDRESS + this.api + "/getalloverriden", this.options)
@@ -41,10 +48,11 @@ var MatchQuestionService = (function (_super) {
         return this._authHttp.post(config_1.API_ADDRESS + this.api + "/addoverriden", JSON.stringify(matchQuestion), this.options)
             .map(function (mq) { return mq.json()['result']; });
     };
-    MatchQuestionService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http, angular2_jwt_1.AuthHttp])
-    ], MatchQuestionService);
     return MatchQuestionService;
 }(base_service_1.BaseService));
+MatchQuestionService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [http_1.Http,
+        angular2_jwt_1.AuthHttp])
+], MatchQuestionService);
 exports.MatchQuestionService = MatchQuestionService;

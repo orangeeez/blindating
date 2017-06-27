@@ -59,11 +59,11 @@ namespace Blindating
             services.AddSingleton<ISearchRepository,       SearchRepository>();
             services.AddSingleton<INotificationRepository, NotificationRepository>();
             services.AddSingleton<IMatchQuestionRepository, MatchQuestionRepository>();
+            
+            // TODO Cors fo testing
+            services.AddCors();
 
             services.AddMvc();
-
-            // TODO Cors fo testing
-            //services.AddCors();
 
             services.AddSingleton(tokenOptions);
 
@@ -99,11 +99,11 @@ namespace Blindating
             };
 
             // TODO Cors fo testing
-            //app.UseCors(builder =>
-            //    builder.AllowAnyOrigin()
-            //           .AllowAnyHeader()
-            //           .AllowAnyMethod()
-            //           .AllowCredentials());
+            app.UseCors(builder =>
+                builder.AllowAnyOrigin()
+                       .AllowAnyHeader()
+                       .AllowAnyMethod()
+                       .AllowCredentials());
 
             app.UseJwtBearerAuthentication(new JwtBearerOptions
             {

@@ -179,7 +179,14 @@ export class AppComponent implements OnInit {
 
         Woogeen.LocalStream.create({
             audio: true
-        }, this.onCreateStream);
+        }, function (err, stream) {
+            if (err) {
+                console.log('create LocalStream failed: ', err);
+            }
+            else
+                console.log('create LocalStream success: ', stream);
+        });
+            //this.onCreateStream);
 
         this.isHeaderShow = true;
         this._router.navigate(['/talk']);
@@ -192,6 +199,7 @@ export class AppComponent implements OnInit {
 
     public onCreateStream = (err, stream): void => {
         this.localStream = stream;
+
         this.user.peer.publish(this.localStream, this.communicationUser.jwt);
     }
 
@@ -199,17 +207,21 @@ export class AppComponent implements OnInit {
         this._helper.isCallInitiated = false;
         this._helper.isCallDenied = true;
 
-        this.localStream.close();
-        this.remoteStream.close();
+        if (this.localStream)
+            this.localStream.close();
+
+        if (this.remoteStream)
+            this.remoteStream.close();
+
         this.localStream  = undefined;
         this.remoteStream = undefined;
 
         setTimeout(this.disapearCall, 2000);
 
-        this._conversationService.Add(this.createConversation())
-            .subscribe(progress => {
-                this.user.progress = progress;
-            });
+        //this._conversationService.Add(this.createConversation())
+        //    .subscribe(progress => {
+        //        this.user.progress = progress;
+        //    });
     }
 
     private onCallDenied = (e): void => {
@@ -219,6 +231,7 @@ export class AppComponent implements OnInit {
 
     private onStreamAdded = (e): void => {
         this.remoteStream = e.stream;
+        console.log('REMOTE STREAM ADDED ' + this.remoteStream);
 
         if (this.videoState == 'videoRequester') {
             this.videoState = 'initiatedVideo';

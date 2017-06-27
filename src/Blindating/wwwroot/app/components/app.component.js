@@ -8,19 +8,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var config_1 = require('../static/config');
-var router_1 = require('@angular/router');
-var user_service_1 = require('../services/user.service');
-var conversation_service_1 = require('../services/information/conversation.service');
-var conversation_1 = require('../models/conversation');
-var utils_1 = require('../static/utils');
-var footer_component_1 = require('../components/footer.component');
-var header_component_1 = require('../components/header.component');
-var helper_component_1 = require('../components/helper.component');
-var profilemenu_component_1 = require('../components/profilemenu.component');
-var dashboard_component_1 = require('../components/router-outlet/dashboard.component');
-var talk_component_1 = require('../components/router-outlet/talk.component');
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var config_1 = require("../static/config");
+var router_1 = require("@angular/router");
+var user_service_1 = require("../services/user.service");
+var conversation_service_1 = require("../services/information/conversation.service");
+var conversation_1 = require("../models/conversation");
+var utils_1 = require("../static/utils");
+var footer_component_1 = require("../components/footer.component");
+var header_component_1 = require("../components/header.component");
+var helper_component_1 = require("../components/helper.component");
+var profilemenu_component_1 = require("../components/profilemenu.component");
+var dashboard_component_1 = require("../components/router-outlet/dashboard.component");
+var talk_component_1 = require("../components/router-outlet/talk.component");
 var AppComponent = (function () {
     function AppComponent(_userService, _conversationService, _zone, _router) {
         var _this = this;
@@ -75,7 +76,14 @@ var AppComponent = (function () {
                 _this.selectDeselectUser(_this.communicationUser);
             Woogeen.LocalStream.create({
                 audio: true
-            }, _this.onCreateStream);
+            }, function (err, stream) {
+                if (err) {
+                    console.log('create LocalStream failed: ', err);
+                }
+                else
+                    console.log('create LocalStream success: ', stream);
+            });
+            //this.onCreateStream);
             _this.isHeaderShow = true;
             _this._router.navigate(['/talk']);
             _this._helper.isCallInitiated = true;
@@ -90,15 +98,17 @@ var AppComponent = (function () {
         this.onCallStopped = function (e) {
             _this._helper.isCallInitiated = false;
             _this._helper.isCallDenied = true;
-            _this.localStream.close();
-            _this.remoteStream.close();
+            if (_this.localStream)
+                _this.localStream.close();
+            if (_this.remoteStream)
+                _this.remoteStream.close();
             _this.localStream = undefined;
             _this.remoteStream = undefined;
             setTimeout(_this.disapearCall, 2000);
-            _this._conversationService.Add(_this.createConversation())
-                .subscribe(function (progress) {
-                _this.user.progress = progress;
-            });
+            //this._conversationService.Add(this.createConversation())
+            //    .subscribe(progress => {
+            //        this.user.progress = progress;
+            //    });
         };
         this.onCallDenied = function (e) {
             _this._helper.isCallDenied = true;
@@ -106,6 +116,7 @@ var AppComponent = (function () {
         };
         this.onStreamAdded = function (e) {
             _this.remoteStream = e.stream;
+            console.log('REMOTE STREAM ADDED ' + _this.remoteStream);
             if (_this.videoState == 'videoRequester') {
                 _this.videoState = 'initiatedVideo';
                 _this._helper.onAcceptVideo();
@@ -245,50 +256,53 @@ var AppComponent = (function () {
         }
         return items;
     };
-    __decorate([
-        core_1.ViewChild(footer_component_1.FooterComponent), 
-        __metadata('design:type', footer_component_1.FooterComponent)
-    ], AppComponent.prototype, "_footer", void 0);
-    __decorate([
-        core_1.ViewChild(header_component_1.HeaderComponent), 
-        __metadata('design:type', header_component_1.HeaderComponent)
-    ], AppComponent.prototype, "_header", void 0);
-    __decorate([
-        core_1.ViewChild(helper_component_1.HelperComponent), 
-        __metadata('design:type', helper_component_1.HelperComponent)
-    ], AppComponent.prototype, "_helper", void 0);
-    __decorate([
-        core_1.ViewChild(dashboard_component_1.DashboardComponent), 
-        __metadata('design:type', dashboard_component_1.DashboardComponent)
-    ], AppComponent.prototype, "_dashboard", void 0);
-    __decorate([
-        core_1.ViewChild(profilemenu_component_1.ProfilemenuComponent), 
-        __metadata('design:type', profilemenu_component_1.ProfilemenuComponent)
-    ], AppComponent.prototype, "_profilemenu", void 0);
-    __decorate([
-        core_1.ViewChild(talk_component_1.TalkComponent), 
-        __metadata('design:type', talk_component_1.TalkComponent)
-    ], AppComponent.prototype, "_talk", void 0);
-    AppComponent = __decorate([
-        core_1.Component({
-            selector: 'blindating',
-            templateUrl: 'app/components/app.component.html',
-            styleUrls: ['app/components/app.component.css'],
-            animations: [
-                core_1.trigger('profilemenuState', [
-                    core_1.state('deselected', core_1.style({
-                        width: '8.3%'
-                    })),
-                    core_1.state('selected', core_1.style({
-                        width: '30%'
-                    })),
-                    core_1.transition('deselected => selected', core_1.animate('200ms ease-in')),
-                    core_1.transition('selected => deselected', core_1.animate('200ms ease-out'))
-                ])
-            ]
-        }), 
-        __metadata('design:paramtypes', [user_service_1.UserService, conversation_service_1.ConversationService, core_1.NgZone, router_1.Router])
-    ], AppComponent);
     return AppComponent;
 }());
+__decorate([
+    core_1.ViewChild(footer_component_1.FooterComponent),
+    __metadata("design:type", footer_component_1.FooterComponent)
+], AppComponent.prototype, "_footer", void 0);
+__decorate([
+    core_1.ViewChild(header_component_1.HeaderComponent),
+    __metadata("design:type", header_component_1.HeaderComponent)
+], AppComponent.prototype, "_header", void 0);
+__decorate([
+    core_1.ViewChild(helper_component_1.HelperComponent),
+    __metadata("design:type", helper_component_1.HelperComponent)
+], AppComponent.prototype, "_helper", void 0);
+__decorate([
+    core_1.ViewChild(dashboard_component_1.DashboardComponent),
+    __metadata("design:type", dashboard_component_1.DashboardComponent)
+], AppComponent.prototype, "_dashboard", void 0);
+__decorate([
+    core_1.ViewChild(profilemenu_component_1.ProfilemenuComponent),
+    __metadata("design:type", profilemenu_component_1.ProfilemenuComponent)
+], AppComponent.prototype, "_profilemenu", void 0);
+__decorate([
+    core_1.ViewChild(talk_component_1.TalkComponent),
+    __metadata("design:type", talk_component_1.TalkComponent)
+], AppComponent.prototype, "_talk", void 0);
+AppComponent = __decorate([
+    core_1.Component({
+        selector: 'blindating',
+        templateUrl: 'app/components/app.component.html',
+        styleUrls: ['app/components/app.component.css'],
+        animations: [
+            core_1.trigger('profilemenuState', [
+                core_1.state('deselected', core_1.style({
+                    width: '8.3%'
+                })),
+                core_1.state('selected', core_1.style({
+                    width: '30%'
+                })),
+                core_1.transition('deselected => selected', core_1.animate('200ms ease-in')),
+                core_1.transition('selected => deselected', core_1.animate('200ms ease-out'))
+            ])
+        ]
+    }),
+    __metadata("design:paramtypes", [user_service_1.UserService,
+        conversation_service_1.ConversationService,
+        core_1.NgZone,
+        router_1.Router])
+], AppComponent);
 exports.AppComponent = AppComponent;

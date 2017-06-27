@@ -1,0 +1,11 @@
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\bin\Debug\netcoreapp1.1\Blindating.deps.json
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\bin\Debug\netcoreapp1.1\Blindating.runtimeconfig.json
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\bin\Debug\netcoreapp1.1\Blindating.runtimeconfig.dev.json
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\obj\Debug\netcoreapp1.1\Blindating.csprojResolveAssemblyReference.cache
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\bin\Debug\netcoreapp1.1\Blindating.dll.config
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\bin\Debug\netcoreapp1.1\Blindating.dll
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\bin\Debug\netcoreapp1.1\Blindating.pdb
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\obj\Debug\netcoreapp1.1\UserSecretsAssemblyInfo.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\obj\Debug\netcoreapp1.1\Blindating.AssemblyInfo.cs
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\obj\Debug\netcoreapp1.1\Blindating.dll
+E:\Development\C#\ASP.NET\Blindating Collaborative\src\Blindating\obj\Debug\netcoreapp1.1\Blindating.pdb

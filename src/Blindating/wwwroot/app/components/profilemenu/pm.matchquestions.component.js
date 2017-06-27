@@ -8,9 +8,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var utils_1 = require('../../static/utils');
-var matchquestion_service_1 = require('../../services/matchquestion.service');
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var utils_1 = require("../../static/utils");
+var matchquestion_service_1 = require("../../services/matchquestion.service");
 var PmatchquestionsComponent = (function () {
     function PmatchquestionsComponent(_matchQuestionService) {
         var _this = this;
@@ -72,15 +73,15 @@ var PmatchquestionsComponent = (function () {
             }
         }
     };
-    PmatchquestionsComponent = __decorate([
-        core_1.Component({
-            selector: 'pm-matchquestions-component',
-            templateUrl: 'app/components/profilemenu/pm.matchquestions.component.html',
-            styleUrls: ['app/components/profilemenu/pm.matchquestions.component.css'],
-            inputs: ['app', 'selectedUser'],
-        }), 
-        __metadata('design:paramtypes', [matchquestion_service_1.MatchQuestionService])
-    ], PmatchquestionsComponent);
     return PmatchquestionsComponent;
 }());
+PmatchquestionsComponent = __decorate([
+    core_1.Component({
+        selector: 'pm-matchquestions-component',
+        templateUrl: 'app/components/profilemenu/pm.matchquestions.component.html',
+        styleUrls: ['app/components/profilemenu/pm.matchquestions.component.css'],
+        inputs: ['app', 'selectedUser'],
+    }),
+    __metadata("design:paramtypes", [matchquestion_service_1.MatchQuestionService])
+], PmatchquestionsComponent);
 exports.PmatchquestionsComponent = PmatchquestionsComponent;

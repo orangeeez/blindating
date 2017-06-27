@@ -8,12 +8,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var utils_1 = require('../../static/utils');
-var preference_service_1 = require('../../services/information/preference.service');
-var user_service_1 = require('../../services/user.service');
-var search_service_1 = require('../../services/search/search.service');
-var preference_1 = require('../../models/preference');
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var utils_1 = require("../../static/utils");
+var preference_service_1 = require("../../services/information/preference.service");
+var user_service_1 = require("../../services/user.service");
+var search_service_1 = require("../../services/search/search.service");
+var preference_1 = require("../../models/preference");
+var countries_1 = require("../../static/countries");
 var DSearchComponent = (function () {
     function DSearchComponent(_userService, _searchService, _preferenceService) {
         var _this = this;
@@ -21,6 +23,7 @@ var DSearchComponent = (function () {
         this._searchService = _searchService;
         this._preferenceService = _preferenceService;
         this.preferences = new preference_1.Preference();
+        this.countries = countries_1.COUNTRIES;
         this.searchToggles = [
             { title: 'Gender', name: 'gender', items: utils_1.PreferenceData.genders },
             { title: 'Hair', name: 'hcolor', items: utils_1.PreferenceData.hcolors },
@@ -30,7 +33,21 @@ var DSearchComponent = (function () {
         this.onSelectPreference = function (event) {
             event.preventDefault();
             var element = event.target;
-            _this.preferences[element['id']] = element['innerHTML'];
+            switch (element['id']) {
+                case 'country':
+                    console.log('preference country');
+                    _this.preferences.country = element['innerHTML'];
+                    _this.preferences.city = '';
+                    break;
+                default:
+                    _this.preferences[element['id']] = element['innerHTML'];
+            }
+        };
+        this.onClickCity = function () {
+            _this._preferenceService.GetCities(_this.preferences.country)
+                .subscribe(function (cities) {
+                _this.cities = cities;
+            });
         };
         this.isContainName = function (user) {
             var fullName = (user.firstname + ' ' + user.lastname).toUpperCase();
@@ -68,15 +85,17 @@ var DSearchComponent = (function () {
             this.searchUserData.count + this.app._dashboard.searchUsers.length;
         }
     };
-    DSearchComponent = __decorate([
-        core_1.Component({
-            selector: 'd-search-component',
-            templateUrl: 'app/components/dashboard/d.search.component.html',
-            styleUrls: ['app/components/dashboard/d.search.component.css'],
-            inputs: ['app']
-        }), 
-        __metadata('design:paramtypes', [user_service_1.UserService, search_service_1.SearchService, preference_service_1.PreferenceService])
-    ], DSearchComponent);
     return DSearchComponent;
 }());
+DSearchComponent = __decorate([
+    core_1.Component({
+        selector: 'd-search-component',
+        templateUrl: 'app/components/dashboard/d.search.component.html',
+        styleUrls: ['app/components/dashboard/d.search.component.css'],
+        inputs: ['app']
+    }),
+    __metadata("design:paramtypes", [user_service_1.UserService,
+        search_service_1.SearchService,
+        preference_service_1.PreferenceService])
+], DSearchComponent);
 exports.DSearchComponent = DSearchComponent;

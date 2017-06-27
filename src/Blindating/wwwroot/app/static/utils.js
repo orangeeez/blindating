@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var Utils = (function () {
     function Utils() {
     }
@@ -42,12 +43,12 @@ var Utils = (function () {
     return Utils;
 }());
 exports.Utils = Utils;
+var DataSignals;
 (function (DataSignals) {
     DataSignals[DataSignals["RequestingVideo"] = 0] = "RequestingVideo";
     DataSignals[DataSignals["AcceptingVideo"] = 1] = "AcceptingVideo";
     DataSignals[DataSignals["DenyingVideo"] = 2] = "DenyingVideo";
-})(exports.DataSignals || (exports.DataSignals = {}));
-var DataSignals = exports.DataSignals;
+})(DataSignals = exports.DataSignals || (exports.DataSignals = {}));
 var SearchUserData = (function () {
     function SearchUserData() {
     }
@@ -57,20 +58,20 @@ exports.SearchUserData = SearchUserData;
 var PreferenceData = (function () {
     function PreferenceData() {
     }
-    PreferenceData.genders = ['Man', 'Woman ', 'Anyway'];
-    PreferenceData.hcolors = ['Black', 'Brown', 'Red', 'Blond'];
-    PreferenceData.ecolors = ['Grey', 'Green', 'Blue'];
-    PreferenceData.hobbies = ['Football', 'Basketball', 'Golf', 'Other'];
     return PreferenceData;
 }());
+PreferenceData.genders = ['Man', 'Woman ', 'Anyway'];
+PreferenceData.hcolors = ['Black', 'Brown', 'Red', 'Blond'];
+PreferenceData.ecolors = ['Grey', 'Green', 'Blue'];
+PreferenceData.hobbies = ['Football', 'Basketball', 'Golf', 'Other'];
 exports.PreferenceData = PreferenceData;
 var ProgressPrice = (function () {
     function ProgressPrice() {
     }
-    ProgressPrice.basic = 10;
-    ProgressPrice.details = 1;
-    ProgressPrice.matchquestions = 10;
-    ProgressPrice.feedbacks = 10;
     return ProgressPrice;
 }());
+ProgressPrice.basic = 10;
+ProgressPrice.details = 1;
+ProgressPrice.matchquestions = 10;
+ProgressPrice.feedbacks = 10;
 exports.ProgressPrice = ProgressPrice;

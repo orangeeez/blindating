@@ -19,7 +19,7 @@ import { User }          from '../../models/user';
 import { AppComponent }  from '../../components/app.component';
 import { PickupComponent } from '../../components/router-outlet/pickup.component';
 
-declare var VK: any;
+//declare var VK: any;
 @Component({
     selector:    'login-component',
     templateUrl: 'app/components/router-outlet/login.component.html',
@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
     public lastname:   string;
     public phrase:     string;
     public JWT:        string;
-    public facebookIntervalNumber: number;
+    public facebookInterval: any;
 
     public isPhraseFocused: boolean = false;
 
@@ -68,16 +68,16 @@ export class LoginComponent implements OnInit {
             this.Login();
         }
         else {
-            VK.init({
-                apiId: 5549517
-            });
-            setTimeout(function() {
-                var el = document.createElement("script");
-                el.type = "text/javascript";
-                el.src = "//vk.com/js/api/openapi.js";
-                el.async = true;
-                document.getElementById("vk_api_transport").appendChild(el);
-            }, 0);
+            //VK.init({
+            //    apiId: 5549517
+            //});
+            //setTimeout(function() {
+            //    var el = document.createElement("script");
+            //    el.type = "text/javascript";
+            //    el.src = "//vk.com/js/api/openapi.js";
+            //    el.async = true;
+            //    document.getElementById("vk_api_transport").appendChild(el);
+            //}, 0);
             
             window.fbAsyncInit = function () {
                 FB.init({
@@ -119,31 +119,31 @@ export class LoginComponent implements OnInit {
     public onAuthSocial(): void {
         if (event.srcElement.className == 'fa fa-facebook')
             this.GetFacebookInfoAPI();
-        else
-           this.GetVKInfoAPI();
+        //else
+        //   this.GetVKInfoAPI();
     }
 
-    private GetVKInfoAPI = () => {
-        var self = this;
+    //private GetVKInfoAPI = () => {
+    //    var self = this;
 
-        VK.Auth.login(function(response) {
-            if (response.session) {
-                self.SetVKInfoAPI(response.session);
-                /* User is authorized successfully */
-                if (response.settings) {
-                /* Selected user access settings, if they were requested */
-                }
-            } else {
-                console.log('VK canceled');
-                /* User clicked Cancel button in the authorization window */
-            }
-        });
-    }
+    //    VK.Auth.login(function(response) {
+    //        if (response.session) {
+    //            self.SetVKInfoAPI(response.session);
+    //            /* User is authorized successfully */
+    //            if (response.settings) {
+    //            /* Selected user access settings, if they were requested */
+    //            }
+    //        } else {
+    //            console.log('VK canceled');
+    //            /* User clicked Cancel button in the authorization window */
+    //        }
+    //    });
+    //}
 
     private GetFacebookInfoAPI = () => {
         var self = this;
 
-        this.facebookIntervalNumber = setInterval(this.CheckFBLoginInterval, 1000)
+        this.facebookInterval = setInterval(this.CheckFBLoginInterval, 1000);
 
         FB.getLoginStatus(function (response) { statusChangeCallback(response); });
 
@@ -157,7 +157,7 @@ export class LoginComponent implements OnInit {
 
     private CheckFBLoginInterval = () => {
         if (this.app.user) {
-            clearInterval(this.facebookIntervalNumber);
+            clearInterval(this.facebookInterval);
         }
     }
 

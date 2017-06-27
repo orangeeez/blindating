@@ -8,8 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var conversation_service_1 = require('../../services/information/conversation.service');
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var conversation_service_1 = require("../../services/information/conversation.service");
 var PmConversationsComponent = (function () {
     function PmConversationsComponent(_conversationService) {
         this._conversationService = _conversationService;
@@ -22,16 +23,16 @@ var PmConversationsComponent = (function () {
     PmConversationsComponent.prototype.onBackConversations = function () {
         this.onBack.emit([]);
     };
-    PmConversationsComponent = __decorate([
-        core_1.Component({
-            selector: 'pm-conversations-component',
-            templateUrl: 'app/components/profilemenu/pm.conversations.component.html',
-            styleUrls: ['app/components/profilemenu/pm.conversations.component.css'],
-            inputs: ['app', 'conversations'],
-            outputs: ['onBack']
-        }), 
-        __metadata('design:paramtypes', [conversation_service_1.ConversationService])
-    ], PmConversationsComponent);
     return PmConversationsComponent;
 }());
+PmConversationsComponent = __decorate([
+    core_1.Component({
+        selector: 'pm-conversations-component',
+        templateUrl: 'app/components/profilemenu/pm.conversations.component.html',
+        styleUrls: ['app/components/profilemenu/pm.conversations.component.css'],
+        inputs: ['app', 'conversations'],
+        outputs: ['onBack']
+    }),
+    __metadata("design:paramtypes", [conversation_service_1.ConversationService])
+], PmConversationsComponent);
 exports.PmConversationsComponent = PmConversationsComponent;

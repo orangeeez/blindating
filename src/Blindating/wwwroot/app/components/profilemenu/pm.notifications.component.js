@@ -8,9 +8,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var notification_service_1 = require('../../services/information/notification.service');
-var utils_1 = require('../../static/utils');
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var notification_service_1 = require("../../services/information/notification.service");
+var utils_1 = require("../../static/utils");
 var PmNotificationsComponent = (function () {
     function PmNotificationsComponent(_notificationService) {
         this._notificationService = _notificationService;
@@ -39,15 +40,15 @@ var PmNotificationsComponent = (function () {
             this._notificationService.Update(notification).subscribe();
         }
     };
-    PmNotificationsComponent = __decorate([
-        core_1.Component({
-            selector: 'pm-notifications-component',
-            templateUrl: 'app/components/profilemenu/pm.notifications.component.html',
-            styleUrls: ['app/components/profilemenu/pm.notifications.component.css'],
-            inputs: ['app', 'selectedUser'],
-        }), 
-        __metadata('design:paramtypes', [notification_service_1.NotificationService])
-    ], PmNotificationsComponent);
     return PmNotificationsComponent;
 }());
+PmNotificationsComponent = __decorate([
+    core_1.Component({
+        selector: 'pm-notifications-component',
+        templateUrl: 'app/components/profilemenu/pm.notifications.component.html',
+        styleUrls: ['app/components/profilemenu/pm.notifications.component.css'],
+        inputs: ['app', 'selectedUser'],
+    }),
+    __metadata("design:paramtypes", [notification_service_1.NotificationService])
+], PmNotificationsComponent);
 exports.PmNotificationsComponent = PmNotificationsComponent;

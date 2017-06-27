@@ -29,7 +29,6 @@
     "dist"
   ],
   "files": [
-    "./ng2-file-upload.ts",
-    "./demo/custom-typings.d.ts"
+    "./ng2-file-upload.ts"
   ]
 }

@@ -11,6 +11,33 @@
     </ul>
 </div>
 <span>
+    <span dropdown class="dropdown">
+        <span [style.color]="'#808080'"
+              [style.font-weight]="'bold'">In</span>
+        <input id="country-dropdown" dropdownToggle placeholder="Country"
+               [(ngModel)]="preferences.country"
+               [size]="preferences.country?.length || 7"
+               (keyup)="onInputDropdown($event)" />
+        <ul class="dropdown-menu" dropdownMenu>
+            <li *ngFor="let country of countries">
+                <a id="country" class="dropdown-item"
+                   (click)="onSelectPreference($event)">{{country}}</a>
+            </li>
+        </ul>
+    </span> 
+    <span dropdown class="dropdown">
+        <input id="city-dropdown" dropdownToggle placeholder="City"
+               [(ngModel)]="preferences.city"
+               [size]="preferences.city?.length || 4"
+               (keyup)="onInputDropdown($event)"
+               (click)="onClickCity()" />
+        <ul class="dropdown-menu" dropdownMenu>
+            <li *ngFor="let city of cities">
+                <a id="city" class="dropdown-item"
+                   (click)="onSelectPreference($event)">{{city}}</a>
+            </li>
+        </ul>
+    </span>
     <input type="text" placeholder="e.g Andrew Ryzhkov"
            [(ngModel)]="searchUserData.name"
            [size]="searchUserData?.name?.length || 20"

@@ -8,21 +8,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
-var user_service_1 = require('../../services/user.service');
-var quote_service_1 = require('../../services/information/quote.service');
-var preference_service_1 = require('../../services/information/preference.service');
-var question_service_1 = require('../../services/information/question.service');
-var photo_service_1 = require('../../services/information/photo.service');
-var conversation_service_1 = require('../../services/information/conversation.service');
-var rating_service_1 = require('../../services/information/rating.service');
-var question_1 = require('../../models/question');
-var preference_1 = require('../../models/preference');
-var countries_1 = require('../../static/countries');
-var utils_1 = require('../../static/utils');
-var config_1 = require('../../static/config');
-var ng2_file_upload_1 = require('ng2-file-upload/ng2-file-upload');
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
+var user_service_1 = require("../../services/user.service");
+var quote_service_1 = require("../../services/information/quote.service");
+var preference_service_1 = require("../../services/information/preference.service");
+var question_service_1 = require("../../services/information/question.service");
+var photo_service_1 = require("../../services/information/photo.service");
+var conversation_service_1 = require("../../services/information/conversation.service");
+var rating_service_1 = require("../../services/information/rating.service");
+var question_1 = require("../../models/question");
+var preference_1 = require("../../models/preference");
+var countries_1 = require("../../static/countries");
+var utils_1 = require("../../static/utils");
+var config_1 = require("../../static/config");
+var ng2_file_upload_1 = require("ng2-file-upload/ng2-file-upload");
 var PmBasicComponent = (function () {
     function PmBasicComponent(_userService, _quoteService, _preferenceService, _questionService, _photoService, _conversationService, _ratingService, _router) {
         var _this = this;
@@ -316,15 +317,22 @@ var PmBasicComponent = (function () {
         this.isOpenPhotos = false;
         this.isOpenConversations = false;
     };
-    PmBasicComponent = __decorate([
-        core_1.Component({
-            selector: 'pm-basic-component',
-            templateUrl: 'app/components/profilemenu/pm.basic.component.html',
-            styleUrls: ['app/components/profilemenu/pm.basic.component.css'],
-            inputs: ['app', 'selectedUser', 'isOpenQuotes']
-        }), 
-        __metadata('design:paramtypes', [user_service_1.UserService, quote_service_1.QuoteService, preference_service_1.PreferenceService, question_service_1.QuestionService, photo_service_1.PhotoService, conversation_service_1.ConversationService, rating_service_1.RatingService, router_1.Router])
-    ], PmBasicComponent);
     return PmBasicComponent;
 }());
+PmBasicComponent = __decorate([
+    core_1.Component({
+        selector: 'pm-basic-component',
+        templateUrl: 'app/components/profilemenu/pm.basic.component.html',
+        styleUrls: ['app/components/profilemenu/pm.basic.component.css'],
+        inputs: ['app', 'selectedUser', 'isOpenQuotes']
+    }),
+    __metadata("design:paramtypes", [user_service_1.UserService,
+        quote_service_1.QuoteService,
+        preference_service_1.PreferenceService,
+        question_service_1.QuestionService,
+        photo_service_1.PhotoService,
+        conversation_service_1.ConversationService,
+        rating_service_1.RatingService,
+        router_1.Router])
+], PmBasicComponent);
 exports.PmBasicComponent = PmBasicComponent;

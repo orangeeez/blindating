@@ -9,6 +9,9 @@ input {
 input:focus {
     border-bottom: 1px solid #808080;
 }
+.dropdown {
+    padding-right: 5px;
+}
 .dropdown button {
     color: var(--focus-border-color);
     font-weight: bold;
@@ -23,6 +26,14 @@ input:focus {
 }
 .dropdown .dropdown-toggle {
     box-shadow: none;
+}
+.dropdown input {
+    color: var(--main-aqua-color);
+    font-weight: bold;
+}
+.dropdown-menu { 
+    overflow-y: scroll;
+    max-height: 190px;
 }
 ::-webkit-input-placeholder {
   color: var(--inactive-text-color);

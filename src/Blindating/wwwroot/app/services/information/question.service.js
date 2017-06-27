@@ -1,9 +1,14 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -13,19 +18,21 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var http_1 = require('@angular/http');
-var core_1 = require('@angular/core');
-var config_1 = require('../../static/config');
-var base_service_1 = require('../../services/base.service');
-var angular2_jwt_1 = require('angular2-jwt');
-require('rxjs/add/operator/map');
-require('rxjs/add/operator/catch');
+Object.defineProperty(exports, "__esModule", { value: true });
+var http_1 = require("@angular/http");
+var core_1 = require("@angular/core");
+var config_1 = require("../../static/config");
+var base_service_1 = require("../../services/base.service");
+var angular2_jwt_1 = require("angular2-jwt");
+require("rxjs/add/operator/map");
+require("rxjs/add/operator/catch");
 var QuestionService = (function (_super) {
     __extends(QuestionService, _super);
     function QuestionService(_http, _authHttp) {
-        _super.call(this, _http, _authHttp, 'api/user/question');
-        this._http = _http;
-        this._authHttp = _authHttp;
+        var _this = _super.call(this, _http, _authHttp, 'api/user/question') || this;
+        _this._http = _http;
+        _this._authHttp = _authHttp;
+        return _this;
     }
     QuestionService.prototype.SetAnswer = function (answer) {
         return this._authHttp.post(config_1.API_ADDRESS + this.api + "/setanswer", JSON.stringify(answer), this.options)
@@ -35,10 +42,11 @@ var QuestionService = (function (_super) {
         return this._authHttp.post(config_1.API_ADDRESS + this.api + "/getnotansweredbyid", JSON.stringify(userID), this.options)
             .map(function (user) { return user.json()['result']; });
     };
-    QuestionService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http, angular2_jwt_1.AuthHttp])
-    ], QuestionService);
     return QuestionService;
 }(base_service_1.BaseService));
+QuestionService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [http_1.Http,
+        angular2_jwt_1.AuthHttp])
+], QuestionService);
 exports.QuestionService = QuestionService;

@@ -122,8 +122,10 @@ export class HelperComponent implements OnInit {
 
     private disableAudio = () => {
         this.app.user.peer.unpublish(this.app.localStream, this.app.communicationUser.jwt);
-        
-        this.app.localStream.close();
+
+        if (this.app.localStream)
+            this.app.localStream.close();
+
         this.app.localStream = undefined;
     } 
 

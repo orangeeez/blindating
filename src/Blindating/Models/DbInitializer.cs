@@ -31,37 +31,6 @@ namespace Blindating.Models
             //foreach (var user in users)
             //    _context.Users.Add(user);
 
-
-            var mq1 = new MatchQuestion();
-            mq1.Category = "Religion";
-            mq1.Text = "Could you live without the Air?";
-            mq1.IsAnswered = false;
-            mq1.MatchAnswers = new List<MatchAnswer>() {
-                    new MatchAnswer() { Text = "No, I have to focus on my work/class" },
-                    new MatchAnswer() { Text = "Sometimes, but only during breaks" },
-                    new MatchAnswer() { Text = "Only when I’m sure nobody can see it" }
-                };
-            //_context.MatchQuestions.Add(mq);
-
-            //var user = _context.Users.First();
-
-            //var umq = new UserMatchQuestion { User = user, MatchQuestion = mq };
-            //_context.UserMatchQuestions.Add(umq);
-
-            var matchQuestion = _context.MatchQuestions.
-                    Include(mq => mq.MatchAnswers).First();
-            var ma = new MatchAnswer();
-            ma.Text = "No, I have to focus on my work/class";
-            var ma1 = new MatchAnswer();
-            ma1.Text = "Sometimes, but only during breaks";
-            var ma2 = new MatchAnswer();
-            ma2.Text = "Only when I’m sure nobody can see it";
-            matchQuestion.MatchAnswers.Add(ma);
-            matchQuestion.MatchAnswers.Add(ma1);
-            matchQuestion.MatchAnswers.Add(ma2);
-
-            _context.MatchQuestions.Add(mq1);
-
             _context.SaveChanges();
         }
     }

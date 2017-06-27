@@ -17,6 +17,7 @@ import { UserService}        from '../../services/user.service';
 import { SearchService }     from '../../services/search/search.service';
 import { Preference }        from '../../models/preference';
 import { User }              from '../../models/user';
+import { COUNTRIES }         from '../../static/countries';
 @Component({
     selector:    'd-search-component',
     templateUrl: 'app/components/dashboard/d.search.component.html',
@@ -27,12 +28,14 @@ export class DSearchComponent implements OnInit {
     public app:         AppComponent;
     public searchUserData: SearchUserData;
     public preferences: Preference = new Preference();
+    public countries: Array<string> = COUNTRIES;
+    public cities: Array<string>;
 
     public searchToggles: Array<any> = [
-        { title: 'Gender', name: 'gender', items: PreferenceData.genders },
-        { title: 'Hair',   name: 'hcolor', items: PreferenceData.hcolors },
-        { title: 'Eyes',   name: 'ecolor', items: PreferenceData.ecolors },
-        { title: 'Hobby',  name: 'hobby',  items: PreferenceData.hobbies }
+        { title: 'Gender',   name: 'gender', items: PreferenceData.genders },
+        { title: 'Hair',     name: 'hcolor', items: PreferenceData.hcolors },
+        { title: 'Eyes',     name: 'ecolor', items: PreferenceData.ecolors },
+        { title: 'Hobby',    name: 'hobby',  items: PreferenceData.hobbies }
     ];
 
     constructor(
@@ -52,7 +55,22 @@ export class DSearchComponent implements OnInit {
     public onSelectPreference = (event: MouseEvent): void => {
         event.preventDefault();
         let element = event.target;
-        this.preferences[element['id']] = element['innerHTML'];
+        switch (element['id']) {
+            case 'country':
+                console.log('preference country');
+                this.preferences.country = element['innerHTML'];
+                this.preferences.city = '';
+                break;
+            default:
+                this.preferences[element['id']] = element['innerHTML'];
+        }
+    }
+
+    public onClickCity = (): void => {
+        this._preferenceService.GetCities(this.preferences.country)
+            .subscribe(cities => {
+                this.cities = cities;
+            });
     }
 
     public onSearchUsers(event: KeyboardEvent): void {

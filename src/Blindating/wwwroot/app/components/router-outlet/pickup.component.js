@@ -8,10 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
-var user_1 = require('../../models/user');
-var matchquestion_service_1 = require('../../services/matchquestion.service');
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
+var user_1 = require("../../models/user");
+var matchquestion_service_1 = require("../../services/matchquestion.service");
 var PickupComponent = (function () {
     function PickupComponent(_matchQuestionService, _router, _zone) {
         var _this = this;
@@ -62,29 +63,31 @@ var PickupComponent = (function () {
         this.app.selectedUser = null;
         this._router.navigate(['/dashboard']);
     };
-    PickupComponent = __decorate([
-        core_1.Component({
-            selector: 'pickup-component',
-            templateUrl: 'app/components/router-outlet/pickup.component.html',
-            styleUrls: ['app/components/router-outlet/pickup.component.css'],
-            inputs: ['app'],
-            animations: [
-                core_1.trigger('pickupState', [
-                    core_1.state('deselected', core_1.style({
-                        height: '0px',
-                        'padding-top': '0px',
-                    })),
-                    core_1.state('selected', core_1.style({
-                        height: '160px',
-                        'padding-top': '10px'
-                    })),
-                    core_1.transition('deselected => selected', core_1.animate('300ms ease-in')),
-                    core_1.transition('selected => deselected', core_1.animate('300ms ease-out'))
-                ])
-            ]
-        }), 
-        __metadata('design:paramtypes', [matchquestion_service_1.MatchQuestionService, router_1.Router, core_1.NgZone])
-    ], PickupComponent);
     return PickupComponent;
 }());
+PickupComponent = __decorate([
+    core_1.Component({
+        selector: 'pickup-component',
+        templateUrl: 'app/components/router-outlet/pickup.component.html',
+        styleUrls: ['app/components/router-outlet/pickup.component.css'],
+        inputs: ['app'],
+        animations: [
+            core_1.trigger('pickupState', [
+                core_1.state('deselected', core_1.style({
+                    height: '0px',
+                    'padding-top': '0px',
+                })),
+                core_1.state('selected', core_1.style({
+                    height: '160px',
+                    'padding-top': '10px'
+                })),
+                core_1.transition('deselected => selected', core_1.animate('300ms ease-in')),
+                core_1.transition('selected => deselected', core_1.animate('300ms ease-out'))
+            ])
+        ]
+    }),
+    __metadata("design:paramtypes", [matchquestion_service_1.MatchQuestionService,
+        router_1.Router,
+        core_1.NgZone])
+], PickupComponent);
 exports.PickupComponent = PickupComponent;

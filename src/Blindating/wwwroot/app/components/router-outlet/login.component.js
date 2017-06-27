@@ -11,14 +11,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
-var core_2 = require('angular2-cookie/core');
-var user_service_1 = require('../../services/user.service');
-var social_service_1 = require('../../services/social.service');
-var user_1 = require('../../models/user');
-var app_component_1 = require('../../components/app.component');
-var pickup_component_1 = require('../../components/router-outlet/pickup.component');
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
+var core_2 = require("angular2-cookie/core");
+var user_service_1 = require("../../services/user.service");
+var social_service_1 = require("../../services/social.service");
+var user_1 = require("../../models/user");
+var app_component_1 = require("../../components/app.component");
+var pickup_component_1 = require("../../components/router-outlet/pickup.component");
+//declare var VK: any;
 var LoginComponent = (function () {
     function LoginComponent(app, _userService, _cookieService, _socialService, _router) {
         var _this = this;
@@ -32,23 +34,24 @@ var LoginComponent = (function () {
             { title: 'Login', active: true },
             { title: 'Register' }
         ];
-        this.GetVKInfoAPI = function () {
-            var self = _this;
-            VK.Auth.login(function (response) {
-                if (response.session) {
-                    self.SetVKInfoAPI(response.session);
-                    /* User is authorized successfully */
-                    if (response.settings) {
-                    }
-                }
-                else {
-                    console.log('VK canceled');
-                }
-            });
-        };
+        //private GetVKInfoAPI = () => {
+        //    var self = this;
+        //    VK.Auth.login(function(response) {
+        //        if (response.session) {
+        //            self.SetVKInfoAPI(response.session);
+        //            /* User is authorized successfully */
+        //            if (response.settings) {
+        //            /* Selected user access settings, if they were requested */
+        //            }
+        //        } else {
+        //            console.log('VK canceled');
+        //            /* User clicked Cancel button in the authorization window */
+        //        }
+        //    });
+        //}
         this.GetFacebookInfoAPI = function () {
             var self = _this;
-            _this.facebookIntervalNumber = setInterval(_this.CheckFBLoginInterval, 1000);
+            _this.facebookInterval = setInterval(_this.CheckFBLoginInterval, 1000);
             FB.getLoginStatus(function (response) { statusChangeCallback(response); });
             function statusChangeCallback(response) {
                 if (response.status === 'connected')
@@ -59,7 +62,7 @@ var LoginComponent = (function () {
         };
         this.CheckFBLoginInterval = function () {
             if (_this.app.user) {
-                clearInterval(_this.facebookIntervalNumber);
+                clearInterval(_this.facebookInterval);
             }
         };
         this.SetVKInfoAPI = function (session) {
@@ -156,16 +159,16 @@ var LoginComponent = (function () {
             this.Login();
         }
         else {
-            VK.init({
-                apiId: 5549517
-            });
-            setTimeout(function () {
-                var el = document.createElement("script");
-                el.type = "text/javascript";
-                el.src = "//vk.com/js/api/openapi.js";
-                el.async = true;
-                document.getElementById("vk_api_transport").appendChild(el);
-            }, 0);
+            //VK.init({
+            //    apiId: 5549517
+            //});
+            //setTimeout(function() {
+            //    var el = document.createElement("script");
+            //    el.type = "text/javascript";
+            //    el.src = "//vk.com/js/api/openapi.js";
+            //    el.async = true;
+            //    document.getElementById("vk_api_transport").appendChild(el);
+            //}, 0);
             window.fbAsyncInit = function () {
                 FB.init({
                     appId: '1557510837900819',
@@ -209,8 +212,8 @@ var LoginComponent = (function () {
     LoginComponent.prototype.onAuthSocial = function () {
         if (event.srcElement.className == 'fa fa-facebook')
             this.GetFacebookInfoAPI();
-        else
-            this.GetVKInfoAPI();
+        //else
+        //   this.GetVKInfoAPI();
     };
     LoginComponent.prototype.CreateUser = function () {
         var user = new user_1.User();
@@ -240,20 +243,23 @@ var LoginComponent = (function () {
         //    newWindow.focus();
         return newWindow;
     };
-    __decorate([
-        core_1.ViewChild(pickup_component_1.PickupComponent), 
-        __metadata('design:type', pickup_component_1.PickupComponent)
-    ], LoginComponent.prototype, "pickupComponent", void 0);
-    LoginComponent = __decorate([
-        core_1.Component({
-            selector: 'login-component',
-            templateUrl: 'app/components/router-outlet/login.component.html',
-            styleUrls: ['app/components/router-outlet/login.component.css']
-        }),
-        __param(0, core_1.Host()),
-        __param(0, core_1.Inject(core_1.forwardRef(function () { return app_component_1.AppComponent; }))), 
-        __metadata('design:paramtypes', [app_component_1.AppComponent, user_service_1.UserService, core_2.CookieService, social_service_1.SocialService, router_1.Router])
-    ], LoginComponent);
     return LoginComponent;
 }());
+__decorate([
+    core_1.ViewChild(pickup_component_1.PickupComponent),
+    __metadata("design:type", pickup_component_1.PickupComponent)
+], LoginComponent.prototype, "pickupComponent", void 0);
+LoginComponent = __decorate([
+    core_1.Component({
+        selector: 'login-component',
+        templateUrl: 'app/components/router-outlet/login.component.html',
+        styleUrls: ['app/components/router-outlet/login.component.css']
+    }),
+    __param(0, core_1.Host()), __param(0, core_1.Inject(core_1.forwardRef(function () { return app_component_1.AppComponent; }))),
+    __metadata("design:paramtypes", [app_component_1.AppComponent,
+        user_service_1.UserService,
+        core_2.CookieService,
+        social_service_1.SocialService,
+        router_1.Router])
+], LoginComponent);
 exports.LoginComponent = LoginComponent;

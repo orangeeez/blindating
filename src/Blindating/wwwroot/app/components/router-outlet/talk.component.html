@@ -13,10 +13,10 @@
             <i class="fa fa-window-minimize"></i>
         </div>
         <div *ngIf="app.videoState != 'initiatedVideo'" class="no-remote-video">User's video not provided</div>
-        <video autoplay muted [srcObject]="app.remoteStream?.mediaStream"></video>
+        <video autoplay [srcObject]="app.remoteStream?.mediaStream"></video>
         <div id="video-local" class="video-local">
             <div *ngIf="app.videoState != 'initiatedVideo'" class="no-local-video">Your video not provided</div>
-            <video muted autoplay [srcObject]="app.localStream?.mediaStream"></video>
+            <video autoplay muted [srcObject]="app.localStream?.mediaStream"></video>
         </div>
     </div>
     <div #maximizeVideo class="maximize-video"
