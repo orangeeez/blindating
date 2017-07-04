@@ -27,7 +27,8 @@
             <div><i class="fa fa-check" aria-hidden="true"></i>Gender</div>
             <div><i class="fa fa-check" aria-hidden="true"></i>Age</div>
             <div><i class="fa fa-check" aria-hidden="true"></i>Location</div>
-            <div style="color: #d43f3a"><i class="fa fa-close" aria-hidden="true"></i>Hair</div>
+            <div style="color: red"><i class="fa fa-close"
+                                       style="color: red" aria-hidden="true"></i>Hair</div>
             <div><i class="fa fa-check" aria-hidden="true"></i>Eyes</div>
             <div><i class="fa fa-check" aria-hidden="true"></i>Hobby</div>
         </div>
@@ -38,7 +39,7 @@
                 <div class="qcheck">
                     <div *ngFor="let circle of matchQuestions; let i = index" class="fa fa-circle"
                          (click)="onChooseMatchQuestion(i)"
-                         [style.color]="circle?.matchAnswerID == circle?.remoteMatchAnswerID ? '#42A948' : '#d43f3a'">
+                         [style.color]="circle?.matchAnswerID == circle?.remoteMatchAnswerID ? '#42A948' : 'red'">
                     </div>
                 </div>
             </div>

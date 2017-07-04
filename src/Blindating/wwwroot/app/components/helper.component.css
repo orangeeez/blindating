@@ -22,6 +22,7 @@
 #helper .element {
     padding-top: 10px;
     padding-bottom: 10px;
+    color: var(--focus-border-color);
 }
 #helper .element:hover {
     background-color: var(--main-border-color);

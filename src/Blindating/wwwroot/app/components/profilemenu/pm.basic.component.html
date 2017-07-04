@@ -353,25 +353,31 @@
             <div [style.font-size]="'18px'">Before see user's talks you need a conversation</div>
         </div>
         <div *ngIf="conversations.length != 0" class="col-md-12 no-padding">
-            <div *ngFor="let conversation of conversations | slice: 2" class="col-md-6 no-padding">
-                <div class="col-md-5 no-padding profile-decoration"
+            <div *ngFor="let conversation of conversations | slice: 1" class="col-md-12 no-padding">
+                <div class="col-md-3 no-padding profile-decoration"
                      (click)="app.selectDeselectUser(conversation.remoteUser)">
                     <img [src]="conversation.remoteUser.image"
                          [class.blur]="!app.selectedUser.isVideoShared &&
-                                       !app.isSelectedYou" class="img-circle avatar-decoration" />
+                                           !app.isSelectedYou" class="img-circle avatar-decoration" />
                     <div>{{conversation.remoteUser.firstname}}</div>
                     <img src="../../../images/app/controls/online.png" class="online-decoration"
                          [hidden]="!conversation.remoteUser.online" />
                 </div>
-                <div class="col-md-7 no-padding data-decoration">
-                    <div><i class="fa fa-phone-square" style="color: var(--valid-color);"></i>
-                        <span style="padding-left: 5px">{{conversation.start | date: 'mediumTime'}}</span>
+                <div class="col-md-9 no-padding data-decoration">
+                    <div class="col-md-4 text-center gray-text">
+                        <i class="fa fa-play fa-2x"></i>
+                        <div class="bold-text"
+                             [style.font-size]="'11px'">{{conversation.start | date: 'short'}}</div>
                     </div>
-                    <div><i class="fa fa-phone-square" style="color: var(--invalid-color);"></i>
-                        <span style="padding-left: 5px">{{conversation.end | date: 'mediumTime'}}</span>
+                    <div class="col-md-4 text-center gray-text">
+                        <i class="fa fa-stop fa-2x"></i>
+                        <div class="gray-text bold-text"
+                             [style.font-size]="'11px'">{{conversation.end | date: 'short'}}</div>
                     </div>
-                    <div><i class="fa fa-clock-o"></i>
-                        <span style="padding-left: 5px">{{conversation.duration}}</span>
+                    <div class="col-md-4 text-center gray-text">
+                        <i class="fa fa-clock-o fa-2x"></i>
+                        <div class="bold-text"
+                             [style.font-size]="'11px'">{{conversation.duration}}</div>
                     </div>
                 </div>
             </div>

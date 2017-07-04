@@ -61,3 +61,6 @@
     text-align: center;
     font-size: 18px;
 }
+.radio label {
+    font-weight: bold;
+}

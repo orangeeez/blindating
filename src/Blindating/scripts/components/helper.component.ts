@@ -17,38 +17,40 @@ import { AppComponent }       from '../components/app.component';
 import { UserService }        from '../services/user.service';
 declare var Woogeen:          any;
 @Component({
-    selector:    'helper-component',
+    selector: 'helper-component',
     templateUrl: 'app/components/helper.component.html',
-    styleUrls:  ['app/components/helper.component.css'],
-    inputs:     ['app']
+    styleUrls: ['app/components/helper.component.css'],
+    inputs: ['app']
 })
 export class HelperComponent implements OnInit {
     public app: AppComponent;
 
-    public phoneIcon:  string = PHONE;
+    public phoneIcon: string = PHONE;
     public hangupIcon: string = HANGUP;
-    public videoIcon:  string = VIDEO;
+    public videoIcon: string = VIDEO;
 
-    public isCalling:         boolean = false;
-    public isCallInitiated:   boolean = false;
-    public isCallDenied:      boolean = false;
-    public isVideoing:        boolean = false;
-    public isVideoInitiated:  boolean = false;
-    public isVideoDenied:     boolean = false;
-    public isSearchInitiated: boolean = false;
+    public isCalling: boolean        = false;
+    public isCallInitiated: boolean  = false;
+    public isCallDenied: boolean     = false;
+    public isVideoing: boolean       = false;
+    public isVideoInitiated: boolean = false;
+    public isVideoDenied: boolean    = false;
+    public isVideoRequested: boolean = false;
+
+    public isAudioInitiated: boolean = false;
 
     public isPhoneDisabled: boolean = false;
 
-    public intervalCalling:   any;
-    public intervalVideoing:  any;
-    public intervalDuration:  any;
+    public intervalCalling: any;
+    public intervalVideoing: any;
+    public intervalDuration: any;
 
-    public duration:          any;
-    public durationTime:      Date = new Date(0, 0, 0, 0, 0, 0, 0);
+    public duration: any;
+    public durationTime: Date = new Date(0, 0, 0, 0, 0, 0, 0);
     public startDurationTime: Date;
 
     constructor(private _userService: UserService,
-                private _ref:         ChangeDetectorRef) { }
+        private _ref: ChangeDetectorRef) { }
 
     ngOnInit() { }
 
@@ -72,8 +74,8 @@ export class HelperComponent implements OnInit {
             setTimeout(this.app.disapearCall, 2000);
             clearInterval(this.intervalVideoing);
         }
-        else 
-            this.denyCall(this.app.communicationUser.jwt);
+        else
+            this.app.user.peer.stop(this.app.communicationUser.jwt);
     }
 
     public onCallingBlink = (): void => {
@@ -105,14 +107,18 @@ export class HelperComponent implements OnInit {
         this.app.user.peer.send(DataSignals.RequestingVideo, this.app.communicationUser.jwt)
         this.intervalVideoing = setInterval(this.onVideoingBlink, 500);
         this.app.videoState = 'videoRequester';
+        this.isVideoRequested = true;
     }
 
     public onAcceptVideo = () => {
         this.app.videoState = 'initiatedVideo';
-        this.cleanVideoIcon();
-        this.isVideoInitiated = true;
-        this.disableAudio();
+        this.cleanVideoIcon();    
         this.enableVideo();
+
+        this.app._talk.dialogToggle();
+        this.app._talk.onMaximizeVideo();
+        this.app._talk.onExpandNarrowVideo();
+        this.app.selectDeselectUser(this.app.communicationUser);
     }
 
     private onDenyVideo = () => {
@@ -120,31 +126,89 @@ export class HelperComponent implements OnInit {
         this.denyVideoIcon();
     }
 
-    private disableAudio = () => {
+    private disableStream = () => {
         this.app.user.peer.unpublish(this.app.localStream, this.app.communicationUser.jwt);
 
         if (this.app.localStream)
             this.app.localStream.close();
 
         this.app.localStream = undefined;
+    }
+
+    public enableAudio = () => {
+        this.disableStream();
+        Woogeen.LocalStream.create({
+            audio: true
+        }, this.app.onCreateStream);
+
+        this.isAudioInitiated = true;
+    }
+
+    private disableAudio = () => {
+        this.isAudioInitiated = false;
     } 
 
-    private enableVideo = () => {
+    public toggleAudio = () => {
+        this.disableStream();
+
+        if (this.isAudioInitiated &&
+            this.isVideoInitiated)
+            this.enableVideo(false);
+
+        if (this.isAudioInitiated &&
+            !this.isVideoInitiated)
+            this.disableAudio();
+
+        else if (!this.isAudioInitiated &&
+            this.isVideoInitiated)
+            this.enableVideo(true);
+
+        else if (!this.isAudioInitiated &&
+            !this.isVideoInitiated)
+            this.enableAudio();
+    }
+
+    public enableVideo = (audio: boolean = true) => {
+        this.disableStream();
         Woogeen.LocalStream.create({
             video: {
                 device: "camera",
                 resolution: "hd720p",
                 frameRate: [30, 30]
             },
-            audio: true
+            audio: audio
         }, this.app.onCreateStream);
+
+        this.isVideoInitiated = true;
     }
 
-    private denyCall = (jwt: string) => {
-        this.app.user.peer.stop(jwt);
+    private disableVideo = () => {
+        this.isVideoInitiated = false;
     }
 
-    public denyVideoIcon = () => {
+    public toggleVideo = () => {
+        this.disableStream();
+
+        if (this.isVideoInitiated &&
+            this.isAudioInitiated)
+            this.enableAudio();
+
+        else if (this.isVideoInitiated &&
+            !this.isAudioInitiated)
+            console.log("testtttt")
+            
+
+        else if (!this.isVideoInitiated &&
+            this.isAudioInitiated)
+            this.enableVideo();
+
+        else if (!this.isVideoInitiated &&
+            !this.isAudioInitiated)
+            this.enableVideo(false);
+
+    }
+
+        public denyVideoIcon = () => {
         this.app.videoState = 'none';
         this.isVideoDenied  = true;
         setTimeout(() => {

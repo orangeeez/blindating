@@ -1,8 +1,4 @@
 ﻿<div *ngIf="app.isHelperShow" class="container-fluid" id="helper">
-    <audio autoplay muted
-           [hidden]="true"
-           [srcObject]="app.remoteStream?.mediaStream">
-    </audio>
     <div class="row">
         <div class="col-md-12">
             <div *ngIf="app.communicationState == 'calling'          ||
@@ -24,7 +20,7 @@
                         app.communicationState != 'initiatedCaller') ||
                         app.communicationState == 'calling'" class="element"
                  [class.disabled]="isPhoneDisabled"
-                 (click)="onInviteAcceptCall(localAudio, remoteAudio)">
+                 (click)="onInviteAcceptCall()">
                 <img [src]="phoneIcon" class="icon" />
             </div>
             <div *ngIf="app.communicationState == 'calling'          ||
@@ -34,12 +30,18 @@
                 <img [src]="hangupIcon" class="icon" />
             </div>
             <div *ngIf="app.communicationState == 'initiatedCalling' ||
+                        app.communicationState == 'initiatedCaller'" class="element last"
+                 [class.initiated]="isAudioInitiated"
+                 (click)="toggleAudio()">
+                <i class="fa fa-volume-up fa-2x"></i>
+            </div>
+            <div *ngIf="app.communicationState == 'initiatedCalling' ||
                         app.communicationState == 'initiatedCaller'" class="element"
                  [class.blinking]="isVideoing"
                  [class.initiated]="isVideoInitiated"
                  [class.denied]="isVideoDenied"
-                 [class.disabled]="isVideoing || isVideoInitiated"
-                 (click)="onRequestVideo()">
+                 [class.disabled]="isVideoing"
+                 (click)="isVideoRequested ? toggleVideo() : onRequestVideo()">
                 <img [src]="videoIcon" class="icon" />
             </div>
             <div *ngIf="app.videoState == 'videoRequesting'" style="padding-top: 0;">

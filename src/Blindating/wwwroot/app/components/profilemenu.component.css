@@ -1,13 +1,15 @@
 ﻿#profile {
     margin-top: 72px;
+    font-weight: bold;
+    color: var(--focus-border-color);
 }
 .col-md-12 {
     padding: 0;
 }
 .power-off {
     z-index: 1001;
-    position: fixed;
-    top: 67px;
+    position: absolute;
+    top: 15px;
     right: 10px;
     cursor: pointer;
 }

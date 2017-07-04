@@ -1,4 +1,6 @@
 ﻿#talk {
+    font-weight: bold;
+    color: var(--focus-border-color);
     width: 100%;
     height: 100%;
 }
@@ -7,7 +9,7 @@
     background-color: white;
     bottom: 5px;
     right: 5px;
-    width: 300px;
+    width: 399px;
     height: 225px;
     border: 1px solid var(--main-border-color);
 }
@@ -43,7 +45,7 @@
     position: absolute;
     bottom: 5px;
     right: 5px;
-    width: 120px;
+    width: 159px;
     height: 90px;
     border: 1px solid var(--main-border-color);
 }

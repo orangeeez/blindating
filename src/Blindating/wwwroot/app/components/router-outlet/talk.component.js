@@ -85,14 +85,14 @@ var TalkComponent = (function () {
         }
         else {
             this.videoRemote.nativeElement.style.height = '225px';
-            this.videoRemote.nativeElement.style.width = '300px';
+            this.videoRemote.nativeElement.style.width = '400px';
             this.videoRemote.nativeElement.style.border = '1px solid var(--main-border-color)';
             this.videoRemote.nativeElement.style.right = '5px';
             this.videoRemote.nativeElement.style.bottom = '5px';
             if (this.dialogState == 'shown')
-                this.videoRemote.nativeElement.style.width = '300px';
+                this.videoRemote.nativeElement.style.width = '400px';
             else {
-                this.videoRemote.nativeElement.style.width = '300px';
+                this.videoRemote.nativeElement.style.width = '400px';
                 this.expandIcon.nativeElement.style.left = '5px';
                 this.minimizeVideo.nativeElement.style.left = '20px';
             }

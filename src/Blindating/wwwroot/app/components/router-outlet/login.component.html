@@ -48,13 +48,15 @@
                         <button scope="public_profile,email" class="btn btn-social-icon btn-facebook"
                             [disabled]="pickupState == 'selected'" 
                             (click)="onAuthSocial($event)">
-                            <span class="fa fa-facebook"></span>
+                            <span class="fa fa-facebook"
+                                  [style.color]="'white'"></span>
                         </button>
 
                         <button class="btn btn-social-icon btn-vk"
                             [disabled]="pickupState == 'selected'" 
                             (click)="onAuthSocial($event)">
-                            <span class="fa fa-vk"></span>
+                            <span class="fa fa-vk"
+                                  [style.color]="'white'"></span>
                         </button>
                     </div>
                 </form>

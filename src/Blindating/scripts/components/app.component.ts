@@ -122,6 +122,8 @@ export class AppComponent implements OnInit {
 
         this.user.peer.on('chat-invited',   this.onUserCalling);
 
+        this.user.peer.on('chat-accepted',   this.onCallAccepted);
+
         this.user.peer.on('data-received',  this.onDataReceived);
 
         this.user.peer.on('chat-started',   this.onCallStarted);
@@ -146,10 +148,13 @@ export class AppComponent implements OnInit {
             });
     }
 
+    private onCallAccepted = (e): void => {} 
+
     private onDataReceived = (e): void => {
         if (e.data == DataSignals.RequestingVideo) {
             this._helper.intervalVideoing = setInterval(this._helper.onVideoingBlink, 500);
             this.videoState = 'videoRequesting';
+            this._helper.isVideoRequested = true;
         }
 
         if (e.data == DataSignals.DenyingVideo) {
@@ -177,16 +182,7 @@ export class AppComponent implements OnInit {
 
         if (!this.selectedUser) this.selectDeselectUser(this.communicationUser);
 
-        Woogeen.LocalStream.create({
-            audio: true
-        }, function (err, stream) {
-            if (err) {
-                console.log('create LocalStream failed: ', err);
-            }
-            else
-                console.log('create LocalStream success: ', stream);
-        });
-            //this.onCreateStream);
+        this._helper.enableAudio();
 
         this.isHeaderShow = true;
         this._router.navigate(['/talk']);
@@ -204,8 +200,13 @@ export class AppComponent implements OnInit {
     }
 
     private onCallStopped = (e): void => {
+        console.log('CALL STOPED');
+        console.log(this.localStream);
+        console.log(this.remoteStream);
+
         this._helper.isCallInitiated = false;
         this._helper.isCallDenied = true;
+        this._helper.isVideoRequested = false;
 
         if (this.localStream)
             this.localStream.close();
@@ -231,17 +232,14 @@ export class AppComponent implements OnInit {
 
     private onStreamAdded = (e): void => {
         this.remoteStream = e.stream;
-        console.log('REMOTE STREAM ADDED ' + this.remoteStream);
 
         if (this.videoState == 'videoRequester') {
             this.videoState = 'initiatedVideo';
             this._helper.onAcceptVideo();
-            this._helper.cleanVideoIcon();
-            this._helper.isVideoInitiated = true;
         }
     } 
 
-    private onStreamRemoved = (e): void => { }
+    private onStreamRemoved = (e): void => {}
 
     public disapearCall = (): void => {
         this.callerUser           = null;

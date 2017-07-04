@@ -49,10 +49,12 @@ var AppComponent = (function () {
                 _this._helper.intervalCalling = setInterval(_this._helper.onCallingBlink, 500);
             });
         };
+        this.onCallAccepted = function (e) { };
         this.onDataReceived = function (e) {
             if (e.data == utils_1.DataSignals.RequestingVideo) {
                 _this._helper.intervalVideoing = setInterval(_this._helper.onVideoingBlink, 500);
                 _this.videoState = 'videoRequesting';
+                _this._helper.isVideoRequested = true;
             }
             if (e.data == utils_1.DataSignals.DenyingVideo) {
                 _this._helper.denyVideoIcon();
@@ -74,16 +76,7 @@ var AppComponent = (function () {
             _this.communicationUser = _this.defineCommunicationUser();
             if (!_this.selectedUser)
                 _this.selectDeselectUser(_this.communicationUser);
-            Woogeen.LocalStream.create({
-                audio: true
-            }, function (err, stream) {
-                if (err) {
-                    console.log('create LocalStream failed: ', err);
-                }
-                else
-                    console.log('create LocalStream success: ', stream);
-            });
-            //this.onCreateStream);
+            _this._helper.enableAudio();
             _this.isHeaderShow = true;
             _this._router.navigate(['/talk']);
             _this._helper.isCallInitiated = true;
@@ -96,8 +89,12 @@ var AppComponent = (function () {
             _this.user.peer.publish(_this.localStream, _this.communicationUser.jwt);
         };
         this.onCallStopped = function (e) {
+            console.log('CALL STOPED');
+            console.log(_this.localStream);
+            console.log(_this.remoteStream);
             _this._helper.isCallInitiated = false;
             _this._helper.isCallDenied = true;
+            _this._helper.isVideoRequested = false;
             if (_this.localStream)
                 _this.localStream.close();
             if (_this.remoteStream)
@@ -116,12 +113,9 @@ var AppComponent = (function () {
         };
         this.onStreamAdded = function (e) {
             _this.remoteStream = e.stream;
-            console.log('REMOTE STREAM ADDED ' + _this.remoteStream);
             if (_this.videoState == 'videoRequester') {
                 _this.videoState = 'initiatedVideo';
                 _this._helper.onAcceptVideo();
-                _this._helper.cleanVideoIcon();
-                _this._helper.isVideoInitiated = true;
             }
         };
         this.onStreamRemoved = function (e) { };
@@ -210,6 +204,7 @@ var AppComponent = (function () {
             host: this.server, token: this.user.jwt
         });
         this.user.peer.on('chat-invited', this.onUserCalling);
+        this.user.peer.on('chat-accepted', this.onCallAccepted);
         this.user.peer.on('data-received', this.onDataReceived);
         this.user.peer.on('chat-started', this.onCallStarted);
         this.user.peer.on('chat-stopped', this.onCallStopped);

@@ -27,7 +27,8 @@ var HelperComponent = (function () {
         this.isVideoing = false;
         this.isVideoInitiated = false;
         this.isVideoDenied = false;
-        this.isSearchInitiated = false;
+        this.isVideoRequested = false;
+        this.isAudioInitiated = false;
         this.isPhoneDisabled = false;
         this.durationTime = new Date(0, 0, 0, 0, 0, 0, 0);
         this.onCallingBlink = function () {
@@ -54,36 +55,82 @@ var HelperComponent = (function () {
             _this.app.user.peer.send(utils_1.DataSignals.RequestingVideo, _this.app.communicationUser.jwt);
             _this.intervalVideoing = setInterval(_this.onVideoingBlink, 500);
             _this.app.videoState = 'videoRequester';
+            _this.isVideoRequested = true;
         };
         this.onAcceptVideo = function () {
             _this.app.videoState = 'initiatedVideo';
             _this.cleanVideoIcon();
-            _this.isVideoInitiated = true;
-            _this.disableAudio();
             _this.enableVideo();
+            _this.app._talk.dialogToggle();
+            _this.app._talk.onMaximizeVideo();
+            _this.app._talk.onExpandNarrowVideo();
+            _this.app.selectDeselectUser(_this.app.communicationUser);
         };
         this.onDenyVideo = function () {
             _this.app.user.peer.send(utils_1.DataSignals.DenyingVideo, _this.app.communicationUser.jwt);
             _this.denyVideoIcon();
         };
-        this.disableAudio = function () {
+        this.disableStream = function () {
             _this.app.user.peer.unpublish(_this.app.localStream, _this.app.communicationUser.jwt);
             if (_this.app.localStream)
                 _this.app.localStream.close();
             _this.app.localStream = undefined;
         };
-        this.enableVideo = function () {
+        this.enableAudio = function () {
+            _this.disableStream();
+            Woogeen.LocalStream.create({
+                audio: true
+            }, _this.app.onCreateStream);
+            _this.isAudioInitiated = true;
+        };
+        this.disableAudio = function () {
+            _this.isAudioInitiated = false;
+        };
+        this.toggleAudio = function () {
+            _this.disableStream();
+            if (_this.isAudioInitiated &&
+                _this.isVideoInitiated)
+                _this.enableVideo(false);
+            if (_this.isAudioInitiated &&
+                !_this.isVideoInitiated)
+                _this.disableAudio();
+            else if (!_this.isAudioInitiated &&
+                _this.isVideoInitiated)
+                _this.enableVideo(true);
+            else if (!_this.isAudioInitiated &&
+                !_this.isVideoInitiated)
+                _this.enableAudio();
+        };
+        this.enableVideo = function (audio) {
+            if (audio === void 0) { audio = true; }
+            _this.disableStream();
             Woogeen.LocalStream.create({
                 video: {
                     device: "camera",
                     resolution: "hd720p",
                     frameRate: [30, 30]
                 },
-                audio: true
+                audio: audio
             }, _this.app.onCreateStream);
+            _this.isVideoInitiated = true;
         };
-        this.denyCall = function (jwt) {
-            _this.app.user.peer.stop(jwt);
+        this.disableVideo = function () {
+            _this.isVideoInitiated = false;
+        };
+        this.toggleVideo = function () {
+            _this.disableStream();
+            if (_this.isVideoInitiated &&
+                _this.isAudioInitiated)
+                _this.enableAudio();
+            else if (_this.isVideoInitiated &&
+                !_this.isAudioInitiated)
+                console.log("testtttt");
+            else if (!_this.isVideoInitiated &&
+                _this.isAudioInitiated)
+                _this.enableVideo();
+            else if (!_this.isVideoInitiated &&
+                !_this.isAudioInitiated)
+                _this.enableVideo(false);
         };
         this.denyVideoIcon = function () {
             _this.app.videoState = 'none';
@@ -122,7 +169,7 @@ var HelperComponent = (function () {
             clearInterval(this.intervalVideoing);
         }
         else
-            this.denyCall(this.app.communicationUser.jwt);
+            this.app.user.peer.stop(this.app.communicationUser.jwt);
     };
     return HelperComponent;
 }());

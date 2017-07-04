@@ -16,7 +16,9 @@
     --bad-color: antiquewhite;
 }
 html * {
-    font-family: Walsheim;    
+    font-family: Walsheim;
+    font-weight: bold;
+    color: var(--focus-border-color);
 }
 .nav > li > a {
     color: #333;
@@ -29,8 +31,8 @@ html * {
     border-bottom: 1px solid var(--main-border-color);
 }
 #profile ul.nav-tabs {
-    position: fixed;
-    width: 30%;
+    position: absolute;
+    width: 100%;
     z-index: 1000;
     background-color: white;
     border-bottom: 1px solid var(--main-border-color);
@@ -43,6 +45,7 @@ html * {
 #profile .nav > li > a {
     margin-right: 0;
     padding: 10px 10px;
+    color: var(--focus-border-color);
 }
 #profile .nav > li > a:hover, 
 #profile .nav > li > a:focus {
@@ -89,6 +92,10 @@ textarea:focus, input:focus{
 .form-control:focus {
     border: 1px solid #808080 !important;
 }
+.btn {
+    color: var(--focus-border-color) !important;
+    font-weight: bold !important;
+}
 .btn-default {
     border-color: var(--main-border-color) !important;
 }
@@ -106,8 +113,16 @@ textarea:focus, input:focus{
     position: absolute;
     left: 50%;
     top: 50%;
+    color: var(--focus-border-color);
 }
 .disabled {
     pointer-events: none;
+}
+.gray-text {
+    color: var(--focus-border-color);
+}
+.bold-text {
+    font-weight: bold;
+
 }
 

@@ -64,6 +64,7 @@
     color: var(--focus-border-color);
     padding-top: 5px;
     padding-bottom: 5px;
+    font-weight: bold;
 }
 .profile:hover {
     background-color: var(--main-border-color);
